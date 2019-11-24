@@ -1,0 +1,204 @@
+﻿@using ClubLogBook.Application.ViewModels;
+
+<div>
+    <div class="accordion" id="accordionMemberInfo">
+        <div class="card">
+            <div class="card-header" id="headingOne">
+                <h2 class="mb-0">
+                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        General Aircraft Detailes
+                    </button>
+                </h2>
+            </div>
+
+            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionMemberInfo">
+                <div class="card-body">
+                   
+                    <label>Id: @item.Id</label>
+                    
+                    <div class="row">
+                        <div class="col">
+                            <p>Tail Number: @item.TailNumber</p>
+                        </div>
+                        <div class="col" style="@Style">
+                            <input type="text" @bind="@item.TailNumber" required />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col"><p>Aircraft Category: @item.AircraftCategory</p></div>
+                        <div class="col" style="@Style">
+                            <p>
+                                Aircraft Category:  <select asp-for="AircraftCategory" @bind="@item.AircraftCategory">
+                                    <option value="">Select Category ...</option>
+                                    @foreach (var state in Enum.GetValues(typeof(AircraftCategoryViewModel)))
+                                    {
+                                        <option>@state</option>
+                                    }
+                                </select>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col"><p>Aircraft Class: @item.AircraftClass</p></div>
+                        <div class="col" style="@Style">
+                            <p>
+                                Aircraft Class:  <select asp-for="AircraftClass" @bind="@item.AircraftClass">
+                                    <option value="">Select class ...</option>
+                                    @foreach (var state in Enum.GetValues(typeof(AircraftClassViewModel)))
+                                    {
+                                        <option>@state</option>
+                                    }
+                                </select>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col"><p>Flaps: @item.Flaps</p></div>
+                        <div class="col" style="@Style"><input type="checkbox" @bind="@item.Flaps" /></div>
+                    </div>
+                    <div class="row">
+                        <div class="col"><p>Constant Speed Prop: @item.ConstantSpeedProp</p></div>
+                        <div class="col" style="@Style"><input type="checkbox" @bind="@item.ConstantSpeedProp" /></div>
+                    </div>
+                    <div class="row">
+                        <div class="col"><p>Retractable: @item.Retractable </p></div>
+                        <div class="col" style="@Style"><input type="checkbox" @bind="@item.Retractable" /></div>
+                    </div>
+                    <div class="row">
+                        <div class="col"><p>Complex: @item.Complex </p></div>
+                        <div class="col" style="@Style"><input type="checkbox" @bind="@item.Complex" /></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col"><p>Hight Performance: @item.HighPerformance </p></div>
+                        <div class="col" style="@Style"><input type="checkbox" @bind-value="@item.HighPerformance" /></div>
+                    </div>
+                    <div class="row">
+                        <div class="col"><p>Tail Wheel: @item.TailWheel</p></div>
+                        <div class="col" style="@Style"><input type="checkbox" @bind="@item.TailWheel" /></div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col"><p>Turbin: @item.Turbine</p></div>
+                        <div class="col" style="@Style"><input type="checkbox" @bind="@item.Turbine" /></div>
+                    </div>
+                    <div class="row">
+                        <div class="col"><p>Jet: @item.Jet</p></div>
+                        <div class="col" style="@Style"><input type="checkbox" @bind="@item.Jet" /></div>
+                    </div>
+                    <div class="row">
+                        <div class="col"><p>Aircraft State: @item.AircraftState</p></div>
+                        <div class="col" style="@Style">
+                            <p>
+                                Aircraft State:  <select asp-for="Gender" @bind="@item.AircraftState">
+                                    <option value="">Select State ...</option>
+                                    @foreach (var state in Enum.GetValues(typeof(AircraftStateViewModel)))
+                                    {
+                                        <option>@state</option>
+                                    }
+                                </select>
+                            </p>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" id="headingTwo">
+                <h2 class="mb-0">
+                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        Aircraft Status
+                    </button>
+                </h2>
+            </div>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionMemberInfo">
+                <div class="card-body">
+                   
+                  
+                    <div class="row">
+                        <div class="col"><p>Last Annual: (@item.AirCraftModel.LastAnnual) </p></div>
+                        <div class="col" style="@Style"><input type="date" @bind="@item.AirCraftModel.LastAnnual" @bind:format="yyyy-MM-dd" /></div>
+                    </div>
+                    <div class="row">
+                        <div class="col"><p>Last 100HR: (@item.AirCraftModel.Last100) </p></div>
+                        <div class="col" style="@Style"><input type="number" @bind="@item.AirCraftModel.Last100" /></div>
+                    </div>
+                    <div class="row">
+                        <div class="col"><p>Last Altimeter: (@item.AirCraftModel.LastAltimeter) </p></div>
+                        <div class="col" style="@Style"><input type="date" @bind="@item.AirCraftModel.LastAltimeter" @bind:format="yyyy-MM-dd" /></div>
+                    </div>
+                    <div class="row">
+                        <div class="col"><p>Last ELT: (@item.AirCraftModel.LastELT) </p></div>
+                        <div class="col" style="@Style"><input type="date" @bind="@item.AirCraftModel.LastELT" @bind:format="yyyy-MM-dd" /></div>
+                    </div>
+                    <div class="row">
+                        <div class="col"><p>Last Pitot: (@item.AirCraftModel.LastPitotStatic ) </p></div>
+                        <div class="col" style="@Style"><input type="date" @bind="@item.AirCraftModel.LastPitotStatic" @bind:format="yyyy-MM-dd" /></div>
+                    </div>
+                    <div class="row">
+                        <div class="col"><p>Last Transponder: (@item.AirCraftModel.LastTransponder) </p></div>
+                        <div class="col" style="@Style"><input type="date" @bind="@item.AirCraftModel.LastTransponder" @bind:format="yyyy-MM-dd" /></div>
+                    </div>
+                    <div class="row">
+                        <div class="col"><p>Last VOR: (@item.AirCraftModel.LastVOR) </p></div>
+                        <div class="col" style="@Style"><input type="date" @bind="@item.AirCraftModel.LastVOR" @bind:format="yyyy-MM-dd" /></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col"><p>Aircraft State: @item.AircraftState</p></div>
+                        <div class="col" style="@Style">
+                            <p>
+                                Aircraft State:  <select asp-for="Gender" @bind="@item.AircraftState">
+                                    <option value="">Select State ...</option>
+                                    @foreach (var state in Enum.GetValues(typeof(AircraftStateViewModel)))
+                                    {
+                                        <option>@state</option>
+                                    }
+                                </select>
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" id="headingThree">
+                <h2 class="mb-0">
+                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        Aircraft Maintanance
+                    </button>
+                </h2>
+            </div>
+            <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionMemberInfo">
+                <div class="card-body">
+                    <div class="container-card-body">
+                        <div class="card-body-item--1"><p>Last Transponder: (@item.AirCraftModel.LastTransponder) </p></div>
+                        <div class="card-body-item--1-value"><div style="@Style"><input type="date" @bind="@item.AirCraftModel.LastTransponder" @bind:format="yyyy-MM-dd" /></div></div>
+                        <div class="card-body-item--2"></div>
+                        <div class="card-body-item--2-value"></div>
+                        <div class="card-body-item--1">R2 Key 1</div>
+                        <div class="card-body-item--1-value">R2 val 1</div>
+                        <div class="card-body-item--2">R2key 2</div>
+                        <div class="card-body-item--2-value">R2 val 2</div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+@code {
+    [Parameter] public AircraftViewModel item { get; set; }
+    [Parameter] public bool IsEditable { get; set; }
+    public string Style = "";
+    protected override  void OnInitialized()
+    {
+        Style = IsEditable ? "" :  "display:none"  ;
+    }
+
+}

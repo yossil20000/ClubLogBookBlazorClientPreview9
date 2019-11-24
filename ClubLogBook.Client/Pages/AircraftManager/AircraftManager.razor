@@ -7,7 +7,20 @@
 <h3>AircraftManager</h3>
 <div class="containerAccount">
     <div class="head">
-        i am header
+        <div class="row">
+            <div class="col col-sm-12">
+                @if (item != null)
+                {
+                    <article>
+                        <h6>Aircraft @item.TailNumber Summary</h6>
+                    </article>
+                }
+
+            </div>
+            <div class="col col-sm-12" >
+                <img src="~/Image/PPL_4186280_Front_30_05_19.png" alt="Not Exist" style="float:right;width:142px;height:142px;"> />
+            </div>
+        </div>
 
     </div>
     <div class="select-club">
@@ -43,6 +56,7 @@
                         <td>@i.Id</td>
                         <td>@i.TailNumber</td>
                         <td>@i.AirCraftModel.LastFlight.ToString()</td>
+                        <td><button class="btn btn-info" @onclick="@(async () => await OnEditAircraft(i))">Edit</button></td>
                     </tr>
                 }
                 }
@@ -51,7 +65,14 @@
         </table>
     </div>
     <div class="main-right">
-        
+        @if (item != null)
+
+        {
+            
+            <AircraftDisp item="item" IsEditable="true"/>
+            
+        }
+
     </div>
     <div class="foot">
         <footer>
@@ -75,6 +96,7 @@
     AccountListViewModel accountListViewModels { get; set; }
     List<string> LastCommand { get; set; } = new List<string>();
     bool IsInizialize { get; set; } = false;
+    AircraftViewModel item;
     protected override async Task OnInitializedAsync()
     {
         LastCommand.Add($"OnInitializedAsync in ");
@@ -86,7 +108,18 @@
         List<ClubContactsViewModel> contacts = await Http.GetJsonAsync<List<ClubContactsViewModel>>("api/ClubContacts/Members");
         LastCommand.Add($"OnInitializedAsync contact {contacts.Count}");
         LastCommand.Add($"OnInitializedAsync out");
-         if(aircraftViewModels != null )
+        if (aircraftViewModels != null)
+        {
             IsInizialize = true;
+            item = aircraftViewModels.FirstOrDefault();
+             LastCommand.Add($"OnInitializedAsync Id:{item.Id} Tail Number:{item.TailNumber}");
+        }
+        else
+             LastCommand.Add($"OnInitializedAsync aircraftViewModels == null");
+    }
+     public async Task OnEditAircraft(AircraftViewModel selectObj)
+    {
+        item = selectObj;
+         LastCommand.Add($"OnEditAircraft Id:{item.Id} Tail Number:{item.TailNumber}");
     }
 }
