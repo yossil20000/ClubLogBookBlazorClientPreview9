@@ -1,0 +1,48 @@
+﻿@page "/Shared/PhoneEditor"
+@using ClubLogBook.Application.ViewModels
+@using Microsoft.AspNetCore.Components
+<div class="form-field">
+    <label>Country Code</label>
+    <div>
+        <InputText @bind-Value="@obj.CountryCode" />
+        <ValidationMessage For="@(() => obj.CountryCode)" />
+    </div>
+</div>
+<div class="form-field">
+    <label>Area Code:</label>
+    <div>
+        <InputText @bind-Value="@obj.AreaCode" />
+        <ValidationMessage For="@(() => obj.AreaCode)" />
+    </div>
+</div>
+<div class="form-field">
+    <label>Phone</label>
+    <div>
+        <InputText @bind-Value="@obj.PhoneNumber" />
+        <ValidationMessage For="@(() => obj.PhoneNumber)" />
+    </div>
+</div>
+
+<div class="form-field">
+    <label>Type</label>
+    <div>
+        <InputSelect @bind-Value="obj.Type">
+            @foreach (var type in Enum.GetValues(typeof(ContactType)))
+            {
+                <option >@type</option>
+            }
+        </InputSelect>
+        <ValidationMessage For="@(() => obj.Type)" />
+
+    </div>
+</div>
+
+
+
+
+
+
+
+@code {
+    [Parameter] public PhoneViewModel obj { get; set; }
+}

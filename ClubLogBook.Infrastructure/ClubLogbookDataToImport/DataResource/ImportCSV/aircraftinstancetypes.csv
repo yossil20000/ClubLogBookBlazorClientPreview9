@@ -1,0 +1,6 @@
+ID,Description,IsCertifiedIFR,IsCertifiedLanding,IsFullMotion,FAASimLevel,IsATD,IsFTD
+1,"Real Aircraft",1,1,1,,0,0
+2,"Simulator - Uncertified",0,0,0,,0,0
+3,"Simulator/FTD - Can log IFR approaches",1,0,0,,0,1
+4,"Simulator/FTD - Can log landings & approaches",1,1,1,D,0,1
+5,"Aviation Training Device (ATD)",1,0,0,,1,0

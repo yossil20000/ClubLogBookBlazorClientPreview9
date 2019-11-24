@@ -1,0 +1,73 @@
+﻿@page "/Add"
+@using ClubLogBook.Application.ViewModels
+@using Microsoft.AspNetCore.Components
+@inject NavigationManager navigationManager
+
+@inject HttpClient Http
+<h1>Add ontact to club</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <form>
+
+            <div>
+                <label>Pilot:</label>
+                @if (pilots == null)
+                {
+                    <select class="custom-select" disabled>
+                        <option>(loading...)</option>
+                    </select>
+                }
+                else
+                {
+                    <select class="custom-select" @onchange="PilotSelected">
+                        <option value="-1" disabled selected>(select)</option>
+                        @for (var i = 0; i < pilots.Length; i++)
+                        {
+                            <option value="@pilots[i].Id">@pilots[i].FullName - (@(pilots[i].IdNumber))</option>
+                        }
+                    </select>
+                }
+            </div>
+            <div class="form-group"
+
+                 <input type="button" value="Create"  class="btn" @onclick="(async () => await AddContact())" />
+                 <input type="submit" value="Cancel" @onclick="cancle" class="btn" />
+
+            </div>
+        </form>
+    </div>
+</div>
+
+@code {
+    [Parameter]   public string  contactId { get; set; }
+    ClubContactsViewModel emp = new ClubContactsViewModel();
+    string navTo = "/ClubContacts";
+    public DateTime demi = DateTime.Now;
+    ClubContactsViewModel[] pilots;
+    int selectedPilot = -1;
+    protected override async Task OnInitializedAsync()
+    {
+        pilots = await Http.GetJsonAsync<ClubContactsViewModel[]>("api/ClubContacts/PilotsNotInClub");
+
+
+    }
+    void PilotSelected(ChangeEventArgs e)
+    {
+        if (int.TryParse((string)e.Value, out var index) && index >= 0)
+        {
+            //emp.Pilot = pilots[index];
+            selectedPilot = index;
+        }
+    }
+    protected async Task AddContact()
+    {
+        await Http.SendJsonAsync(HttpMethod.Put, "api/ClubContacts/Add", selectedPilot);
+       
+        navigationManager.NavigateTo(navTo);
+    }
+    protected void cancle()
+    {
+        navigationManager.NavigateTo(navTo);
+    }
+}

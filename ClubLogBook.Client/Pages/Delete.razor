@@ -1,0 +1,50 @@
+﻿@page "/Delete/{contactId}"
+@using ClubLogBook.Application.ViewModels
+@using Microsoft.AspNetCore.Components
+@inject NavigationManager navigationManager
+@inject HttpClient Http
+<h2>Delete Contact</h2>
+<h3>Are you shure you want to delete contact with id: @contactId</h3>
+<div class="row">
+    <div class="col-md-4">
+        <form>
+            <div class="form-group">
+                <label for="IdNumber" class="control-label">@contact.IdNumber</label>
+                <label for="FirstName" class="control-label">@contact.FullName</label>
+                <label asp-for="Gender" class="control-label">@contact.Gender</label>
+                <label for="DateOfBirth" class="control-label">@contact.DateOfBirth</label>
+                <label for="Address" class="control-label">@contact.Addresses.Where(x => x.Type == ContactType.HOME).FirstOrDefault()</label>
+                <label for="Phone" class="control-label">@contact.Phones.Where(x => x.Type == ContactType.HOME).FirstOrDefault()</label>
+                <label for="Mail" class="control-label">@contact.Emails.Where(x => x.Type == ContactType.HOME).FirstOrDefault()</label>
+
+
+            </div>
+            <div class="form-group"
+
+                 <input type="button" value="Delete"  class="btn" @onclick="(async () => await DeleteContact(contact.Id))" />
+                 <input type="submit" value="Cancel" @onclick="cancle" class="btn" />
+
+            </div>
+        </form>
+    </div>
+</div>
+@code
+{
+[Parameter] public string contactId { get; set; }
+ClubContactsViewModel contact = new ClubContactsViewModel();
+string navTo = "/ClubContacts";
+protected override async Task OnInitializedAsync()
+{
+    contact = await Http.GetJsonAsync<ClubContactsViewModel>("/api/ClubContacts/DetailsForDelete/" + Convert.ToInt32(contactId));
+
+}
+protected async Task DeleteContact(int id)
+{
+    await Http.SendJsonAsync(HttpMethod.Put, $"api/ClubContacts/Delete/{id}", "BAZ");
+    navigationManager.NavigateTo(navTo);
+}
+public void cancle()
+{
+    navigationManager.NavigateTo(navTo);
+}
+}

@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="9.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.1.0-preview2.19525.5" />
+    <PackageReference Include="nunit" Version="3.12.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.15.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ClubLogBook.Client\ClubLogBook.Client.csproj" />
+    <ProjectReference Include="..\clubLogBook.Core\ClubLogBook.Core.csproj" />
+    <ProjectReference Include="..\ClubLogBook.Infrastructure\ClubLogBook.Infrastructure.csproj" />
+    <ProjectReference Include="..\ClubLogBook.Server\ClubLogBook.Server.csproj" />
+    <ProjectReference Include="..\ClubLogBook.Shared\ClubLogBook.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

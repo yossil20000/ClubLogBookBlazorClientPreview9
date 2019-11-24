@@ -1,0 +1,18 @@
+idCatClass,CatClass,Category,Class,AltCatClass
+1,ASEL,Airplane,"Single Engine, Land",3
+2,AMEL,Airplane,"Multi Engine, Land",4
+3,ASES,Airplane,"Single Engine, Sea",1
+4,AMES,Airplane,"Multi Engine, Sea",2
+5,Glider,Glider,,0
+7,Helicopter,Rotorcraft,Helicopter,0
+8,Gyroplane,Rotorcraft,Gyroplane,0
+9,"Powered Lift","Powered Lift",,0
+10,Airship,"Lighter Than Air",Airship,0
+11,"Hot Air Balloon","Lighter Than Air","Hot Air Balloon",0
+12,"Gas Balloon","Lighter Than Air","Gas Baloon",0
+13,"Powered Parachute - Land","Powered Parachute",Land,14
+14,"Powered Parachute - Sea","Powered Parachute",Sea,13
+15,"Weight-shift Control - Land","Weight-shift Control",Land,16
+16,"Weight-shift Control - Sea","Weight-shift Control",Sea,15
+17,"Unmanned Aerial System","Unmanned Aerial System",,0
+18,"Powered Paraglider","Powered Paraglider"," ",0

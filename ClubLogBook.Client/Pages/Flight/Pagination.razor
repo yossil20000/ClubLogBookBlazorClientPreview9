@@ -1,0 +1,40 @@
+﻿@page "/Pagination"
+@using ClubLogBook.Application.ViewModels
+@using Microsoft.AspNetCore.Components
+    <div >
+        <div class="container-fluid">
+            <div class="  row">
+                
+                    <div class="col-md-2 col-xs-12">
+                        <button type="button" class="btn btn-primary @PaginationInfoViewModel.Previous" onclick="OnPrevClick"
+                           id="Previous"
+                           asp-route-pageid="@(PaginationInfoViewModel.ActualPage - 1)"
+                           aria-label="Previous">
+                            Previous
+                        </button>
+                    </div>
+
+                    <div class="col-md-8 col-xs-12">
+                        <span class="">
+                            Showing @PaginationInfoViewModel.ItemsPerPage of @PaginationInfoViewModel.TotalItems products - Page @(PaginationInfoViewModel.ActualPage + 1) - @PaginationInfoViewModel.TotalPages
+                        </span>
+                    </div>
+
+                    <div class="col-md-2 col-xs-12">
+                        <button type="button" class="btn btn-primary @PaginationInfoViewModel.Next" onclick="OnNextClick"
+                           id="Next"
+                           asp-route-pageid="@(PaginationInfoViewModel.ActualPage + 1)"
+                           aria-label="Next">
+                            Next
+                        </button>
+                    </div>
+               
+            </div>
+        </div>
+    </div>
+@code
+{
+[Parameter] public PaginationInfoViewModel PaginationInfoViewModel { get; set; }
+[Parameter] public EventCallback<int> OnPrevClick { get; set; }
+[Parameter] public EventCallback<int> OnNextClick { get; set; }
+}

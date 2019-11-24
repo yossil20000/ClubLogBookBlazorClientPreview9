@@ -1,0 +1,35 @@
+﻿@page "/Shared/EmailEditor"
+@using ClubLogBook.Application.ViewModels
+@using Microsoft.AspNetCore.Components
+<div class="form-field">
+    <label>Email</label>
+    <div>
+        <InputText @bind-Value="@obj.EMail" />
+        <ValidationMessage For="@(() => obj.EMail)" />
+    </div>
+</div>
+
+
+<div class="form-field">
+    <label>Type</label>
+    <div>
+        <InputSelect @bind-Value="obj.Type">
+            @foreach (var type in Enum.GetValues(typeof(ContactType)))
+            {
+                <option>@type</option>
+            }
+        </InputSelect>
+        <ValidationMessage For="@(() => obj.Type)" />
+
+    </div>
+</div>
+
+
+
+
+
+
+
+@code {
+    [Parameter] public EMAILVieModel obj { get; set; }
+}

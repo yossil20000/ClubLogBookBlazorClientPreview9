@@ -1,0 +1,74 @@
+﻿@page "/Reservation/Reservation"
+@using ClubLogBook.Application.ViewModels
+@using ClubLogBook.Shared
+@using Microsoft.AspNetCore.Components
+@using NodaTime    
+    <div class="form-group">
+
+        @*<label for="Id" class="control-label">Id</label>*@
+        <div class="alert @StatusClass">@StatusMessage</div>
+        <label for="DateFrom" class="control-label">From</label><br />
+
+        <div class="col pr-0">
+            <div class="form-control d-flex">
+                <div><i>🗓</i>&nbsp;&nbsp;Date:</div>
+                <input type="date" @bind="Item.DateFrom" @bind:format="yyyy-MM-dd" />
+                <div><i>🗓</i>&nbsp;&nbsp;Time:</div>
+                <input type="time" @bind="Item.TimeFrom" format-value="HH:mm" />
+
+            </div>
+            @*<div class="form-control d-flex">
+                <div><i>🗓</i>&nbsp;&nbsp;Depart:</div>
+                <input type="time" @bind="Item.TimeFrom"  />
+            </div>*@
+        </div>
+        <label for="DateFrom" class="control-label">To</label><br />
+        <div class="col pr-0">
+            <div class="form-control d-flex">
+                <div><i>🗓</i>&nbsp;&nbsp;Date:</div>
+                <input type="date" @bind="Item.DateTo" @bind:format="yyyy-MM-dd" />
+                <div><i>🗓</i>&nbsp;&nbsp;Time:</div>
+                <input type="time" @bind="Item.TimeTo" format-value="HH:mm" />
+
+            </div>
+            @*<div class="form-control d-flex">
+                <div><i>🗓</i>&nbsp;&nbsp;Depart:</div>
+                <input type="time" @bind="Item.TimeFrom"  />
+            </div>*@
+        </div>
+        @*<Input type="datetime" Id="DateFrom" @bind="@Item.DateFrom"  /><br />*@
+        @*<div class="invalid-feedback">Please Chosse Date From</div>
+        <label for="DateTo" class="control-label">To</label><br />
+        <Input type="datetime" Id="DateTo" @bind="@Item.DateTo" format="yyyy-MM-dd" required /><br />
+        <div class="invalid-feedback">Please Chosse Date From</div>*@
+        @*<label for="TailNumber" class="hide">Tail Number</label>*@
+        <input type="text" for="TailNumber" class="text-hide" @bind="@Item.TailNumber" />
+        <ValidationMessage For="@(() => Item.TailNumber)" />
+        @*<label for="IdNumber" class="hide">Id Number</label>*@
+        <label type="text" for="IdNumber" class="text-hide" @bind="@Item.IdNumber" />
+        <ValidationMessage For="@(() => Item.IdNumber)" />
+
+    </div>
+
+@functions {
+    [Parameter] public FlightReservationViewModel Item { get; set; }
+    [Parameter] public FilterSelection filter { get; set; }
+    [Parameter] public LocalTime SelectedFromTime { get; set; }
+    [Parameter] public string StatusMessage { get; set; }
+    [Parameter] public string StatusClass { get; set; }
+
+    bool visible4 = false;
+    LocalTime selectedTime4 = new LocalTime();
+    void changed2(LocalTime localTime)
+    {
+        SelectedFromTime = localTime;
+        SelectedFromTime = localTime;
+
+        //Item.TimeFrom.ChangeTime(localTime.Hour, localTime.Minute, 0,0);
+        StateHasChanged();
+    }
+    void focussed4()
+    {
+        visible4 = true;
+    }
+}

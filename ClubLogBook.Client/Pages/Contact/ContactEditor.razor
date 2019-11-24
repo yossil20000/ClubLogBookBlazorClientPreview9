@@ -1,0 +1,663 @@
+﻿@page "/Contact/ContactEditor"
+@using ClubLogBook.Application.ViewModels
+@using W8lessLabs.Blazor.LocalFiles
+@inject HttpClient Http
+@inject IdentityAuthenticationStateProvider authStateProvider
+
+
+<AuthorizeView Roles="Administrators">
+    <Authorized>
+        @if (contacts == null)
+        {
+            <p><em>Loading...</em></p>
+        }
+        else
+        {
+
+
+            <div class="container-fluid" >
+                <div class="row">
+                    <div class="col-12 col-md-12 col-lg-12 col-xl-5 scroll w-50 float-left">
+                        <div class="overflow-auto">
+                            <table class="table border">
+
+                                <thead>
+                                    <tr>
+                                        <th>Id Number</th>
+                                        <th>Full Name</th>
+                                        <th>Date Of Birth</th>
+                                        <th></th>
+                                        <th><button class="btn btn-warning" @onclick="AddContact">Add</button></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var pilot in contacts)
+                                    {
+                                        <tr>
+                                            <td>@pilot.IdNumber</td>
+                                            <td>@pilot.GetFullName()</td>
+                                            <td>@pilot.DateOfBirth.ToShortDateString() </td>
+
+                                            <td>
+                                                @if (pilot.UserId.ToString() == CurrentUser.Id || IsCurrentAdmin)
+                                                {
+                                                    <button class="btn btn-info"
+                                                            @onclick="@(async () => await EditContact(pilot))">
+                                                        Edit
+                                                    </button>
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (IsCurrentAdmin)
+                                                {
+
+                                                    <button class="btn btn-danger"
+                                                            @onclick="@(async () => await DeleteContact(pilot))">
+                                                        Delete
+                                                    </button>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                    </div>
+                    <div class="col-12  col-lg-12 col-xl-7 scroll w-50 float-right">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+                        @if (currentContact != null)
+                        {
+                            <table class="table border">
+                                <thead>
+                                    <tr>
+                                        <th><button type="submit"  class="btn btn-danger" @onclick="@(async () => await OnSaveContact(currentContact))">Update</button></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="accordion" id="accordionMemberInfo">
+                                                <div class="card">
+                                                    <div class="card-header" id="headingOne">
+                                                        <h2 class="mb-0">
+                                                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                                Member Info
+                                                            </button>
+                                                        </h2>
+                                                    </div>
+
+                                                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionMemberInfo">
+                                                        <div class="card-body">
+
+                                                            <label>UserId: @currentContact.UserId</label>
+                                                            <div class="row">
+                                                                <div class="col">
+                                                                    <p>First Name: (@currentContact.GetFullName()) </p>
+                                                                </div>
+                                                                <div class="col">
+                                                                    <input type="text" @bind="@currentContact.FirstName" required />
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="row">
+                                                                <div class="col"><p>Last Name: (@currentContact.FullName) </p></div>
+                                                                <div class="col"><input type="text" @bind="@currentContact.LastName" /></div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col"><p>Middle Name: (@currentContact.FullName) </p></div>
+                                                                <div class="col"><input type="text" @bind-value="@currentContact.MiddleName" /></div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col"><p>Date Of Birth:</p></div>
+                                                                <div class="col"><input type="date" @bind="@currentContact.DateOfBirth" @bind:format="yyyy-MM-dd" /></div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col"><p>Gender:</p></div>
+                                                                <div class="col">
+                                                                    <p>
+                                                                        Gender:  <select asp-for="Gender" @bind="@currentContact.Gender">
+                                                                            <option value="">Select Gender ...</option>
+                                                                            <option value="Male" selected>Male</option>
+                                                                            <option value="Female">Female</option>
+                                                                        </select>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col"><p>Height:</p></div>
+                                                                <div class="col"><input type="number" @bind="@currentContact.Height" /></div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col"><p>Weight:</p></div>
+                                                                <div class="col"><input type="number" @bind="@currentContact.Weight" /></div>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card">
+                                                    <div class="card-header" id="headingTwo">
+                                                        <h2 class="mb-0">
+                                                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                                Address List
+                                                            </button>
+                                                        </h2>
+                                                    </div>
+                                                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionMemberInfo">
+                                                        <div class="card-body">
+                                                            <p>
+                                                                <button class="btn btn-outline-warning" @onclick="@OnAddAddress">Add</button>
+                                                            </p>
+                                                            
+                                                            <div class="card-deck">
+                                                                @foreach (var obj in currentContact.Addresses)
+                                                                {
+
+                                                                    <div class="card">
+
+                                                                        <div class="card-body">
+                                                                            <h5 class="card-title">@obj.Type.ToString()</h5>
+                                                                            <p class="card-text">
+                                                                                @obj.GetFormated()
+                                                                            </p>
+                                                                        </div>
+                                                                        <div class="card-footer">
+                                                                            <button class="btn btn-info" @onclick="@(async () => await OnEditAddress(obj))">Edit</button>
+                                                                            <button class="btn btn-danger" @onclick="@(async () => await OnDeleteAddress(obj))">Delete</button>
+                                                                        </div>
+                                                                    </div>
+                                                                }
+
+
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card">
+                                                    <div class="card-header" id="headingThree">
+                                                        <h2 class="mb-0">
+                                                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                                                Phone List
+                                                            </button>
+                                                        </h2>
+                                                    </div>
+                                                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionMemberInfo">
+                                                        <div class="card-body">
+                                                            <p>
+                                                                <button class="btn btn-outline-warning" @onclick="@OnAddPhone">Add</button>
+                                                            </p>
+                                                            
+                                                            <div class="card-deck">
+                                                                @foreach (var obj in currentContact.Phones)
+                                                                {
+
+                                                                    <div class="card">
+
+                                                                        <div class="card-body">
+                                                                            <h5 class="card-title">@obj.Type.ToString()</h5>
+                                                                            <p class="card-text">
+                                                                                @obj.GetFormated()
+                                                                            </p>
+                                                                        </div>
+                                                                        <div class="card-footer">
+                                                                            <button class="btn btn-info" @onclick="@(async () => await OnEditPhone(obj))">Edit</button>
+                                                                            <button class="btn btn-danger" @onclick="@(async () => await OnDeletePhone(obj))">Delete</button>
+                                                                        </div>
+                                                                    </div>
+                                                                }
+
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card">
+                                                    <div class="card-header" id="headingFour">
+                                                        <h2 class="mb-0">
+                                                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapsefour">
+                                                                Emails List
+                                                            </button>
+                                                        </h2>
+                                                    </div>
+                                                    <div id="collapseFour" class="collapse" aria-labelledby="headingThree" data-parent="#accordionMemberInfo">
+                                                        <div class="card-body">
+                                                            <p>
+                                                                <button class="btn btn-outline-warning" @onclick="OnAddEmail">Add</button>
+                                                            </p>
+                                                            
+                                                            <div class="card-deck">
+                                                                @foreach (var obj in currentContact.Emails)
+                                                                {
+                                                                    <div class="card">
+                                                                        <div class="card-body">
+                                                                            <h5 class="card-title">@obj.Type.ToString()</h5>
+                                                                            <p class="card-text">
+                                                                                @obj.GetFormated()
+                                                                            </p>
+                                                                            <div class="card-footer">
+                                                                                <button class="btn btn-info" @onclick="@(async () => await OnEditEmail(obj))">Edit</button>
+                                                                                <button class="btn btn-danger" @onclick="@(async () => await OnDeleteEmail(obj))">Delete</button>
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                           
+
+                            <FileSelect @ref="fileSelect"></FileSelect>
+                            <button @onclick="@SelectFiles">Select Files</button>
+                            @if (imageFileUrl != null)
+                            {
+                                <div>
+                                    <div style="margin: 10px;">
+                                        <img src="@imageFileUrl" style="width: 400px;" />
+                                    </div>
+                                    <div>
+                                        <h5>Load the image data into .NET @imageFileUrl</h5>
+
+                                    </div>
+
+                                </div>
+                            }
+
+                            <span>Name:@currentContact.FullName @CurrentUser.Id @currentContact.Gender.ToString() @CurrentUser.UserName</span>
+                        }
+                        else
+                        {
+                            <span>Current User Undefine</span>
+                        }
+
+
+
+
+
+
+                    </div>
+
+                </div>
+            </div>
+
+
+
+        }
+        @if (ShowPhoneEdit)
+        {
+            <p>"ShowPhoneEdit Selected "</p>
+            <div class="modal" tabindex="-1" style="display:block" role="dialog">
+                <div class="modal-dialog  modal-dialog-centered">
+
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title">Edit Phone</h3>
+                            <!-- Button to close the popup -->
+                            <button type="button" class="close"
+                                    @onclick="@ClosePopup">
+                                <span aria-hidden="true">X</span>
+                            </button>
+                        </div>
+                        <!-- Edit form for the current forecast -->
+                        <div class="modal-body">
+
+                            <EditForm Model="@phoneViewModel" OnValidSubmit="@SavePhone" OnInvalidSubmit="@Refresh" Context="PhoneEditorContext">
+                                <PhoneEditor obj="phoneViewModel"></PhoneEditor>
+                                <DataAnnotationsValidator />
+                                <ValidationSummary />
+                            </EditForm>
+
+                            @if (phoneViewModel.Id == 0)
+                            {
+                                <!-- Button to save the forecast -->
+                                <button class="btn btn-primary"
+                                        @onclick="@SaveNewPhone">
+                                    Create
+                                </button>
+                            }
+                            else
+                            {
+                                <!-- Button to save the forecast -->
+                                <button type="submit" class="btn btn-primary"
+                                        @onclick="SavePhone">
+                                    Save
+                                </button>
+                            }
+
+                            <!-- Only show delete button if not a new record -->
+                            @if (phoneViewModel.Id > 0)
+                            {
+                                <!-- Button to delete the forecast -->
+                                <button type="submit" class="btn btn-primary"
+                                        @onclick="@(async () => await OnDeletePhone(phoneViewModel))">
+                                    Delete
+                                </button>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        }
+        @if (ShowEmailEdit)
+        {
+            <p>"ShowMailEdit Selected "</p>
+            <div class="modal" tabindex="-1" style="display:block" role="dialog">
+                <div class="modal-dialog  modal-dialog-centered">
+
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title">Edit Email</h3>
+                            <!-- Button to close the popup -->
+                            <button type="button" class="close"
+                                    @onclick="@ClosePopup">
+                                <span aria-hidden="true">X</span>
+                            </button>
+                        </div>
+                        <!-- Edit form for the current forecast -->
+                        <div class="modal-body">
+
+                            <EditForm Model="@eMAILVieModel"  OnInvalidSubmit="@Refresh" Context="MailEditorContext">
+                                <EmailEditor obj="eMAILVieModel"></EmailEditor>
+                                <DataAnnotationsValidator />
+                                <ValidationSummary />
+                            </EditForm>
+
+                            @if (eMAILVieModel.Id == 0)
+                            {
+                                <!-- Button to save the forecast -->
+                                <button class="btn btn-primary"
+                                        @onclick="@SaveNewEmail">
+                                    Create
+                                </button>
+                            }
+                            else
+                            {
+                                <!-- Button to save the forecast -->
+                                <button type="submit" class="btn btn-primary"
+                                        @onclick="SaveEmail">
+                                    Save
+                                </button>
+                            }
+
+                            <!-- Only show delete button if not a new record -->
+                            @if (eMAILVieModel.Id > 0)
+                            {
+                                <!-- Button to delete the forecast -->
+                                <button type="submit" class="btn btn-primary"
+                                        @onclick="@(async () => await OnDeleteEmail(eMAILVieModel))">
+                                    Delete
+                                </button>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        }
+        @if (ShowAdddressEdit)
+        {
+            <p>"Editor Show Selected "</p>
+            <div class="modal" tabindex="-1" style="display:block" role="dialog">
+                <div class="modal-dialog  modal-dialog-centered">
+
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title">Edit Address</h3>
+                            <!-- Button to close the popup -->
+                            <button type="button" class="close"
+                                    @onclick="@ClosePopup">
+                                <span aria-hidden="true">X</span>
+                            </button>
+                        </div>
+                        <!-- Edit form for the current forecast -->
+                        <div class="modal-body">
+
+                            <EditForm Model="@addressViewModel" OnValidSubmit="@SaveAddress" OnInvalidSubmit="@Refresh" Context="AddressEditorContext">
+                                <AddressEditor AddressViewModel="addressViewModel" />
+                                <DataAnnotationsValidator />
+                                <ValidationSummary />
+                            </EditForm>
+
+                            @if (addressViewModel.Id == 0)
+                            {
+                                <!-- Button to save the forecast -->
+                                <button class="btn btn-primary"
+                                        @onclick="@SaveNewAddress">
+                                    Create
+                                </button>
+                            }
+                            else
+                            {
+                                <!-- Button to save the forecast -->
+                                <button type="submit" class="btn btn-primary"
+                                        @onclick="SaveAddress">
+                                    Save
+                                </button>
+                            }
+
+                            <!-- Only show delete button if not a new record -->
+                            @if (addressViewModel.Id > 0)
+                            {
+                                <!-- Button to delete the forecast -->
+                                <button type="submit" class="btn btn-primary"
+                                        @onclick="@(async () => await OnDeleteAddress(addressViewModel))">
+                                    Delete
+                                </button>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        }
+        else if (addressViewModel == null)
+        {
+            <p>"Editor Not Show Null Obj"</p>
+        }
+        else
+        {
+            <p>"Editor Not Show"</p>
+        }
+
+    </Authorized>
+    <NotAuthorized>
+        <h1>Club Contacts Editor</h1>
+        <p>You're not Authorized , Please Loging as one of this User Type :Administrators</p>
+        <!--Accordion wrapper-->
+        <!--/.Accordion wrapper-->
+    </NotAuthorized>
+</AuthorizeView>
+
+
+@functions {
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
+    List<ClubContactsViewModel> contacts { get; set; }
+    AdminUserInfo CurrentUser { get; set; }
+    bool IsCurrentAdmin { get; set; } = false;
+    ClubContactsViewModel currentContact = new ClubContactsViewModel();
+    string selectedFile { get; set; }
+    string AfterselectFile { get; set; } = "not Select";
+    string imageFileUrl = string.Empty;
+    public AddressViewModel addressViewModel { get; set; }
+    bool ShowAdddressEdit { get; set; } = false;
+    public PhoneViewModel phoneViewModel { get; set; }
+    bool ShowPhoneEdit { get; set; } = false;
+    public EMAILVieModel eMAILVieModel { get; set; }
+    public bool ShowEmailEdit { get; set; } = false;
+    protected override async Task OnInitializedAsync()
+    {
+        contacts = await Http.GetJsonAsync<List<ClubContactsViewModel>>("api/ClubContacts/Members");
+        var authState = await authenticationStateTask;
+        var user = authState.User;
+        CurrentUser = await authStateProvider.CurrentUser();
+        IsCurrentAdmin = user.IsInRole(IdentityInfo.Roles.Administrators.ToString());
+        currentContact = contacts.FirstOrDefault();
+        addressViewModel = currentContact.Addresses.FirstOrDefault();
+
+    }
+    async Task OnSaveContact(ClubContactsViewModel obj)
+    {
+        await Http.SendJsonAsync(HttpMethod.Put, "api/ClubContacts/Update", obj);
+    }
+    void ClosePopup()
+    {
+
+        ShowAdddressEdit = false;
+        ShowEmailEdit = false;
+        ShowPhoneEdit = false;
+    }
+    async Task OnEditAddress(AddressViewModel obj)
+    {
+        addressViewModel = obj;
+        ShowAdddressEdit = true;
+    }
+    async Task OnEditPhone(PhoneViewModel obj)
+    {
+        phoneViewModel = obj;
+        ShowPhoneEdit = true;
+    }
+    async Task OnEditEmail(EMAILVieModel obj)
+    {
+        eMAILVieModel = obj;
+        ShowEmailEdit = true;
+    }
+    void OnAddAddress()
+    {
+        addressViewModel = new AddressViewModel();
+        ShowAdddressEdit = true;
+    }
+    void OnAddPhone()
+    {
+        phoneViewModel = new PhoneViewModel();
+        ShowPhoneEdit = true;
+    }
+    void OnAddEmail()
+    {
+        eMAILVieModel = new EMAILVieModel();
+        ShowEmailEdit = true;
+    }
+    void SaveAddress()
+    {
+        var a = currentContact.Addresses.Where(x => x.Id == addressViewModel.Id).FirstOrDefault();
+        a =addressViewModel;
+        ClosePopup();
+    }
+    void SaveNewAddress()
+    {
+        currentContact.Addresses.Add(addressViewModel);
+        ClosePopup();
+    }
+    void SavePhone()
+    {
+        var a = currentContact.Phones.Where(x => x.Id == phoneViewModel.Id).FirstOrDefault();
+        a =phoneViewModel;
+        ClosePopup();
+    }
+    void SaveNewPhone()
+    {
+        currentContact.Phones.Add(phoneViewModel);
+        ClosePopup();
+    }
+    void SaveEmail()
+    {
+        var a = currentContact.Emails.Where(x => x.Id == eMAILVieModel.Id).FirstOrDefault();
+        a =eMAILVieModel;
+        ClosePopup();
+    }
+    void SaveNewEmail()
+    {
+        currentContact.Emails.Add(eMAILVieModel);
+        ClosePopup();
+    }
+    async Task OnDeleteAddress(AddressViewModel address)
+    {
+        currentContact.Addresses.Remove(address);
+        ClosePopup();
+    }
+    async Task OnDeletePhone(PhoneViewModel obj)
+    {
+        currentContact.Phones.Remove(obj);
+        ClosePopup();
+    }
+    async Task OnDeleteEmail(EMAILVieModel obj)
+    {
+        currentContact.Emails.Remove(obj);
+        ClosePopup();
+    }
+
+    void Refresh()
+    {
+
+    }
+    void OnSelectFile()
+    {
+        AfterselectFile = selectedFile;
+        selectedFile = selectedFile + "Selected";
+    }
+    void OnNameChanged()
+    {
+        currentContact.FullName = $"{currentContact.FirstName} {currentContact.LastName} {currentContact.MiddleName}";
+    }
+    async Task EditContact(ClubContactsViewModel clubContactsViewModel)
+    {
+        // Set the selected forecast
+        // as the current forecast
+        currentContact = clubContactsViewModel;
+
+        // Open the Popup
+        //ShowPopup = true;
+    }
+    async Task DeleteContact(ClubContactsViewModel clubContactsViewModel)
+    {
+        // Set the selected forecast
+        // as the current forecast
+        //currentContact = clubContactsViewModel;
+        await Http.SendJsonAsync(HttpMethod.Put, "api/ClubContacts/DeleteMember", clubContactsViewModel.Id);
+        contacts.Remove(clubContactsViewModel);
+        // Open the Popup
+        //ShowPopup = true;
+    }
+    async Task AddContact()
+    {
+
+        currentContact = new ClubContactsViewModel();
+        contacts.Add(currentContact);
+
+    }
+    FileSelect fileSelect;
+
+    // Trigger the browser's file picker and then handle the callback
+    void SelectFiles()
+    {
+        // Call SelectFiles with a (optional) callback. You can also wire up to a fileSelect.OnFilesSelected event
+        fileSelect.SelectFiles(async (selectedFiles) =>
+        {
+            SelectedFile file = selectedFiles.First();
+            // file has Name, Size, LastModified
+
+            // Read the file's contents
+            using (var fileReader = fileSelect.GetFileReader(file))
+            {
+                byte[] fileContent = await fileReader.GetFileBytesAsync();
+                // Alternatively - get a stream
+                //Stream fileStream = await fileReader.GetFileStreamAsync();
+
+                // You can also get the blob URL created in the Browser
+                imageFileUrl = await fileReader.GetFileBlobUrlAsync();
+            } // When fileReader is Disposed, all of the file blob Urls are also revoked (so use them first!)
+            StateHasChanged();
+        });
+    }
+}
+

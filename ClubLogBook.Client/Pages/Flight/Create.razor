@@ -1,0 +1,119 @@
+@page "/Flight/Create"
+@using ClubLogBook.Application.ViewModels
+@using Microsoft.AspNetCore.Components
+@inject NavigationManager navigationManager
+
+@inject HttpClient Http
+@inject IdentityAuthenticationStateProvider authStateProvider
+<h1>Create new Flight</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <form>
+            <div>
+                <label>Aircraft:</label>
+                @if (AirplaneSelectViewModel == null)
+                {
+                    <select class="custom-select" disabled>
+                        <option>(loading...)</option>
+                    </select>
+                }
+                else
+                {
+                    <select class="custom-select" @onchange="AircraftSelected">
+                        <option value="-1" disabled selected>(select)</option>
+                        @for (var i = 0; i < AirplaneSelectViewModel.Length; i++)
+                        {
+                            <option value="@AirplaneSelectViewModel[i].Id">@AirplaneSelectViewModel[i].TailNumber - (@(pilots[i].Id))</option>
+                        }
+                    </select>
+                }
+            </div>
+            <div>
+                <label>Pilot:</label>
+                @if (pilots == null)
+                {
+                    <select class="custom-select" disabled>
+                        <option>(loading...)</option>
+                    </select>
+                }
+                else
+                {
+            <select class="custom-select" onchange="PilotSelected">
+                <option value="-1" disabled selected>(select)</option>
+                @for (var i = 0; i < pilots.Length; i++)
+                {
+                    if (IsCurrentAdmin || CurrentUser.Id == pilots[i].UserId.ToString())
+                    {
+                        <option value="@pilots[i].Id">@pilots[i].FullName - (@(pilots[i].IdNumber))</option>
+                    }
+
+                }
+            </select>
+                }
+            </div>
+            <Flight FlightToView=emp />
+
+
+            <div class="form-group"
+
+                 <input type="button" value="Create"  class="btn" @onclick="(async () => await CreateFlight())" />
+                 <input type="submit" value="Cancel" @onclick="cancle" class="btn" />
+
+            </div>
+        </form>
+    </div>
+</div>
+
+@code {
+    [CascadingParameter] private Task<AuthenticationState> authenticationStateTask { get; set; }
+    [Parameter] public string flightId { get; set; }
+    ClubFlightViewModel emp = new ClubFlightViewModel();
+    AirplaneSelectViewModel[] AirplaneSelectViewModel;
+    string natTo = "/Flight/ClubFlight";
+    public DateTime demi = DateTime.Now;
+    ClubContactsViewModel[] pilots;
+    int selectedPilot = -1;
+    int aircraftSelect = -1;
+    bool IsCurrentAdmin { get; set; } = false;
+    AdminUserInfo CurrentUser { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        pilots = await Http.GetJsonAsync<ClubContactsViewModel[]>("api/ClubContacts/Pilots");
+        AirplaneSelectViewModel = await Http.GetJsonAsync<AirplaneSelectViewModel[]>("api/ClubFlight/Aircraft");
+        var authState = await authenticationStateTask;
+        var user = authState.User;
+        CurrentUser = await authStateProvider.CurrentUser();
+        IsCurrentAdmin = user.IsInRole(IdentityInfo.Roles.Administrators.ToString());
+
+    }
+    protected async Task CreateFlight()
+    {
+        emp.Pilot.Id = selectedPilot;
+        emp.Aircraft.Id = aircraftSelect;
+        await Http.SendJsonAsync(HttpMethod.Put, "api/ClubFlight", emp);
+        navigationManager.NavigateTo(natTo);
+
+    }
+    void PilotSelected(ChangeEventArgs e)
+    {
+        if (int.TryParse((string)e.Value, out var index) && index >= 0)
+        {
+            //emp.Pilot = pilots[index];
+            selectedPilot = index;
+        }
+    }
+    void AircraftSelected(ChangeEventArgs e)
+    {
+        if (int.TryParse((string)e.Value, out var index) && index >= 0)
+        {
+            //emp.Pilot = pilots[index];
+            aircraftSelect = index;
+        }
+    }
+    protected void cancle()
+    {
+        navigationManager.NavigateTo(natTo);
+    }
+}
+

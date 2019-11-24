@@ -1,0 +1,432 @@
+﻿@page "/administration"
+@inject NavigationManager navigationManager
+@inject IdentityAuthenticationStateProvider authStateProvider
+@using ClubLogBook.Application.ViewModels
+@using ClubLogBook.Shared
+<h3>Administration</h3>
+<AuthorizeView Roles="Administrators,AccountManage">
+    <Authorized>
+        @if (true)
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>User Name</th>
+                        <th>Email</th>
+                        <th>Roles</th>
+                        <th>Member Id</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in ColUsers)
+                    {
+                        <tr>
+                            <td>@user.Id.Substring(0, 5) ...</td>
+                            <td>@user.UserName</td>
+                            <td>@user.Email</td>
+                            @*<td>@user.GetformatedRoles()</td>*@
+                            <td>@foreach (var i in user.Roles) { <ul>@i</ul>}</td>
+                            <td>@user.MemberDescription</td>
+                            <td>
+                                <!-- Edit the current forecast -->
+                                @if (IsCurrentAdmin)
+                                {
+                                    <button class="btn btn-primary"
+                                            @onclick="(() => EditUser(user))">
+                                        Edit
+                                    </button>
+                                }
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @if (ShowPopup)
+            {
+                <!-- This is the popup to create or edit a user -->
+                <div class="modal" tabindex="-1" style="display:block" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="modal-title">Edit User</h3>
+                                <!-- Button to close the popup -->
+                                <button type="button" class="close"
+                                        @onclick="ClosePopup">
+                                    <span aria-hidden="true">X</span>
+                                </button>
+                            </div>
+                            <!-- Edit form for the current forecast -->
+                            <div class="modal-body">
+                                <!-- Only show Id if not a new user -->
+                                @if (objUser.Id != "")
+                                {
+                                    <p>@objUser.Id</p>
+                                }
+                                <!-- Only allow edit if a new user -->
+                                @if (objUser.Id != "")
+                                {
+                                    <p>@objUser.UserName</p>
+                                }
+                                else
+                                {
+                                    <div>
+                                        <label>User:</label>
+                                        <input class="form-control" type="text"
+                                               placeholder="UserName"
+                                               @bind="objUser.UserName" />
+                                    </div>
+                                    
+                                }
+                            <div>
+                                <label>Email:</label>
+                                <input class="form-control" type="text"
+                                       placeholder="Email"
+                                       @bind="objUser.Email" />
+                            </div>
+                            <div>
+                                <label>Password:</label>
+                                <input class="form-control" type="password"
+                                       placeholder="Password"
+                                       @bind="objUser.Password" />
+                            </div>   
+                            <div>
+                                <label>Roles:</label>
+                                <select class="form-control"  @onchange="RoleSelect">
+                                    <option value="null" disabled selected>(Select Role)</option>
+                                    @foreach (var option in RolesOptions)
+                                    {
+                                        <option value="@option">
+                                            @option
+                                        </option>
+                                    }
+                                </select>
+                            </div>
+                                <div class="container">
+                                    @foreach(var role in objUser.Roles)
+                                    {
+                                        <div class="container">
+                                           
+                                            <button type="button" class="oi-delete" @onclick="(() => RemoveRole(role))">@role.ToString() x</button>
+                                        </div>
+                                    }
+                                </div>
+                            <div>
+                                <lable>Belong to Pilot:</lable>
+                                <select class="custom-select" @onchange="PilotSelected">
+                                    <option value="null">(Select Pilot)</option>
+
+                                    @foreach (var i in pilotSelectViewModels)
+                                    {
+                                        if (i.UserId == Guid.Empty)
+                                        {
+                                            <option value="@i.Id">@i.FullName - (@(i.IdNumber))</option>
+                                        }
+
+                                    }
+                                </select>
+                            </div>    
+                               
+                                <br /><br />
+                                <!-- Button to save the user -->
+                                <button class="btn btn-primary"
+                                        @onclick="SaveUser">
+                                    Save
+                                </button>
+                                <!-- Only show delete button if not a new record -->
+                                @if (objUser.Id != "")
+                                {
+                                    <!-- Button to delete the forecast -->
+                                    <button class="btn btn-danger"
+                                            @onclick="DeleteUser">
+                                        Delete
+                                    </button>
+                                }
+                                <br />
+
+                                <br />
+                                <span style="color:red">@strError</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            @if (IsCurrentAdmin)
+            {<button class="btn btn-success" @onclick="AddNewUser">Add User</button>}
+        }
+        else
+        {
+            <p>You're not signed in as a user in Adminisistrator</p>
+        }
+    </Authorized>
+    <NotAuthorized>
+        <p>You're not Authorized , Please Loging as one of this User Type :Administrators,AccountManage</p>
+    </NotAuthorized>
+</AuthorizeView>
+@code {
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
+
+    List<PilotSelectViewModel> pilotSelectViewModels = new List<PilotSelectViewModel>();
+    AdminUserInfo CurrentUser;
+    PilotSelectViewModel selectedPilot = new PilotSelectViewModel();
+    // Property used to add or edit the currently selected user
+    AdminUserInfo objUser = new AdminUserInfo();
+
+    // Tracks the selected role for the currently selected user
+    string CurrentUserRole { get; set; } = "Users";
+    bool IsCurrentAdmin { get; set; } = true;
+
+    // Collection to display the existing users
+    List<AdminUserInfo> ColUsers = new List<AdminUserInfo>();
+
+    // Options to display in the roles dropdown when editing a user
+    List<string> RolesOptions;//= new List<string>() { "Users", "Administrators" };
+
+    // To hold any possible errors
+    string strError = "";
+
+    // To enable showing the Popup
+    bool ShowPopup = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await authenticationStateTask;
+        var user = authState.User;
+        IsCurrentAdmin = user.IsInRole(IdentityInfo.Roles.Administrators.ToString());
+        RolesOptions = await authStateProvider.GetRoles();
+
+
+        // Get the current logged in user
+        CurrentUser = await authStateProvider.CurrentUser();
+        pilotSelectViewModels = await authStateProvider.GetPilots();
+        // Get the users
+        await GetUsers();
+    }
+    void RoleSelect(ChangeEventArgs e)
+    {
+        AddRole((string)e.Value);
+    }
+    void AddRole(string role)
+    {
+        if(objUser.Roles.Find(r => r == role) == null)
+        {
+            objUser.Roles.Add(role);
+        }
+    }
+    void RemoveRole(string role)
+    {
+        objUser.Roles.RemoveAll(r => r.ToString() == role);
+    }
+    void PilotSelected(ChangeEventArgs e)
+    {
+
+        if (int.TryParse((string)e.Value, out var index) && index >= 0)
+        {
+            objUser.PilotId =   pilotSelectViewModels.Where(i => i.Id == index).FirstOrDefault().Id;
+        }
+
+
+    }
+    public async  Task GetUsers()
+    {
+        // clear any error messages
+        strError = "";
+
+        // Collection to hold users
+        ColUsers = new List<AdminUserInfo>();
+
+        // get users from _UserManager
+        ColUsers =  await authStateProvider.GetUsers();
+
+    }
+
+    async Task AddNewUser()
+    {
+        // Make new user
+        objUser = new AdminUserInfo();
+        //objUser.PasswordHash = "*****";
+        pilotSelectViewModels = await authStateProvider.GetPilots();
+        // Set Id to blank so we know it is a new record
+        objUser.Id = "";
+        //ColUsers.Add(objUser);
+        // Open the Popup
+        ShowPopup = true;
+    }
+
+    async Task SaveUser()
+    {
+        try
+        {
+            // Is this an existing user?
+            if (objUser.Id != "")
+            {
+                // Get the user
+                // var user = await _UserManager.FindByIdAsync(objUser.Id);
+
+                // Update Email
+                //user.Email = objUser.Email;
+
+                // Update the user
+                //await _UserManager.UpdateAsync(user);
+                await authStateProvider.EditUser(objUser);
+
+                // Only update password if the current value
+                // is not the default value
+                //if (objUser.PasswordHash != "*****")
+                //{
+                //    var resetToken =
+                //        await _UserManager.GeneratePasswordResetTokenAsync(user);
+
+                //    var passworduser =
+                //        await _UserManager.ResetPasswordAsync(
+                //            user,
+                //            resetToken,
+                //            objUser.PasswordHash);
+
+                //    if (!passworduser.Succeeded)
+                //    {
+                //        if (passworduser.Errors.FirstOrDefault() != null)
+                //        {
+                //            strError =
+                //                passworduser
+                //                .Errors
+                //                .FirstOrDefault()
+                //                .Description;
+                //        }
+                //        else
+                //        {
+                //            strError = "Pasword error";
+                //        }
+
+                //        // Keep the popup opened
+                //        return;
+                //    }
+                //}
+
+                // Handle Roles
+
+                // Is user in administrator role?
+                //var UserResult =
+                //    await _UserManager
+                //    .IsInRoleAsync(user, ADMINISTRATION_ROLE);
+
+                //// Is Administrator role selected
+                //// but user is not an Administrator?
+                //if (
+                //    (CurrentUserRole == ADMINISTRATION_ROLE)
+                //    &
+                //    (!UserResult))
+                //{
+                //    // Put admin in Administrator role
+                //    await _UserManager
+                //        .AddToRoleAsync(user, ADMINISTRATION_ROLE);
+                //}
+                //else
+                //{
+                //    // Is Administrator role not selected
+                //    // but user is an Administrator?
+                //    if ((CurrentUserRole != ADMINISTRATION_ROLE)
+                //        &
+                //        (UserResult))
+                //    {
+                //        // Remove user from Administrator role
+                //        await _UserManager
+                //            .RemoveFromRoleAsync(user, ADMINISTRATION_ROLE);
+                //    }
+                //}
+            }
+            else
+            {
+                // Insert new user
+
+                //var NewUser =
+                //    new IdentityUser
+                //    {
+                //        UserName = objUser.UserName,
+                //        Email = objUser.Email
+                //    };
+
+                //var CreateResult =
+                //    await _UserManager
+                //    .CreateAsync(NewUser, objUser.PasswordHash);
+
+                //if (!CreateResult.Succeeded)
+                //{
+                //    if (CreateResult
+                //        .Errors
+                //        .FirstOrDefault() != null)
+                //    {
+                //        strError =
+                //            CreateResult
+                //            .Errors
+                //            .FirstOrDefault()
+                //            .Description;
+                //    }
+                //    else
+                //    {
+                //        strError = "Create error";
+                //    }
+
+                //    // Keep the popup opened
+                //    return;
+                //}
+                //else
+                //{
+                //    // Handle Roles
+                //    if (CurrentUserRole == ADMINISTRATION_ROLE)
+                //    {
+                //        // Put admin in Administrator role
+                //        await _UserManager
+                //            .AddToRoleAsync(NewUser, ADMINISTRATION_ROLE);
+                //    }
+                //}
+                await authStateProvider.AddNewUser(objUser);
+            }
+
+            // Close the Popup
+            ShowPopup = false;
+
+            // Refresh Users
+            await GetUsers();
+        }
+        catch (Exception ex)
+        {
+            strError = ex.GetBaseException().Message;
+        }
+    }
+
+    async Task EditUser(AdminUserInfo _IdentityUser)
+    {
+        // Set the selected user
+        // as the current user
+        objUser = _IdentityUser;
+
+        // Get the user
+        //await authStateProvider.EditUser(objUser);
+        pilotSelectViewModels = await authStateProvider.GetPilots();
+        pilotSelectViewModels.Select(i => i.IsEnable = true);
+
+        // Open the Popup
+        ShowPopup = true;
+    }
+
+    async Task DeleteUser()
+    {
+        // Close the Popup
+        ShowPopup = false;
+
+        // Get the user
+        await authStateProvider.DeleteUser(objUser);
+
+        // Refresh Users
+        await GetUsers();
+    }
+
+    void ClosePopup()
+    {
+        // Close the Popup
+        ShowPopup = false;
+    }
+}

@@ -1,0 +1,62 @@
+Each package is licensed to you by its owner. NuGet is not responsible for, nor does it grant any licenses to, third-party packages. Some packages may include dependencies which are governed by additional licenses. Follow the package source (feed) URL to determine any dependencies.
+
+Package Manager Console Host Version 5.2.0.6045
+dotnet tool install --global dotnet-ef --version 3.0.0-preview6.19304.10
+Type 'get-help NuGet' to see all available NuGet commands.
+
+PM> cd "C:\Users\Administrator\Documents\Visual Studio 2019\Projects\ClubLogBookBlazorClientPreview9\ClubLogBook.Infrastructure"
+
+PM> dotnet ef migrations add initial --context Clublogbookcontext --startup-project ..\clublogbook.server 
+PM> dotnet ef database update initial --context clublogbookcontext --startup-project ..\Clublogbook.server
+Done.
+PM>
+
+// For Identity
+dotnet ef database update initialIdentity --context ApplicationDbContext --startup-project ..\Clublogbook.server
+
+Tools
+dotnet tool uninstall --global dotnet-ef 
+dotnet tool install --global dotnet-ef --version 3.0.0-preview9.19423.6
+
+
+
+Need File appsettings.json:
+
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Integrated Security=true;Initial Catalog=Yossil_14;"
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft": "Warning",
+      "Microsoft.Hosting.Lifetime": "Information"
+    }
+  },
+  "AllowedHosts": "*"
+}
+
+
+
+Install-Package AutoMapper.Extensions.Microsoft.DependencyInjection
+
+
+
+
+Sample of midration
+-- create migration (from Web folder CLI)
+dotnet ef migrations add InitialModel --context catalogcontext -p ../Infrastructure/Infrastructure.csproj -s Web.csproj -o Data/Migrations
+
+dotnet ef migrations add InitialIdentityModel --context appidentitydbcontext -p ../Infrastructure/Infrastructure.csproj -s Web.csproj -o Identity/Migrations
+
+dotnet restore
+dotnet ef database update -c catalogcontext -p ../Infrastructure/Infrastructure.csproj -s Web.csproj
+dotnet ef database update -c appidentitydbcontext -p ../Infrastructure/Infrastructure.csproj -s Web.csproj
+
+dotnet tool install --global dotnet-ef --version 3.0.0
+
+https://www.nuget.org/packages/dotnet-ef/3.1.0-preview2.19525.5
+
+dotnet tool uninstall --global dotnet-ef
+
+dotnet tool install --global dotnet-ef --version 3.1.0-preview2.19525.5

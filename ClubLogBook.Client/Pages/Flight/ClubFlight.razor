@@ -1,0 +1,250 @@
+﻿@page "/Flight/ClubFlight"
+@using ClubLogBook.Application.ViewModels
+
+@inject HttpClient Http
+@inject IdentityAuthenticationStateProvider authStateProvider
+<h1>Club Flights</h1>
+<AuthorizeView Roles="Administrators,AccountManage,Members">
+    <Authorized>
+        @if (flights == null)
+        {
+            <p><em>Loading...</em></p>
+        }
+        else
+        {
+            <h2>Counts:@flights.Length</h2>
+            <h2>LastFlight:@flights.Max(i => i.Date) </h2>
+
+            @*<div class="form-control">
+                <div class="row">
+                    <form method="get">
+                        <label class="custom-control-label" data-title="pilot">
+                            <select asp-for="@FlightRecordIndexViewModel.PilotFilterApplied" asp-items="@FlightRecordIndexViewModel.PilotSelects"></select>
+                        </label>
+                        <label class="custom-control" data-title="airplane">
+                            <select asp-for="@FlightRecordIndexViewModel.AirplaneFilterApplied" asp-items="@FlightRecordIndexViewModel.AirplaneSelects" ></select>
+                        </label>
+                        <input  type="submit"  />
+                    </form>
+                </div>
+            </div>*@
+            @*<Pagination PaginationInfoViewModel="@FlightRecordIndexViewModel.PaginationInfo" OnPrevClick="@PrevClick"></Pagination>*@
+            <div>
+                <div class="container-fluid">
+                    <div class="text-center  row">
+
+                        <div class="col-md-2 col-xs-12">
+                            <button type="button" class="btn btn-primary  @FlightRecordIndexViewModel.PaginationInfo.Previous" @onclick="@(async () => await PrevClick(FlightRecordIndexViewModel.PaginationInfo.ActualPage -1))"
+                                    id="Previous"
+                                    asp-route-pageid="@(FlightRecordIndexViewModel.PaginationInfo.ActualPage - 1)"
+                                    aria-label="Previous">
+                                Previous
+                            </button>
+                        </div>
+
+                        <div class="col-md-8 col-xs-12">
+                            <span class="">
+                                Showing @FlightRecordIndexViewModel.PaginationInfo.ItemsPerPage of @FlightRecordIndexViewModel.PaginationInfo.TotalItems products - Page @(FlightRecordIndexViewModel.PaginationInfo.ActualPage + 1) - @FlightRecordIndexViewModel.PaginationInfo.TotalPages
+                            </span>
+                        </div>
+
+                        <div class="col-md-2 col-xs-12">
+                            <button type="button" class="btn btn-primary @FlightRecordIndexViewModel.PaginationInfo.Next " @onclick="@(async () => await NextClick())"
+                                    id="Next"
+                                    asp-route-pageid="@(FlightRecordIndexViewModel.PaginationInfo.ActualPage + 1)"
+                                    aria-label="Next">
+                                Next
+                            </button>
+                            @*aria-disabled="@FlightRecordIndexViewModel.PaginationInfo.Next"*@
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <form>
+                <div class="form-row">
+                    <div class="form-group col-md-3">
+                        <label for="SelectClub">Select Club</label>
+                        <select class="custom-select" @onchange="ClubSelected">
+                            <option value="null">(Select All)</option>
+
+                            @foreach (var i in @FlightRecordIndexViewModel.FilterViewModel.ClubSelects)
+                            {
+                                <option value="@i.Id">@i.ClubName - (@(i.Id))</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="ValidationFault1">Select Airplane</label>
+                        <select class="custom-select" @onchange="AirplaneSelected">
+                            <option value="null">(Select All)</option>
+
+                            @foreach (var i in @FlightRecordIndexViewModel.FilterViewModel.AirplaneSelects)
+                            {
+                                <option value="@i.Id">@i.TailNumber - (@(i.Id))</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="ValidationFault1">Select Pilot</label>
+                        <select class="custom-select" @onchange="PilotSelected">
+                            <option value="null">(Select All)</option>
+
+                            @foreach (var i in @FlightRecordIndexViewModel.FilterViewModel.PilotSelects)
+                            {
+                                <option value="@i.Id">@i.FullName - (@(i.IdNumber))</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            </form>
+            @*<select class="custom-select">
+                <option value="-1" disabled selected>(select)</option>
+
+                @foreach (var i in @FlightRecordIndexViewModel.AirplaneSelects)
+                {
+                    <option value="@i.Id">@i.TailNumber - (@(i.Id))</option>
+                }
+            </select>*@
+            <div>
+                <a href='/Flight/Create'>Create</a>
+            </div>
+            <div class="container-fluid row">
+                <table class="table table-bordered table-hover table-striped col-sm-12 col-md-12 col-xs-12">
+
+                    <thead>
+                        <tr>
+                            <th><button class="btn btn-light" @onclick="SortDate">Date Of Flight</button></th>
+                            <th><button class="btn btn-light" @onclick="SortName">Pilot Name</button></th>
+                            <th><button class="btn btn-light" @onclick="SortEngienStart">Engine Start</button></th>
+                            <th>Engine End</th>
+                            <th>Hobbs Start</th>
+                            <th>Hobbs End</th>
+                            <th>Routh</th>
+                            <th> <a href='/Flight/Create'>Create</a></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var flight in FlightRecordIndexViewModel.FlightRecords)
+                        {
+                            <tr>
+                                <td>@flight.Date</td>
+                                <td>@flight.Pilot.FirstName @flight.Pilot.LastName</td>
+                                <td>@flight.EngineStart</td>
+                                <td>@flight.EngineEnd</td>
+                                <td>@flight.HobbsStart</td>
+                                <td>@flight.HobbsEnd</td>
+                                <td>@flight.Routh</td>
+                                <td>
+                                @if (IsCurrentAdmin || CurrentUser.Id == flight.Pilot.UserId.ToString())
+                                {<a href='/Flight/Edit/@flight.Id'>Edit</a>}
+                                </td>
+                                <td>
+                                    @if (IsCurrentAdmin || CurrentUser.Id == flight.Pilot.UserId.ToString())
+                                    {<a href='/Flight/Delete/@flight.Id'>Delete</a>}
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        }
+
+    </Authorized>
+    <NotAuthorized>
+        <p>You're not Authorized , Please Loging as one of this User Type :Administrators,AccountManage,Members</p>
+    </NotAuthorized>
+</AuthorizeView>
+
+
+@functions {
+    [CascadingParameter] private Task<AuthenticationState> authenticationStateTask { get; set; }
+    ClubFlightViewModel[] flights;
+    FlightRecordIndexViewModel FlightRecordIndexViewModel { get; set; }
+    FilterViewModel FilterViewModel { get; set; } = new FilterViewModel();
+    bool IsCurrentAdmin { get; set; } = false;
+    AdminUserInfo CurrentUser { get; set; }
+    async Task SortDate()
+    {
+        FlightRecordIndexViewModel.FlightRecords = FlightRecordIndexViewModel.FlightRecords.OrderByDescending(x => x.Date).ThenByDescending(x => x.EngineStart).ToArray();
+    }
+    async Task SortName()
+    {
+        FlightRecordIndexViewModel.FlightRecords = FlightRecordIndexViewModel.FlightRecords.OrderByDescending(x => x.Pilot.FirstName).ThenByDescending(x => x.Pilot.LastName).ThenByDescending(x => x.Date).ToArray();
+    }
+    async Task SortEngienStart()
+    {
+        FlightRecordIndexViewModel.FlightRecords = FlightRecordIndexViewModel.FlightRecords.OrderByDescending(x => x.EngineStart).ThenByDescending(x => x.Date).ThenByDescending(x => x.Pilot.FirstName).ToArray();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        FlightRecordIndexViewModel = await Http.GetJsonAsync<FlightRecordIndexViewModel>("api/ClubFlight/FlightWithFilter");
+        flights = await Http.GetJsonAsync<ClubFlightViewModel[]>("api/ClubFlight");
+        FilterViewModel.ClubFilterApplied = null;
+        FilterViewModel.PilotFilterApplied = 15;
+        FilterViewModel = await Http.PostJsonAsync<FilterViewModel>("api/ClubFlight/FilterViewModelPut", FilterViewModel);
+         var authState = await authenticationStateTask;
+        var user = authState.User;
+        CurrentUser = await authStateProvider.CurrentUser();
+        IsCurrentAdmin = user.IsInRole(IdentityInfo.Roles.Administrators.ToString());
+
+    }
+    protected async Task PrevClick(int id)
+    {
+        if (FlightRecordIndexViewModel.PaginationInfo.Previous == "")
+        {
+            FlightRecordIndexViewModel.PaginationInfo.PageCommand = PageCommand.MovePrevious;
+            FlightRecordIndexViewModel = await Http.PutJsonAsync<FlightRecordIndexViewModel>("api/ClubFlight/Put", FlightRecordIndexViewModel);
+        }
+
+    }
+    protected async Task NextClick()
+    {
+        if (FlightRecordIndexViewModel.PaginationInfo.Next == "")
+        {
+            FlightRecordIndexViewModel.PaginationInfo.PageCommand = PageCommand.MoveNext;
+            FlightRecordIndexViewModel = await Http.PutJsonAsync<FlightRecordIndexViewModel>("api/ClubFlight/Put", FlightRecordIndexViewModel);
+        }
+
+    }
+    void PilotSelected(ChangeEventArgs e)
+    {
+        FlightRecordIndexViewModel.PaginationInfo.ActualPage = -1;
+        FlightRecordIndexViewModel.PaginationInfo.Next = "";
+        if (int.TryParse((string)e.Value, out var index) && index >= 0)
+        {
+            //emp.Pilot = pilots[index];
+            FlightRecordIndexViewModel.FilterViewModel.PilotFilterApplied = index;
+
+        }
+        else
+            FlightRecordIndexViewModel.FilterViewModel.PilotFilterApplied = null;
+
+    }
+    void ClubSelected(ChangeEventArgs e)
+    {
+        FlightRecordIndexViewModel.PaginationInfo.ActualPage = -1;
+        if (int.TryParse((string)e.Value, out var index) && index >= 0)
+        {
+            //emp.Pilot = pilots[index];
+            FlightRecordIndexViewModel.FilterViewModel.ClubFilterApplied = index;
+
+        }
+        else
+            FlightRecordIndexViewModel.FilterViewModel.ClubFilterApplied = null;
+    }
+    void AirplaneSelected(ChangeEventArgs e)
+    {
+        FlightRecordIndexViewModel.PaginationInfo.ActualPage = -1;
+        if (int.TryParse((string)e.Value, out var index) && index >= 0)
+        {
+            //emp.Pilot = pilots[index];
+            FlightRecordIndexViewModel.FilterViewModel.AirplaneFilterApplied = index;
+
+        }
+        else
+            FlightRecordIndexViewModel.FilterViewModel.AirplaneFilterApplied = null;
+    }
+}

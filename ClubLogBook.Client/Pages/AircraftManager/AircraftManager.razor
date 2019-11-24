@@ -1,0 +1,92 @@
+﻿@page "/AircraftManager/AircraftManager"
+@using ClubLogBook.Application.ViewModels
+@using ClubLogBook.Application.Accounts.Queries.GetAccountsList
+@inject HttpClient Http
+@inject IdentityAuthenticationStateProvider authStateProvider
+
+<h3>AircraftManager</h3>
+<div class="containerAccount">
+    <div class="head">
+        i am header
+
+    </div>
+    <div class="select-club">
+        <select></select>
+    </div>
+    <div class="select-airplane">
+        <select></select>
+    </div>
+    <div class="select-pilot">
+        <select></select>
+    </div>
+    <div class="select-date">
+        <select></select>
+    </div>
+    <div class="main-left">
+        @*<textarea class="main-left-inner" style="width:100%" placeholder="Enter your text here">
+
+            </textarea>*@
+        <table>
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Tail Number</th>
+                    <th>Last Flight</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if(@IsInizialize )
+                {
+                @foreach (AircraftViewModel i in aircraftViewModels)
+                {
+                    <tr>
+                        <td>@i.Id</td>
+                        <td>@i.TailNumber</td>
+                        <td>@i.AirCraftModel.LastFlight.ToString()</td>
+                    </tr>
+                }
+                }
+
+            </tbody>
+        </table>
+    </div>
+    <div class="main-right">
+        
+    </div>
+    <div class="foot">
+        <footer>
+            <h2>Last Command</h2>
+            <ul>
+                @foreach (var i in LastCommand)
+                {
+                    <li>@i</li>
+                }
+            </ul>
+        </footer>
+
+    </div>
+</div>
+
+
+
+
+@code {    
+    private List<AircraftViewModel> aircraftViewModels { get; set; }
+    AccountListViewModel accountListViewModels { get; set; }
+    List<string> LastCommand { get; set; } = new List<string>();
+    bool IsInizialize { get; set; } = false;
+    protected override async Task OnInitializedAsync()
+    {
+        LastCommand.Add($"OnInitializedAsync in ");
+        accountListViewModels = await Http.GetJsonAsync<AccountListViewModel>("api/Account/AccountsListQueryGet");
+        LastCommand.Add($"OnInitializedAsync accountListViewModels.Accounts = out");
+        LastCommand.Add($"OnInitializedAsync accountListViewModels.Accounts =  {accountListViewModels.Accounts.Count()}");
+        aircraftViewModels = await Http.GetJsonAsync<List<AircraftViewModel>>("api/Aircraft/AircraftGet");
+        LastCommand.Add($"OnInitializedAsync contact {aircraftViewModels.Count}");
+        List<ClubContactsViewModel> contacts = await Http.GetJsonAsync<List<ClubContactsViewModel>>("api/ClubContacts/Members");
+        LastCommand.Add($"OnInitializedAsync contact {contacts.Count}");
+        LastCommand.Add($"OnInitializedAsync out");
+         if(aircraftViewModels != null )
+            IsInizialize = true;
+    }
+}

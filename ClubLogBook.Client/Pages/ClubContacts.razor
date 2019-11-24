@@ -1,0 +1,92 @@
+﻿@page "/ClubContacts"
+@using ClubLogBook.Application.ViewModels
+
+@inject HttpClient Http
+@inject IdentityAuthenticationStateProvider authStateProvider
+<h1>Club Contacts</h1>
+			
+<AuthorizeView Roles="Administrators,AccountManage,Members">
+    <Authorized>
+        @if (contacts == null)
+        {
+            <p><em>Loading...</em></p>
+        }
+        else
+        {
+            <h2>Current User : @CurrentUser.UserName</h2>
+            <div>
+                @*<a href='/Create'>Create Contact</a>*@
+                @if (IsCurrentAdmin)
+                {
+                    <a href='/Add'>Add Contact To Baz Club</a>
+                }
+            </div>
+            <table class="table">
+
+                <thead>
+                    <tr>
+                        <th>Id Number</th>
+                        <th>Full Name</th>
+                        <th>Date Of Birth</th>
+                        <th>Gender</th>
+                        <th>Address</th>
+                        <th>Phone</th>
+                        <th>eMail</th>
+                        <th colspan="2"><button class="btn btn-warning"><a href='/Add'>Add Contact To Baz Club</a></button></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var pilot in contacts)
+                    {
+                        <tr>
+                            <td>@pilot.IdNumber</td>
+                            <td>@pilot.GetFullName()</td>
+                            <td>@pilot.DateOfBirth </td>
+                            <td>@pilot.Gender</td>
+                            <td>@pilot.Addresses.FirstOrDefault().GetFormated()</td>
+                            <td>@pilot.Phones?.FirstOrDefault().GetFormated()</td>
+                           
+                            <td>@pilot.Emails?.FirstOrDefault().GetFormated()</td>
+                            <td>
+                            @if(pilot.UserId.ToString() == CurrentUser.Id || IsCurrentAdmin)
+                            {
+                                <a class="btn btn-info" href='/Edit/@pilot.Id'>Edit</a>
+                            }
+                            </td>
+                            <td>
+                                @if (IsCurrentAdmin)
+                                {
+                                  
+                                    <a class="btn btn-danger" href='/Delete/@pilot.Id'>Remove From Club</a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+
+
+    </Authorized>
+    <NotAuthorized>
+        <p>You're not Authorized , Please Loging as one of this User Type :Administrators,AccountManage,Members</p>
+    </NotAuthorized>
+</AuthorizeView>
+
+
+@functions {
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
+    ClubContactsViewModel[] contacts;
+    AdminUserInfo CurrentUser { get; set; }
+    bool IsCurrentAdmin { get; set; } = false;
+    protected override async Task OnInitializedAsync()
+    {
+        contacts = await Http.GetJsonAsync<ClubContactsViewModel[]>("api/ClubContacts/Pilots");
+        var authState = await authenticationStateTask;
+         var user = authState.User;
+        CurrentUser = await authStateProvider.CurrentUser();
+        IsCurrentAdmin = user.IsInRole(IdentityInfo.Roles.Administrators.ToString());
+    }
+
+}

@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Services\**" />
+    <Compile Remove="Specifications\**" />
+    <EmbeddedResource Remove="Services\**" />
+    <EmbeddedResource Remove="Specifications\**" />
+    <None Remove="Services\**" />
+    <None Remove="Specifications\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Entities\ContactBooks.cs" />
+    <Compile Remove="Entities\PilotClub.cs" />
+    <Compile Remove="Interfaces\ContactEnum.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0-preview3.19551.4" />
+  </ItemGroup>
+
+</Project>

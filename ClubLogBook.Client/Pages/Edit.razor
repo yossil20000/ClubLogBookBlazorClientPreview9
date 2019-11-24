@@ -1,0 +1,68 @@
+﻿@page "/Edit/{contactId}"
+@using ClubLogBook.Application.ViewModels
+@using Microsoft.AspNetCore.Components
+@inject NavigationManager navigationManager
+
+@inject HttpClient Http
+<h1>Edit for @emp.FirstName  @contactId </h1>
+<h2>Name =: @emp.FirstName</h2>
+<div class="row">
+    <div class="col-md-4">
+        <form>
+            <div class="form-group">
+                <label for="IdNumber" class="control-label">Id Number</label>
+                <input type="text" for="IdNumber" class="form-control" @bind="@emp.IdNumber" />
+                <label for="FirstName" class="control-label">First Name</label>
+                <input type="text" for="FirstName" class="form-control" @bind="@emp.FirstName" />
+                <label for="LastName" class="control-label">Last Name</label>
+                <input type="text" for="FirstName" class="form-control" @bind="@emp.LastName" />
+                <label for="MiddleName" class="control-label">Middle Name</label>
+                <input type="text" for="MiddleName" class="form-control" @bind="@emp.MiddleName" />
+                <div class="form-group">
+                    <label asp-for="Gender" class="control-label">Gender</label>
+                    <select asp-for="Gender" class="form-control" @bind="@emp.Gender">
+                        <option value="">Select Gender ...</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                </div>
+                <label for="DateOfBirth" class="control-label">Date Of Birth</label><br />
+                <input type="date" @bind="emp.DateOfBirth" @bind:format="yyyy-MM-dd" />
+                
+                <label for="Height" class="control-label">Height</label>
+                <input type="number" for="Height" class="form-control" @bind="@emp.Height" />
+                <label for="Weight" class="control-label">Weight</label>
+                <input type="number" for="Weight" class="form-control" @bind="@emp.Weight" />
+
+
+            </div>
+            <div class="form-group"
+
+                 <input type="button" value="Save"  class="btn" @onclick="(async () => await UpdateEmployee())" />
+                 <input type="submit" value="Cancel" @onclick="cancle" class="btn" />
+
+            </div>
+        </form>
+    </div>
+</div>
+
+@code {
+    [Parameter] public     string contactId { get; set; }
+    ClubContactsViewModel emp = new ClubContactsViewModel();
+    string navTo = "/ClubContacts";
+    public DateTime demi = DateTime.Now;
+    protected override async Task OnInitializedAsync()
+    {
+        emp = await Http.GetJsonAsync<ClubContactsViewModel>("api/ClubContacts/Details/" + Convert.ToInt32(contactId));
+    }
+    protected async Task UpdateEmployee()
+    {
+        await Http.SendJsonAsync(HttpMethod.Put, "api/ClubContacts/Edit", emp);
+        navigationManager.NavigateTo(navTo);
+    }
+    protected void cancle()
+    {
+       navigationManager.NavigateTo(navTo);
+    }
+}
+

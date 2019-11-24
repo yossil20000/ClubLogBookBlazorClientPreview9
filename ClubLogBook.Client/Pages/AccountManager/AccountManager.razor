@@ -1,0 +1,65 @@
+﻿@page "/AccountManager/AccountManager"
+@using ClubLogBook.Application.Accounts.Queries.GetAccountsList
+@inject HttpClient Http
+@inject IdentityAuthenticationStateProvider authStateProvider
+
+<style>
+    .account
+    {
+        width:100%;
+        display:grid;
+        grid-template-columns:4fr 1fr;
+        grid-template-rows:10fr,1fr;
+        grid-column-gap:10px;
+        
+    }
+    .sideAccount{
+       border: 5px dashed pink;
+       grid-row:1/2;
+       grid-column:2/-1;
+    }
+    .mainAccount
+    {
+         border: 5px dashed yellow;
+         grid-column:1/2;
+    }
+    .footAccount
+    {
+        border: dotted thick red;
+        grid-row:2/3;
+        grid-column:1/-1;
+    }
+
+</style>
+<h3>AccountManager</h3>
+<div class="account">
+    <div class="mainAccount">Main</div>
+    <div class="sideAccount">Side</div>
+    <div class="footAccount">
+        <ul>
+            @foreach (var item in MessageList)
+            {
+                <li>@item</li>
+            }
+        </ul>
+    </div>
+</div>
+
+@code {
+    private AccountListViewModel AccountListViewModel { get; set; }
+    private bool ShowCommandDebug { get; set; }
+    private List<string> MessageList { get; set; } = new List<string>();
+    protected override async Task OnInitializedAsync()
+    {
+        MessageList.Add($"OnInitializedAsync in ");
+        AccountListViewModel = await Http.GetJsonAsync<AccountListViewModel>("api/Account/AccountsListQueryGet");
+        MessageList.Add($"OnInitializedAsync accountListViewModels.Accounts = out");
+
+        MessageList.Add($"OnInitializedAsync accountListViewModels.Accounts =  {AccountListViewModel.Accounts.Count()}");
+        
+        
+        List<ClubContactsViewModel> contacts = await Http.GetJsonAsync<List<ClubContactsViewModel>>("api/ClubContacts/Members");
+        MessageList.Add($"OnInitializedAsync contact {contacts.Count}");
+        MessageList.Add($"OnInitializedAsync out");
+    }
+}

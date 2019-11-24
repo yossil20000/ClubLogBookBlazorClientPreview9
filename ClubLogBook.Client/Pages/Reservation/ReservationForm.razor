@@ -1,0 +1,74 @@
+﻿@page "/Reservation/ReservationForm"
+@using ClubLogBook.Application.ViewModels
+@using ClubLogBook.Shared
+@using Microsoft.AspNetCore.Components
+<h3>ReservationForm</h3>
+<EditForm EditContext="@EditContext">
+    <DataAnnotationsValidator />
+    <div class="form-group">
+
+        <h3>From</h3>
+
+        <div class="col pr-0">
+            <div class="form-control d-flex">
+                <div><i>🗓</i>&nbsp;&nbsp;Date:</div>
+                <input id="dateFrom" type="date" @bind="Item.DateFrom" @bind:format="yyyy-MM-dd" />
+                <div><i>🗓</i>&nbsp;&nbsp;Time:</div>
+                <input id="timeFrom" type="time" @bind="Item.TimeFrom" format-value="HH:mm" />
+            </div>
+        </div>
+        <h3>To</h3>
+        <div class="col pr-0">
+            <div class="form-control d-flex">
+                <div><i>🗓</i>&nbsp;&nbsp;Date:</div>
+                <input type="date" @bind="Item.DateTo" @bind:format="yyyy-MM-dd" />
+                <div><i>🗓</i>&nbsp;&nbsp;Time:</div>
+                <input type="time" @bind="Item.TimeTo" format-value="HH:mm" />
+            </div>
+        </div>
+        <label for="TailNumber"  @onchange="@(() => OnChangeValue("TailNumber"))">Tail Numbr:@Item.TailNumber</label>
+        <input id="TailNumber" type="text" class="text-hide" @bind="@Item.TailNumber" />
+        <ValidationMessage For="@(() => Item.TailNumber)" />
+        
+        <label for="IdNumber" type="text" @onchange="@(() => OnChangeValue("IdNumber"))">Id Number:@Item.IdNumber</label>
+        <input id="IdNumberr" type="text"  @bind="@Item.IdNumber" />
+        <ValidationMessage For="@(() => Item.IdNumber)" />
+
+    </div>
+</EditForm>
+@code {
+    [Parameter] public FlightReservationViewModel Item { get; set; }
+    [Parameter] public FilterSelection filter { get; set; }
+    private EditContext EditContext;
+    protected override async Task OnInitializedAsync()
+    {
+        EditContext = new EditContext(Item);
+        EditContext.OnFieldChanged += EditContext_OnFieldChanged;
+        await base.OnInitializedAsync();
+    }
+    private void EditContext_OnFieldChanged(object sender , FieldChangedEventArgs e)
+    {
+        EditContext.Validate();
+    }
+    void OnChangeValue(string memberName)
+    {
+         var property = Item.GetType().GetProperty(memberName);
+        var value = property.GetValue(Item);
+       
+
+        var id = EditContext.Field(memberName);
+        EditContext.Validate();
+
+        EditContext.NotifyFieldChanged(id);
+    }
+    void KeyUp(KeyboardEventArgs e, string memberName)
+    {
+        var property = Item.GetType().GetProperty(memberName);
+        var value = property.GetValue(Item);
+        property.SetValue(Item, value + e.Key);
+
+        var id = EditContext.Field(memberName);
+
+        EditContext.NotifyFieldChanged(id);
+    }
+}

@@ -1,0 +1,63 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <LangVersion>8.0</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="ClubLogbookDataToImport\DataResource\4X-CGC_2018_flight.csv" />
+    <None Remove="ClubLogbookDataToImport\DataResource\aircraftinstancetypes.csv" />
+    <None Remove="ClubLogbookDataToImport\DataResource\Airplane.jpg" />
+    <None Remove="ClubLogbookDataToImport\DataResource\AirplaneModel.json" />
+    <None Remove="ClubLogbookDataToImport\DataResource\airports.csv" />
+    <None Remove="ClubLogbookDataToImport\DataResource\BazHaifaClubMembers.csv" />
+    <None Remove="ClubLogbookDataToImport\DataResource\categoryclass.csv" />
+    <None Remove="ClubLogbookDataToImport\DataResource\countrycodes.csv" />
+    <None Remove="ClubLogbookDataToImport\DataResource\custompropertytypes.csv" />
+    <None Remove="ClubLogbookDataToImport\DataResource\flightdatacolumns.csv" />
+    <None Remove="ClubLogbookDataToImport\DataResource\FlightRecords.json" />
+    <None Remove="ClubLogbookDataToImport\DataResource\localconfig.csv" />
+    <None Remove="ClubLogbookDataToImport\DataResource\MyFlightbook-Yosef.csv" />
+    <None Remove="ClubLogbookDataToImport\DataResource\navaidtypes.csv" />
+    <None Remove="ClubLogbookDataToImport\DataResource\PilotFemale.jpg" />
+    <None Remove="ClubLogbookDataToImport\DataResource\PilotMale.jpg" />
+    <None Remove="ClubLogbookDataToImport\DataResource\roles.csv" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="ClubLogbookDataToImport\DataResource\4X-CGC_2018_flight.csv" />
+    <EmbeddedResource Include="ClubLogbookDataToImport\DataResource\aircraftinstancetypes.csv" />
+    <EmbeddedResource Include="ClubLogbookDataToImport\DataResource\Airplane.jpg" />
+    <EmbeddedResource Include="ClubLogbookDataToImport\DataResource\AirplaneModel.json" />
+    <EmbeddedResource Include="ClubLogbookDataToImport\DataResource\airports.csv" />
+    <EmbeddedResource Include="ClubLogbookDataToImport\DataResource\BazHaifaClubMembers.csv" />
+    <EmbeddedResource Include="ClubLogbookDataToImport\DataResource\categoryclass.csv" />
+    <EmbeddedResource Include="ClubLogbookDataToImport\DataResource\countrycodes.csv" />
+    <EmbeddedResource Include="ClubLogbookDataToImport\DataResource\custompropertytypes.csv" />
+    <EmbeddedResource Include="ClubLogbookDataToImport\DataResource\flightdatacolumns.csv" />
+    <EmbeddedResource Include="ClubLogbookDataToImport\DataResource\FlightRecords.json" />
+    <EmbeddedResource Include="ClubLogbookDataToImport\DataResource\localconfig.csv" />
+    <EmbeddedResource Include="ClubLogbookDataToImport\DataResource\MyFlightbook-Yosef.csv" />
+    <EmbeddedResource Include="ClubLogbookDataToImport\DataResource\navaidtypes.csv" />
+    <EmbeddedResource Include="ClubLogbookDataToImport\DataResource\PilotFemale.jpg" />
+    <EmbeddedResource Include="ClubLogbookDataToImport\DataResource\PilotMale.jpg" />
+    <EmbeddedResource Include="ClubLogbookDataToImport\DataResource\roles.csv" />
+  </ItemGroup>
+  <ItemGroup>   
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.0-preview3.19554.8" />   
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.0-preview3.19554.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.0-preview3.19554.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.0-preview3.19554.8" />
+    <PackageReference Include="System.Text.Json" Version="4.7.0-preview3.19551.4" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ClubLogBook.Application\ClubLogBook.Application.csproj" />
+    <ProjectReference Include="..\clubLogBook.Core\ClubLogBook.Core.csproj" />
+  </ItemGroup>
+
+</Project>

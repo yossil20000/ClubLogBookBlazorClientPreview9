@@ -1,0 +1,89 @@
+﻿<div class="top-row pl-4 navbar navbar-dark">
+    <a class="navbar-brand" href="">ClubLogBook</a>
+    <button class="navbar-toggler" @onclick="@ToggleNavMenu">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+</div>
+
+<div class="@NavMenuCssClass" @onclick="@ToggleNavMenu">
+    <ul class="nav flex-column">
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="oi oi-home" aria-hidden="true"></span> Home
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="counter">
+                <span class="oi oi-plus" aria-hidden="true"></span> Counter
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="fetchdata">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="ClubContacts">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Club Contact
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="Reservation/FlightReservation">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Flight Reservation
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="Contact/ContactEditor">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Contact Editor
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="Flight/ClubFlight">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Flight
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="AircraftManager/AircraftManager">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Aircraft Manager
+            </NavLink>
+        </li>
+       
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="AccountManager/AccountManager">
+                <span class="oi oi-list-rich" aria-hidden="true"></span>Account Manager
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="Administration">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Administration
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="time-picker">
+                <span class="oi oi-clock" aria-hidden="true"></span> Time Picker
+            </NavLink>
+        </li>
+
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="datepicker">
+                <span class="oi oi-clock" aria-hidden="true"></span> Time Picker Radzen
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="checkbox">
+                <span class="oi oi-clock" aria-hidden="true"></span> checkbox Radzen
+            </NavLink>
+        </li>
+    </ul>
+</div>
+
+@functions {
+    bool collapseNavMenu = true;
+
+    string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}

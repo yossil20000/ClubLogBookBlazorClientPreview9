@@ -1,0 +1,60 @@
+﻿@page "/Shared/AddressEditor"
+@using ClubLogBook.Application.ViewModels
+@using Microsoft.AspNetCore.Components
+<div class="form-field">
+    <label>Street:</label>
+    <div>
+        <InputText @bind-Value="@AddressViewModel.Street" />
+        <ValidationMessage For="@(() => AddressViewModel.Street)" />
+    </div>
+</div>
+<div class="form-field">
+    <label>Postal code:</label>
+    <div>
+        <InputText @bind-Value="@AddressViewModel.Zipcode" />
+        <ValidationMessage For="@(() => AddressViewModel.Zipcode)" />
+    </div>
+</div>
+<div class="form-field">
+    <label>City</label>
+    <div>
+        <InputText @bind-Value="@AddressViewModel.City" />
+        <ValidationMessage For="@(() => AddressViewModel.City)" />
+    </div>
+</div>
+
+<div class="form-field">
+    <label>State</label>
+    <div>
+        <InputText @bind-Value="@AddressViewModel.State" />
+        <ValidationMessage For="@(() => AddressViewModel.State)" />
+    </div>
+</div>
+
+<div class="form-field">
+    <label>Country</label>
+    <div>
+        <InputText @bind-Value="@AddressViewModel.Country" />
+        <ValidationMessage For="@(() => AddressViewModel.Country)" />
+    </div>
+</div>
+<div class="form-field">
+    <label>Type</label>
+    <div>
+        <InputSelect @bind-Value="AddressViewModel.Type">
+            @foreach (var type in Enum.GetValues(typeof(ContactType)))
+            {
+                <option>@type</option>
+            }
+        </InputSelect>
+        <ValidationMessage For="@(() => AddressViewModel.Type)" />
+
+    </div>
+</div>
+
+
+
+
+@code {
+    [Parameter] public AddressViewModel AddressViewModel { get; set; }
+}

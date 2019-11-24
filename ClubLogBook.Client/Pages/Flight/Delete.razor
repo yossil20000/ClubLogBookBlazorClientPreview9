@@ -1,0 +1,45 @@
+﻿@page "/Flight/Delete/{contactId}"
+@using ClubLogBook.Application.ViewModels
+@using Microsoft.AspNetCore.Components
+@inject NavigationManager navigationManager
+@inject HttpClient Http
+<h2>Delete Flight</h2>
+
+<div class="row">
+    <div class="col-md-4">
+        <form>
+
+            <Flight FlightToView=selectedflight />
+            <div class="form-group"
+
+                 <input type="button" value="Delete"  class="btn" @onclick="(async () => await DeleteFlight(selectedflight.Id))" />
+                 <input type="submit" value="Cancel" @onclick="cancle" class="btn" />
+
+            </div>
+        </form>
+    </div>
+</div>
+@code
+{
+    [Parameter] public string contactId { get; set; }
+    ClubFlightViewModel selectedflight = new ClubFlightViewModel();
+
+    string natTo = "/Flight/ClubFlight";
+    protected override async Task OnInitializedAsync()
+    {
+        selectedflight = await Http.GetJsonAsync<ClubFlightViewModel>
+        ("api/ClubFlight/" + Convert.ToInt32(contactId));
+
+    }
+    protected async Task DeleteFlight(int id)
+    {
+        await Http.SendJsonAsync(HttpMethod.Delete, $"api/ClubFlight", id);
+
+        navigationManager.NavigateTo(natTo);
+    }
+
+    public void cancle()
+    {
+        navigationManager.NavigateTo(natTo);
+    }
+}

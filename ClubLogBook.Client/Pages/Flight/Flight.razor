@@ -1,0 +1,31 @@
+﻿@page "/Flight"
+@using ClubLogBook.Application.ViewModels
+@using Microsoft.AspNetCore.Components
+
+    <div class="form-group">
+        <label for="Id" class="control-label">Id</label>
+        @*<label for="Date">Choose a time for your appointment:</label>
+        <input type="datetime-local" id="Date" />*@
+        <label for="Date" class="control-label">Date</label><br />
+        <input type="date"  @bind="@FlightToView.Date" @bind:format="yyyy-MM-dd" />
+        <br />
+        <label for="Routh" class="control-label">Routh</label>
+        <input type="text" for="Routh" class="form-text" @bind="@FlightToView.Routh" />
+        @*<label for="Routh">Your name:</label>
+        <input type="text" name="Routh" bind-value-oninput="@FlightToView.Routh" />*@
+        <label for="EngineStart" class="control-label">Engine Start</label>
+        <input type="number" for="EngineStart" class="form-control" @bind="@FlightToView.EngineStart" />
+        <label for="EngineEnd" class="control-label">Engine End</label>
+        <input type="number" for="EngineEnd" class="form-control" @bind="@FlightToView.EngineEnd" />
+        <label for="HobbsStart" class="control-label">Hobbs Start</label>
+        <input type="number" for="HobbsStart" class="form-control" @bind="@FlightToView.HobbsStart" />
+        <label for="HobbsEnd" class="control-label">Hobbs End</label>
+        <input type="number" for="HobbsEnd" class="form-control" @bind="@FlightToView.HobbsEnd" />
+
+
+    </div>
+
+@functions {
+    [Parameter] public ClubFlightViewModel FlightToView { get; set; }
+   
+}

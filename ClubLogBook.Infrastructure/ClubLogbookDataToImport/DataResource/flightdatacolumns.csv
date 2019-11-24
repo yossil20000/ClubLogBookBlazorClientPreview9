@@ -1,0 +1,107 @@
+id,RawName,FriendlyName,TypeID,ColumnName,ColumnDescription,ColumnNotes
+1,DATE,Date/Time,5,NULL,"Date and Time for the sample","Should ideally be in UTC ISO 8601 format (yyyy-MM-ddThh:mm:ssZ for UTC)"
+2,TIME,Date/Time,5,NULL,"Synonym for Date",NULL
+3,LAT,Latitude,4,NULL,"Latitude for the sample","Must be -90 < LAT < 90"
+4,LON,Longitude,4,NULL,"Longitude for the sample","Must be -180 < LON < 180"
+5,PALT,"Pressure Altitude",0,ALT,"Pressure Altitude for the data point","Generally assumed to be ft. Must be > -200"
+6,E1,EGT1,0,NULL,"Exhaust Gas Temperature, Cylinder 1",NULL
+7,E2,EGT2,0,NULL,"Exhaust Gas Temperature, Cylinder 2",NULL
+8,E3,EGT3,0,NULL,"Exhaust Gas Temperature, Cylinder 3",NULL
+9,E4,EGT4,0,NULL,"Exhaust Gas Temperature, Cylinder 4",NULL
+10,E5,EGT5,0,NULL,"Exhaust Gas Temperature, Cylinder 5",NULL
+11,E6,EGT6,0,NULL,"Exhaust Gas Temperature, Cylinder 6",NULL
+12,C1,CHT1,0,NULL,"Cylinder 1 Head Temperature",NULL
+13,C2,CHT2,0,NULL,"Cylinder 2 Head Temperature",NULL
+14,C3,CHT3,0,NULL,"Cylinder 3 Head Temperature",NULL
+15,C4,CHT4,0,NULL,"Cylinder 4 Head Temperature",NULL
+16,C5,CHT5,0,NULL,"Cylinder 5 Head Temperature",NULL
+17,C6,CHT6,0,NULL,"Cylinder 6 Head Temperature",NULL
+18,OILT,"Oil Temperature",0,NULL,"Oil Temperature",NULL
+19,OILP,"Oil Pressure",0,NULL,"Oil Pressure",NULL
+20,RPM,RPM,0,NULL,"Rotations Per Minute (Propeller speed)",NULL
+21,OAT,"Outside Air Temperature",0,NULL,"Outside Air Temperature",NULL
+22,MAP,"Manifold Pressure",1,NULL,"Manifold Pressure",NULL
+23,FF,"Fuel Flow",1,NULL,"Fuel Flow",NULL
+24,USED,"Fuel Used",1,NULL,"Fuel Used",NULL
+25,AMPL,"Amperage (Left)",0,NULL,"Amperage (Left)",NULL
+26,AMPR,"Amperage (Right)",0,NULL,"Amperage (Right)",NULL
+27,LBUS,"Bus voltage (Left)",1,NULL,"Bus voltage (Left)",NULL
+28,RBUS,"Bus voltage (Right)",1,NULL,"Bus voltage (Right)",NULL
+29,TIT,"Turbine Inlet Temperature",0,NULL,"Turbine Inlet Temperature",NULL
+30,SPEED,"Ground Speed",1,NULL,"Ground speed","Generally assumed to be in kts"
+31,HERROR,"Estimated Horizontal Position Error",1,NULL,"Estimated Horizontal Position Error","Generally in meters"
+32,AIRSPEED,Airspeed,1,NULL,Airspeed,"Generally assumed to be in kts"
+33,ALT,Altitude,0,ALT,"Altitude for the data point","Generally assumed to be in ft.  Must be > -200"
+34,POSITION,"Lat/Long Position in degrees/minutes",6,NULL,"A combined latitude/longitude","Must be in the form N dd mm.mmmmm W dd mm.mmmmm (or "S" or "E" as needed in place of "N" and "W").  dd = degrees, mm.mmmm= minutes."
+35,SAMPLE,"Position #",0,NULL,"The ordinal number of the position report",NULL
+36,ComputedSpeed,"Speed (derived)",1,NULL,"Speed as computed from time-stamped position samples","Unit is knots.  Since this is computed, don't provide it"
+37,TIMESTAMP,"Time Stamp",7,DATE,"Synonym for DATE",NULL
+38,Latitude,Latitude,4,LAT,"Synonym for LAT",NULL
+39,Longitude,Longitude,4,LON,"Synonym for LON",NULL
+40,Altitude,Altitude,0,ALT,"Synonym for ALT",NULL
+41,"Horizontal Error","Horizontal Error",0,HERROR,"Synonym for HERROR",
+42,"Vertical Error","Vertical Error",0,VERROR,"Synonym for VERROR",NULL
+43,VERROR,"Estimated Vertical Position Error",1,NULL,"Estimated Vertical Position Error","Generally assumed to be in meters"
+44,TZOffset,"Timezone Offset",8,NULL,"Offset from UTC, in minutes","Number of minutes to ADD to a local time to get UTC time.  E.g., positive for west of GMT, negative for east."
+45,Course,Course,1,Course,"Course, expressed in degrees","Can be either magnetic or true"
+46,Heading,Heading,1,Heading,"Heading, expressed in degrees","Can be either magnetic or true"
+47,"Local Date","Local Date",9,NakedDate,"Date with no time specified","Assumes 00:00 (midnight), if no Local Time is found"
+48,"Local Time","Local Time",10,NakedTime,"Time, with no date specified","Assumes "today" if no Local Date column is found."
+49,"UTC Offset","UTC Offset",8,TZOffset,"Offset from UTC, in hh:mm format","Opposite of TZOffset - this is the number of minutes to ADD to UTC time to get a local time.  E.g., negative for west of GMT, positive for east."
+50,AltGPS,"GPS Altitude",0,ALT,"Synonym for ALT","GPS-derived altitude"
+51,GndSpd,"Ground Speed (alternative)",1,SPEED,"Synonym for SPEED","Generally assumed to be in kts"
+52,HDG,"Heading (alternative)",1,Heading,"Synonym for heading","Can be either magnetic or true"
+53,NakedDate,"Naked Date",9,NULL,"Date with no time specified","Assumes 00:00 (midnight), if no NakedTime is found"
+54,NakedTime,"Naked Time",10,NULL,"Time, with no date specified","Assumes "today" if no Naked Date column is found"
+55,AltMSL,"MSL Altitude",0,NULL,"Altitude, MSL",NULL
+56,AltB,"Barometric Altitude",0,NULL,"Altitude, Barometric",NULL
+57,"Density Altitude","Density Altitude",0,NULL,"Density Altitude",NULL
+58,"E1 EGT1","EGT1 - Engine 1",0,NULL,"Engine 1 Exhaust Gas Temperature - Cylinder 1",NULL
+59,"E1 EGT2","EGT2 - Engine 1",0,NULL,"Engine 1 Exhaust Gas Temperature - Cylinder 2",NULL
+60,"E1 EGT3","EGT3 - Engine 1",0,NULL,"Engine 1 Exhaust Gas Temperature - Cylinder 3",NULL
+61,"E1 EGT4","EGT4 - Engine 1",0,NULL,"Engine 1 Exhaust Gas Temperature - Cylinder 4",NULL
+62,"E1 EGT5","EGT5 - Engine 1",0,NULL,"Engine 1 Exhaust Gas Temperature - Cylinder 5",NULL
+63,"E1 EGT6","EGT6 - Engine 1",0,NULL,"Engine 1 Exhaust Gas Temperature - Cylinder 6",NULL
+64,"E2 EGT1","EGT1 - Engine 2",0,NULL,"Engine 2 Exhaust Gas Temperature - Cylinder 1",NULL
+65,"E2 EGT2","EGT2 - Engine 2",0,NULL,"Engine 2 Exhaust Gas Temperature - Cylinder 2",NULL
+66,"E2 EGT3","EGT3 - Engine 2",0,NULL,"Engine 2 Exhaust Gas Temperature - Cylinder 3",NULL
+67,"E2 EGT4","EGT4 - Engine 2",0,NULL,"Engine 2 Exhaust Gas Temperature - Cylinder 4",NULL
+68,"E2 EGT5","EGT5 - Engine 2",0,NULL,"Engine 2 Exhaust Gas Temperature - Cylinder 5",NULL
+69,"E2 EGT6","EGT6 - Engine 2",0,NULL,"Engine 2 Exhaust Gas Temperature - Cylinder 6",NULL
+70,"E1 CHT1","CHT1 - Engine 1",0,NULL,"Engine 1 Cylinder Head Temperature - Cylinder 1",NULL
+71,"E1 CHT2","CHT2 - Engine 1",0,NULL,"Engine 1 Cylinder Head Temperature - Cylinder 2",NULL
+72,"E1 CHT3","CHT3 - Engine 1",0,NULL,"Engine 1 Cylinder Head Temperature - Cylinder 3",NULL
+73,"E1 CHT4","CHT4- Engine 1",0,NULL,"Engine 1 Cylinder Head Temperature - Cylinder 4",NULL
+74,"E1 CHT5","CHT5 - Engine 1",0,NULL,"Engine 1 Cylinder Head Temperature - Cylinder 5",NULL
+75,"E1 CHT6","CHT6 - Engine 1",0,NULL,"Engine 1 Cylinder Head Temperature - Cylinder 6",NULL
+76,"E2 CHT1","CHT1 - Engine 2",0,NULL,"Engine 2 Cylinder Head Temperature - Cylinder 1",NULL
+77,"E2 CHT2","CHT2 - Engine 2",0,NULL,"Engine 2 Cylinder Head Temperature - Cylinder 2",NULL
+78,"E2 CHT3","CHT3 - Engine 2",0,NULL,"Engine 2 Cylinder Head Temperature - Cylinder 3",NULL
+79,"E2 CHT4","CHT4 - Engine 2",0,NULL,"Engine 2 Cylinder Head Temperature - Cylinder 4",NULL
+80,"E2 CHT5","CHT5 - Engine 2",0,NULL,"Engine 2 Cylinder Head Temperature - Cylinder 5",NULL
+81,"E2 CHT6","CHT6 - Engine 2",0,NULL,"Engine 2 Cylinder Head Temperature - Cylinder 6",NULL
+82,"E1 FPres","Engine 1 Fuel Pressure",0,NULL,"Fuel pressure, Engine 1",NULL
+83,"E2 FPres","Engine 2 Fuel Pressure",0,NULL,"Fuel pressure, Engine 2",NULL
+84,"E1 OilP","Engine 1 Oil Pressure",0,NULL,"Oil pressure, Engine 1",NULL
+85,"E2 OilP","Engine 2 Oil Pressure",0,NULL,"Oil pressure, Engine 2",NULL
+86,"E1 RPM","Engine 1 RPM",0,NULL,"RPM, Engine 1",NULL
+87,"E2 RPM","Engine 2 RPM",0,NULL,"RPM, Engine 2",NULL
+88,"E1 MAP","Engine 1 Manifold Pressure",2,NULL,"Manifold Pressure, Engine 1",NULL
+89,"E2 MAP","Engine 2 Manifold Pressure",2,NULL,"Manifold Pressure, Engine 2",NULL
+90,"E1 FFlow","Engine 1 Fuel Flow",2,NULL,"Fuel Flow, Engine 1",NULL
+91,"E2 FFlow","Engine 2 Fuel Flow",2,NULL,"Fuel Flow, Engine 2",NULL
+92,"Lcl Date","Local Date",9,NakedDate,"Synonym for Date",NULL
+93,UTCOfst,"UTC Offset",8,"UTC Offset","Opposite of TZOffset - this is the number of minutes to ADD to UTC time to get a local time.  E.g., negative for west of GMT, positive for east.",NULL
+94,IAS,"Indicated Airspeed",1,AIRSPEED,"Synonym for Airspeed",NULL
+95,GndSpd,"Ground Speed",1,SPEED,"Synonym for Ground Speed",NULL
+96,"Lcl Time","Local Time",10,NakedTime,"Synonym for Time (local)",NULL
+97,"UTC DateTime","Date/Time (UTC)",5,"UTC DateTime","Date and Time for the sample","Same as DATE except that UTC is assumed"
+98,LNG,Longitude,4,LON,"Synonym for LON",NULL
+99,SPD,Speed,1,SPEED,"Synonym for SPEED",NULL
+100,BAT,"Battery Voltage",1,NULL,"Battery voltage",NULL
+101,AMP,Current,1,NULL,"Current (Amperage)",NULL
+102,USD,Used,1,USED,"Synonym for USED",NULL
+103,LFL,"Left Fuel",1,NULL,"Fuel remaining, left tank",NULL
+104,RFL,"Right Fuel",1,NULL,"Fuel remaining, right tank",NULL
+105,Pitch,Pitch,0,NULL,"Aircraft Pitch, in degrees",NULL
+106,Roll,Roll,0,NULL,"Aircraft roll, in degrees",NULL

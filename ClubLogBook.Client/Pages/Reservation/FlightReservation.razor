@@ -1,0 +1,483 @@
+﻿@page "/Reservation/FlightReservation"
+@using ClubLogBook.Application.ViewModels
+
+@inject HttpClient Http
+@inject IdentityAuthenticationStateProvider authStateProvider
+
+<h1>Flights Reservation</h1>
+<AuthorizeView Roles="Administrators,AccountManage,Members">
+    <Authorized>
+        @if (RecordsViewModel.FilterViewModel == null || RecordsViewModel.PaginationInfo == null || items == null)
+        {
+            <div>Loading Filter</div>
+            
+        }
+        else
+        {
+
+            <div>
+                <div class="container-fluid">
+                    <div class=" text-center row">
+                        <div class="col-8">
+                            <div class="row">
+                                <div class="col-2">
+                                    <button type="button" class="btn btn-primary  @RecordsViewModel.PaginationInfo.Previous" @onclick="@(async () => await PrevClick(RecordsViewModel.PaginationInfo.ActualPage -1))"
+                                            id="Previous"
+                                            asp-route-pageid="@(RecordsViewModel.PaginationInfo.ActualPage - 1)"
+                                            aria-label="Previous">
+                                        Previous
+                                    </button>
+                                </div>
+
+                                <div class="text-center col-8">
+                                    Showing @RecordsViewModel.PaginationInfo.ItemsPerPage of @RecordsViewModel.PaginationInfo.TotalItems products - Page @(RecordsViewModel.PaginationInfo.ActualPage + 1) - @RecordsViewModel.PaginationInfo.TotalPages
+
+                                </div>
+
+                                <div class="col-2">
+                                    <button type="button" class="btn btn-primary @RecordsViewModel.PaginationInfo.Next " @onclick="@(async () => await NextClick())"
+                                            id="Next"
+                                            asp-route-pageid="@(RecordsViewModel.PaginationInfo.ActualPage + 1)"
+                                            aria-label="Next">
+                                        Next
+                                    </button>
+                                    @*aria-disabled="@FlightRecordIndexViewModel.PaginationInfo.Next"*@
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            
+            <FilterSelection FilterViewModel="RecordsViewModel.FilterViewModel" PaginationInfo="RecordsViewModel.PaginationInfo"></FilterSelection>
+            @if(ShowReservation)
+            {
+    <div class="container-fluid">
+        <div class="alert @StatusClass">@StatusMessage</div>    
+        <EditForm EditContext="@EditContext1" Context="Yossi" OnInvalidSubmit="HandleInvalidSubmit" OnValidSubmit="SaveNewReservation">
+            <DataAnnotationsValidator />
+            <ValidationSummary></ValidationSummary>
+            <h3>From</h3>
+
+            <div class="col pr-0">
+                <div class="form-control d-flex">
+                    <div><i>🗓</i>&nbsp;&nbsp;Date:</div>
+                    <input id="dateFrom" type="date" @bind="objReservation.DateFrom" @bind:format="yyyy-MM-dd" />
+                    <div><i>🗓</i>&nbsp;&nbsp;Time:</div>
+                    <input id="timeFrom" type="time" @bind="objReservation.TimeFrom" format-value="HH:mm" />
+                </div>
+            </div>
+            <h3>To</h3>
+            <div class="col pr-0">
+                <div class="form-control d-flex">
+                    <div><i>🗓</i>&nbsp;&nbsp;Date:</div>
+                    <input type="date" @bind="objReservation.DateTo" @bind:format="yyyy-MM-dd" />
+                    <div><i>🗓</i>&nbsp;&nbsp;Time:</div>
+                    <input type="time" @bind="objReservation.TimeTo" format-value="HH:mm" />
+                </div>
+            </div>
+            <label for="TailNumber" @onchange="@(() => OnChangeValue("TailNumber"))">Tail Numbr:@objReservation.TailNumber</label>
+            <input id="TailNumber" type="text" class="text-hide" @bind="@objReservation.TailNumber" />
+            <ValidationMessage For="@(() => objReservation.TailNumber)" />
+
+            <label for="IdNumber" type="text" @onchange="@(() => OnChangeValue("IdNumber"))">Id Number:@objReservation.IdNumber</label>
+            <input id="IdNumberr" type="text" @bind="@objReservation.IdNumber" />
+            <ValidationMessage For="@(() => objReservation.IdNumber)" />
+            <button type="submit">Ok</button>
+        </EditForm>
+    </div>
+            }
+            <div class="container-fluid row">
+                <table class="table table-bordered table-hover table-striped col-sm-12 col-md-12 col-xs-12">
+                    <thead>
+                        <tr>
+                            @*<th>
+                                <button class="btn btn-info"
+                                        @onclick="@CreateReservation">
+                                    Create Reservation
+                                </button>
+                            </th>*@
+                            <th>
+                                <button class="btn btn-light"
+                                        @onclick="@SortDate">
+                                    From
+                                </button>
+                            </th>
+                            <th>
+                                To
+                            </th>
+                            <th>Aircraft</th>
+                            <th>
+                                <button class="btn btn-light"
+                                        @onclick="@SortId">
+                                    Pilot
+                                </button>
+                            </th>
+                            <th>
+                                <button class="btn btn-info"
+                                               @onclick="@CreateReservation">
+                                    Create Reservation
+                                </button>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in items)
+                        {
+                            <tr>
+                                @*<td></td>*@
+                                <td>@item.DateFrom</td>
+                                <td>@item.DateTo</td>
+                                <td>@item.TailNumber</td>
+                                <td>@item.IdNumber</td>
+
+                                <td>
+                                    @if (IsCurrentAdmin || item.UserId.ToString() == CurrentUser.Id)
+                                    {
+                                        <button class="btn btn-info"
+                                                @onclick="@(async () => await SaveNewReservation())">
+                                            Edit/Delete
+                                        </button>
+                                    }
+
+                                </td>
+                            </tr>
+
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+
+
+            @if (ShowPopup)
+            {
+
+
+                <div class="modal"  tabindex="-1" style="display:block" role="dialog">
+                    <div class="modal-dialog  modal-dialog-centered">
+
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="modal-title">Edit Reservation</h3>
+                                <!-- Button to close the popup -->
+                                <button type="button" class="close"
+                                        @onclick="@ClosePopup">
+                                    <span aria-hidden="true">X</span>
+                                </button>
+                            </div>
+                            <!-- Edit form for the current forecast -->
+                            <div class="modal-body">
+                                <div class="form-row">
+                                    <div class="form-group col-md-3">
+                                        <label for="SelectClub">Select Club</label>
+                                        <select class="custom-select" @onchange="ClubSelected">
+                                            <option value="null">(Select All)</option>
+
+                                            @foreach (var i in RecordsViewModel.FilterViewModel.ClubSelects)
+                                            {
+                                                <option value="@i.Id">@i.ClubName - (@(i.Id))</option>
+                                            }
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label for="ValidationFault1">Select Airplane</label>
+                                        <select class="custom-select" @onchange="AirplaneSelected">
+                                            <option value="null">(Select All)</option>
+
+                                            @foreach (var i in RecordsViewModel.FilterViewModel.AirplaneSelects)
+                                            {
+                                                <option value="@i.Id">@i.TailNumber - (@(i.Id))</option>
+                                            }
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label for="ValidationFault1">Select Pilot</label>
+                                        <select class="custom-select" @onchange="PilotSelected">
+                                            <option value="null">(Select All)</option>
+
+                                            @foreach (var i in RecordsViewModel.FilterViewModel.PilotSelects)
+                                            {
+                                                if (IsCurrentAdmin || i.UserId.ToString() == CurrentUser.Id)
+                                                {<option value="@i.Id">@i.FullName - (@(i.IdNumber))</option>}
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <EditForm Model="@objReservation" OnValidSubmit="@SaveNewReservation" OnInvalidSubmit="@Refresh" Context="EdirReservationContext">
+                                    <DataAnnotationsValidator />
+                                    <ValidationSummary />
+                                    
+                                    <Reservation Item=objReservation SelectedFromTime="SelectedFromTime"  StatusMessage="StatusMessage" StatusClass="StatusClass"/>
+                                    @*<ReservationForm Item=objReservation></ReservationForm>*@
+                                    @*<ValidationMessage For="@(() => objReservation.IdNumber)" />
+        <DataAnnotationsValidator />
+        <ValidationSummary />*@
+                                </EditForm>
+
+                               
+                            </div>
+                            <div class="modal-footer">
+                                @if (objReservation.Id == 0)
+                                {
+                                    <!-- Button to save the forecast -->
+                                    <button class="btn btn-primary" type="submit" @onclick="SaveNewReservation"
+                                           >
+                                        Create
+                                    </button>
+                                }
+                                else
+                                {
+                                    <!-- Button to save the forecast -->
+                                    <button type="submit" class="btn btn-primary"
+                                            @onclick="SaveReservation">
+                                        Save
+                                    </button>
+                                }
+
+                                <!-- Only show delete button if not a new record -->
+                                @if (objReservation.Id > 0)
+                                {
+                                    <!-- Button to delete the forecast -->
+                                    <button type="submit" class="btn btn-primary"
+                                            @onclick="DeleteReservation">
+                                        Delete
+                                    </button>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+
+    </Authorized>
+    <NotAuthorized>
+        <p>You're not Authorized , Please Loging as one of this User Type :Administrators,AccountManage,Members</p>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code
+{
+    [CascadingParameter] private Task<AuthenticationState> authenticationStateTask { get; set; }
+    //static FilterViewModel FilterViewModel { get; set; } = new FilterViewModel();
+    //static PaginationInfoViewModel PaginationInfo { get; set; } = new PaginationInfoViewModel();
+    bool ShowPopup = false;
+    bool ShowReservation = false;
+    List<FlightReservationViewModel> items { get; set; }
+    static RecordsViewModel<FlightReservationViewModel> RecordsViewModel { get; set; } = new RecordsViewModel<FlightReservationViewModel>();
+    FlightReservationViewModel objReservation;
+    bool IsCurrentAdmin { get; set; } = false;
+    AdminUserInfo CurrentUser { get; set; }
+    public LocalTime SelectedFromTime { get; set; } = new LocalTime();
+    private EditContext EditContext1;
+    private string StatusMessage;
+    private string StatusClass;
+    async Task SortDate()
+    {
+        items = items.OrderByDescending(x => x.DateFrom).ThenByDescending(x => x.DateFrom).ToList();
+    }
+    async Task SortId()
+    {
+        items = items.OrderByDescending(x => x.IdNumber).ThenByDescending(x => x.DateFrom).ThenByDescending(x => x.DateFrom).ToList();
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        //FilterViewModel = new FilterViewModel();
+        //PaginationInfo = new PaginationInfoViewModel();
+        RecordsViewModel = new RecordsViewModel<FlightReservationViewModel>();
+        RecordsViewModel.FilterViewModel.ClubFilterApplied = null;
+        RecordsViewModel.FilterViewModel.PilotFilterApplied = null;
+        RecordsViewModel.FilterViewModel.AirplaneFilterApplied = null;
+        RecordsViewModel.FilterViewModel = await Http.PostJsonAsync<FilterViewModel>("api/FlightReservation/FilterViewModelPut", RecordsViewModel.FilterViewModel);
+        items = await Http.GetJsonAsync<List<FlightReservationViewModel>>("api/FlightReservation/Reservation");
+        //items = items = RecordsViewModel.Records.ToList();
+        var authState = await authenticationStateTask;
+        var user = authState.User;
+        CurrentUser = await authStateProvider.CurrentUser();
+        IsCurrentAdmin = user.IsInRole(IdentityInfo.Roles.Administrators.ToString());
+
+
+        await base.OnInitializedAsync();
+
+    }
+    protected void HandleValidSubmit()
+    {
+        StatusClass = "alert-info";
+        StatusMessage = DateTime.Now + " Handle valid submit";
+    }
+    protected void HandleInvalidSubmit()
+    {
+        StatusClass = "alert-danger";
+        StatusMessage = DateTime.Now + " Handle invalid submit";
+    }
+    private void EditContext_OnFieldChanged(object sender , FieldChangedEventArgs e)
+    {
+        EditContext1.Validate();
+    }
+    void OnChangeValue(string memberName)
+    {
+        var property = objReservation.GetType().GetProperty(memberName);
+        var value = property.GetValue(objReservation);
+
+
+        var id = EditContext1.Field(memberName);
+        EditContext1.Validate();
+
+        EditContext1.NotifyFieldChanged(id);
+    }
+
+    async Task<List<FlightReservationViewModel>> LoadOrders()
+    {
+        //await Init();
+        return items;//await Http.GetJsonAsync<List<FlightReservationViewModel>>("api/FlightReservation/Reservation");
+    }
+    async Task Refresh()
+    {
+        HandleInvalidSubmit();
+    }
+    protected async Task PrevClick(int id)
+    {
+        if (RecordsViewModel.PaginationInfo.Previous == "")
+        {
+            RecordsViewModel.PaginationInfo.PageCommand = PageCommand.MovePrevious;
+
+
+            RecordsViewModel = await Http.PutJsonAsync<RecordsViewModel<FlightReservationViewModel>>("api/FlightReservation/RecordViewModel", RecordsViewModel);
+        }
+
+    }
+    protected async Task NextClick()
+    {
+        if (RecordsViewModel.PaginationInfo.Next == "")
+        {
+            RecordsViewModel.PaginationInfo.PageCommand = PageCommand.MoveNext;
+            //items = await Http.GetJsonAsync<List<FlightReservationViewModel>>("api/FlightReservation/Reservation");
+            RecordsViewModel = await Http.PutJsonAsync<RecordsViewModel<FlightReservationViewModel>>("api/FlightReservation/RecordViewModel", RecordsViewModel);
+            items = RecordsViewModel.Records.ToList();
+        }
+
+    }
+    void ClosePopup()
+    {
+        // Close the Popup
+        ShowPopup = false;
+        ShowReservation = false;
+    }
+    async Task SaveReservation()
+    {
+        // Close the Popup
+        ShowPopup = false;
+        DateTime t = objReservation.TimeFrom;
+        //objReservation.TimeFrom.AddHours(-t.Hour);
+        objReservation.TimeFrom.AddHours(SelectedFromTime.Hour);
+        objReservation.TimeFrom.AddMinutes(SelectedFromTime.Minute);
+        await Http.SendJsonAsync(HttpMethod.Put, "api/FlightReservation/Edit", objReservation);
+        items = await Http.GetJsonAsync<List<FlightReservationViewModel>>("api/FlightReservation/Reservation");
+        // Get the current user
+
+    }
+
+    async Task SaveNewReservation()
+    {
+        // Close the Popup
+        ShowPopup = false;
+        DateTime t = objReservation.TimeFrom;
+        // objReservation.TimeFrom.AddHours(-t.Hour);
+        objReservation.TimeFrom.AddHours(SelectedFromTime.Hour);
+        objReservation.TimeFrom.AddMinutes(SelectedFromTime.Minute);
+        await Http.SendJsonAsync(HttpMethod.Put, "api/FlightReservation/Create", objReservation);
+        items = await Http.GetJsonAsync<List<FlightReservationViewModel>>("api/FlightReservation/Reservation");
+        // Get the current user
+
+    }
+
+    async Task CreateReservation()
+    {
+        // Close the Popup
+        ShowPopup = true;
+        objReservation = new FlightReservationViewModel();
+        EditContext1 = new EditContext(objReservation);
+        EditContext1.OnFieldChanged += EditContext_OnFieldChanged;
+
+        // Get the current user
+
+    }
+    async Task DeleteReservation()
+    {
+        // Close the Popup
+        ShowPopup = false;
+        await Http.SendJsonAsync(HttpMethod.Put, "api/FlightReservation/Delete", objReservation.Id);
+        items = await Http.GetJsonAsync<List<FlightReservationViewModel>>("api/FlightReservation/Reservation");
+    }
+    async Task EditReservation(FlightReservationViewModel weatherForecast)
+    {
+        // Set the selected forecast
+        // as the current forecast
+        objReservation = weatherForecast;
+
+        // Open the Popup
+        ShowPopup = true;
+    }
+    void Show(FlightReservationViewModel weatherForecast)
+    {
+        // Set the selected forecast
+        // as the current forecast
+        objReservation = weatherForecast;
+
+        // Open the Popup
+        ShowPopup = true;
+    }
+
+    void PilotSelected(ChangeEventArgs e)
+    {
+        if (objReservation != null)
+        {
+
+            if (int.TryParse((string)e.Value, out var index) && index >= 0)
+            {
+                var selected = RecordsViewModel.FilterViewModel.PilotSelects.Where(i => i.Id == index).FirstOrDefault();
+                objReservation.IdNumber =selected.IdNumber;
+                objReservation.PilotId = selected.Id;
+                objReservation.UserId = selected.UserId;
+            }
+        }
+
+
+    }
+
+    void ClubSelected(ChangeEventArgs e)
+    {
+        if (objReservation != null)
+        {
+
+            if (int.TryParse((string)e.Value, out var index) && index >= 0)
+            {
+                var selected = RecordsViewModel.FilterViewModel.ClubSelects.Where(i => i.Id == index).FirstOrDefault();
+                objReservation.ClubId = selected.Id;
+
+            }
+        }
+
+
+    }
+
+    void AirplaneSelected(ChangeEventArgs e)
+    {
+        if (objReservation != null)
+        {
+
+            if (int.TryParse((string)e.Value, out var index) && index >= 0)
+            {
+                var selected = RecordsViewModel.FilterViewModel.AirplaneSelects.Where(i => i.Id == index).FirstOrDefault();
+                objReservation.TailNumber = selected.TailNumber;
+                objReservation.AircraftId = selected.Id;
+            }
+        }
+
+
+    }
+}

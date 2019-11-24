@@ -1,0 +1,43 @@
+﻿@page "/Reservation/Create"
+@using ClubLogBook.Application.ViewModels
+
+@inject HttpClient Http
+@using Microsoft.AspNetCore.Components
+@inject NavigationManager navigationManager
+
+<h1> Create Reservation</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <form>
+            <Reservation Item=reservation />
+            <div class="form-group"
+
+                 <input type="button" value="Delete"  class="btn" @onclick="(async () => await UpdateFlight(reservation.Id))" />
+                 <input type="submit" value="Cancel" @onclick="cancle" class="btn" />
+
+            </div>
+        </form>
+    </div>
+</div>
+@code
+{
+    [Parameter] public  string id { get; set; }
+    protected FlightReservationViewModel reservation = new FlightReservationViewModel();
+    string navTo = "/Reservation/FlightReservation";
+    //protected override async Task OnInitAsync()
+    //{
+    //    //reservation = await Http.GetJsonAsync<FlightReservationViewModel>("api/FlightReservation/Details/" + Convert.ToInt32(id));
+    //    reservation = new FlightReservationViewModel();
+    //}
+    protected async Task UpdateFlight(int id)
+    {
+        await Http.SendJsonAsync(HttpMethod.Put, "api/FlightReservation/Create", reservation);
+        navigationManager.NavigateTo(navTo);
+    }
+    protected void cancle()
+    {
+        navigationManager.NavigateTo(navTo);
+    }
+}
+

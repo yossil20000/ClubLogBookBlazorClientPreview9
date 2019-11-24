@@ -1,0 +1,20 @@
+Code,FriendlyName
+A,Airport
+C,VORTAC
+D,VOR/DME
+F,"FAN Marker"
+FX,"Airspace Fix"
+H,Heliport
+L,LFR
+LC,"Localizer or SDF"
+LM,LMM
+LO,LOM
+M,"Marine NDB"
+MD,"Marine NDB/DME"
+ML,"MLS or ISMLS"
+R,NDB
+RD,NDB/DME
+S,Seaport
+T,TACAN
+U,"UHF NDB"
+V,VOR
