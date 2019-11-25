@@ -11,9 +11,28 @@
             <div class="col col-sm-12">
                 @if (item != null)
                 {
+                    AircraftStatusViewModel aircraftStatus = item.Get();
                     <article>
                         <h6>Aircraft @item.TailNumber Summary</h6>
                     </article>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Days/Hours</th>
+                               
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Annual [days]</td><td>@aircraftStatus.AnnualInDays</td></tr>
+                            <tr><td>100HR [hours]</td><td>@aircraftStatus.HR100InDays</td></tr>
+                            <tr><td>VOR [days]</td><td>@aircraftStatus.VorInDays</td></tr>
+                            <tr><td>Altimeter [days]</td><td>@aircraftStatus.AltimeterInDays</td></tr>
+                            <tr><td>Pitot Static [days]</td><td>@aircraftStatus.PitotStaticInDays</td></tr>
+                            <tr><td>Transponder [days]</td><td>@aircraftStatus.TransponderInDays</td></tr>
+                            <tr><td>ELT [days]</td><td>@aircraftStatus.EltInDays</td></tr>
+                        </tbody>
+                    </table>
                 }
 
             </div>
@@ -45,6 +64,8 @@
                     <th>Id</th>
                     <th>Tail Number</th>
                     <th>Last Flight</th>
+                    <th></th>
+                    <th><button class="btn btn-warning" @onclick="@(async () => await OnAddAircraft())">Add</button></th>
                 </tr>
             </thead>
             <tbody>
@@ -55,8 +76,9 @@
                     <tr>
                         <td>@i.Id</td>
                         <td>@i.TailNumber</td>
-                        <td>@i.AirCraftModel.LastFlight.ToString()</td>
-                        <td><button class="btn btn-info" @onclick="@(async () => await OnEditAircraft(i))">Edit</button></td>
+                        <td>@i.AirCraftModel.LastFlight.ToShortDateString()</td>
+                        <td><button class="btn btn-info"   @onclick="@(async () => await OnEditAircraft(i))">Edit</button></td>
+                        <td><button class="btn btn-danger" @onclick="@(async () => await OnDeleteAircraft(i))">Delete</button></td>
                     </tr>
                 }
                 }
@@ -112,14 +134,33 @@
         {
             IsInizialize = true;
             item = aircraftViewModels.FirstOrDefault();
-             LastCommand.Add($"OnInitializedAsync Id:{item.Id} Tail Number:{item.TailNumber}");
+            LastCommand.Add($"OnInitializedAsync Id:{item.Id} Tail Number:{item.TailNumber}");
         }
         else
-             LastCommand.Add($"OnInitializedAsync aircraftViewModels == null");
+            LastCommand.Add($"OnInitializedAsync aircraftViewModels == null");
     }
-     public async Task OnEditAircraft(AircraftViewModel selectObj)
+    public async Task OnEditAircraft(AircraftViewModel selectObj)
     {
         item = selectObj;
-         LastCommand.Add($"OnEditAircraft Id:{item.Id} Tail Number:{item.TailNumber}");
+        LastCommand.Add($"OnEditAircraft Id:{item.Id} Tail Number:{item.TailNumber}");
+    }
+    public async Task OnDeleteAircraft(AircraftViewModel selectObj)
+    {
+
+        aircraftViewModels.Remove(selectObj);
+        LastCommand.Add($"OnDeleteAircraft Id:{selectObj.Id} Tail Number:{selectObj.TailNumber}");
+        if(item.Id == selectObj.Id)
+        {
+            item = aircraftViewModels.FirstOrDefault();
+        }
+
+    }
+    public async Task OnAddAircraft()
+    {
+        LastCommand.Add($"OnAddAircraft Click");
+        item  = new AircraftViewModel();
+        aircraftViewModels.Add(item);
+        LastCommand.Add($"OnAddAircraft Id:{item.Id} Tail Number:{item.TailNumber}");
+
     }
 }
