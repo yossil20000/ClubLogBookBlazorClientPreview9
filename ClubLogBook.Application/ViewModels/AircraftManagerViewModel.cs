@@ -3,6 +3,7 @@ using System;
 using AutoMapper;
 using ClubLogBook.Application.Interfaces.Mapping;
 using System.Text;
+using System.ComponentModel;
 
 namespace ClubLogBook.Application.ViewModels
 {
@@ -20,13 +21,80 @@ namespace ClubLogBook.Application.ViewModels
 		public string Model {get;set;}
 		public string TypeDesignation {get;set;}
 		public string ModelFullName {get;set;}
-		public DateTime LastAnnual { get; set; } = DateTime.Now.AddMonths(-24);
-		public DateTime LastVOR {get;set;} =  DateTime.Now.AddMonths(-24);
-		public DateTime LastAltimeter {get;set;} = DateTime.Now.AddMonths(-24);
-		public DateTime LastTransponder {get;set;} = DateTime.Now.AddMonths(-24);
-		public DateTime LastELT {get;set;} = DateTime.Now.AddMonths(-24);
-		public DateTime LastPitotStatic {get;set;} = DateTime.Now.AddMonths(-24);
-		public DateTime NextAnnual { get { return LastAnnual.AddMonths(12); } }
+		private DateTime lastAnnual;
+		public DateTime LastAnnual
+		{
+			get { return lastAnnual; }
+			set
+			{
+				if (value != lastAnnual)
+				{
+					lastAnnual = value; NextAnnual = lastAnnual.AddMonths(AnnualPeriodCheck);
+				}
+			}
+		}
+		private DateTime lastVOR;
+		public DateTime LastVOR
+		{
+			get { return lastVOR; }
+			set
+			{
+				if (value != lastVOR)
+				{
+					lastVOR = value; NextVOR = lastVOR.AddDays(VORPeriodCheck);
+				}
+			}
+		}
+
+		private DateTime lastAltimeter;
+		public DateTime LastAltimeter
+		{
+			get { return lastAltimeter; }
+			set
+			{
+				if (value != lastAltimeter)
+				{
+					lastAltimeter = value; NextAltimeter = lastAltimeter.AddMonths(AltimeterPeriodCheck);
+				}
+			}
+		}
+		private DateTime lastTransponder;
+		public DateTime LastTransponder
+		{
+			get { return lastTransponder; }
+			set
+			{
+				if (value != lastTransponder)
+				{
+					lastTransponder = value; NextTransponder = lastTransponder.AddMonths(TransponderPeriodCheck);
+				}
+			}
+		}
+		private DateTime lastELT;
+		public DateTime LastELT
+		{
+			get { return lastELT; }
+			set
+			{
+				if (value != lastELT)
+				{
+					lastELT = value; NextELT = lastELT.AddMonths(ELTPeriodCheck);
+				}
+			}
+		}
+		private DateTime lastPitotStatic;
+		public DateTime LastPitotStatic
+		{
+			get { return lastPitotStatic; }
+			set
+			{
+				if (value != lastPitotStatic)
+				{
+					lastPitotStatic = value; NextPitotStatic = lastPitotStatic.AddMonths(24);
+				}
+			}
+		}
+		public DateTime NextAnnual { get; set; }
 		public DateTime NextVOR {get;set;} = DateTime.Now;
 		public DateTime NextAltimeter {get;set;} = DateTime.Now;
 		public DateTime NextTransponder {get;set;} = DateTime.Now;
@@ -43,6 +111,8 @@ namespace ClubLogBook.Application.ViewModels
 		public decimal Hours { get; set; } = 0;
 		public DateTime FirstFlight {get;set;} =  DateTime.Now;
 		public DateTime LastFlight {get;set;} =  DateTime.Now;
+
+		
 
 		public void CreateMappings(Profile configuration)
 		{
@@ -83,9 +153,9 @@ namespace ClubLogBook.Application.ViewModels
 		}
 		public AircraftStatusViewModel Get()
 		{
-			return new AircraftStatusViewModel((AirCraftModel.NextAnnual - AirCraftModel.LastAnnual).Days, (AirCraftModel.NextVOR - AirCraftModel.LastVOR).Days,
-				(AirCraftModel.NextELT - AirCraftModel.LastELT).Days, (AirCraftModel.NextPitotStatic - AirCraftModel.LastPitotStatic).Days,
-				(AirCraftModel.NextAltimeter - AirCraftModel.LastAltimeter).Days ,(AirCraftModel.NextTransponder - AirCraftModel.LastTransponder).Days,
+			return new AircraftStatusViewModel((AirCraftModel.NextAnnual - DateTime.Now).Days, (AirCraftModel.NextVOR - DateTime.Now).Days,
+				(AirCraftModel.NextELT - DateTime.Now).Days, (AirCraftModel.NextPitotStatic - DateTime.Now).Days,
+				(AirCraftModel.NextAltimeter - DateTime.Now).Days ,(AirCraftModel.NextTransponder - DateTime.Now).Days,
 				100 - (AirCraftModel.EngineTime - AirCraftModel.Hours));
 			
 		}
@@ -119,7 +189,7 @@ namespace ClubLogBook.Application.ViewModels
 		{
 			AnnualInDays = annualDays;VorInDays = vorDays;EltInDays = eltDays;PitotStaticInDays = pitotStaticDays;TransponderInDays = transponderDays;HR100InDays = hr100Days;
 		}
-		public int AnnualInDays { get; }
+		public int AnnualInDays { get; } = 45;
 		public int VorInDays { get; }
 		public int EltInDays { get; }
 		public int PitotStaticInDays { get; }

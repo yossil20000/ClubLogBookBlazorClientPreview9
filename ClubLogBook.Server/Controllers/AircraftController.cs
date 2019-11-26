@@ -32,7 +32,7 @@ namespace ClubLogBook.Server.Controllers
         // GET: api/Aircraft
         [HttpGet]
         //[Route("api/Aircraft/AircraftGet")]
-        public async  Task<List<AircraftViewModel>> AircraftGet()
+        public async  Task<List<AircraftViewModel>> AircraftGet([FromBody] string clubName ="")
         {
             CancellationToken ct = new CancellationToken();
             List<Aircraft> air = await aircraftManagerService.GetAllAircraftsInClub("BAZ");
@@ -42,7 +42,15 @@ namespace ClubLogBook.Server.Controllers
             mapper.Map(aircraftAll, aircraftViewModel);
             try
             {
-                var list= await mediator.Send(new GetAircraftListQuery(), ct);
+                var list = await mediator.Send(new GetAircraftListQuery(), ct);
+                if (clubName != "")
+      
+                {
+                    GetClubAircraftListQuery club = new GetClubAircraftListQuery();
+                    club.ClubName = clubName;
+                    var listClub = await mediator.Send(club, ct);
+                }
+                
             }
             catch(Exception ex)
             {

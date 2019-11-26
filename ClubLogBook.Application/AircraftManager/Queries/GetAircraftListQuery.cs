@@ -12,6 +12,7 @@ using System.Collections.Generic;
 
 namespace ClubLogBook.Application.AircraftManager.Queries
 {
+	
 	public class GetAircraftListQuery : IRequest<AircraftListViewModel>
 	{
 		public class Handler : IRequestHandler<GetAircraftListQuery, AircraftListViewModel>

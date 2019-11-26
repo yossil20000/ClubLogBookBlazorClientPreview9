@@ -11,7 +11,7 @@
             <div class="col col-sm-12">
                 @if (item != null)
                 {
-                    AircraftStatusViewModel aircraftStatus = item.Get();
+                   
                     <article>
                         <h6>Aircraft @item.TailNumber Summary</h6>
                     </article>
@@ -24,13 +24,13 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr><td>Annual [days]</td><td>@aircraftStatus.AnnualInDays</td></tr>
-                            <tr><td>100HR [hours]</td><td>@aircraftStatus.HR100InDays</td></tr>
-                            <tr><td>VOR [days]</td><td>@aircraftStatus.VorInDays</td></tr>
-                            <tr><td>Altimeter [days]</td><td>@aircraftStatus.AltimeterInDays</td></tr>
-                            <tr><td>Pitot Static [days]</td><td>@aircraftStatus.PitotStaticInDays</td></tr>
-                            <tr><td>Transponder [days]</td><td>@aircraftStatus.TransponderInDays</td></tr>
-                            <tr><td>ELT [days]</td><td>@aircraftStatus.EltInDays</td></tr>
+                            <tr><td>Annual [days]</td><td>@aircraftStatusViewModel.AnnualInDays</td></tr>
+                            <tr><td>100HR [hours]</td><td>@aircraftStatusViewModel.HR100InDays</td></tr>
+                            <tr><td>VOR [days]</td><td>@aircraftStatusViewModel.VorInDays</td></tr>
+                            <tr><td>Altimeter [days]</td><td>@aircraftStatusViewModel.AltimeterInDays</td></tr>
+                            <tr><td>Pitot Static [days]</td><td>@aircraftStatusViewModel.PitotStaticInDays</td></tr>
+                            <tr><td>Transponder [days]</td><td>@aircraftStatusViewModel.TransponderInDays</td></tr>
+                            <tr><td>ELT [days]</td><td>@aircraftStatusViewModel.EltInDays</td></tr>
                         </tbody>
                     </table>
                 }
@@ -116,6 +116,7 @@
 @code {    
     private List<AircraftViewModel> aircraftViewModels { get; set; }
     AccountListViewModel accountListViewModels { get; set; }
+    AircraftStatusViewModel aircraftStatusViewModel { get; set; }
     List<string> LastCommand { get; set; } = new List<string>();
     bool IsInizialize { get; set; } = false;
     AircraftViewModel item;
@@ -125,7 +126,7 @@
         accountListViewModels = await Http.GetJsonAsync<AccountListViewModel>("api/Account/AccountsListQueryGet");
         LastCommand.Add($"OnInitializedAsync accountListViewModels.Accounts = out");
         LastCommand.Add($"OnInitializedAsync accountListViewModels.Accounts =  {accountListViewModels.Accounts.Count()}");
-        aircraftViewModels = await Http.GetJsonAsync<List<AircraftViewModel>>("api/Aircraft/AircraftGet");
+        aircraftViewModels = await Http.GetJsonAsync<List<AircraftViewModel>>($"api/Aircraft/AircraftGet/clubName=BAZ");
         LastCommand.Add($"OnInitializedAsync contact {aircraftViewModels.Count}");
         List<ClubContactsViewModel> contacts = await Http.GetJsonAsync<List<ClubContactsViewModel>>("api/ClubContacts/Members");
         LastCommand.Add($"OnInitializedAsync contact {contacts.Count}");
@@ -134,6 +135,7 @@
         {
             IsInizialize = true;
             item = aircraftViewModels.FirstOrDefault();
+            aircraftStatusViewModel = item.Get();
             LastCommand.Add($"OnInitializedAsync Id:{item.Id} Tail Number:{item.TailNumber}");
         }
         else
@@ -142,7 +144,8 @@
     public async Task OnEditAircraft(AircraftViewModel selectObj)
     {
         item = selectObj;
-        LastCommand.Add($"OnEditAircraft Id:{item.Id} Tail Number:{item.TailNumber}");
+         aircraftStatusViewModel = item.Get();
+        LastCommand.Add($"OnEditAircraft Id:{item.Id} Tail Number:{item.TailNumber} {aircraftStatusViewModel.AltimeterInDays}");
     }
     public async Task OnDeleteAircraft(AircraftViewModel selectObj)
     {
