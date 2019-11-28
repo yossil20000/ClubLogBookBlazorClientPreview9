@@ -1,6 +1,7 @@
 ﻿@page "/AircraftManager/AircraftManager"
 @using ClubLogBook.Application.ViewModels
 @using ClubLogBook.Application.Accounts.Queries.GetAccountsList
+@using ClubLogBook.Application.AircraftManager.Queries;
 @inject HttpClient Http
 @inject IdentityAuthenticationStateProvider authStateProvider
 
@@ -90,9 +91,10 @@
         @if (item != null)
 
         {
-            
-            <AircraftDisp item="item" IsEditable="true"/>
-            
+            <button type="submit" class="btn btn-danger" @onclick="@(async () => await OnAddUpdateAircraf())">Update</button>
+           
+            <AircraftDisp item="item" IsEditable="true" />
+
         }
 
     </div>
@@ -126,7 +128,9 @@
         accountListViewModels = await Http.GetJsonAsync<AccountListViewModel>("api/Account/AccountsListQueryGet");
         LastCommand.Add($"OnInitializedAsync accountListViewModels.Accounts = out");
         LastCommand.Add($"OnInitializedAsync accountListViewModels.Accounts =  {accountListViewModels.Accounts.Count()}");
-        aircraftViewModels = await Http.GetJsonAsync<List<AircraftViewModel>>($"api/Aircraft/AircraftGet/clubName=BAZ");
+        AircraftListViewModel  aircraftlistViewModels = await Http.GetJsonAsync<AircraftListViewModel>($"api/Aircraft/GetClubAircraft?clubName=BAZ");
+        aircraftlistViewModels = await Http.GetJsonAsync<AircraftListViewModel>($"api/Aircraft/GetAllAircraft");
+        aircraftViewModels = (List<AircraftViewModel>)aircraftlistViewModels.AircraftList;
         LastCommand.Add($"OnInitializedAsync contact {aircraftViewModels.Count}");
         List<ClubContactsViewModel> contacts = await Http.GetJsonAsync<List<ClubContactsViewModel>>("api/ClubContacts/Members");
         LastCommand.Add($"OnInitializedAsync contact {contacts.Count}");
@@ -144,12 +148,13 @@
     public async Task OnEditAircraft(AircraftViewModel selectObj)
     {
         item = selectObj;
-         aircraftStatusViewModel = item.Get();
+        aircraftStatusViewModel = item.Get();
         LastCommand.Add($"OnEditAircraft Id:{item.Id} Tail Number:{item.TailNumber} {aircraftStatusViewModel.AltimeterInDays}");
     }
     public async Task OnDeleteAircraft(AircraftViewModel selectObj)
     {
 
+       selectObj =  await Http.PutJsonAsync<AircraftViewModel>($"api/Aircraft/PutDeleteAircraft", selectObj.Id);
         aircraftViewModels.Remove(selectObj);
         LastCommand.Add($"OnDeleteAircraft Id:{selectObj.Id} Tail Number:{selectObj.TailNumber}");
         if(item.Id == selectObj.Id)
@@ -162,8 +167,16 @@
     {
         LastCommand.Add($"OnAddAircraft Click");
         item  = new AircraftViewModel();
+
         aircraftViewModels.Add(item);
         LastCommand.Add($"OnAddAircraft Id:{item.Id} Tail Number:{item.TailNumber}");
+
+    }
+    public async Task OnAddUpdateAircraf()
+    {
+        item = await Http.PutJsonAsync<AircraftViewModel>($"api/Aircraft/GetCreateAircaft",item);
+        LastCommand.Add($"OnAddUpdateAircraf Id:{item.Id} Return Id:{item.Id}");
+        StateHasChanged();
 
     }
 }

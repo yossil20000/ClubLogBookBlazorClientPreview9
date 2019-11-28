@@ -122,20 +122,20 @@ namespace ClubLogBook.Application.ViewModels
 	}
 	public class AircraftViewModel : IHaveCustomMapping
 	{
-		public int Id {get;set;}
-		public string TailNumber {get;set;}
-		public bool? Complex {get;set;}
-		public bool? HighPerformance {get;set;}
-		public bool? ConstantSpeedProp {get;set;}
-		public bool? TailWheel {get;set;}
-		public bool? Retractable {get;set;}
-		public bool? Turbine {get;set;}
-		public bool? Jet {get;set;}
-		public bool? Flaps {get;set;}
-		public byte[] Photo {get;set;}
-		public AircraftStateViewModel AircraftState {get;set;}
-		public AircraftCategoryViewModel AircraftCategory {get;set;}
-		public AircraftClassViewModel AircraftClass {get;set;}
+		public int Id { get; set; } = 0;
+		public string TailNumber { get; set; } = "";
+		public bool? Complex { get; set; } = false;
+		public bool? HighPerformance { get; set; } = false;
+		public bool? ConstantSpeedProp { get; set; } = false;
+		public bool? TailWheel { get; set; } = false;
+		public bool? Retractable { get; set; } = false;
+		public bool? Turbine { get; set; } = false;
+		public bool? Jet { get; set; } = false;
+		public bool? Flaps { get; set; } = false;
+		public byte[] Photo { get; set; } = null;
+		public AircraftStateViewModel AircraftState { get; set; } = AircraftStateViewModel.OutOfService;
+		public AircraftCategoryViewModel AircraftCategory { get; set; } = AircraftCategoryViewModel.Airplane;
+		public AircraftClassViewModel AircraftClass { get; set; } = AircraftClassViewModel.SingleEngineLand;
 		public AirCraftModelViewModel AirCraftModel { get; set; } = new AirCraftModelViewModel();
 		public AircraftViewModel(Aircraft aircraft)
 		{
@@ -150,6 +150,7 @@ namespace ClubLogBook.Application.ViewModels
 		public void CreateMappings(Profile configuration)
 		{
 			configuration.CreateMap<Aircraft, AircraftViewModel>();
+			configuration.CreateMap<AircraftViewModel,Aircraft>();
 		}
 		public AircraftStatusViewModel Get()
 		{

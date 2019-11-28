@@ -17,7 +17,7 @@
                     <label>Id: @item.Id Next Alt: @item.AirCraftModel.NextAltimeter</label>
                     <div class="container-card-body">
                         <div class="card-body-item--1">Tail Number:@item.TailNumber</div>
-                        <div class="card-body-item--1-value" style="@Style"><input type="text" @bind="@item.TailNumber" /></div>
+                        <div class="card-body-item--1-value" style="@Style"><input type="text" @bind="@item.TailNumber" pattern="[A-Za-z0-9]+"/></div>
                         <div class="card-body-item--2">Flaps:@item.Flaps</div>
                         <div class="card-body-item--2-value" style="@Style"><input type="checkbox" @bind="@item.Flaps" /></div>
                         @*row 2*@
