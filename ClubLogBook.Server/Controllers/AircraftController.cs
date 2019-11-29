@@ -39,14 +39,15 @@ namespace ClubLogBook.Server.Controllers
             //List<Aircraft> air = await aircraftManagerService.GetAllAircraftsInClub("BAZ");
             List<Aircraft> aircraftAll = await aircraftManagerService.GetAllAircraftsInClub("");
             //List<AircraftPrice> aircraftPrices = await aircraftManagerService.GetAircraftPrices();
-            List<AircraftViewModel> aircraftViewModel = new List<AircraftViewModel>();
+           //List<AircraftViewModel> aircraftViewModel = new List<AircraftViewModel>();
             AircraftListViewModel aircraftListViewModel = new AircraftListViewModel();
             //mapper.Map(aircraftAll, aircraftViewModel);
             try
             {
                 aircraftListViewModel =  await mediator.Send(new GetAircraftListQuery(), ct);
-                
-                
+                if(aircraftListViewModel == null)
+                    aircraftListViewModel=  new AircraftListViewModel();
+
             }
             catch(Exception ex)
             {
@@ -70,6 +71,8 @@ namespace ClubLogBook.Server.Controllers
                     GetClubAircraftListQuery club = new GetClubAircraftListQuery();
                     club.ClubName = clubName;
                     aircraftListViewModel = await mediator.Send(club, ct);
+                    if (aircraftListViewModel == null)
+                        aircraftListViewModel = new AircraftListViewModel();
                 }
 
             }

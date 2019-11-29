@@ -7,7 +7,7 @@ using NUnit.Framework;
 using System.Linq;
 using ClubLogBook.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
-using ClubLogBook.Client.ViewModels;
+using ClubLogBook.Application.ViewModels;
 
 namespace UnitsTest.AccountManager
 {

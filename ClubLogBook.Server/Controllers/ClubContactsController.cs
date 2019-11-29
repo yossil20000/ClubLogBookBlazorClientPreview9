@@ -62,14 +62,19 @@ namespace ClubLogBook.Server.Controllers
 		{
 			List<ClubContactsViewModel> contacts = new List<ClubContactsViewModel>();
 			var pilots = await _clubContactsViewModelService.GetAllPilot();
+			if (pilots == null)
+				return new List<ClubContactsViewModel>();
 			return pilots;
 		}
 		[HttpGet]
 		[Route("api/ClubContacts/PilotsNotInClub")]
 		public async Task<IEnumerable<ClubContactsViewModel>> PilotsNotInClub()
 		{
-			List<ClubContactsViewModel> contacts = new List<ClubContactsViewModel>();
-			return await _clubContactsViewModelService.GetPilotsNotInAnyClub();
+			
+			var contacts =  await _clubContactsViewModelService.GetPilotsNotInAnyClub();
+			if(contacts == null)
+				return new List<ClubContactsViewModel>();
+			return contacts;
 			
 		}
 		// GET: ClubContacts/Details/5

@@ -39,7 +39,10 @@ namespace ClubLogBook.Server.Controllers
 		public async Task<FlightRecordIndexViewModel> FlightWithFilter()
 		{
 			
-			return await _flightRecordViewModelService.GetRecord(0, 10,null, null);
+			FlightRecordIndexViewModel flightRecordIndexViewModel =  await _flightRecordViewModelService.GetRecord(0, 10,null, null);
+			if (flightRecordIndexViewModel == null)
+				flightRecordIndexViewModel = new FlightRecordIndexViewModel();
+			return flightRecordIndexViewModel;
 		}
 
 		[HttpPost]
@@ -104,7 +107,8 @@ namespace ClubLogBook.Server.Controllers
 
 
 			ICollection<ClubFlightViewModel> ienumerableDest;
-
+			if (flight == null)
+				flight = new List<Flight>();
 			ienumerableDest =  _mapper.Map<ICollection<Flight>, IList<ClubFlightViewModel>>(flight);
 			return ienumerableDest;
         }
@@ -115,6 +119,7 @@ namespace ClubLogBook.Server.Controllers
 			IEnumerable<AirplaneSelectViewModel> airplaneSelectViewModels;
 			var clubAircraft = await _clubService.GetClubAircrafts("BAZ");
 			airplaneSelectViewModels = _mapper.Map<IEnumerable<AirplaneSelectViewModel>>(clubAircraft);
+
 			return airplaneSelectViewModels;
 		}
 		// GET: api/ClubFlight/5
@@ -131,9 +136,10 @@ namespace ClubLogBook.Server.Controllers
 			var flightlist = await _clubService.GetClubAircraftFlight("BAZ", 8);
 			flight = flightlist.Where(i => i.Id == id).FirstOrDefault();
 
-			
 
 
+			if (flight == null)
+				flight = new Flight();
 			clubFlightViewModel = _mapper.Map<Flight, ClubFlightViewModel>(flight);
 			if (clubFlightViewModel.Routh == null)
 				clubFlightViewModel.Routh = "NULL";

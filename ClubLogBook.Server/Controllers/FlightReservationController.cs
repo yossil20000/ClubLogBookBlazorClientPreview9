@@ -40,7 +40,9 @@ namespace ClubLogBook.Server.Controllers
 			var reservations = await _reservationService.GetReservation();
 			
 			ienumerableDest = _mapper.Map<IEnumerable<AircraftReservation>, IList<FlightReservationViewModel>>(reservations);
-			foreach(var r  in ienumerableDest)
+			if (ienumerableDest == null)
+				ienumerableDest = new List<FlightReservationViewModel>();
+			foreach (var r  in ienumerableDest)
 			{
 				var pilot = await _memberRepository.GetByIdAsync(r.PilotId);
 				r.UserId = pilot == null ? Guid.Empty : pilot.UserId;
