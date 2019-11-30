@@ -9,13 +9,15 @@ using ClubLogBook.Core.Entities;
 using ClubLogBook.Application.Interfaces;
 using AutoMapper;
 using System.Text.RegularExpressions;
+using ClubLogBook.Application.Common.Interfaces;
+
 namespace ClubLogBook.Application.AircraftManager.Commands
 {
 	public class CreateAircraftCommandHandler : IRequestHandler<CreateAircraftCommand, Unit>
 	{
-		private readonly IClubContext context;
+		private readonly IApplicationDbContext context;
 		private readonly IMapper mapper;
-		public CreateAircraftCommandHandler(IClubContext context, IMapper mapper)
+		public CreateAircraftCommandHandler(IApplicationDbContext context, IMapper mapper)
 		{
 			this.context = context;
 			this.mapper = mapper;

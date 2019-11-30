@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 
 using System.Text;
+using ClubLogBook.Core.Common;
 using ClubLogBook.Core.Interfaces;
 
 namespace ClubLogBook.Core.Entities
 {
-	public interface ILogBook<TPilot, TFlightRecord> : IBasicEntity , IAggregateRoot
+	public interface ILogBook<TPilot, TFlightRecord> : IAuditableEntity , IAggregateRoot
 	{
 		
 		
@@ -17,7 +18,7 @@ namespace ClubLogBook.Core.Entities
 
 
 	}
-	public class LogBook : BaseEntity
+	public class LogBook : AuditableEntity
 	{
 		private HashSet<FlightRecord> _flightRecords = new HashSet<FlightRecord>();
 		public LogBook()

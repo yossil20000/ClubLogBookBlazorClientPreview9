@@ -18,7 +18,6 @@ namespace ClubLogBook.Server
 
 			CreateMap<Flight, ClubFlightViewModel>().PreserveReferences().MaxDepth(4);
 			CreateMap<ClubFlightViewModel,Flight>().PreserveReferences().MaxDepth(4);
-			CreateMap<BaseEntity, BaseEntity>();
 			CreateMap<Aircraft, Aircraft>();
 			CreateMap<AirCraftModel, AirCraftModel>();
 			CreateMap<Pilot, Pilot>();

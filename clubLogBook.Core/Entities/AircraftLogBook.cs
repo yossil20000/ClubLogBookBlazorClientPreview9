@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using ClubLogBook.Core.Common;
 using ClubLogBook.Core.Interfaces;
 namespace ClubLogBook.Core.Entities
 {
-	public interface IAircraftLogBook<TFlight> : IBasicEntity, IAggregateRoot
+	public interface IAircraftLogBook<TFlight> : IAuditableEntity, IAggregateRoot
 	{
 
 		
@@ -12,7 +13,7 @@ namespace ClubLogBook.Core.Entities
 		string TaiNumber { get; set; }
 		ICollection<TFlight> Flights { get;  }
 	}
-	public class AircraftLogBook : BaseEntity, IAircraftLogBook<Flight>
+	public class AircraftLogBook : AuditableEntity, IAircraftLogBook<Flight>
 	{
 		private HashSet<Flight> flights = new HashSet<Flight>();
 		public AircraftLogBook()

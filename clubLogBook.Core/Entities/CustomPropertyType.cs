@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using ClubLogBook.Core.Common;
 using ClubLogBook.Core.Interfaces;
 namespace ClubLogBook.Core.Entities
 {
-	public interface ICustomPropertyType : IBasicEntity
+	public interface ICustomPropertyType : IAuditableEntity
 	{
 
 
@@ -18,7 +19,7 @@ namespace ClubLogBook.Core.Entities
 		string Description { get; set; }
 
 	}
-	public class CustomPropertyType : BaseEntity
+	public class CustomPropertyType : AuditableEntity
 	{
 		public CustomPropertyType()
 		{ }

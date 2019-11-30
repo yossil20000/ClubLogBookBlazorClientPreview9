@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using ClubLogBook.Core.Common;
 using ClubLogBook.Core.Interfaces;
 namespace ClubLogBook.Core.Entities
 {
 
 	
-	public class Invoice : BaseEntity, IInvoice
+	public class Invoice : AuditableEntity, IInvoice
 	{
 		public Invoice() { }
 

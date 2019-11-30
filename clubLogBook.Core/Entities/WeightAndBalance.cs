@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClubLogBook.Core.Common;
+using System;
 using System.Collections.Generic;
 
 namespace ClubLogBook.Core.Entities
@@ -31,7 +32,7 @@ namespace ClubLogBook.Core.Entities
 		ICollection<WBProfile> Profile { get; set; }
 
 	}
-	public class WeightAndBalance : IWeightAndBalance<Aircraft>
+	public class WeightAndBalance : AuditableEntity, IWeightAndBalance<Aircraft>
 	{
 		public WeightAndBalance()
 		{

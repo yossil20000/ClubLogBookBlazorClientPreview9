@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using ClubLogBook.Core.Common;
 using ClubLogBook.Core.Interfaces;
 namespace ClubLogBook.Core.Entities
 {
-	public class Phone : BaseEntity
+	public class Phone : AuditableEntity
 	{
 		public Phone() { Id = 0; }
 		public string CountryCode { get; set; } = "972";

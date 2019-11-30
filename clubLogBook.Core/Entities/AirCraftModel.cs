@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using ClubLogBook.Core.Interfaces;
+using ClubLogBook.Core.Common;
+
 namespace ClubLogBook.Core.Entities
 {
-	public interface IAirCraftModel : IBasicEntity
+	public interface IAirCraftModel : IAuditableEntity
 	{
 
 		
@@ -43,7 +45,7 @@ namespace ClubLogBook.Core.Entities
 		
 
 	}
-	public class AirCraftModel : BaseEntity, IAggregateRoot
+	public class AirCraftModel : AuditableEntity, IAggregateRoot
 	{
 		public AirCraftModel()
 		{

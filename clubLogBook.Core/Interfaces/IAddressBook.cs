@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ClubLogBook.Core.Interfaces
 {
-	public interface IAddressBook : IBasicEntity
+	public interface IAddressBook : IAuditableEntity
 	{
 	}
 }

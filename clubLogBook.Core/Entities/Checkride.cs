@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using ClubLogBook.Core.Common;
 using ClubLogBook.Core.Interfaces;
 
 namespace ClubLogBook.Core.Entities
 {
-	public interface ICheckride : IBasicEntity
+	public interface ICheckride : IAuditableEntity
 	{
 		
 		DateTime Date { get; set; }
 
 	}
-	public class Checkride : BaseEntity, ICheckride
+	public class Checkride : AuditableEntity, ICheckride
 	{
 		public Checkride() { }
 		

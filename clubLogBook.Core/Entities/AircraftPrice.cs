@@ -1,9 +1,10 @@
-﻿using ClubLogBook.Core.Interfaces;
+﻿using ClubLogBook.Core.Common;
+using ClubLogBook.Core.Interfaces;
 using System;
 namespace ClubLogBook.Core.Entities
 {
 	
-	public class AircraftPrice : BaseEntity, IAircraftPrice
+	public class AircraftPrice : AuditableEntity, IAircraftPrice
 	{
 		public AircraftPrice()
 		{

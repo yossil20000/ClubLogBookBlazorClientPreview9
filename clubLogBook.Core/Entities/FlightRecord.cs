@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using ClubLogBook.Core.Common;
 using ClubLogBook.Core.Interfaces;
 namespace ClubLogBook.Core.Entities
 {
-	public interface IFlightRecord<TAircraft> : IBasicEntity ,IAggregateRoot
+	public interface IFlightRecord<TAircraft> : IAuditableEntity ,IAggregateRoot
 	{
 
 
@@ -48,7 +49,7 @@ namespace ClubLogBook.Core.Entities
 		// virtual Student Student { get; set; }
 		TAircraft Aircraft { get; set; }
 	}
-	public class FlightRecord : BaseEntity
+	public class FlightRecord : AuditableEntity
 	{
 		public FlightRecord()
 		{

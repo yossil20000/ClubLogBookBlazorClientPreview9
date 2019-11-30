@@ -1,8 +1,10 @@
-﻿using System;
+﻿using ClubLogBook.Core.Common;
+using ClubLogBook.Core.Interfaces;
+using System;
 
 namespace ClubLogBook.Core.Entities
 {
-	interface IAircraftReservation
+	interface IAircraftReservation : IAuditableEntity
 	{
 		
 		
@@ -17,7 +19,7 @@ namespace ClubLogBook.Core.Entities
 
 
 	}
-	public class AircraftReservation : BaseEntity, IAircraftReservation
+	public class AircraftReservation : AuditableEntity, IAircraftReservation
 	{
 		public AircraftReservation() { }
 	

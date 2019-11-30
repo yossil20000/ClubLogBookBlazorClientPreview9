@@ -9,6 +9,8 @@ using ClubLogBook.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using ClubLogBook.Application.ViewModels;
 using System.Collections.Generic;
+using ClubLogBook.Application.Common.Interfaces;
+
 namespace ClubLogBook.Application.AircraftManager.Queries
 {
 	public class GetClubAircraftListQuery : IRequest<AircraftListViewModel>
@@ -19,9 +21,9 @@ namespace ClubLogBook.Application.AircraftManager.Queries
 	}
 	public class GetClubAircraftListQueryHandler : IRequestHandler<GetClubAircraftListQuery, AircraftListViewModel>
 	{
-		private readonly IClubContext context;
+		private readonly IApplicationDbContext context;
 		private readonly IMapper mapper;
-		public GetClubAircraftListQueryHandler(IClubContext context, IMapper mapper)
+		public GetClubAircraftListQueryHandler(IApplicationDbContext context, IMapper mapper)
 		{
 			this.context = context;
 			this.mapper = mapper;

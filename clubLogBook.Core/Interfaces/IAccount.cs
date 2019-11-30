@@ -21,7 +21,7 @@ namespace ClubLogBook.Core.Interfaces
 		InTransaction,
 		Lock
 	}
-	public interface IAccount<TTransaction> : IAggregateRoot, IBasicEntity
+	public interface IAccount<TTransaction> : IAggregateRoot, IAuditableEntity
 	{
 
 

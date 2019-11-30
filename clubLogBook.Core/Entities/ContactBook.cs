@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using ClubLogBook.Core.Interfaces;
+using ClubLogBook.Core.Common;
+
 namespace ClubLogBook.Core.Entities
 {
-	public class ContactBook : BaseEntity, IAggregateRoot
+	public class ContactBook : AuditableEntity, IAggregateRoot
 	{
 
 		public string Name { get; set; } = "Global";

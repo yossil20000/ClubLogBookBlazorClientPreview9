@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using ClubLogBook.Core.Interfaces;
+using ClubLogBook.Core.Common;
+
 namespace ClubLogBook.Core.Entities
 {
-	public interface IFlight : IBasicEntity
+	public interface IFlight : IAuditableEntity
 	{
 
 		
@@ -19,7 +21,7 @@ namespace ClubLogBook.Core.Entities
 		Decimal HobbsEnd { get; set; }
 
 	}
-	public class Flight :BaseEntity
+	public class Flight : AuditableEntity
 	{
 		public Flight() {
 			Pilot = new Pilot();
@@ -138,7 +140,7 @@ namespace ClubLogBook.Core.Entities
 		//	}
 		//}
 	}
-	//public class FlightView : BaseEntity
+	//public class FlightView : AuditableEntity
 	//{
 	//	public static bool operator !=(FlightView f1, FlightView f2)
 	//	{

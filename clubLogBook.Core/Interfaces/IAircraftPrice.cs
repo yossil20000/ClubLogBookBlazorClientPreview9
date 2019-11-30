@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ClubLogBook.Core.Interfaces
 {
-	public interface IAircraftPrice : IBasicEntity, IAggregateRoot
+	public interface IAircraftPrice : IAuditableEntity, IAggregateRoot
 	{
 
 

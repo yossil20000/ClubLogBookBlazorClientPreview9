@@ -3,17 +3,18 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using ClubLogBook.Core.Interfaces;
+using ClubLogBook.Core.Common;
 
 namespace ClubLogBook.Core.Entities
 {
-	public interface IClub : IBasicEntity, IAggregateRoot
+	public interface IClub : IAuditableEntity, IAggregateRoot
 	{
 		
 		string Name { get; set; }
 		
 
 	}
-	public class Club : BaseEntity, IClub
+	public class Club : AuditableEntity, IClub
 	{
 		public Club()
 		{

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using ClubLogBook.Core.Entities;
+using ClubLogBook.Core.Common;
 using ClubLogBook.Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;

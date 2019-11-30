@@ -2,9 +2,10 @@
 using ClubLogBook.Core.Interfaces;
 using Newtonsoft.Json;
 using System.Linq;
+using ClubLogBook.Core.Common;
 namespace ClubLogBook.Infrastructure.Data
 {
-	public class UserInfo :BaseEntity
+	public class UserInfo : AuditableEntity
 	{
 
 		public string IdNumber { get;   set; } = "";

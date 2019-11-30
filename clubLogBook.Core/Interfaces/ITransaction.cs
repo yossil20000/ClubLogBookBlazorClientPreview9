@@ -9,7 +9,7 @@ namespace ClubLogBook.Core.Interfaces
 		Credit,
 		Debit
 	}
-	public interface ITransaction<T> : IBasicEntity,IAggregateRoot
+	public interface ITransaction<T> : IAuditableEntity,IAggregateRoot
 	{
 
 		DateTime Date { get; set; }

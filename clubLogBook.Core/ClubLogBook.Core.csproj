@@ -19,8 +19,4 @@
     <Compile Remove="Interfaces\ContactEnum.cs" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0-preview3.19551.4" />
-  </ItemGroup>
-
 </Project>

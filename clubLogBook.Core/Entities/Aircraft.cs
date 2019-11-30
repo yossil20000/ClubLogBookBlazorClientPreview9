@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 using System.Text;
+using ClubLogBook.Core.Common;
 using ClubLogBook.Core.Interfaces;
 namespace ClubLogBook.Core.Entities
 {
@@ -26,7 +27,7 @@ namespace ClubLogBook.Core.Entities
 		MultiEngineLand = 2,
 		MultiEngineSea = 3
 	}
-	public interface IAircraft<TAirCraftModel> : IBasicEntity , IAggregateRoot
+	public interface IAircraft<TAirCraftModel> : IAuditableEntity , IAggregateRoot
 	{
 		
 		string TailNumber { get; set; }
@@ -49,7 +50,7 @@ namespace ClubLogBook.Core.Entities
 
 	}
 
-	public class Aircraft : BaseEntity, IAircraft< AirCraftModel> 
+	public class Aircraft : AuditableEntity, IAircraft< AirCraftModel> 
 	{
 
 		public Aircraft()

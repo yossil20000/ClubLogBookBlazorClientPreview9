@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 
 using ClubLogBook.Core.Interfaces;
+using ClubLogBook.Core.Common;
 namespace ClubLogBook.Core.Entities
 {
 	
-	public class Account : BaseEntity, IAccount<Transaction>
+	public class Account : AuditableEntity, IAccount<Transaction>
 	{
 		public Account() { }
 		public Account(int memberId)

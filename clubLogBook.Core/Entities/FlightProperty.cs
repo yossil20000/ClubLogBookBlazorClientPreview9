@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClubLogBook.Core.Common;
+using System;
 
 namespace ClubLogBook.Core.Entities
 {
@@ -12,11 +13,10 @@ namespace ClubLogBook.Core.Entities
 		TCustomPropertyType CustomPropertyType { get; set; }
 		TFlightRecord FlightRecord { get; set; }
 	}
-	public class FlightProperty
+	public class FlightProperty : AuditableEntity
 	{
 		public FlightProperty() { }
 		
-		public int FlightPropertyId { get; set; }
 		public int IntValue { get; set; }
 		public Decimal DecimalValue { get; set; }
 		public DateTime DateValue { get; set; }

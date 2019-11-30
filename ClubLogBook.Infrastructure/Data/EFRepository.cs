@@ -5,6 +5,8 @@ using ClubLogBook.Application.Interfaces;
 using ClubLogBook.Core.Entities;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using ClubLogBook.Core.Common;
+
 namespace ClubLogBook.Infrastructure.Data
 {
 	/// <summary>
@@ -12,7 +14,7 @@ namespace ClubLogBook.Infrastructure.Data
 	/// https://blogs.msdn.microsoft.com/pfxteam/2012/04/13/should-i-expose-synchronous-wrappers-for-asynchronous-methods/
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
-	public class EFRepository<T> :IAsyncRepository<T> where T : BaseEntity
+	public class EFRepository<T> :IAsyncRepository<T> where T : AuditableEntity
 	{
 		protected ClubLogbookContext _dbContex;
 		public EFRepository(ClubLogbookContext dbcontex)

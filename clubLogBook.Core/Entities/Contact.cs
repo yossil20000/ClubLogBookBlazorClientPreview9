@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ClubLogBook.Core.Common;
 using ClubLogBook.Core.Interfaces;
 
 namespace ClubLogBook.Core.Entities
 {
-	public class Contact : BaseEntity , IAggregateRoot
+	public class Contact : AuditableEntity , IAggregateRoot
 	{
 		private List<Address> _addresses { get; set; } = new List<Address>();
 		private List<EMAIL> _eMails { get; set; } = new List<EMAIL>();

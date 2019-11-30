@@ -1,4 +1,4 @@
-﻿using ClubLogBook.Server.Models;
+﻿using ClubLogBook.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;

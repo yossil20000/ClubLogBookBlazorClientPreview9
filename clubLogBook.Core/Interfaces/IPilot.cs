@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ClubLogBook.Core.Interfaces
 {
-	public interface IPilot<TMember ,TLicense, TEndorsment, TCheckride> : IBasicEntity
+	public interface IPilot<TMember ,TLicense, TEndorsment, TCheckride> : IAuditableEntity
 	{
 
 

@@ -27,6 +27,7 @@ using ClubLogBook.Application.Infrastructure.AutoMapper;
 using MediatR;
 using AutoMapper;
 using System.Reflection;
+using ClubLogBook.Application.Common.Interfaces;
 
 namespace ClubLogBook.Server
 {
@@ -63,7 +64,7 @@ namespace ClubLogBook.Server
 			services.AddScoped<IReservationService, ReservationService>();
             services.AddScoped<IAircraftManagerService, AircraftManagerService>();
             services.AddScoped<IAircraftRepository, AircraftRepository>();
-            services.AddScoped<IClubContext, ClubLogbookContext>();
+            services.AddScoped<IApplicationDbContext, ClubLogbookContext>();
             //services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer("Filename=data.db"));
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 			services.AddIdentity<ApplicationUser, IdentityUser<Guid>>()

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using ClubLogBook.Core.Interfaces;
 using System.Linq;
+using ClubLogBook.Core.Common;
+
 namespace ClubLogBook.Core.Entities
 {
 	public enum MemberStatus
@@ -12,7 +14,7 @@ namespace ClubLogBook.Core.Entities
 		Active
 
 	}
-	public  class Member : BaseEntity, IAggregateRoot, IMember
+	public  class Member : AuditableEntity, IAggregateRoot, IMember
 	{
 		public Member() { }
 		public Member(int id, string idNumber, string firstName, string lastname, Gender gender)
