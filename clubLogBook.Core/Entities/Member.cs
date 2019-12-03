@@ -38,7 +38,7 @@ namespace ClubLogBook.Core.Entities
 
 		public Contact Contact { get; set; } = new Contact();
 		//public ClubRoll ClubRoll { get; set; } = ClubRoll.ClubMember;
-		public Guid UserId { get; set; } 
+		public string UserId { get; set; } 
 		
 		public override string ToString()
 		{

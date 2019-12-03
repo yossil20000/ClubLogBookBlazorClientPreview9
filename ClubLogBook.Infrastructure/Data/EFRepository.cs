@@ -1,10 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using ClubLogBook.Application.Interfaces;
-using ClubLogBook.Core.Entities;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+
 using Microsoft.EntityFrameworkCore;
+
+using ClubLogBook.Application.Interfaces;
+using ClubLogBook.Infrastructure.Persistence;
 using ClubLogBook.Core.Common;
 
 namespace ClubLogBook.Infrastructure.Data
@@ -16,8 +18,8 @@ namespace ClubLogBook.Infrastructure.Data
 	/// <typeparam name="T"></typeparam>
 	public class EFRepository<T> :IAsyncRepository<T> where T : AuditableEntity
 	{
-		protected ClubLogbookContext _dbContex;
-		public EFRepository(ClubLogbookContext dbcontex)
+		protected ApplicationDbContext _dbContex;
+		public EFRepository(ApplicationDbContext dbcontex)
 		{
 			_dbContex = dbcontex;
 		}

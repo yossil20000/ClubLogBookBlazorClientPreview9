@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using ClubLogBook.Core.Entities;
 using ClubLogBook.Application.ViewModels;
 using ClubLogBook.Shared;
-using ClubLogBook.Server.Models;
+using ClubLogBook.Infrastructure.Identity;
 
 namespace ClubLogBook.Server
 {

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using ClubLogBook.Core.Entities;
 using ClubLogBook.Core.Common;
 using ClubLogBook.Application.Interfaces;
+using ClubLogBook.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 
@@ -14,7 +15,7 @@ namespace ClubLogBook.Infrastructure.Data
 	public class AircraftRepository : EFRepository<Aircraft> , IAircraftRepository
 	{
 
-		public AircraftRepository(ClubLogbookContext dbcontex) : base(dbcontex)
+		public AircraftRepository(ApplicationDbContext dbcontex) : base(dbcontex)
 		{
 
 		}

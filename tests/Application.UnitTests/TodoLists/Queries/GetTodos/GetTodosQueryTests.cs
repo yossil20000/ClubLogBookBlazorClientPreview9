@@ -1,14 +1,14 @@
 ﻿using AutoMapper;
-using CleanArchitecture.Application.TodoLists.Queries.GetTodos;
-using CleanArchitecture.Application.UnitTests.Common;
-using CleanArchitecture.Infrastructure.Persistence;
+using ClubLogBook.Application.TodoLists.Queries.GetTodos;
+using ClubLogBook.Application.UnitTests.Common;
+using ClubLogBook.Infrastructure.Persistence;
 using Shouldly;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace CleanArchitecture.Application.UnitTests.TodoLists.Queries.GetTodos
+namespace ClubLogBook.Application.UnitTests.TodoLists.Queries.GetTodos
 {
     [Collection("QueryTests")]
     public class GetTodosQueryTests

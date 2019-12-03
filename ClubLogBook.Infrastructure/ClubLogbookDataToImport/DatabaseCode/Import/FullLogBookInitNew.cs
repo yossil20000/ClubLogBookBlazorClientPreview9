@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using ClubLogBook.Core.Entities;
 using ClubLogBook.Core.Interfaces;
+using ClubLogBook.Infrastructure.Persistence;
 //using SixLabors.ImageSharp;
 //using SixLabors.ImageSharp.PixelFormats;
 
@@ -40,7 +41,7 @@ namespace ClubLogBook.Infrastructure.Data.Import
 		//}
 
 		//[Test]
-		public static  void ConvertLogBook(ClubLogbookContext db)
+		public static  void ConvertLogBook(ApplicationDbContext db)
 		{
 			try
 			{
@@ -110,7 +111,7 @@ namespace ClubLogBook.Infrastructure.Data.Import
             }
             return photoByte;
         }
-        public static List<CustomPropertyType> S0_ConvertCustomPropertyTypes(ClubLogbookContext db)
+        public static List<CustomPropertyType> S0_ConvertCustomPropertyTypes(ApplicationDbContext db)
         {
             var thisAssembly = Assembly.GetExecutingAssembly();
             List<CustomPropertyType> cptList = new List<CustomPropertyType>();
@@ -173,7 +174,7 @@ namespace ClubLogBook.Infrastructure.Data.Import
             }
             return cptList;
         }
-        public static  bool S01_ConvertFromMyflightBookAirplane(ClubLogbookContext db)
+        public static  bool S01_ConvertFromMyflightBookAirplane(ApplicationDbContext db)
         {
             try
             {
@@ -260,7 +261,7 @@ namespace ClubLogBook.Infrastructure.Data.Import
             return true;
 
         }
-        public static bool S2_CreateBazClub(ClubLogbookContext db, SupportedClub supportedClub)
+        public static bool S2_CreateBazClub(ApplicationDbContext db, SupportedClub supportedClub)
         {
             try
             {
@@ -328,7 +329,7 @@ namespace ClubLogBook.Infrastructure.Data.Import
             }
             return true;
         }
-		public static bool S2_CreateClubGeneral(ClubLogbookContext db,string clubTailNumber, string clubName , SupportedClub supportedClub,string contactBookName = "GENERAL")
+		public static bool S2_CreateClubGeneral(ApplicationDbContext db,string clubTailNumber, string clubName , SupportedClub supportedClub,string contactBookName = "GENERAL")
 		{
 			try
 			{
@@ -392,7 +393,7 @@ namespace ClubLogBook.Infrastructure.Data.Import
 			return true;
 		}
 
-		public static bool S3_CreateLogBook(ClubLogbookContext db, string idNumber)
+		public static bool S3_CreateLogBook(ApplicationDbContext db, string idNumber)
         {
             //using (db)
             try
@@ -422,7 +423,7 @@ namespace ClubLogBook.Infrastructure.Data.Import
         }
 		
 		
-        public static bool S4_ConvertFromMyflightBookFlightCSV( ClubLogbookContext db, string idNumber)
+        public static bool S4_ConvertFromMyflightBookFlightCSV( ApplicationDbContext db, string idNumber)
         {
             try
             {
@@ -604,7 +605,7 @@ namespace ClubLogBook.Infrastructure.Data.Import
         }
 		
 		
-        public static bool s5_ConverBuzClubAirplaneFlight(ClubLogbookContext db)
+        public static bool s5_ConverBuzClubAirplaneFlight(ApplicationDbContext db)
         {
             string[] row;
             List<Flight> flightsAddList = new List<Flight>();
@@ -725,7 +726,7 @@ namespace ClubLogBook.Infrastructure.Data.Import
             }
         }
 
-        private static List<Pilot> ConvertBuzClubMembers(ClubLogbookContext db, StreamReader sr, Club club ,SupportedClub supportedClub ,ContactBook contactBook)
+        private static List<Pilot> ConvertBuzClubMembers(ApplicationDbContext db, StreamReader sr, Club club ,SupportedClub supportedClub ,ContactBook contactBook)
         {
 
             List<Pilot> cptList = new List<Pilot>();
@@ -1200,7 +1201,7 @@ namespace ClubLogBook.Infrastructure.Data.Import
                     return true;
                 }
 				*/
-                public static bool UpdatePilotDefaultPhoto(ClubLogbookContext db)
+                public static bool UpdatePilotDefaultPhoto(ApplicationDbContext db)
                 {
                     try
                     {
@@ -1222,7 +1223,7 @@ namespace ClubLogBook.Infrastructure.Data.Import
                     return true;
                 }
 
-                public static bool UpdateairplaneDefaultPhoto(ClubLogbookContext db)
+                public static bool UpdateairplaneDefaultPhoto(ApplicationDbContext db)
                 {
                     try
                     {

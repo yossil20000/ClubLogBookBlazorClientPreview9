@@ -1,4 +1,4 @@
-﻿using ClubLogBook.Server.Models;
+﻿using ClubLogBook.Infrastructure.Identity;
 using ClubLogBook.Shared;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;

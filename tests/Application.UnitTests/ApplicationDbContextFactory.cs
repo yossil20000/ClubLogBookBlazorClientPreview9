@@ -1,13 +1,13 @@
-using CleanArchitecture.Application.Common.Interfaces;
-using CleanArchitecture.Domain.Entities;
-using CleanArchitecture.Infrastructure.Persistence;
+using ClubLogBook.Application.Common.Interfaces;
+using ClubLogBook.Core.Entities;
+using ClubLogBook.Infrastructure.Persistence;
 using IdentityServer4.EntityFramework.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Moq;
 using System;
 
-namespace CleanArchitecture.Application.UnitTests.Common
+namespace ClubLogBook.Application.UnitTests.Common
 {
     public static class ApplicationDbContextFactory
     {

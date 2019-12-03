@@ -1,10 +1,10 @@
-﻿using CleanArchitecture.Application.TodoLists.Commands.UpdateTodoList;
-using CleanArchitecture.Application.UnitTests.Common;
-using CleanArchitecture.Domain.Entities;
+﻿using ClubLogBook.Application.TodoLists.Commands.UpdateTodoList;
+using ClubLogBook.Application.UnitTests.Common;
+using ClubLogBook.Core.Entities;
 using Shouldly;
 using Xunit;
 
-namespace CleanArchitecture.Application.UnitTests.TodoLists.Commands.UpdateTodoList
+namespace ClubLogBook.Application.UnitTests.TodoLists.Commands.UpdateTodoList
 {
     public class UpdateTodoListCommandValidatorTests : CommandTestBase
     {

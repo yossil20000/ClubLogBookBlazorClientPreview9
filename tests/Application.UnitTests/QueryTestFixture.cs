@@ -1,10 +1,10 @@
 using System;
 using AutoMapper;
-using CleanArchitecture.Application.Common.Mappings;
-using CleanArchitecture.Infrastructure.Persistence;
+using ClubLogBook.Application.Common.Mappings;
+using ClubLogBook.Infrastructure.Persistence;
 using Xunit;
 
-namespace CleanArchitecture.Application.UnitTests.Common
+namespace ClubLogBook.Application.UnitTests.Common
 {
     public sealed class QueryTestFixture : IDisposable
     {

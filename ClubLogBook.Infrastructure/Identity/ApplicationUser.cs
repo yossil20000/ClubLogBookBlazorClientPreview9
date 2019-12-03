@@ -2,7 +2,7 @@
 using System;
 namespace ClubLogBook.Infrastructure.Identity
 {
-	public class ApplicationUser : IdentityUser<Guid>
+	public class ApplicationUser : IdentityUser
 	{
 	}
 	public class ApplicationRoles : IdentityRole<Guid>

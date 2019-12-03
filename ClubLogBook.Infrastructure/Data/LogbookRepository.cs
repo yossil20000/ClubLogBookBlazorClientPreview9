@@ -2,15 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+
 using ClubLogBook.Core.Entities;
 using ClubLogBook.Application.Interfaces;
-using Microsoft.EntityFrameworkCore;
+using ClubLogBook.Infrastructure.Persistence;
+
 
 namespace ClubLogBook.Infrastructure.Data
 {
 	public class LogbookRepository : EFRepository<LogBook>, ILogbookRepository
 	{
-		public LogbookRepository(ClubLogbookContext dbcontex) : base(dbcontex)
+		public LogbookRepository(ApplicationDbContext dbcontex) : base(dbcontex)
 		{
 
 		}

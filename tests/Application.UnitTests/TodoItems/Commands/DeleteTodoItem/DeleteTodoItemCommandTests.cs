@@ -1,12 +1,12 @@
-﻿using CleanArchitecture.Application.Common.Exceptions;
-using CleanArchitecture.Application.TodoItems.Commands.DeleteTodoItem;
-using CleanArchitecture.Application.UnitTests.Common;
+﻿using ClubLogBook.Application.Common.Exceptions;
+using ClubLogBook.Application.TodoItems.Commands.DeleteTodoItem;
+using ClubLogBook.Application.UnitTests.Common;
 using Shouldly;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace CleanArchitecture.Application.UnitTests.TodoItems.Commands.DeleteTodoItem
+namespace ClubLogBook.Application.UnitTests.TodoItems.Commands.DeleteTodoItem
 {
     public class DeleteTodoItemCommandTests : CommandTestBase
     {

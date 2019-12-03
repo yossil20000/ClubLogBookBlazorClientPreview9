@@ -6,12 +6,13 @@ using ClubLogBook.Core.Entities;
 using ClubLogBook.Core.Common;
 using ClubLogBook.Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using ClubLogBook.Infrastructure.Persistence;
 
 namespace ClubLogBook.Infrastructure.Data
 {
 	public class AircraftLogBookRepository : EFRepository<AircraftLogBook>, IAircraftLogBookRepository
 	{
-		public AircraftLogBookRepository(ClubLogbookContext dbcontex) : base(dbcontex)
+		public AircraftLogBookRepository(ApplicationDbContext dbcontex) : base(dbcontex)
 		{
 		}
 

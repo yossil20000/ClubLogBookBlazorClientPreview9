@@ -19,12 +19,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Src\Application\Application.csproj" />
-    <ProjectReference Include="..\..\Src\Infrastructure\Infrastructure.csproj" />
+    <Folder Include="TodoItems\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="TodoItems\" />
+    <ProjectReference Include="..\..\ClubLogBook.Application\ClubLogBook.Application.csproj" />
+    <ProjectReference Include="..\..\ClubLogBook.Infrastructure\ClubLogBook.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using CleanArchitecture.Application.Common.Mappings;
+using ClubLogBook.Application.Common.Mappings;
 
-namespace CleanArchitecture.Application.UnitTests.Common.Mappings
+namespace ClubLogBook.Application.UnitTests.Common.Mappings
 {
     public class MappingTestsFixture
     {

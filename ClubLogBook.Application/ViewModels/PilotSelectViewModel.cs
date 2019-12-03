@@ -15,7 +15,7 @@ namespace ClubLogBook.Application.ViewModels
 		[Display(Name = "Name")]
 		public string FullName { get { return $"{FirstName} {LastName}"; } }
 		public bool IsEnable { get; set; } = true;
-		public Guid UserId { get; set; }
+		public string UserId { get; set; }
 		
 		public PilotSelectViewModel()
 		{ }

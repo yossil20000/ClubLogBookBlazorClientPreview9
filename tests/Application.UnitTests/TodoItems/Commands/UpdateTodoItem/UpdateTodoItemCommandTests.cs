@@ -1,12 +1,12 @@
-﻿using CleanArchitecture.Application.Common.Exceptions;
-using CleanArchitecture.Application.TodoItems.Commands.UpdateTodoItem;
-using CleanArchitecture.Application.UnitTests.Common;
+﻿using ClubLogBook.Application.Common.Exceptions;
+using ClubLogBook.Application.TodoItems.Commands.UpdateTodoItem;
+using ClubLogBook.Application.UnitTests.Common;
 using Shouldly;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace CleanArchitecture.Application.UnitTests.TodoItems.Commands.UpdateTodoItem
+namespace ClubLogBook.Application.UnitTests.TodoItems.Commands.UpdateTodoItem
 {
     public class UpdateTodoItemCommandTests : CommandTestBase
     {

@@ -119,7 +119,7 @@
 
                                     @foreach (var i in pilotSelectViewModels)
                                     {
-                                        if (i.UserId == Guid.Empty)
+                                        if (i.UserId == string.Empty)
                                         {
                                             <option value="@i.Id">@i.FullName - (@(i.IdNumber))</option>
                                         }

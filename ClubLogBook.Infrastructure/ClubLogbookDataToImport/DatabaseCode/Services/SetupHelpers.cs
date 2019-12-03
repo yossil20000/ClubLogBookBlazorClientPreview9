@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
 using ClubLogBook.Infrastructure.Data.Import;
 using ClubLogBook.Core.Interfaces;
+using ClubLogBook.Infrastructure.Persistence;
+
 namespace ClubLogBook.Infrastructure.Data.Services
 {
 	public enum DbStartupMode { UseExisting,EnsureCreated,EnsureDeletedCreated,UseMigrations}
@@ -18,16 +20,16 @@ namespace ClubLogBook.Infrastructure.Data.Services
 		public const string SeedFileSubDirectory = "";
 
 		private static readonly string[] DummyUsersIds = new[] {DefaultUserId, "admin@baz.co.il"};
-		public static void DevelopmentEnsureDeleted(this ClubLogbookContext db)
+		public static void DevelopmentEnsureDeleted(this ApplicationDbContext db)
 		{
 			db.Database.EnsureDeleted();
 		}
-		public static void DevelopmentEnsureCreated(this ClubLogbookContext db)
+		public static void DevelopmentEnsureCreated(this ApplicationDbContext db)
 		{
 			db.Database.EnsureCreated();
 		}
 
-		public static int SeedDatabase(this ClubLogbookContext db,string dataDirectory,bool createNew = false)
+		public static int SeedDatabase(this ApplicationDbContext db,string dataDirectory,bool createNew = false)
 		{
 			
 			if (!(db.GetService<IDatabaseCreator>() as RelationalDatabaseCreator).Exists())

@@ -29,7 +29,7 @@ namespace ClubLogBook.Application.ViewModels
 		public DateTime TimeFrom { get { return timeFrom; } set { timeFrom = value; } }
 		private DateTime timeTo;
 		public DateTime TimeTo { get { return timeTo; } set { timeTo = value; } }
-		public Guid UserId { get; set; }
+		public string UserId { get; set; }
 		public int PilotId { get; set; }
 		public int AircraftId {get;set;}
 		public int ClubId { get; set; }

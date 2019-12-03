@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using ClubLogBook.Core.Entities;
 using ClubLogBook.Application.Interfaces;
-using Microsoft.EntityFrameworkCore;
+using ClubLogBook.Infrastructure.Persistence;
 
 
 namespace ClubLogBook.Infrastructure.Data
 {
 	public class FlightRepository : EFRepository<Flight>, IFlightRepository
 	{
-		public FlightRepository(ClubLogbookContext dbcontex) : base(dbcontex)
+		public FlightRepository(ApplicationDbContext dbcontex) : base(dbcontex)
 		{
 		}
 

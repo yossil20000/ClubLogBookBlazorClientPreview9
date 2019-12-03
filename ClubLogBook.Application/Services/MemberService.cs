@@ -46,7 +46,7 @@ namespace ClubLogBook.Application.Services
 		{
 			return await _memberRepository.GetAllPilots();
 		}
-		public async Task UpdatePilotUserId(int id, Guid userId)
+		public async Task UpdatePilotUserId(int id, string userId)
 		{
 			Pilot p = await _memberRepository.GetByIdAsync(id);
 			if(p!=null)
@@ -57,14 +57,14 @@ namespace ClubLogBook.Application.Services
 			}
 			
 		}
-		public async Task RemoveUserId(Guid userId)
+		public async Task RemoveUserId(string userId)
 		{
 			var members = await _memberRepository.ListAllAsync();
 			foreach(var m in members)
 			{
 				if(m.UserId == userId)
 				{
-					m.UserId = Guid.Empty;
+					m.UserId = String.Empty;
 					await _memberRepository.UpdateAsync(m);
 				}
 				

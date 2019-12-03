@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using CleanArchitecture.Application.TodoLists.Queries.GetTodos;
-using CleanArchitecture.Domain.Entities;
+using ClubLogBook.Application.TodoLists.Queries.GetTodos;
+using ClubLogBook.Core.Entities;
 using System;
 using Xunit;
 
-namespace CleanArchitecture.Application.UnitTests.Common.Mappings
+namespace ClubLogBook.Application.UnitTests.Common.Mappings
 {
     public class MappingTests : IClassFixture<MappingTestsFixture>
     {

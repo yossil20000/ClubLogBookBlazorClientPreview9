@@ -45,7 +45,7 @@ namespace ClubLogBook.Server.Controllers
 			foreach (var r  in ienumerableDest)
 			{
 				var pilot = await _memberRepository.GetByIdAsync(r.PilotId);
-				r.UserId = pilot == null ? Guid.Empty : pilot.UserId;
+				r.UserId = pilot == null ? string.Empty : pilot.UserId;
 				r.ExtructTime();
 			}
 			return ienumerableDest;

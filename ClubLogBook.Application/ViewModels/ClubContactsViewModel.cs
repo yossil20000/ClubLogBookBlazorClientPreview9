@@ -59,7 +59,7 @@ namespace ClubLogBook.Application.ViewModels
 		}
 		public Decimal Height { get; set; }
 		public Decimal Weight { get; set; }
-		public Guid UserId { get; set; }
+		public string UserId { get; set; }
 		public ClubContactsViewModel() { }
 		
 		

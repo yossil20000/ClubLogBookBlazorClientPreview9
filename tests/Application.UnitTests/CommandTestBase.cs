@@ -1,7 +1,7 @@
-using CleanArchitecture.Infrastructure.Persistence;
+using ClubLogBook.Infrastructure.Persistence;
 using System;
 
-namespace CleanArchitecture.Application.UnitTests.Common
+namespace ClubLogBook.Application.UnitTests.Common
 {
     public class CommandTestBase : IDisposable
     {

@@ -16,8 +16,8 @@ namespace ClubLogBook.Application.Interfaces
 		Task DeletePilotById(int id);
 		Task<IEnumerable<Pilot>> GetAllPilotNotInClub();
 		Task<IEnumerable<Pilot>> GetAllPilot();
-		Task UpdatePilotUserId(int id, Guid userId);
-		Task RemoveUserId(Guid userId);
+		Task UpdatePilotUserId(int id, string userId);
+		Task RemoveUserId(string userId);
 
 
 	}

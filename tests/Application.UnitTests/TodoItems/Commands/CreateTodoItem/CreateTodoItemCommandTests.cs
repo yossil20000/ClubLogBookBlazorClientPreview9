@@ -1,11 +1,11 @@
-﻿using CleanArchitecture.Application.TodoItems.Commands.CreateTodoItem;
-using CleanArchitecture.Application.UnitTests.Common;
+﻿using ClubLogBook.Application.TodoItems.Commands.CreateTodoItem;
+using ClubLogBook.Application.UnitTests.Common;
 using Shouldly;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace CleanArchitecture.Application.UnitTests.TodoItems.Commands.CreateTodoItem
+namespace ClubLogBook.Application.UnitTests.TodoItems.Commands.CreateTodoItem
 {
     public class CreateTodoItemCommandTests : CommandTestBase
     {
