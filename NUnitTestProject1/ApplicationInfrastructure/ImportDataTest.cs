@@ -1,34 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using NUnit.Framework;
-using ClubLogBook.Core.Entities;
-using ClubLogBook.Core.Exctensions;
+﻿using NUnit.Framework;
 using ClubLogBook.Core.Interfaces;
-using ClubLogBook.Infrastructure.Data;
 //using UnitsTest.ApplicationCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using ClubLogBook.Infrastructure.Data.Import;
+using ClubLogBook.Infrastructure.Persistence;
 
 namespace UnitsTest.ApplicationInfrastructure
 {
 	public class ImportDataTest
 	{
-		public ClubLogbookContext _context; 
+		public ApplicationDbContext _context; 
 		public void InitContext()
 		{
-			var dbOptions = new DbContextOptionsBuilder<ClubLogbookContext>()
-			   .UseSqlServer("Server=(localdb)\\mssqllocaldb;Integrated Security=true;Initial Catalog=Yossil_15;")
+			var dbOptions = new DbContextOptionsBuilder<ApplicationDbContext>()
+			   .UseSqlServer("Server=(localdb)\\mssqllocaldb;Integrated Security=true;Initial Catalog=Yossil_16;")
 			   .Options;
-			_context = new ClubLogbookContext(dbOptions);
+			_context = new ApplicationDbContext(dbOptions);
 		}
-		public static ClubLogbookContext InitInMemoryContext()
+		public static ApplicationDbContext InitInMemoryContext()
 		{
 
-			var dbOptions = new DbContextOptionsBuilder<ClubLogbookContext>()
+			var dbOptions = new DbContextOptionsBuilder<ApplicationDbContext>()
 			   .UseInMemoryDatabase(databaseName: "TestCatalog")
 			   .Options;
-			return  new ClubLogbookContext(dbOptions);
+			return  new ApplicationDbContext(dbOptions);
 		}
 		[Test]
 		public void Import()

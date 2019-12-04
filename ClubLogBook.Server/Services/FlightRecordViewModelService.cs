@@ -113,51 +113,37 @@ namespace ClubLogBook.Server.Services
 
 			var flightOnPage = await _fligthRepository.ListAsync(flightPagingSpec);
 			var totalFlight = await _fligthRepository.CountAsync(flightSpec);
-			FlightRecordIndexViewModel vm;
-			if (flightOnPage.Count == 0)
+			var vm = new FlightRecordIndexViewModel()
 			{
-				vm = new FlightRecordIndexViewModel();
-				vm.FlightRecords = new List<ClubFlightViewModel>();
-				vm.FilterViewModel = new FilterViewModel();
-				
-				vm.PaginationInfo = new PaginationInfoViewModel();
-			}
-			else
-			{
-				vm = new FlightRecordIndexViewModel()
+				FlightRecords = flightOnPage.Select(i => new ClubFlightViewModel(i.Pilot,i.Aircraft)
 				{
-					FlightRecords = flightOnPage.Select(i => new ClubFlightViewModel(i?.Pilot, i?.Aircraft)
-					{
-						Id = i.Id,
-						Date = i.Date,
-						EngineStart = i.EngineStart,
-						EngineEnd = i.EngineEnd,
-						HobbsStart = i.HobbsStart,
-						HobbsEnd = i.HobbsEnd,
-						Routh = i.Routh
+					Id = i.Id,
+					Date = i.Date,
+					EngineStart = i.EngineStart,
+					EngineEnd = i.EngineEnd,
+					HobbsStart = i.HobbsStart,
+					HobbsEnd = i.HobbsEnd,
+					Routh = i.Routh
 
 
-					}),
-					FilterViewModel = new FilterViewModel()
-					{
-						AirplaneSelects = await GetAirplans(1),
-						ClubSelects = await GetClubs(1),
-						PilotSelects = await GetPilots(1),
-						PilotFilterApplied = pilotId,
-						ClubFilterApplied = 1,
-						AirplaneFilterApplied = airplaneId,
-					},
-					PaginationInfo = new PaginationInfoViewModel()
-					{
-						ActualPage = pageIndex,
-						ItemsPerPage = flightOnPage.Count,
-						TotalItems = totalFlight,
-						TotalPages = int.Parse(Math.Ceiling((decimal)totalFlight / itemsPage).ToString())
-					}
+				}),
+				FilterViewModel = new FilterViewModel() { 
+					AirplaneSelects = await GetAirplans(1),
+					ClubSelects = await GetClubs(1),
+					PilotSelects = await GetPilots(1),
+					PilotFilterApplied = pilotId,
+					ClubFilterApplied = 1,
+					AirplaneFilterApplied = airplaneId,
+				},
+				PaginationInfo = new PaginationInfoViewModel()
+				{
+					ActualPage = pageIndex,
+					ItemsPerPage = flightOnPage.Count,
+					TotalItems = totalFlight,
+					TotalPages = int.Parse(Math.Ceiling((decimal)totalFlight / itemsPage).ToString())
+				}
 
-				};
-			}
-			
+			};
 			vm.PaginationInfo.Next = (vm.PaginationInfo.ActualPage >= vm.PaginationInfo.TotalPages - 1 ) ? "disabled" : "";
 			vm.PaginationInfo.Previous = (vm.PaginationInfo.ActualPage == 0) ? "disabled" : "";
 			return vm;

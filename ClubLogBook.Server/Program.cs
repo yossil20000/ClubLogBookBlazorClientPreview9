@@ -8,19 +8,7 @@ namespace ClubLogBook.Server
     {
         public static void Main(string[] args)
         {
-            var host = BuildWebHost(args);
-            //using( var scop = host.Services.GetService)
-            //{
-            //    try
-            //    {
-
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        var logger =
-            //    }
-            //}
-            host.Run();
+            BuildWebHost(args).Run();
         }
 
         public static IWebHost BuildWebHost(string[] args) =>

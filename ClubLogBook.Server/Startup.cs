@@ -1,8 +1,5 @@
-using System;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Components.Server;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -10,65 +7,46 @@ using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Configuration;
-
-
+using Newtonsoft.Json.Serialization;
+using System;
+using System.Linq;
+using System.Net.Mime;
+using System.Threading.Tasks;
 using ClubLogBook.Infrastructure.Data;
-using ClubLogBook.Infrastructure.Persistence;
-using ClubLogBook.Infrastructure.Identity;
+using ClubLogBook.Core.Entities;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using ClubLogBook.Server.Data;
+using ClubLogBook.Server.Models;
 using ClubLogBook.Server.Services;
 using ClubLogBook.Application.ViewModels;
 using ClubLogBook.Infrastructure.Logging;
 using ClubLogBook.Application.Interfaces;
 using ClubLogBook.Application.Services;
 using ClubLogBook.Application.Infrastructure.AutoMapper;
-using ClubLogBook.Application;
+using ClubLogBook.Infrastructure.Persistence;
+using ClubLogBook.Application.Common.Interfaces;
 using MediatR;
 using AutoMapper;
-using FluentValidation.AspNetCore;
-using NSwag;
-using NSwag.Generation.Processors.Security;
-using ClubLogBook.Application.Common.Interfaces;
-using ClubLogBook.Infrastructure;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Reflection;
+using ClubLogBook.Application;
 
 namespace ClubLogBook.Server
 {
     public class Startup
     {
-		public IConfiguration Configuration { get; }
-        public IWebHostEnvironment Environment { get; }
-		public Startup(IConfiguration configuration, IWebHostEnvironment environment)
+		public IConfiguration Configuration;
+		public Startup(IConfiguration configuration)
 		{
 			Configuration = configuration;
-            Environment = environment;
 		}
 		// This method gets called by the runtime. Use this method to add services to the container.
 		// For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
 		public void ConfigureServices(IServiceCollection services)
         {
             var assembly = AppDomain.CurrentDomain.Load("ClubLogBook.Application");
+            //services.AddMediatR(assembly);
             services.AddApplication();
-            services.AddInfrastructure(Configuration, Environment);
-            services.AddScoped<ICurrentUserService,CurrentUserService> ();
-            services.AddHttpContextAccessor();
-            services.AddHealthChecks().AddDbContextCheck<ApplicationDbContext>();
-
-            services.AddOpenApiDocument(configure =>
-            {
-                configure.Title = "ClubLogBook API";
-                configure.AddSecurity("JWT", Enumerable.Empty<string>(), new NSwag.OpenApiSecurityScheme
-                {
-                    Type = OpenApiSecuritySchemeType.ApiKey,
-                    Name = "Authorization",
-                    In = OpenApiSecurityApiKeyLocation.Header,
-                    Description = "Type into the TextBox: Bearer {your JWT token}."
-                });
-                configure.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor("JWT"));
-            });
-            services.AddMediatR(assembly);
             //services.AddMediatR(typeof(Startup));
             services.AddAutoMapper(new Assembly[] { typeof(AutoMapperProfile).GetTypeInfo().Assembly });
             services.AddAutoMapper(typeof(Startup));
@@ -91,49 +69,36 @@ namespace ClubLogBook.Server
             services.AddScoped<IAircraftRepository, AircraftRepository>();
             services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
             //services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer("Filename=data.db"));
-            //         services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            //services.AddIdentity<ApplicationUser, IdentityUser<Guid>>()
-            //	.AddRoles<IdentityRole<Guid>>()
-            //             .AddEntityFrameworkStores<ApplicationDbContext>()
-            //             .AddDefaultTokenProviders();
+            services.AddDbContext<ApplicationIdentityDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+			services.AddIdentity<ApplicationUser, IdentityUser<Guid>>()
+				.AddRoles<IdentityRole<Guid>>()
+                .AddEntityFrameworkStores<ApplicationIdentityDbContext>()
+                .AddDefaultTokenProviders();
 
-            //services.Configure<IdentityOptions>(options =>
-            //{
-            //    // Password settings
-            //    options.Password.RequireDigit = false;
-            //    options.Password.RequiredLength = 6;
-            //    options.Password.RequireNonAlphanumeric = false;
-            //    options.Password.RequireUppercase = false;
-            //    options.Password.RequireLowercase = false;
-            //    //options.Password.RequiredUniqueChars = 6;
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Password settings
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 6;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireLowercase = false;
+                //options.Password.RequiredUniqueChars = 6;
 
-            //    // Lockout settings
-            //    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
-            //    options.Lockout.MaxFailedAccessAttempts = 10;
-            //    options.Lockout.AllowedForNewUsers = true;
+                // Lockout settings
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
+                options.Lockout.MaxFailedAccessAttempts = 10;
+                options.Lockout.AllowedForNewUsers = true;
 
-            //    // User settings
-            //    options.User.RequireUniqueEmail = false;
-            //});
-            //var connectionString = Configuration.GetConnectionString("DefaultConnection");
-            //services.AddDbContext<ApplicationDbContext>(options =>
-            //options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                // User settings
+                options.User.RequireUniqueEmail = false;
+            });
 
-          //  services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-          //.AddJwtBearer(options =>
-          //{
-          //    options.TokenValidationParameters = new TokenValidationParameters
-          //    {
-          //        ValidateIssuer = true,
-          //        ValidateAudience = true,
-          //        ValidateLifetime = true,
-          //        ValidateIssuerSigningKey = true,
-          //        ValidIssuer = Configuration["JwtIssuer"],
-          //        ValidAudience = Configuration["JwtAudience"],
-          //        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JwtSecurityKey"]))
-          //    };
-          //});
-            services.Configure<ApiBehaviorOptions>(options =>
+			//var connectionString = Configuration.GetConnectionString("DefaultConnection");
+			services.AddDbContext<ApplicationDbContext>(options =>
+			options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+			services.Configure<ApiBehaviorOptions>(options =>
             {
                 options.SuppressModelStateInvalidFilter = true;
             });
@@ -159,10 +124,10 @@ namespace ClubLogBook.Server
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
-            {
-                serviceScope.ServiceProvider.GetService<ApplicationDbContext>().Database.Migrate();
-            }
+            //using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            //{
+            //    serviceScope.ServiceProvider.GetService<ApplicationIdentityDbContext>().Database.Migrate();
+            //}
 
             app.UseResponseCompression();
 

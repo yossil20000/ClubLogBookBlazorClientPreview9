@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using ClubLogBook.Core.Entities;
 using ClubLogBook.Application.ViewModels;
 using ClubLogBook.Shared;
-using ClubLogBook.Infrastructure.Identity;
+using ClubLogBook.Server.Models;
 
 namespace ClubLogBook.Server
 {
@@ -18,6 +18,7 @@ namespace ClubLogBook.Server
 
 			CreateMap<Flight, ClubFlightViewModel>().PreserveReferences().MaxDepth(4);
 			CreateMap<ClubFlightViewModel,Flight>().PreserveReferences().MaxDepth(4);
+			
 			CreateMap<Aircraft, Aircraft>();
 			CreateMap<AirCraftModel, AirCraftModel>();
 			CreateMap<Pilot, Pilot>();

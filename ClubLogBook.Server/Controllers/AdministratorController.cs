@@ -11,7 +11,7 @@ using ClubLogBook.Application.Interfaces;
 using ClubLogBook.Application.ViewModels;
 
 using ClubLogBook.Server.Services;
-using ClubLogBook.Infrastructure.Identity;
+using ClubLogBook.Server.Models;
 using ClubLogBook.Shared;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -86,7 +86,7 @@ namespace ClubLogBook.Server.Controllers
 						return StatusCode(10000);
 					}
 					await UpdateUserRole(user, adminUserInfo.Roles);
-					await _memberService.UpdatePilotUserId(adminUserInfo.PilotId, user.Id);
+					await _memberService.UpdatePilotUserId(adminUserInfo.PilotId, user.Id.ToString());
 					return Ok();
 				}
 				return StatusCode(10002);
@@ -106,7 +106,7 @@ namespace ClubLogBook.Server.Controllers
 					var error = identityResult.Errors.FirstOrDefault().Description;
 					return StatusCode(10000);
 				}
-				await _memberService.RemoveUserId(user.Id);
+				await _memberService.RemoveUserId(user.Id.ToString());
 				return Ok();
 			}
 			return StatusCode(10001);
@@ -177,7 +177,7 @@ namespace ClubLogBook.Server.Controllers
 			foreach(var user in users)
 			{
 				var admin = adminUserInfos.Find(ad => ad.Id == user.Id.ToString());
-				var pilot = pilots.Where(p => p.UserId == user.Id).FirstOrDefault();
+				var pilot = pilots.Where(p => p.UserId == user.Id.ToString()).FirstOrDefault();
 
 				if(admin != null)
 				{
@@ -273,7 +273,7 @@ namespace ClubLogBook.Server.Controllers
 				if (results.Succeeded)
 				{
 					await UpdateUserRole(user, adminUserInfo.Roles);
-					await _memberService.UpdatePilotUserId(adminUserInfo.PilotId, user.Id);
+					await _memberService.UpdatePilotUserId(adminUserInfo.PilotId, user.Id.ToString());
 				}
 			}
 			else

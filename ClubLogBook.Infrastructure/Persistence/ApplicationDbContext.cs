@@ -1,31 +1,27 @@
 ﻿using ClubLogBook.Application.Common.Interfaces;
 using ClubLogBook.Core.Common;
 using ClubLogBook.Core.Entities;
-using ClubLogBook.Infrastructure.Identity;
-using IdentityServer4.EntityFramework.Options;
-using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
+using System;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace ClubLogBook.Infrastructure.Persistence
 {
-    public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>,IApplicationDbContext
+    public class ApplicationDbContext : DbContext, IApplicationDbContext
     {
-        private readonly ICurrentUserService _currentUserService;
+        //private readonly ICurrentUserService _currentUserService;
         private readonly IDateTime _dateTime;
 
         public ApplicationDbContext(
-            DbContextOptions options,
-            IOptions<OperationalStoreOptions> operationalStoreOptions,
-            ICurrentUserService currentUserService,
-            IDateTime dateTime) : base(options, operationalStoreOptions)
+            DbContextOptions<ApplicationDbContext> options) : base(options)
         {
-            _currentUserService = currentUserService;
-            _dateTime = dateTime;
+            //_currentUserService = currentUserService;
+            //_dateTime = dateTime;
         }
+
+        
 
         public DbSet<TodoList> TodoLists { get; set; }
 
@@ -65,12 +61,12 @@ namespace ClubLogBook.Infrastructure.Persistence
                 switch (entry.State)
                 {
                     case EntityState.Added:
-                        entry.Entity.CreatedBy = _currentUserService.UserId;
-                        entry.Entity.Created = _dateTime.Now;
+                        //entry.Entity.CreatedBy = _currentUserService.UserId;
+                        //entry.Entity.Created = DateTime.Now;
                         break;
                     case EntityState.Modified:
-                        entry.Entity.LastModifiedBy = _currentUserService.UserId;
-                        entry.Entity.LastModified = _dateTime.Now;
+                        //entry.Entity.LastModifiedBy = _currentUserService.UserId;
+                        //entry.Entity.LastModified = DateTime.Now;
                         break;
                 }
             }

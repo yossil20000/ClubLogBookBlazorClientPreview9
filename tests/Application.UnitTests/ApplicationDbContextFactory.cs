@@ -33,8 +33,7 @@ namespace ClubLogBook.Application.UnitTests.Common
                 .Returns("00000000-0000-0000-0000-000000000000");
 
             var context = new ApplicationDbContext(
-                options, operationalStoreOptions,
-                currentUserServiceMock.Object, dateTimeMock.Object);
+                options);
 
             context.Database.EnsureCreated();
 

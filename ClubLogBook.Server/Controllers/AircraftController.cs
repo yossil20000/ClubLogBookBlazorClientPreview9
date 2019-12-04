@@ -8,7 +8,6 @@ using ClubLogBook.Core.Entities;
 using Microsoft.Extensions.Logging;
 using MediatR;
 using ClubLogBook.Application.AircraftManager.Queries;
-using ClubLogBook.Application.AircraftManager.Commands;
 using ClubLogBook.Application.Infrastructure;
 using System;
 using System.Threading;
@@ -32,67 +31,27 @@ namespace ClubLogBook.Server.Controllers
         }
         // GET: api/Aircraft
         [HttpGet]
-        //[Route("api/Aircraft/GetAircraft/clubName")]
-        public async  Task<AircraftListViewModel> GetAllAircraft( )
+        //[Route("api/Aircraft/AircraftGet")]
+        public async  Task<List<AircraftViewModel>> AircraftGet()
         {
             CancellationToken ct = new CancellationToken();
-            //List<Aircraft> air = await aircraftManagerService.GetAllAircraftsInClub("BAZ");
+            List<Aircraft> air = await aircraftManagerService.GetAllAircraftsInClub("BAZ");
             List<Aircraft> aircraftAll = await aircraftManagerService.GetAllAircraftsInClub("");
-            //List<AircraftPrice> aircraftPrices = await aircraftManagerService.GetAircraftPrices();
-           //List<AircraftViewModel> aircraftViewModel = new List<AircraftViewModel>();
-            AircraftListViewModel aircraftListViewModel = new AircraftListViewModel();
-            //mapper.Map(aircraftAll, aircraftViewModel);
+            List<AircraftPrice> aircraftPrices = await aircraftManagerService.GetAircraftPrices();
+            List<AircraftViewModel> aircraftViewModel = new List<AircraftViewModel>();
+            mapper.Map(aircraftAll, aircraftViewModel);
             try
             {
-                aircraftListViewModel =  await mediator.Send(new GetAircraftListQuery(), ct);
-                if(aircraftListViewModel == null)
-                    aircraftListViewModel=  new AircraftListViewModel();
-
+                var list= await mediator.Send(new GetAircraftListQuery(), ct);
             }
             catch(Exception ex)
             {
 
             }
-            return aircraftListViewModel;
-            //return aircraftViewModel;
-            //return new List<AircraftViewModel>();
+            return aircraftViewModel;
+            return new List<AircraftViewModel>();
         }
-        [HttpGet]
-        public async Task<AircraftListViewModel> GetClubAircraft(string clubName = "")
-        {
-            CancellationToken ct = new CancellationToken();List<AircraftViewModel> aircraftViewModel = new List<AircraftViewModel>();
-            AircraftListViewModel aircraftListViewModel = new AircraftListViewModel();
-            try
-            {
-               
-                if (clubName != "")
 
-                {
-                    GetClubAircraftListQuery club = new GetClubAircraftListQuery();
-                    club.ClubName = clubName;
-                    aircraftListViewModel = await mediator.Send(club, ct);
-                    if (aircraftListViewModel == null)
-                        aircraftListViewModel = new AircraftListViewModel();
-                }
-
-            }
-            catch (Exception ex)
-            {
-
-            }
-            return aircraftListViewModel;
-
-
-        }
-        [HttpPut]
-        public async Task<AircraftViewModel> GetCreateAircaft([FromBody] AircraftViewModel item)
-        {
-            CancellationToken ct = new CancellationToken();
-            CreateAircraftCommand createAircraftCommand = new CreateAircraftCommand();
-            createAircraftCommand.aircraftViewModel = item;
-            Unit unit = await mediator.Send(createAircraftCommand, ct);
-            return createAircraftCommand.aircraftViewModel;
-        }
         ////// GET: api/Aircraft/5
         ////[HttpGet("{id}", Name = "Get")]
         ////public string Get(int id)
@@ -112,12 +71,10 @@ namespace ClubLogBook.Server.Controllers
         //{
         //}
 
-        // DELETE: api/ApiWithActions/5
-        [HttpPut]
-        public async Task<AircraftViewModel> PutDeleteAircraft([FromBody] int id)
-        {
-            AircraftViewModel aircraftViewModel = new AircraftViewModel();
-            return aircraftViewModel;
-        }
+        //// DELETE: api/ApiWithActions/5
+        //[HttpDelete("{id}")]
+        //public void Delete(int id)
+        //{
+        //}
     }
 }

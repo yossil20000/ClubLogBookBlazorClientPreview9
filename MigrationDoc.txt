@@ -63,3 +63,5 @@ dotnet tool install --global dotnet-ef --version 3.1.0-preview2.19525.5
 dotnet tool uninstall --global dotn
 
 dotnet tool install --global dotnet-ef --version 3.1.0-preview3.19554.8
+
+dotnet tool install --global dotnet-ef --version 3.1.0

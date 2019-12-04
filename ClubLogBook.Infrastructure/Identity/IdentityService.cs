@@ -18,7 +18,7 @@ namespace ClubLogBook.Infrastructure.Identity
 
         public async Task<string> GetUserNameAsync(string userId)
         {
-            var user = await _userManager.Users.FirstAsync(u => u.Id == userId);
+            var user = await _userManager.Users.FirstAsync(u => u.Id.ToString() == userId);
 
             return user.UserName;
         }
@@ -32,12 +32,12 @@ namespace ClubLogBook.Infrastructure.Identity
 
             var result = await _userManager.CreateAsync(user, password);
 
-            return (result.ToApplicationResult(), user.Id);
+            return (result.ToApplicationResult(), user.Id.ToString());
         }
 
         public async Task<Result> DeleteUserAsync(string userId)
         {
-            var user = _userManager.Users.SingleOrDefault(u => u.Id == userId);
+            var user = _userManager.Users.SingleOrDefault(u => u.Id.ToString() == userId);
 
             if (user != null)
             {

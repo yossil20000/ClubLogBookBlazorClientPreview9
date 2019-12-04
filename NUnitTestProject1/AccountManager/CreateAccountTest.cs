@@ -9,13 +9,14 @@ using ClubLogBook.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using ClubLogBook.Application.ViewModels;
 using UnitsTest.ApplicationInfrastructure;
+using ClubLogBook.Infrastructure.Persistence;
 namespace UnitsTest.AccountManager
 {
 
 	public class CreateAccountTest
 	{
 		IMapper mapper = AutoMapperConstructor.Instance.Mapper;
-		ClubLogbookContext context;
+		ApplicationDbContext context;
 		[SetUp]
 		public void Setup()
 		{
