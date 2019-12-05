@@ -32,7 +32,7 @@ namespace ClubLogBook.Server.Controllers
         // GET: api/Aircraft
         [HttpGet]
         //[Route("api/Aircraft/AircraftGet")]
-        public async  Task<List<AircraftViewModel>> AircraftGet()
+        public async  Task<AircraftListViewModel> GetAllAircraft()
         {
             CancellationToken ct = new CancellationToken();
             List<Aircraft> air = await aircraftManagerService.GetAllAircraftsInClub("BAZ");
@@ -42,16 +42,36 @@ namespace ClubLogBook.Server.Controllers
             mapper.Map(aircraftAll, aircraftViewModel);
             try
             {
-                var list= await mediator.Send(new GetAircraftListQuery(), ct);
+                return  await mediator.Send(new GetAircraftListQuery(), ct);
             }
             catch(Exception ex)
             {
+                return new AircraftListViewModel();
+            }
+            //return aircraftViewModel;
+            //return new List<AircraftViewModel>();
+        }
+        [HttpGet]
+        //[Route("api/Aircraft/AircraftGet")]
+        public async Task<AircraftListViewModel> GetClubAircraft(string clubName)
+        {
+            CancellationToken ct = new CancellationToken();
+            List<Aircraft> air = await aircraftManagerService.GetAllAircraftsInClub("BAZ");
+            List<Aircraft> aircraftAll = await aircraftManagerService.GetAllAircraftsInClub("");
+            List<AircraftPrice> aircraftPrices = await aircraftManagerService.GetAircraftPrices();
+            List<AircraftViewModel> aircraftViewModel = new List<AircraftViewModel>();
+            mapper.Map(aircraftAll, aircraftViewModel);
+            try
+            {
+                return await mediator.Send(new GetAircraftListQuery(), ct);
+            }
+            catch (Exception ex)
+            {
 
             }
-            return aircraftViewModel;
-            return new List<AircraftViewModel>();
+            //return aircraftViewModel;
+            return new AircraftListViewModel();
         }
-
         ////// GET: api/Aircraft/5
         ////[HttpGet("{id}", Name = "Get")]
         ////public string Get(int id)

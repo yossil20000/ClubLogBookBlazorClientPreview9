@@ -51,7 +51,7 @@ namespace ClubLogBook.Server.Services
 			return contacts;
 
 		}
-		public async Task<IEnumerable<ClubContactsViewModel>> GetAllPilot()
+		public async Task<List<ClubContactsViewModel>> GetAllPilot()
 		{
 
 			List<ClubContactsViewModel> contacts = new List<ClubContactsViewModel>();
@@ -61,6 +61,7 @@ namespace ClubLogBook.Server.Services
 				IEnumerable<Pilot> pilots = await _memberService.GetAllPilot();
 				foreach (var p in pilots)
 				{
+					if (p.UserId == null) p.UserId = string.Empty;
 					ClubContactsViewModel ccVM = new ClubContactsViewModel();
 					_mapper.Map<Pilot, ClubContactsViewModel>(p, ccVM);
 					//ccVM.CopyPilot(p);
@@ -107,6 +108,7 @@ namespace ClubLogBook.Server.Services
 				var pilots = await _clubService.GetClubMembers(clubName);
 				foreach (var p in pilots)
 				{
+					if (p.UserId == null) p.UserId = string.Empty;
 					ClubContactsViewModel ccVM = new ClubContactsViewModel();
 					_mapper.Map<Pilot, ClubContactsViewModel>(p, ccVM);
 					//ccVM.CopyPilot(p);

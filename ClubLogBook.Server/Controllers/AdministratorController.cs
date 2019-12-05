@@ -155,7 +155,7 @@ namespace ClubLogBook.Server.Controllers
 		public async Task<List<PilotSelectViewModel>> GetPilots()
 		{
 			IEnumerable<Pilot> pilots = await _memberService.GetAllPilot();
-			IEnumerable<PilotSelectViewModel> PilotSelects = pilots.Select(p => new PilotSelectViewModel() { Id = p.Id, FirstName = p.FirstName, LastName = p.LastName, IdNumber = p.IdNumber ,UserId = p.UserId});
+			IEnumerable<PilotSelectViewModel> PilotSelects = pilots.Select(p => new PilotSelectViewModel() { Id = p.Id, FirstName = p.FirstName, LastName = p.LastName, IdNumber = p.IdNumber ,UserId = p.UserId == null ? string.Empty : p.UserId});
 			return PilotSelects.ToList();
 		}
 		[HttpGet]

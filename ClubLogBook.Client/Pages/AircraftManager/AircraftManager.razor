@@ -125,10 +125,16 @@
     protected override async Task OnInitializedAsync()
     {
         LastCommand.Add($"OnInitializedAsync in ");
-        accountListViewModels = await Http.GetJsonAsync<AccountListViewModel>("api/Account/AccountsListQueryGet");
+        //accountListViewModels = await Http.GetJsonAsync<AccountListViewModel>("api/Account/AccountsListQueryGet");
         LastCommand.Add($"OnInitializedAsync accountListViewModels.Accounts = out");
-        LastCommand.Add($"OnInitializedAsync accountListViewModels.Accounts =  {accountListViewModels.Accounts.Count()}");
-        AircraftListViewModel  aircraftlistViewModels = await Http.GetJsonAsync<AircraftListViewModel>($"api/Aircraft/GetClubAircraft?clubName=BAZ");
+        //LastCommand.Add($"OnInitializedAsync accountListViewModels.Accounts =  {accountListViewModels.Accounts.Count()}");
+        LastCommand.Add($"OnInitializedAsync api/Aircraft/GetClubAircraft?clubName=BAZ = ini");
+        AircraftListViewModel aircraftlistViewModels;
+        //aircraftlistViewModels= await Http.GetJsonAsync<AircraftListViewModel>($"api/Aircraft/GetClubAircraft?clubName=BAZ");
+        //if(aircraftlistViewModels.AircraftList !=null)
+        //    LastCommand.Add($"OnInitializedAsync api/Aircraft/GetClubAircraft?clubName=BAZ = out {aircraftlistViewModels.AircraftList.Count()}");
+        //else
+        //    LastCommand.Add($"OnInitializedAsync api/Aircraft/GetClubAircraft?clubName=BAZ = out aircraftlistViewModels is null");
         aircraftlistViewModels = await Http.GetJsonAsync<AircraftListViewModel>($"api/Aircraft/GetAllAircraft");
         aircraftViewModels = (List<AircraftViewModel>)aircraftlistViewModels.AircraftList;
         LastCommand.Add($"OnInitializedAsync contact {aircraftViewModels.Count}");
@@ -140,7 +146,7 @@
             IsInizialize = true;
             item = aircraftViewModels.FirstOrDefault();
             aircraftStatusViewModel = item.Get();
-            LastCommand.Add($"OnInitializedAsync Id:{item.Id} Tail Number:{item.TailNumber}");
+            LastCommand.Add($"OnInitializedAsync Id:{item.Id} Tail Number:{item.TailNumber} : IsItitial:{IsInizialize}");
         }
         else
             LastCommand.Add($"OnInitializedAsync aircraftViewModels == null");
@@ -154,7 +160,7 @@
     public async Task OnDeleteAircraft(AircraftViewModel selectObj)
     {
 
-       selectObj =  await Http.PutJsonAsync<AircraftViewModel>($"api/Aircraft/PutDeleteAircraft", selectObj.Id);
+        selectObj =  await Http.PutJsonAsync<AircraftViewModel>($"api/Aircraft/PutDeleteAircraft", selectObj.Id);
         aircraftViewModels.Remove(selectObj);
         LastCommand.Add($"OnDeleteAircraft Id:{selectObj.Id} Tail Number:{selectObj.TailNumber}");
         if(item.Id == selectObj.Id)

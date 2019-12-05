@@ -33,7 +33,7 @@ namespace ClubLogBook.Server.Controllers
 
 		[HttpGet]
 		[Route("api/ClubContacts/Pilots")]
-		public async Task<IEnumerable<ClubContactsViewModel>> Pilots()
+		public async Task<List<ClubContactsViewModel>> Pilots()
 		{
 			List<ClubContactsViewModel> contacts = new List<ClubContactsViewModel>();
 			//Account account = new Account();
@@ -54,15 +54,15 @@ namespace ClubLogBook.Server.Controllers
 			//_mapper.Map(transaction, transactionViewModel);
 			//_mapper.Map(account, accountViewModel);
 			var pilots = await  _clubContactsViewModelService.GetOrCreateClubContact("BAZ");
-			return pilots;
+			return pilots.ToList();
 		}
 		[HttpGet]
 		[Route("api/ClubContacts/Members")]
-		public async Task<IEnumerable<ClubContactsViewModel>> Members()
+		public async Task<List<ClubContactsViewModel>> Members()
 		{
-			List<ClubContactsViewModel> contacts = new List<ClubContactsViewModel>();
-			var pilots = await _clubContactsViewModelService.GetAllPilot();
-			return pilots;
+			//List<ClubContactsViewModel> contacts = new List<ClubContactsViewModel>();
+			var contacts = await _clubContactsViewModelService.GetAllPilot();
+			return contacts;
 		}
 		[HttpGet]
 		[Route("api/ClubContacts/PilotsNotInClub")]

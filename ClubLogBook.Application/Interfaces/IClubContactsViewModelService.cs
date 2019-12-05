@@ -11,6 +11,6 @@ namespace ClubLogBook.Application.Interfaces
 		Task<bool> UpdateOrCreateClubContactMember(string clubName, ClubContactsViewModel clubContactsViewModel);
 		Task<IEnumerable<ClubContactsViewModel>> GetPilotsNotInAnyClub();
 		//Task<bool> UpdateOrCreateClubContactMember(string clubName, ClubContactsViewModel clubContactUpdateViewModel);
-		Task<IEnumerable<ClubContactsViewModel>> GetAllPilot();
+		Task<List<ClubContactsViewModel>> GetAllPilot();
 	}
 }
