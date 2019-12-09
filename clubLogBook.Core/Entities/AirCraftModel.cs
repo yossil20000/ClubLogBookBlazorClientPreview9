@@ -30,15 +30,15 @@ namespace ClubLogBook.Core.Entities
 		DateTime? NextTransponder { get; set; }
 		DateTime? NextELT { get; set; }
 		DateTime? NextPitotStatic { get; set; }
-		double? Last100 { get; set; }
+		Decimal? Last100 { get; set; }
 		DateTime? OilChange { get; set; }
-		double? EngineTime { get; set; }
+		Decimal? EngineTime { get; set; }
 		DateTime? RegistrationRenewalDate { get; set; }
 		string FrequentlyUsed { get; set; }
 		string Notes { get; set; }
 		string PrivateNotes { get; set; }
 		int FlightCount { get; set; }
-		double Hours { get; set; }
+		Decimal Hours { get; set; }
 		DateTime? FirstFlight { get; set; }
 		DateTime? LastFlight { get; set; }
 
@@ -81,15 +81,15 @@ namespace ClubLogBook.Core.Entities
 		public DateTime? NextTransponder { get; set; }
 		public DateTime? NextELT { get; set; }
 		public DateTime? NextPitotStatic { get; set; }
-		public double? Last100 { get; set; } = -1;
+		public Decimal? Last100 { get; set; } = -1;
 		public DateTime? OilChange { get; set; } = DateTime.Now.AddYears(-5); 
-		public double? EngineTime { get; set; } = -1;
+		public Decimal? EngineTime { get; set; } = -1;
 		public DateTime? RegistrationRenewalDate { get; set; } = DateTime.Now.AddYears(-5);
 		public string FrequentlyUsed { get; set; } = "";
 		public string PublicNotes { get; set; } = "";
 		public string PrivateNotes { get; set; } = "";
 		public int FlightCount { get; set; } = -1;
-		public double Hours { get; set; } = -1;
+		public Decimal Hours { get; set; } = -1;
 		public DateTime? FirstFlight { get; set; } = DateTime.Now.AddYears(-5);
 		public DateTime? LastFlight { get; set; } = DateTime.Now.AddYears(-5);
 		public string Notes { get; set; } = "";

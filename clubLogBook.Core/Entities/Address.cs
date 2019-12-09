@@ -31,7 +31,7 @@ namespace ClubLogBook.Core.Entities
 
 		public string State { get; set; } = "";
 		public string Country { get; set; } = "";
-		public ContactType Type { get; set; }
+		public ContactType Type { get; set; } = ContactType.HOME;
 		public override string ToString()
 		{
 			return $"{Id}:{Street},{City},{Zipcode},{State},{Country},{Type}";

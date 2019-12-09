@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ClubLogBook.Infrastructure.Migrations
 {
-    public partial class initialApplicationDbContext : Migration
+    public partial class InitialApplicationDbContext : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -73,15 +73,15 @@ namespace ClubLogBook.Infrastructure.Migrations
                     NextTransponder = table.Column<DateTime>(nullable: true),
                     NextELT = table.Column<DateTime>(nullable: true),
                     NextPitotStatic = table.Column<DateTime>(nullable: true),
-                    Last100 = table.Column<double>(nullable: true),
+                    Last100 = table.Column<decimal>(nullable: true),
                     OilChange = table.Column<DateTime>(nullable: true),
-                    EngineTime = table.Column<double>(nullable: true),
+                    EngineTime = table.Column<decimal>(nullable: true),
                     RegistrationRenewalDate = table.Column<DateTime>(nullable: true),
                     FrequentlyUsed = table.Column<string>(nullable: true),
                     PublicNotes = table.Column<string>(nullable: true),
                     PrivateNotes = table.Column<string>(nullable: true),
                     FlightCount = table.Column<int>(nullable: false),
-                    Hours = table.Column<double>(nullable: false),
+                    Hours = table.Column<decimal>(nullable: false),
                     FirstFlight = table.Column<DateTime>(nullable: true),
                     LastFlight = table.Column<DateTime>(nullable: true),
                     Notes = table.Column<string>(nullable: true)

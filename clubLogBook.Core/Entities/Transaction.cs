@@ -16,7 +16,7 @@ namespace ClubLogBook.Core.Entities
 		public Decimal Cash { get; set; } = 0;
 		public Decimal Flight { get; set; } = 0;
 		public virtual Invoice Invoice { get; set; } = new Invoice();
-		public string Description { get; set; } = "";
+		public string Description { get; set; } = string.Empty;
 		public override string ToString()
 		{
 			return string.Format(

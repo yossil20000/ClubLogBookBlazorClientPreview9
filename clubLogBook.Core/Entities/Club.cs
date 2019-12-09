@@ -18,14 +18,10 @@ namespace ClubLogBook.Core.Entities
 	{
 		public Club()
 		{
-			//this.Aircrafts = new HashSet<Aircraft>();
-			//Pilots = new HashSet<Pilot>();
-			//Aircrafts = new HashSet<Aircraft>();
 			Name = "";
 			ClubMembers = new HashSet<Pilot>();
 			ClubAircrafts = new HashSet<Aircraft>();
 		}
-		
 		
 		public string Name { get; set; }
 		private HashSet<Pilot> ClubMembers { get;  }

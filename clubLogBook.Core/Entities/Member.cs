@@ -30,15 +30,15 @@ namespace ClubLogBook.Core.Entities
 		public string FirstName { get; set; } = "";
 		public string LastName { get; set; } = "";
 		public string MiddleName { get; set; } = "";
-		public Gender Gender { get; set; }
+		public Gender Gender { get; set; } = Gender.Male;
 		public DateTime DateOfBirth { get; set; } =		DateTime.Now.AddYears(-5);
 		public byte[] Photo { get; set; } = new byte[0];
-		public Decimal Height { get; set; }
-		public Decimal Weight { get; set; }
+		public Decimal Height { get; set; } = 0;
+		public Decimal Weight { get; set; } = 0;
 
 		public Contact Contact { get; set; } = new Contact();
 		//public ClubRoll ClubRoll { get; set; } = ClubRoll.ClubMember;
-		public string UserId { get; set; } 
+		public string UserId { get; set; } = string.Empty;
 		
 		public override string ToString()
 		{

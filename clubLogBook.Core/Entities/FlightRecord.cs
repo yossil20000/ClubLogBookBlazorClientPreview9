@@ -58,9 +58,9 @@ namespace ClubLogBook.Core.Entities
 			To = "LLHA";
 			Routh = "";
 		}
-		
-		public System.DateTime Date { get; set; }
-		public string From { get; set; }
+
+		public System.DateTime Date { get; set; } 
+		public string From { get; set; } 
 		public string Routh { get; set; }
 		public string To { get; set; }
 		public Decimal TotalTime { get; set; }

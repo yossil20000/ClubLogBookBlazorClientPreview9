@@ -23,14 +23,14 @@ namespace ClubLogBook.Core.Entities
 	{
 		public CustomPropertyType()
 		{ }
-	
-		
-		public string Title { get; set; }
-		public string SortKey { get; set; }
-		public string FormatString { get; set; }
-		public short Type { get; set; }
-		public int Flags { get; set; }
-		public string Description { get; set; }
+
+
+		public string Title { get; set; } = "";
+		public string SortKey { get; set; } = "";
+		public string FormatString { get; set; } = "";
+		public short Type { get; set; } = 0;
+		public int Flags { get; set; } = 0;
+		public string Description { get; set; } = "";
 
 		//public StringBuilder DumpAll()
 		//{

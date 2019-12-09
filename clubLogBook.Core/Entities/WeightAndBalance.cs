@@ -36,7 +36,7 @@ namespace ClubLogBook.Core.Entities
 	{
 		public WeightAndBalance()
 		{
-			StationFormat = $"Protobuf";
+			StationFormat = $"JSON";
 		}
 
 		public WeightAndBalance(DateTime issueDate,decimal emptyWeight, decimal emptyWeightLongCg, decimal emptyWeightLatCg)
@@ -45,8 +45,8 @@ namespace ClubLogBook.Core.Entities
 			EmptyWeight = emptyWeight;
 			EmptyWeightLongCg = emptyWeightLongCg;
 			EmptyWeightLatCg = emptyWeightLatCg;
-			StationFormat = $"PROTOBUF";
-			FuelLoadingTableFormat = $"PROTOBUF";
+			StationFormat = $"JSON";
+			FuelLoadingTableFormat = $"JSON";
 
 		}
 		public int WeightAndBalanceId { get; set; }

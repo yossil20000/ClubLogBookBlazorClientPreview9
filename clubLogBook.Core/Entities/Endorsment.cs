@@ -15,9 +15,9 @@ namespace ClubLogBook.Core.Entities
 	public class Endorsment : AuditableEntity, IEndorsment
 	{
 		public Endorsment() { }
-		
-		
-		public DateTime GivenDate { get; set; }
-		public DateTime ExpiredTime { get; set; }
+
+
+		public DateTime GivenDate { get; set; } = DateTime.Now.AddYears(-5);
+		public DateTime ExpiredTime { get; set; } = DateTime.Now.AddYears(-5);
 	}
 }

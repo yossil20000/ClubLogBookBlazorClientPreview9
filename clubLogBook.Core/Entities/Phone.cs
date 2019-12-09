@@ -10,8 +10,8 @@ namespace ClubLogBook.Core.Entities
 		public Phone() { Id = 0; }
 		public string CountryCode { get; set; } = "972";
 		public string AreaCode { get; set; } = "054";
-		public string PhoneNumber { get; set; }
-		public ContactType Type { get; set; }
+		public string PhoneNumber { get; set; } = string.Empty;
+		public ContactType Type { get; set; } = ContactType.HOME;
 		public override int GetHashCode()
 		{
 			return $"{CountryCode}{AreaCode}{PhoneNumber}{Type}".GetHashCode();

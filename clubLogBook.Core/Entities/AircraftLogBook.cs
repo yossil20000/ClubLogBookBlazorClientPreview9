@@ -25,7 +25,7 @@ namespace ClubLogBook.Core.Entities
 			flights.Add(flight);
 		}
 		public int AircraftLogBookId { get; set; }
-		public string TaiNumber { get; set; }
+		public string TaiNumber { get; set; } = "";
 		public virtual ICollection<Flight> Flights => flights;
 	}
 }

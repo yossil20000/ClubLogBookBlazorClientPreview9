@@ -10,8 +10,8 @@ namespace ClubLogBook.Core.Entities
 	public class EMAIL : AuditableEntity
 	{
 		public EMAIL() { Id = 0; }
-		public string EMail {get;set;} 
-		public ContactType Type { get; set; }
+		public string EMail {get;set; } = "";
+		public ContactType Type { get; set; } = ContactType.HOME;
 		
 	}
 }

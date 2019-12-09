@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClubLogBook.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20191204100051_initialApplicationDbContext")]
-    partial class initialApplicationDbContext
+    [Migration("20191206074328_InitialApplicationDbContext")]
+    partial class InitialApplicationDbContext
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -120,8 +120,8 @@ namespace ClubLogBook.Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double?>("EngineTime")
-                        .HasColumnType("float");
+                    b.Property<decimal?>("EngineTime")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime?>("FirstFlight")
                         .HasColumnType("datetime2");
@@ -132,11 +132,11 @@ namespace ClubLogBook.Infrastructure.Migrations
                     b.Property<string>("FrequentlyUsed")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("Hours")
-                        .HasColumnType("float");
+                    b.Property<decimal>("Hours")
+                        .HasColumnType("decimal(18,2)");
 
-                    b.Property<double?>("Last100")
-                        .HasColumnType("float");
+                    b.Property<decimal?>("Last100")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime?>("LastAltimeter")
                         .HasColumnType("datetime2");

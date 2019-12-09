@@ -11,7 +11,7 @@ namespace ClubLogBook.Core.Entities
 	{
 		public Invoice() { }
 
-		public decimal Amount { get; set; } = 0;
+		public Decimal Amount { get; set; } = 0;
 		public string Description { get; set; } = "";
 		public InvoiceType InvoiceType { get; set; } = InvoiceType.Flight;
 		public InvoiceState InvoiceState { get; set; } = InvoiceState.Create;
