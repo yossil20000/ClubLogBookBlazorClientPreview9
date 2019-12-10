@@ -96,13 +96,13 @@ app {
     color: red;
 }
 
-@media (max-width: 767.98px) {
+@media (max-width: 1249.98px) {
     .main .top-row {
         display: none;
     }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1250px) {
     app {
         flex-direction: row;
     }
@@ -215,7 +215,7 @@ div.scroll {
     display: grid;
     background-color: aliceblue;
     /*grid-template-areas: "r1c1 r1c2 r1c3 r1c4 r1c4" "r2c1 r2c2 r2c3 r2c4 r2c5" "r1c3 r1c3 r1c3 r3c4 r3c4" "r4c1 r4c2 r4c3 r4c4 r4c5"*/
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
     grid-template-rows: minmax(50px,auto) minmax(50px,auto) minmax(100px,auto) minmax(100px,auto) minmax(50px,auto);
     max-width: initial;
     margin: 0 auto;
@@ -223,12 +223,12 @@ div.scroll {
     grid-template-areas: "head head head head" "select-club select-airplane select-pilot select-date" "main-left main-left main-left  main-left" "main-left main-left main-left main-left" "main-right main-right main-right  main-right" "main-right main-right main-right main-right" "foot foot foot foot";
 }
 
-@media screen and (min-width: 600px) {
+@media screen and (min-width: 1000px) {
     .containerAccount {
         display: grid;
         background-color: aliceblue;
         /*grid-template-areas: "r1c1 r1c2 r1c3 r1c4 r1c4" "r2c1 r2c2 r2c3 r2c4 r2c5" "r1c3 r1c3 r1c3 r3c4 r3c4" "r4c1 r4c2 r4c3 r4c4 r4c5"*/
-        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-template-columns: 2fr 1fr 1fr 1fr;
         grid-template-rows: minmax(50px,auto) minmax(50px,auto) minmax(100px,auto) minmax(100px,auto) minmax(50px,auto);
         max-width: initial;
         margin: 10px auto;

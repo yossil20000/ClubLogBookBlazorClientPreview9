@@ -6,8 +6,8 @@ namespace ClubLogBook.Application.ViewModels
 	public class FlightRecordIndexViewModel
 	{
 		public IEnumerable<ClubFlightViewModel> FlightRecords { get; set; }
-		public FilterViewModel FilterViewModel { get; set; }
-		public PaginationInfoViewModel PaginationInfo { get; set; }
+		public FilterViewModel FilterViewModel { get; set; } = new FilterViewModel();
+		public PaginationInfoViewModel PaginationInfo { get; set; } = new PaginationInfoViewModel();
 	}
 	public class RecordsViewModel<T> where T : class
 	{
