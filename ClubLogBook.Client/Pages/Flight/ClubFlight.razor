@@ -3,6 +3,7 @@
 
 @inject HttpClient Http
 @inject IdentityAuthenticationStateProvider authStateProvider
+
 <h1>Club Flights</h1>
 <AuthorizeView Roles="Administrators,AccountManage,Members">
     <Authorized>
@@ -109,45 +110,79 @@
             <div>
                 <a href='/Flight/Create'>Create</a>
             </div>
-            <div class="container-fluid row">
-                <table class="table table-bordered table-hover table-striped col-sm-12 col-md-12 col-xs-12">
+            @if (false)
+            {
+                <div class="container-fluid row">
+                    <table class="table table-bordered table-hover table-striped col-sm-12 col-md-12 col-xs-12">
 
-                    <thead>
-                        <tr>
-                            <th><button class="btn btn-light" @onclick="SortDate">Date Of Flight</button></th>
-                            <th><button class="btn btn-light" @onclick="SortName">Pilot Name</button></th>
-                            <th><button class="btn btn-light" @onclick="SortEngienStart">Engine Start</button></th>
-                            <th>Engine End</th>
-                            <th>Hobbs Start</th>
-                            <th>Hobbs End</th>
-                            <th>Routh</th>
-                            <th> <a href='/Flight/Create'>Create</a></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var flight in FlightRecordIndexViewModel.FlightRecords)
-                        {
+                        <thead>
                             <tr>
-                                <td>@flight.Date</td>
-                                <td>@flight.Pilot.FirstName @flight.Pilot.LastName</td>
-                                <td>@flight.EngineStart</td>
-                                <td>@flight.EngineEnd</td>
-                                <td>@flight.HobbsStart</td>
-                                <td>@flight.HobbsEnd</td>
-                                <td>@flight.Routh</td>
-                                <td>
-                                @if (IsCurrentAdmin || CurrentUser.Id == flight.Pilot.UserId.ToString())
-                                {<a href='/Flight/Edit/@flight.Id'>Edit</a>}
-                                </td>
-                                <td>
-                                    @if (IsCurrentAdmin || CurrentUser.Id == flight.Pilot.UserId.ToString())
-                                    {<a href='/Flight/Delete/@flight.Id'>Delete</a>}
-                                </td>
+                                <th><button class="btn btn-light" @onclick="SortDate">Date Of Flight</button></th>
+                                <th><button class="btn btn-light" @onclick="SortName">Pilot Name 1</button></th>
+                                <th><button class="btn btn-light" @onclick="SortEngienStart">Engine Start</button></th>
+                                <th>Engine End</th>
+                                <th>Hobbs Start</th>
+                                <th>Hobbs End</th>
+                                <th>Routh</th>
+                                <th> <a href='/Flight/Create'>Create</a></th>
                             </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
+                        </thead>
+                        <tbody>
+                            @foreach (var flight in FlightRecordIndexViewModel.FlightRecords)
+                            {
+                                <tr>
+                                    <td>@flight.Date</td>
+                                    <td>@flight.Pilot.FirstName @flight.Pilot.LastName</td>
+                                    <td>@flight.EngineStart</td>
+                                    <td>@flight.EngineEnd</td>
+                                    <td>@flight.HobbsStart</td>
+                                    <td>@flight.HobbsEnd</td>
+                                    <td>@flight.Routh</td>
+                                    <td>
+                                        @if (IsCurrentAdmin || CurrentUser.Id == flight.Pilot.UserId.ToString())
+                                        {<a href='/Flight/Edit/@flight.Id'>Edit</a>}
+                                    </td>
+                                    <td>
+                                        @if (IsCurrentAdmin || CurrentUser.Id == flight.Pilot.UserId.ToString())
+                                        {<a href='/Flight/Delete/@flight.Id'>Delete</a>}
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            {
+               
+                <div class="grid-table">
+                    <div class="grid-table-row">
+                        <div class="grid-table-cell"><button class="btn-grid" @onclick="SortDate">Date Of Flight</button></div>
+                        <div class="grid-table-cell"><button class="btn-grid" @onclick="SortName">Pilot Name</button></div>
+                        <div class="grid-table-cell"><button class="btn-grid" @onclick="SortEngienStart">Engine Start</button></div>
+                        <div class="grid-table-cell">Engien End</div>
+                        <div class="grid-table-cell">Hobbs Start</div>
+                        <div class="grid-table-cell">Hobbs End</div>
+                        <div class="grid-table-cell">Action</div>
+                        <div class="grid-table-cell">Action</div>
+                    </div>
+                    @foreach (var flight in FlightRecordIndexViewModel.FlightRecords)
+                    {
+                        <div class="grid-table-row">
+                            <div class="grid-table-cell" data-title="Date Of Flight">@flight.Date</div>
+                            <div class="grid-table-cell" data-title="Full Name">@flight.Pilot.FirstName @flight.Pilot.LastName</div>
+                            <div class="grid-table-cell" data-title="Engien Start">@flight.EngineStart</div>
+                            <div class="grid-table-cell" data-title="Engien End">@flight.EngineEnd</div>
+                            <div class="grid-table-cell" data-title="Hobbs Start">@flight.HobbsStart</div>
+                            <div class="grid-table-cell" data-title="Hobbs End">@flight.HobbsEnd</div>
+                            <div class="grid-table-cell" data-title="Edit"> <a href='/Flight/Edit/@flight.Id'>Edit</a></div>
+                            <div class="grid-table-cell" data-title="Delete"><a href='/Flight/Delete/@flight.Id'>Delete</a></div>
+                        </div>
+                    }
+
+                   
+                </div>
+            }
+
 
         }
 

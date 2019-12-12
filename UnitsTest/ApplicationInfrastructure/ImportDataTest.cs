@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
 using ClubLogBook.Core.Entities;
-using ClubLogBook.Core.Exctensions;
 using ClubLogBook.Core.Interfaces;
-using ClubLogBook.Infrastructure.Data;
+using ClubLogBook.Infrastructure.Persistence;
 using UnitsTest.ApplicationCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using ClubLogBook.Infrastructure.Data.Import;
@@ -14,13 +13,13 @@ namespace UnitsTest.ApplicationInfrastructure
 {
 	public class ImportDataTest
 	{
-		public ClubLogbookContext _context; 
+		public ApplicationDbContext _context; 
 		public void InitContext()
 		{
-			var dbOptions = new DbContextOptionsBuilder<ClubLogbookContext>()
-			   .UseSqlServer("Server=(localdb)\\mssqllocaldb;Integrated Security=true;Initial Catalog=Yossil_15;")
+			var dbOptions = new DbContextOptionsBuilder<ApplicationDbContext>()
+			   .UseSqlServer("Server=(localdb)\\mssqllocaldb;Integrated Security=true;Initial Catalog=Yossil_16;")
 			   .Options;
-			_context = new ClubLogbookContext(dbOptions);
+			_context = new ApplicationDbContext(dbOptions);
 		}
 		[Test]
 		public void Import()

@@ -48,6 +48,7 @@
     <ProjectReference Include="..\clubLogBook.Core\ClubLogBook.Core.csproj" />
     <ProjectReference Include="..\ClubLogBook.Infrastructure\ClubLogBook.Infrastructure.csproj" />
     <ProjectReference Include="..\ClubLogBook.Shared\ClubLogBook.Shared.csproj" />
+    <ProjectReference Include="..\ClubLogBook.Application\ClubLogBook.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>

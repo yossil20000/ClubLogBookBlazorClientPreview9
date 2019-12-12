@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
 using ClubLogBook.Core.Entities;
-using ClubLogBook.Core.Exctensions;
 using ClubLogBook.Core.Interfaces;
 using UnitsTest.ApplicationCore.Builder;
 using UnitsTest.ApplicationCore.MemberTest;

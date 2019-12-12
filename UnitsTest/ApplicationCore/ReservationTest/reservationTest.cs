@@ -3,24 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using ClubLogBook.Core.Entities;
-using ClubLogBook.Core.Exctensions;
-using ClubLogBook.Core.Interfaces;
 using ClubLogBook.Infrastructure.Data;
-using UnitsTest.ApplicationCore.Builder;
+using ClubLogBook.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
-using ClubLogBook.Infrastructure.Data.Import;
 using UnitsTest.ApplicationInfrastructure;
-using ClubLogBook.Core.Services;
 using System.Threading.Tasks;
-using ClubLogBook.Core.Specifications;
-using ClubLogBook.Server.Interfaces;
+using ClubLogBook.Application.Services;
+using ClubLogBook.Application.Interfaces;
+
 namespace UnitsTest.ApplicationCore.Services
 {
 	public class ReservationTest
 	{
 		public ReservationService cr;
 		public MemberService mr;
-		ClubLogbookContext _context;
+		ApplicationDbContext _context;
 		[Test]
 		public async Task ClubLogbookContextTest()
 		{

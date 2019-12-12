@@ -7,6 +7,7 @@ using NUnit.Framework;
 using System.Linq;
 using ClubLogBook.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using ClubLogBook.Infrastructure.Persistence;
 using ClubLogBook.Application.ViewModels;
 
 namespace UnitsTest.AccountManager
@@ -15,15 +16,15 @@ namespace UnitsTest.AccountManager
 	public class CreateAccountTest
 	{
 		IMapper mapper = AutoMapperConstructor.Instance.Mapper;
-		ClubLogbookContext context;
+		ApplicationDbContext context;
 		[Test]
 		public void CreateAccount()
 		{
 
-			var dbOptions = new DbContextOptionsBuilder<ClubLogbookContext>()
+			var dbOptions = new DbContextOptionsBuilder<ApplicationDbContext>()
 			   .UseInMemoryDatabase(databaseName: "TestCatalog")
 			   .Options;
-			context = new ClubLogbookContext(dbOptions);
+			context = new ApplicationDbContext(dbOptions);
 			List<Account> accounts = Accounts();
 			List<AircraftPrice> aircraftPrices = AircraftPrices();
 			List<Invoice> invoices = Invoices();

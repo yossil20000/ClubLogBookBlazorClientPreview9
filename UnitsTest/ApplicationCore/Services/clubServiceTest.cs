@@ -3,23 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using ClubLogBook.Core.Entities;
-using ClubLogBook.Core.Exctensions;
 using ClubLogBook.Core.Interfaces;
 using ClubLogBook.Infrastructure.Data;
-using UnitsTest.ApplicationCore.Builder;
+using ClubLogBook.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
-using ClubLogBook.Infrastructure.Data.Import;
 using UnitsTest.ApplicationInfrastructure;
-using ClubLogBook.Core.Services;
 using System.Threading.Tasks;
-using ClubLogBook.Core.Specifications;
-using ClubLogBook.Server.Interfaces;
+using ClubLogBook.Application.Services;
+using ClubLogBook.Application.Specifications;
+using ClubLogBook.Application.Interfaces;
+
 namespace UnitsTest.ApplicationCore.Services
 {
 	public class clubServiceTest
 	{
 		public ClubRepository cr;
-		ClubLogbookContext _context;
+		ApplicationDbContext _context;
 		[Test]
 		public async Task ClubLogbookContextTest()
 		{
@@ -114,7 +113,8 @@ namespace UnitsTest.ApplicationCore.Services
 				AircraftLogBookRepository acr = new AircraftLogBookRepository(_context);
 				FlightRepository fr = new FlightRepository(_context);
 				MemberRepository mr = new MemberRepository(_context);
-				ClubService clubService = new ClubService(cr,mr,fr,acr,null);
+				AircraftRepository ar = new AircraftRepository(_context);
+				ClubService clubService = new ClubService(cr,mr,fr,ar,acr,null);
 				int aircraftId = 8;
 				
 				ICollection<Flight> flights = await clubService.GetClubAircraftFlight("BAZ", aircraftId);
@@ -159,8 +159,8 @@ namespace UnitsTest.ApplicationCore.Services
 				FlightRepository fr = new FlightRepository(_context);
 				MemberRepository mr = new MemberRepository(_context);
 				ClubRepository _clubRepository = new ClubRepository(_context);
-				
-				ClubService clubService = new ClubService(cr, mr, fr, acr, null);
+				AircraftRepository ar = new AircraftRepository(_context);
+				ClubService clubService = new ClubService(cr, mr, fr,ar, acr, null);
 				int aircraftId = 8;
 				var clubSpec = new ClubWithSpecification("BAZ", false, true);
 

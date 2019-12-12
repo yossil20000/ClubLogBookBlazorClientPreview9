@@ -1,27 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using NUnit.Framework;
 using ClubLogBook.Core.Entities;
-using ClubLogBook.Core.Exctensions;
-using ClubLogBook.Core.Interfaces;
 using ClubLogBook.Infrastructure.Data;
-using UnitsTest.ApplicationCore.Builder;
-using Microsoft.EntityFrameworkCore;
-using ClubLogBook.Infrastructure.Data.Import;
+using ClubLogBook.Infrastructure.Persistence;
 using UnitsTest.ApplicationInfrastructure;
-using ClubLogBook.Core.Services;
 using System.Threading.Tasks;
-using ClubLogBook.Core.Specifications;
+using ClubLogBook.Application.Services;
+
 namespace UnitsTest.ApplicationCore.Services
 {
-	
+
 	public class LogbookServiceTest
 	{
 		public LogbookRepository logbookRepository;
 		
 		public LogbookService logbookService;
-		public ClubLogbookContext _context;
+		public ApplicationDbContext _context;
 		[Test]
 		public async Task LBRepositoryTest()
 		{

@@ -3,19 +3,22 @@ using NUnit.Framework;
 using ClubLogBook.Core.Entities;
 using ClubLogBook.Core.Interfaces;
 using ClubLogBook.Infrastructure.Data;
+using ClubLogBook.Infrastructure.Persistence;
 using UnitsTest.ApplicationInfrastructure;
-using ClubLogBook.Core.Services;
+
 using System.Threading.Tasks;
-using ClubLogBook.Client.ViewModels;
+using ClubLogBook.Application.ViewModels;
+using ClubLogBook.Application.Services;
 using ClubLogBook.Server.Services;
-using ClubLogBook.Server;
 using AutoMapper;
+using ContactType = ClubLogBook.Core.Interfaces.ContactType;
+
 namespace UnitsTest.AplicationServer
 {
 	public class ServerServiceTest
 	{
 		public ClubRepository cr;
-		ClubLogbookContext _context;
+		ApplicationDbContext _context;
 
 		IMapper autoMapper;
 		[Test]
@@ -32,8 +35,8 @@ namespace UnitsTest.AplicationServer
 				FlightRepository fr = new FlightRepository(_context);
 				
 				ClubRepository cr = new ClubRepository(_context);
-				
-				ClubService clubService = new ClubService(cr,mr,fr);
+
+				ClubService clubService = new ClubService(cr, mr, fr, null, null, null);
 				//ICollection<Pilot> clubBaz = await clubService.GetClubMembers("BAZ");
 
 				autoMapper = AutoMapperConstructor.Instance.Mapper;
