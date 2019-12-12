@@ -97,9 +97,7 @@ app {
 }
 
 @media (max-width: 1249.98px) {
-    .main .top-row {
-        display: none;
-    }
+   
 }
 
 @media (min-width: 1250px) {
