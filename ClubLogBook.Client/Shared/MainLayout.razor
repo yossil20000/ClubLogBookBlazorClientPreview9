@@ -9,7 +9,16 @@
 
 <div class="main">
     <div class="top-row px-4">
-        <button type="button" class="btn btn-link ml-md-auto" @onclick="LogoutClick">Logout</button>
+        @if (CurrentUser != null)
+        {
+            <span>Hello: @CurrentUser.UserName</span>
+        }
+        else
+        {
+            <span>Hello : @name</span>
+        }
+
+        <button type="button" class="btn btn-link ml-md-auto" @onclick="LogoutClick">Logout Me</button>
     </div>
 
     <div class="content px-4">
@@ -23,12 +32,21 @@
 
     [CascadingParameter]
     Task<AuthenticationState> AuthenticationState { get; set; }
+    AdminUserInfo CurrentUser { get; set; }
+    string name = "Unknown";
 
     protected override async Task OnParametersSetAsync()
     {
         if (!(await AuthenticationState).User.Identity.IsAuthenticated)
         {
+            ClaimsPrincipal claims = (await AuthenticationState).User;
+            if (claims != null)
+                name = claims.Identity.Name;
             navigationManager.NavigateTo("/login");
+        }
+        else
+        {
+            //navigationManager.NavigateTo("/index");
         }
     }
 
@@ -36,5 +54,13 @@
     {
         await authStateProvider.Logout();
         navigationManager.NavigateTo("/login");
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        //var authState = await AuthenticationState;
+        //var user = authState.User;
+        //CurrentUser = await authStateProvider.CurrentUser();
+        CurrentUser = await authStateProvider.CurrentUser();
+
     }
 }

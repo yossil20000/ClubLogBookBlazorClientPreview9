@@ -222,6 +222,7 @@ div.scroll {
     grid-template-areas: "head head head head" "select-club select-airplane select-pilot select-date" "main-left main-left main-left  main-left" "main-left main-left main-left main-left" "main-right main-right main-right  main-right" "main-right main-right main-right main-right" "foot foot foot foot";
 }
 
+
 @media screen and (min-width: 1000px) {
     .containerAccount {
         display: grid;
@@ -313,12 +314,19 @@ div.scroll {
     grid-column: 2/3;
 }
 
+.card-body-item--1-value input {
+    width:100%;
+}
+
 .card-body-item--2 {
     grid-column: 1/2;
 }
 
 .card-body-item--2-value {
     grid-column: 2/3;
+}
+card-body-item--2-value input{
+   width:100%;
 }
 
 @media screen and (min-width: 1200px) {
@@ -355,40 +363,40 @@ div.scroll {
 
 /*My to Table Grid*/
 body {
-    background: #36D1DC;
-    background: -webkit-gradient(linear, left top, right top, from(#5B86E5), to(#36D1DC));
-    background: linear-gradient(to right, #5B86E5, #36D1DC);
-    /*padding: 5vw 10%;*/
-    font-family: sans-serif;
-    font-size: 20px;
+background: #36D1DC;
+background: -webkit-gradient(linear, left top, right top, from(#5B86E5), to(#36D1DC));
+background: linear-gradient(to right, #5B86E5, #36D1DC);
+/*padding: 5vw 10%;*/
+font-family: sans-serif;
+font-size: 1.3rem;
 }
 
 @media screen and (max-width: 1200px) {
-    body {
-        padding: 2vh;
-    }
+body {
+padding: 1vh;
+}
 }
 
 h1 {
-    text-shadow: 0 2px 1px rgba(255, 255, 255, 0.3);
-    text-align: center;
-    letter-spacing: -0.05rem;
-    color: #222;
-    margin: 0;
+text-shadow: 0 2px 1px rgba(255, 255, 255, 0.3);
+text-align: center;
+letter-spacing: -0.05rem;
+color: #222;
+margin: 0;
 }
 
 h2 {
-    text-align: center;
-    margin: 0.5rem 0 2rem 0;
-    color: rgba(255, 255, 255, 0.6);
+text-align: center;
+margin: 0.5rem 0 2rem 0;
+color: rgba(255, 255, 255, 0.6);
 }
 .btn-grid {
-    font-family: sans-serif;
-    font-size: 20px;
-    font-weight: bold;
-    text-shadow: 0 2px 1px #fff;
-    text-align:center;
-    background-color:transparent;
+font-family: sans-serif;
+font-size: 1rem;
+font-weight: bold;
+text-shadow: 0 2px 1px #fff;
+text-align:center;
+background-color:transparent;
 }
 .grid-table {
     display: -ms-grid;
@@ -401,115 +409,193 @@ h2 {
     align-items: top;
     background: rgba(250, 250, 250, 0.9);
     border-radius: 0.5rem;
-
+    max-width: 100%;
 }
 
 @media (max-width: 900px) {
-    .grid-table {
-        background: transparent;
-        grid-row-gap: 2rem;
-        -webkit-box-shadow: none;
-        box-shadow: none;
-    }
+.grid-table {
+background: transparent;
+grid-row-gap: 2rem;
+-webkit-box-shadow: none;
+box-shadow: none;
+}
 }
 
 .grid-table-row {
-    display: -ms-grid;
-    display: grid;
-    -ms-grid-columns: (2fr)[2] (1.5fr)[4] (1fr)[2];
-    grid-template-columns: repeat(2, 2fr) repeat(4, 1.5fr) repeat(2, 1fr);
+display: -ms-grid;
+display: grid;
+-ms-grid-columns: (2fr)[2] (1.5fr)[4] (1fr)[2];
+grid-template-columns: repeat(2, 2fr) repeat(4, 1.5fr) repeat(2, 1fr);
 }
 
+.grid-type-customer {
+/*id, name,date gender,address,phone,edit,delete*/
+-ms-grid-columns: 1.5fr 2fr 1.3fr 0.8fr 2.5fr 1.3fr 0.8fr 0.8fr;
+grid-template-columns: 1.5fr 2fr 1.3fr 0.8fr 2.5fr 1.3fr 0.8fr 0.8fr;
+}
+
+.grid-type-2-col {
+    /*id, name,date gender,address,phone,edit,delete*/
+    -ms-grid-columns: 1.5fr 2fr;
+    grid-template-columns: 1.5fr 2fr;
+}
+
+grid-type-2-col-equal {
+    /*id, name,date gender,address,phone,edit,delete*/
+    -ms-grid-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
+}
+.grid-table-row-2-col-equal {
+    display: -ms-grid;
+    display: grid;
+    -ms-grid-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
+}
 @media (max-width: 900px) {
-    .grid-table-row {
-        -ms-grid-columns: 2fr 2fr;
-        grid-template-columns: 2fr 2fr;
-        background: rgba(250, 250, 250, 0.9);
-        -webkit-box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.2);
-        box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.2);
-        border-radius: 0.5rem;
-    }
+.grid-table-row {
+-ms-grid-columns: 2fr 2fr;
+grid-template-columns: 2fr 2fr;
+background: rgba(250, 250, 250, 0.9);
+-webkit-box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.2);
+box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.2);
+border-radius: 0.5rem;
+}
 }
 
 @media (max-width: 400px) {
-    .grid-table-row {
-        -ms-grid-columns: 1fr 1fr;
-        grid-template-columns: 1fr 1fr;
-    }
+.grid-table-row {
+-ms-grid-columns: 1fr 1fr;
+grid-template-columns: 1fr 1fr;
+}
 }
 
 .grid-table-row:not(:last-child) {
-    border-bottom: 1px solid #ddd;
+border-bottom: 1px solid #ddd;
 }
 
 .grid-table-row:first-child {
-    border-radius: 0.5rem 0.5rem 0 0;
-    background: rgba(204, 204, 204, 0.5);
-    font-weight: bold;
-    text-shadow: 0 2px 1px #fff;
+border-radius: 0.5rem 0.5rem 0 0;
+background: rgba(204, 204, 204, 0.5);
+font-weight: bold;
+text-shadow: 0 2px 1px #fff;
 }
 
 @media (max-width: 800px) {
-    .grid-table-row:first-child {
-        display: none;
-    }
+.grid-table-row:first-child {
+display: none;
+}
 }
 
 .grid-table-cell {
-    padding: 1rem;
-    /*
-    @media (max-width: 400px) {
-      &:last-child {
-        grid-column-start: 1;
-        grid-column-end: 5;
-      }
-    }*/
+padding: 1rem;
+/*
+@media (max-width: 400px) {
+&:last-child {
+grid-column-start: 1;
+grid-column-end: 5;
 }
-
+}*/
+}
+.grid-table-cell input{
+    padding: 1rem;
+    width:100%;
+    /*
+@media (max-width: 400px) {
+&:last-child {
+grid-column-start: 1;
+grid-column-end: 5;
+}
+}*/
+}
 @media (max-width: 800px) {
-    .grid-table-cell {
-        padding: 0 0 1rem 0;
-        text-align: center;
-    }
+.grid-table-cell {
+padding: 0 0 1rem 0;
+text-align: center;
+}
 }
 
 .grid-table-cell:not(:last-child) {
-    border-right: 1px solid #ddd;
+border-right: 1px solid #ddd;
 }
 
 @media (max-width: 800px) {
-    .grid-table-cell:before {
-        content: attr(data-title);
-        font-weight: bold;
-        display: block;
-        background: rgba(221, 221, 221, 0.8);
-        padding: 0.75rem;
-        margin-bottom: 0.75rem;
-        font-size: 1rem;
-    }
-
-    .grid-table-cell:first-child {
-        -ms-grid-column: 1;
-        grid-column-start: 1;
-        grid-column-end: -1;
-        border-bottom: 1px solid #ddd;
-    }
-
-        .grid-table-cell:first-child:before {
-            border-radius: 0.5rem 0.5rem 0 0;
-        }
-
-    .grid-table-cell:nth-child(2) {
-        -ms-grid-column: 1;
-        grid-column-start: 1;
-        grid-column-end: -1;
-        border-bottom: 1px solid #ddd;
-    }
-
-        .grid-table-cell:nth-child(2):before {
-            border-radius: 0.5rem 0.5rem 0 0;
-        }
+.grid-table-cell:before {
+content: attr(data-title);
+font-weight: bold;
+display: block;
+background: rgba(221, 221, 221, 0.8);
+padding: 0.75rem;
+margin-bottom: 0.75rem;
+font-size: 1.1rem;
 }
+
+
+@media (max-width: 800px) {
+.grid-table-cell:before {
+content: attr(data-title);
+font-weight: bold;
+display: block;
+background: rgba(221, 221, 221, 0.8);
+padding: 0.75rem;
+margin-bottom: 0.75rem;
+font-size: 1.1rem;
+}
+.grid-table-cell:first-child {
+-ms-grid-column: 1;
+grid-column-start: 1;
+grid-column-end: -1;
+border-bottom: 1px solid #ddd;
+}
+
+.grid-table-cell:first-child:before {
+    border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.grid-table-cell:nth-child(2) {
+-ms-grid-column: 1;
+grid-column-start: 1;
+grid-column-end: -1;
+border-bottom: 1px solid #ddd;
+}
+
+.grid-table-cell:nth-child(2):before {
+    border-radius: 0.5rem 0.5rem 0 0;
+}
+}
+
+    @media (max-width: 800px) {
+        .grid-table-cell-2-col-equal:before {
+            /*content: attr(data-title);*/
+            font-weight: bold;
+            display: block;
+            background: rgba(221, 221, 221, 0.8);
+            padding: 0.75rem;
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+        }
+
+        .grid-table-cell-2-col-equal:first-child {
+            -ms-grid-column: 1;
+            grid-column-start: 1;
+            grid-column-end: -1;
+            border-bottom: 1px solid #ddd;
+        }
+
+            .grid-table-cell-2-col-equal:first-child:before {
+                border-radius: 0.5rem 0.5rem 0 0;
+            }
+
+        .grid-table-cell-2-col-equal:nth-child(2) {
+            -ms-grid-column: 1;
+            grid-column-start: 1;
+            grid-column-end: -1;
+            border-bottom: 1px solid #ddd;
+        }
+
+            .grid-table-cell-2-col-equal:nth-child(2):before {
+                border-radius: 0.5rem 0.5rem 0 0;
+            }
+    }
 /*# sourceMappingURL=main.css.map */
 /*# sourceMappingURL=main.css.map */
 /*# sourceMappingURL=main.css.map */

@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Components.Server;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -7,15 +6,11 @@ using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Newtonsoft.Json.Serialization;
 using System;
 using System.Linq;
-using System.Net.Mime;
 using System.Threading.Tasks;
 using ClubLogBook.Infrastructure.Data;
-using ClubLogBook.Core.Entities;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using ClubLogBook.Server.Data;
 using ClubLogBook.Server.Models;
 using ClubLogBook.Server.Services;
@@ -26,10 +21,11 @@ using ClubLogBook.Application.Services;
 using ClubLogBook.Application.Infrastructure.AutoMapper;
 using ClubLogBook.Infrastructure.Persistence;
 using ClubLogBook.Application.Common.Interfaces;
-using MediatR;
 using AutoMapper;
 using System.Reflection;
 using ClubLogBook.Application;
+using FluentValidation.AspNetCore;
+using ClubLogBook.Server.Common;
 
 namespace ClubLogBook.Server
 {
@@ -48,6 +44,7 @@ namespace ClubLogBook.Server
             //services.AddMediatR(assembly);
             services.AddApplication();
             //services.AddMediatR(typeof(Startup));
+            //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
             services.AddAutoMapper(new Assembly[] { typeof(AutoMapperProfile).GetTypeInfo().Assembly });
             services.AddAutoMapper(typeof(Startup));
 			services.AddScoped(typeof(IAsyncRepository<>), typeof(EFRepository<>));
@@ -113,7 +110,7 @@ namespace ClubLogBook.Server
                 };
             });
 
-            services.AddControllers().AddNewtonsoftJson();
+            services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<IApplicationDbContext>()).AddNewtonsoftJson();
             services.AddResponseCompression(opts =>
             {
                 opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
@@ -136,7 +133,7 @@ namespace ClubLogBook.Server
                 app.UseDeveloperExceptionPage();
                 app.UseBlazorDebugging();
             }
-
+            app.UseCustomExceptionHandler();
             app.UseClientSideBlazorFiles<Client.Startup>();
 
             app.UseRouting();

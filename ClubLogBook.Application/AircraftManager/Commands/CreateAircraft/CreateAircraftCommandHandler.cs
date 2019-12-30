@@ -1,19 +1,16 @@
 ﻿using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using ClubLogBook.Application.ViewModels;
 using System.Threading.Tasks;
 using System.Threading;
 using ClubLogBook.Core.Entities;
-using ClubLogBook.Application.Interfaces;
 using AutoMapper;
 using System.Text.RegularExpressions;
 using ClubLogBook.Application.Common.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
-namespace ClubLogBook.Application.AircraftManager.Commands
+namespace ClubLogBook.Application.AircraftManager.Commands.CreateAircraft
 {
-	public class CreateAircraftCommandHandler : IRequestHandler<CreateAircraftCommand, Unit>
+	public class CreateAircraftCommandHandler : IRequestHandler<CreateAircraftCommand, int>
 	{
 		private readonly IApplicationDbContext context;
 		private readonly IMapper mapper;
@@ -23,7 +20,7 @@ namespace ClubLogBook.Application.AircraftManager.Commands
 			this.mapper = mapper;
 		}
 
-		public async Task<Unit> Handle(CreateAircraftCommand request, CancellationToken cancellationToken)
+		public async Task<int> Handle(CreateAircraftCommand request, CancellationToken cancellationToken)
 		{
 			
 			
@@ -31,11 +28,19 @@ namespace ClubLogBook.Application.AircraftManager.Commands
 			mapper.Map(request.aircraftViewModel, aircraft);
 			string newString = Regex.Replace(aircraft.TailNumber, "[^0-9a-zA-Z]", "");
 			aircraft.TailNumber = newString.ToUpper();
-
-			 await context.Set<Aircraft>().AddAsync(aircraft);
+			var result =  context.Set<Aircraft>().Where(a => a.TailNumber == aircraft.TailNumber).FirstOrDefault();
+			if(result != null)
+			{
+				context.Set<Aircraft>().Update(aircraft);
+			}
+			else
+			{
+				await context.Set<Aircraft>().AddAsync(aircraft);
+			}
+			 
 			await context.SaveChangesAsync(cancellationToken);
 			mapper.Map(aircraft, request.aircraftViewModel);
-			return Unit.Value;
+			return request.aircraftViewModel.Id;
 		}
 	}
 }

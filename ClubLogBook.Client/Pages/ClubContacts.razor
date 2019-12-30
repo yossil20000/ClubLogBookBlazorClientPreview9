@@ -13,7 +13,7 @@
         }
         else
         {
-            <h2>Current User : @CurrentUser.UserName</h2>
+            @*<h2>Current User : @CurrentUser.UserName</h2>*@
             <div>
                 @*<a href='/Create'>Create Contact</a>*@
                 @if (IsCurrentAdmin)
@@ -70,35 +70,35 @@
             else
             {
                 <div class="grid-table">
-                    <div class="grid-table-row">
-                        <div class="grid-table-cell"><button class="btn-grid" @onclick="SortDate">Date Of Flight</button></div>
-                        <div class="grid-table-cell"><button class="btn-grid" @onclick="SortName">Pilot Name</button></div>
-                        <div class="grid-table-cell"><button class="btn-grid" @onclick="SortEngienStart">Engine Start</button></div>
-                        <div class="grid-table-cell">Engien End</div>
-                        <div class="grid-table-cell">Hobbs Start</div>
-                        <div class="grid-table-cell">Hobbs End</div>
+                    <div class="grid-table-row grid-type-customer">
+                        <div class="grid-table-cell"><button class="btn-grid">Id Number</button></div>
+                        <div class="grid-table-cell"><button class="btn-grid">Name</button></div>
+                        <div class="grid-table-cell"><button class="btn-grid">Birthday</button></div>
+                        <div class="grid-table-cell">Gender</div>
+                        <div class="grid-table-cell">Address</div>
+                        <div class="grid-table-cell">Phone</div>
                         <div class="grid-table-cell">Action</div>
                         <div class="grid-table-cell">Action</div>
                     </div>
-                    @foreach (var flight in FlightRecordIndexViewModel.FlightRecords)
+                    @foreach (var pilot in contacts)
                     {
-                        <div class="grid-table-row">
-                            <div class="grid-table-cell" data-title="Date Of Flight">@flight.Date</div>
-                            <div class="grid-table-cell" data-title="Full Name">@flight.Pilot.FirstName @flight.Pilot.LastName</div>
-                            <div class="grid-table-cell" data-title="Engien Start">@flight.EngineStart</div>
-                            <div class="grid-table-cell" data-title="Engien End">@flight.EngineEnd</div>
-                            <div class="grid-table-cell" data-title="Hobbs Start">@flight.HobbsStart</div>
-                            <div class="grid-table-cell" data-title="Hobbs End">@flight.HobbsEnd</div>
-                            @if (IsCurrentAdmin || CurrentUser.Id == flight.Pilot.UserId.ToString())
+                        <div class="grid-table-row grid-type-customer">
+                            <div class="grid-table-cell" data-title="Id Number">@pilot.IdNumber</div>
+                            <div class="grid-table-cell" data-title="Full Name">@pilot.GetFullName()</div>
+                            <div class="grid-table-cell" data-title="Birthday">@pilot.DateOfBirth.ToShortDateString()</div>
+                            <div class="grid-table-cell" data-title="Gender">@pilot.Gender</div>
+                            <div class="grid-table-cell" data-title="Address">@pilot.Addresses.FirstOrDefault().GetFormated()</div>
+                            <div class="grid-table-cell" data-title="Phone">@pilot.Phones?.FirstOrDefault().GetFormated()</div>
+                            @if (IsCurrentAdmin || CurrentUser.Id == pilot.UserId.ToString())
                             {
-                                <div class="grid-table-cell" data-title="Edit"> <a href='/Flight/Edit/@flight.Id'>Edit</a></div>
+                                <div class="grid-table-cell" data-title="Edit"> <a  href='/Edit/@pilot.Id'>Edit</a></div>
                             }
                             else
                             {
                                 <div class="grid-table-cell " data-title="Edit"> <a disabled="disabled">Edit</a></div>
                             }
 
-                            <div class="grid-table-cell" data-title="Delete"><a href='/Flight/Delete/@flight.Id'>Delete</a></div>
+                            <div class="grid-table-cell" data-title="Delete"><a href='/Delete/@pilot.Id'>Delete</a></div>
                         </div>
                     }
 

@@ -11,6 +11,9 @@ using ClubLogBook.Application.AircraftManager.Queries;
 using ClubLogBook.Application.Infrastructure;
 using System;
 using System.Threading;
+using ClubLogBook.Application.AircraftManager.Commands;
+using ClubLogBook.Application.AircraftManager.Commands.DeleteAircraft;
+using ClubLogBook.Application.AircraftManager.Commands.UpdateAircraft;
 
 namespace ClubLogBook.Server.Controllers
 {
@@ -18,14 +21,12 @@ namespace ClubLogBook.Server.Controllers
     [ApiController]
     public class AircraftController : Controller
     {
-        private  IAircraftManagerService aircraftManagerService;
-        private  IMapper mapper;
-        ILogger<AircraftController> logger;
+       
+       
         IMediator mediator;
-        public AircraftController(IAircraftManagerService aircraftManagerService, IMapper mapper, IMediator mediator)
+        public AircraftController( IMediator mediator)
         {
-            this.aircraftManagerService = aircraftManagerService;
-            this.mapper = mapper;
+            
             this.mediator = mediator;
             // this.logger = logger;
         }
@@ -35,11 +36,11 @@ namespace ClubLogBook.Server.Controllers
         public async  Task<AircraftListViewModel> GetAllAircraft()
         {
             CancellationToken ct = new CancellationToken();
-            List<Aircraft> air = await aircraftManagerService.GetAllAircraftsInClub("BAZ");
-            List<Aircraft> aircraftAll = await aircraftManagerService.GetAllAircraftsInClub("");
-            List<AircraftPrice> aircraftPrices = await aircraftManagerService.GetAircraftPrices();
-            List<AircraftViewModel> aircraftViewModel = new List<AircraftViewModel>();
-            mapper.Map(aircraftAll, aircraftViewModel);
+            //List<Aircraft> air = await aircraftManagerService.GetAllAircraftsInClub("BAZ");
+            //List<Aircraft> aircraftAll = await aircraftManagerService.GetAllAircraftsInClub("");
+            //List<AircraftPrice> aircraftPrices = await aircraftManagerService.GetAircraftPrices();
+            //List<AircraftViewModel> aircraftViewModel = new List<AircraftViewModel>();
+            //mapper.Map(aircraftAll, aircraftViewModel);
             try
             {
                 return  await mediator.Send(new GetAircraftListQuery(), ct);
@@ -56,14 +57,14 @@ namespace ClubLogBook.Server.Controllers
         public async Task<AircraftListViewModel> GetClubAircraft(string clubName)
         {
             CancellationToken ct = new CancellationToken();
-            List<Aircraft> air = await aircraftManagerService.GetAllAircraftsInClub("BAZ");
-            List<Aircraft> aircraftAll = await aircraftManagerService.GetAllAircraftsInClub("");
-            List<AircraftPrice> aircraftPrices = await aircraftManagerService.GetAircraftPrices();
-            List<AircraftViewModel> aircraftViewModel = new List<AircraftViewModel>();
-            mapper.Map(aircraftAll, aircraftViewModel);
+            //List<Aircraft> air = await aircraftManagerService.GetAllAircraftsInClub("BAZ");
+            //List<Aircraft> aircraftAll = await aircraftManagerService.GetAllAircraftsInClub("");
+            //List<AircraftPrice> aircraftPrices = await aircraftManagerService.GetAircraftPrices();
+            //List<AircraftViewModel> aircraftViewModel = new List<AircraftViewModel>();
+            //mapper.Map(aircraftAll, aircraftViewModel);
             try
             {
-                return await mediator.Send(new GetAircraftListQuery(), ct);
+                return await mediator.Send(new GetClubAircraftListQuery() { ClubName=clubName,PageIndex=1,PageSize=30}, ct);
             }
             catch (Exception ex)
             {
@@ -71,6 +72,24 @@ namespace ClubLogBook.Server.Controllers
             }
             //return aircraftViewModel;
             return new AircraftListViewModel();
+        }
+        [HttpPut]
+        public async Task<ActionResult> CreateAircraft([FromBody] AircraftViewModel airCraftViewModel )
+        {
+            var result = await mediator.Send(new CreateAircraftCommand() { aircraftViewModel = airCraftViewModel });
+            return Ok(result);
+        }
+        [HttpPut]
+        public async Task<ActionResult> DeleteAircraft([FromBody] int id)
+        {
+            var result = await mediator.Send(new DeleteAircraftCommand(id) );
+            return Ok(result);
+        }
+        [HttpPut]
+        public async Task<ActionResult> UpdateAircraft([FromBody] AircraftViewModel aircraftViewModel)
+        {
+            var result =  await mediator.Send(new UpdateAircraftCommand(aircraftViewModel));
+            return Ok(result);
         }
         ////// GET: api/Aircraft/5
         ////[HttpGet("{id}", Name = "Get")]

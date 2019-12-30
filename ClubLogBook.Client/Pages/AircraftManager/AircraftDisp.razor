@@ -252,7 +252,38 @@
                 </div>
             </div>
         </div>
+        <div class="card">
+            <div class="card-header" id="headingFour">
+                <h2 class="mb-2">
+                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">Aircraf Model</button>
 
+                </h2>
+            </div>
+            <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionMemberInfo">
+                <div class="card-body">
+                    <div class="grid-table">
+                        <div class="grid-table-row-2-col-equal grid-type-2-col-equal">
+                            <div class="grid-table-cell">Property</div>
+                            <div class="grid-table-cell">Value</div>
+                        </div>
+                        <div class="grid-table-row-2-col-equal">
+                            <div class="grid-table-cell-2-col-equal" data-title="Manufacture">Manufacture</div>
+                            <div class="grid-table-cell" ><input type="text" @bind="@item.AirCraftModel.Manufacturer"></div>
+                        </div>
+                        <div class="grid-table-row-2-col-equal">
+                            <div class="grid-table-cell" data-title="Model"></div>
+                            <div class="grid-table-cell" data-title="Model"><input type="text" @bind="@item.AirCraftModel.Model"></div>
+                        </div>
+                    </div>
+                   
+
+
+                    
+                </div>
+            </div>
+            
+        
+        </div>
     </div>
 </div>
 @code {

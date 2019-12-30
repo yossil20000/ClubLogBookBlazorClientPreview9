@@ -55,40 +55,40 @@
             <FilterSelection FilterViewModel="RecordsViewModel.FilterViewModel" PaginationInfo="RecordsViewModel.PaginationInfo"></FilterSelection>
             @if(ShowReservation)
             {
-    <div class="container-fluid">
-        <div class="alert @StatusClass">@StatusMessage</div>    
-        <EditForm EditContext="@EditContext1" Context="Yossi" OnInvalidSubmit="HandleInvalidSubmit" OnValidSubmit="SaveNewReservation">
-            <DataAnnotationsValidator />
-            <ValidationSummary></ValidationSummary>
-            <h3>From</h3>
+             <div class="container-fluid">
+                <div class="alert @StatusClass">@StatusMessage</div>    
+                <EditForm EditContext="@EditContext1" Context="Yossi" OnInvalidSubmit="HandleInvalidSubmit" OnValidSubmit="SaveNewReservation">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary></ValidationSummary>
+                    <h3>From</h3>
 
-            <div class="col pr-0">
-                <div class="form-control d-flex">
-                    <div><i>🗓</i>&nbsp;&nbsp;Date:</div>
-                    <input id="dateFrom" type="date" @bind="objReservation.DateFrom" @bind:format="yyyy-MM-dd" />
-                    <div><i>🗓</i>&nbsp;&nbsp;Time:</div>
-                    <input id="timeFrom" type="time" @bind="objReservation.TimeFrom" format-value="HH:mm" />
-                </div>
-            </div>
-            <h3>To</h3>
-            <div class="col pr-0">
-                <div class="form-control d-flex">
-                    <div><i>🗓</i>&nbsp;&nbsp;Date:</div>
-                    <input type="date" @bind="objReservation.DateTo" @bind:format="yyyy-MM-dd" />
-                    <div><i>🗓</i>&nbsp;&nbsp;Time:</div>
-                    <input type="time" @bind="objReservation.TimeTo" format-value="HH:mm" />
-                </div>
-            </div>
-            <label for="TailNumber" @onchange="@(() => OnChangeValue("TailNumber"))">Tail Numbr:@objReservation.TailNumber</label>
-            <input id="TailNumber" type="text" class="text-hide" @bind="@objReservation.TailNumber" />
-            <ValidationMessage For="@(() => objReservation.TailNumber)" />
+                    <div class="col pr-0">
+                        <div class="form-control d-flex">
+                            <div><i>🗓</i>&nbsp;&nbsp;Date:</div>
+                            <input id="dateFrom" type="date" @bind="objReservation.DateFrom" @bind:format="yyyy-MM-dd" />
+                            <div><i>🗓</i>&nbsp;&nbsp;Time:</div>
+                            <input id="timeFrom" type="time" @bind="objReservation.TimeFrom" format-value="HH:mm" />
+                        </div>
+                    </div>
+                    <h3>To</h3>
+                    <div class="col pr-0">
+                        <div class="form-control d-flex">
+                            <div><i>🗓</i>&nbsp;&nbsp;Date:</div>
+                            <input type="date" @bind="objReservation.DateTo" @bind:format="yyyy-MM-dd" />
+                            <div><i>🗓</i>&nbsp;&nbsp;Time:</div>
+                            <input type="time" @bind="objReservation.TimeTo" format-value="HH:mm" />
+                        </div>
+                    </div>
+                    <label for="TailNumber" @onchange="@(() => OnChangeValue("TailNumber"))">Tail Numbr:@objReservation.TailNumber</label>
+                    <input id="TailNumber" type="text" class="text-hide" @bind="@objReservation.TailNumber" />
+                    <ValidationMessage For="@(() => objReservation.TailNumber)" />
 
-            <label for="IdNumber" type="text" @onchange="@(() => OnChangeValue("IdNumber"))">Id Number:@objReservation.IdNumber</label>
-            <input id="IdNumberr" type="text" @bind="@objReservation.IdNumber" />
-            <ValidationMessage For="@(() => objReservation.IdNumber)" />
-            <button type="submit">Ok</button>
-        </EditForm>
-    </div>
+                    <label for="IdNumber" type="text" @onchange="@(() => OnChangeValue("IdNumber"))">Id Number:@objReservation.IdNumber</label>
+                    <input id="IdNumberr" type="text" @bind="@objReservation.IdNumber" />
+                    <ValidationMessage For="@(() => objReservation.IdNumber)" />
+                    <button type="submit">Ok</button>
+                </EditForm>
+            </div>
             }
             <div class="container-fluid row">
                 <table class="table table-bordered table-hover table-striped col-sm-12 col-md-12 col-xs-12">

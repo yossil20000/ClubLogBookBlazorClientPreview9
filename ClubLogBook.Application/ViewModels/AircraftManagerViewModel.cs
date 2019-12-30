@@ -16,12 +16,12 @@ namespace ClubLogBook.Application.ViewModels
 		public int ELTPeriodCheck { get; } = 12;
 		public int PitotStaticPeriodCheck { get; } = 24;
 		public int Id { get; set; } = 0;
-		public string TrainingDeviceKind {get;set;}
-		public string Manufacturer {get;set;}
-		public string Model {get;set;}
-		public string TypeDesignation {get;set;}
-		public string ModelFullName {get;set;}
-		private DateTime lastAnnual;
+		public string TrainingDeviceKind { get; set; } = "";
+		public string Manufacturer { get; set; } = "";
+		public string Model { get; set; } = "";
+		public string TypeDesignation { get; set; } = "";
+		public string ModelFullName { get; set; } = "";
+		private DateTime lastAnnual = DateTime.Now.AddYears(-5);
 		public DateTime LastAnnual
 		{
 			get { return lastAnnual; }
@@ -33,7 +33,7 @@ namespace ClubLogBook.Application.ViewModels
 				}
 			}
 		}
-		private DateTime lastVOR;
+		private DateTime lastVOR  = DateTime.Now.AddYears(-5);
 		public DateTime LastVOR
 		{
 			get { return lastVOR; }
@@ -46,7 +46,7 @@ namespace ClubLogBook.Application.ViewModels
 			}
 		}
 
-		private DateTime lastAltimeter;
+		private DateTime lastAltimeter = DateTime.Now.AddYears(-5);
 		public DateTime LastAltimeter
 		{
 			get { return lastAltimeter; }
@@ -58,7 +58,7 @@ namespace ClubLogBook.Application.ViewModels
 				}
 			}
 		}
-		private DateTime lastTransponder;
+		private DateTime lastTransponder = DateTime.Now.AddYears(-5);
 		public DateTime LastTransponder
 		{
 			get { return lastTransponder; }
@@ -70,7 +70,7 @@ namespace ClubLogBook.Application.ViewModels
 				}
 			}
 		}
-		private DateTime lastELT;
+		private DateTime lastELT = DateTime.Now.AddYears(-5);
 		public DateTime LastELT
 		{
 			get { return lastELT; }
@@ -82,7 +82,7 @@ namespace ClubLogBook.Application.ViewModels
 				}
 			}
 		}
-		private DateTime lastPitotStatic;
+		private DateTime lastPitotStatic = DateTime.Now.AddYears(-5);
 		public DateTime LastPitotStatic
 		{
 			get { return lastPitotStatic; }

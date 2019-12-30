@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using MediatR;
 using ClubLogBook.Application.Accounts.Queries.GetAccountsList;
 using ClubLogBook.Application.Interfaces;
+using ClubLogBook.Application.Accounts.Commands.CreateAccount;
+using ClubLogBook.Application.Accounts.Queries.GetAccount;
 
 namespace ClubLogBook.Server.Controllers
 {
@@ -31,6 +33,10 @@ namespace ClubLogBook.Server.Controllers
             list.Accounts.Add(new AccountLookupModel() { Id = 1 });
             try
             {
+                CreateAccountCommand createAccountCommand = new CreateAccountCommand();
+                createAccountCommand.MemeberId = 1;
+                createAccountCommand.MemberInfo = "Azrie";
+                //int id = await mediator.Send(createAccountCommand, ct);
                 list  = await mediator.Send(new GetAccountsListQuery(), ct);
             }
             catch(Exception ex)
@@ -39,7 +45,13 @@ namespace ClubLogBook.Server.Controllers
             }
             return list;
         }
-
+        [HttpGet]
+        public async Task<AccountLookupModel> GetAccountByMemberId([FromBody] int  memberId)
+        {
+            GetAccountByMemberIdQuery getAccountByMemberId = new GetAccountByMemberIdQuery(memberId);
+            var result = await mediator.Send(getAccountByMemberId);
+            return result;
+        }
        
 
         // POST: api/Account

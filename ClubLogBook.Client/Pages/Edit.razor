@@ -1,8 +1,9 @@
 ﻿@page "/Edit/{contactId}"
 @using ClubLogBook.Application.ViewModels
 @using Microsoft.AspNetCore.Components
+@using System.Text.Json
 @inject NavigationManager navigationManager
-
+@inject IJSRuntime   jsRuntime
 @inject HttpClient Http
 <h1>Edit for @emp.FirstName  @contactId </h1>
 <h2>Name =: @emp.FirstName</h2>
@@ -45,24 +46,33 @@
         </form>
     </div>
 </div>
-
+<div>
+    <span>@message</span>
+    <span id="resultJson"></span>
+</div>
 @code {
     [Parameter] public     string contactId { get; set; }
     ClubContactsViewModel emp = new ClubContactsViewModel();
     string navTo = "/ClubContacts";
     public DateTime demi = DateTime.Now;
+    string message = "";
     protected override async Task OnInitializedAsync()
     {
         emp = await Http.GetJsonAsync<ClubContactsViewModel>("api/ClubContacts/Details/" + Convert.ToInt32(contactId));
+        message = "Init";
     }
     protected async Task UpdateEmployee()
     {
+        message = "in update";
+       // await jsRuntime.InvokeAsync<ClubContactsViewModel>("setElementTextById","resultJson", JsonSerializer.Serialize(emp));
+        message = "invok";
         await Http.SendJsonAsync(HttpMethod.Put, "api/ClubContacts/Edit", emp);
+        message = "send";
         navigationManager.NavigateTo(navTo);
     }
     protected void cancle()
     {
-       navigationManager.NavigateTo(navTo);
+        navigationManager.NavigateTo(navTo);
     }
 }
 
