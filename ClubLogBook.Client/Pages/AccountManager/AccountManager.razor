@@ -4,45 +4,112 @@
 @inject IdentityAuthenticationStateProvider authStateProvider
 
 <style>
-    .account
-    {
-        width:100%;
-        display:grid;
-        grid-template-columns:4fr 1fr;
-        grid-template-rows:10fr,1fr;
-        grid-column-gap:10px;
-        
-    }
-    .sideAccount{
-       border: 5px dashed pink;
-       grid-row:1/2;
-       grid-column:2/-1;
-    }
-    .mainAccount
-    {
-         border: 5px dashed yellow;
-         grid-column:1/2;
-    }
-    .footAccount
-    {
-        border: dotted thick red;
-        grid-row:2/3;
-        grid-column:1/-1;
+    .account {
+        width: 100%;
+        height: 100vh;
+        display: grid;
+        grid-template-columns: 4fr minmax(320px,2fr);
+        grid-template-rows: 1fr,auto;
+        /*grid-column-gap: 10px;*/
     }
 
+    .sideAccount {
+        /*border: 5px dashed pink;*/
+        grid-row: 1/2;
+        grid-column: 2/-1;
+    }
+
+    .mainAccount {
+        /*border: 5px dashed yellow;*/
+        grid-column: 1/2;
+    }
+
+    .footAccount {
+        /*border: dotted thick red;*/
+        grid-row: 2/3;
+        grid-column: 1/-1;
+    }
 </style>
-<h3>AccountManager</h3>
+@*<h3>AccountManager</h3>*@
+
 <div class="account">
-    <div class="mainAccount">Main</div>
-    <div class="sideAccount">Side</div>
-    <div class="footAccount">
+    <div class="mainAccount">
+       
+    </div>
+    <div class="sideAccount">
+        <main class="grid-transactions">
+            <div class="transactions-header">Transactions</div>
+            <button class="btn-transaction nav-back" value="Back"><i class="material-icons">arrow_back_ios</i></button>
+            <button class="btn-transaction nav-transactions" value="Transactions">Transactions</button>
+            <button class="btn-transaction nav-invoices" value="Invoices">Invoices</button>
+
+            <div class="transactions-content">
+
+                <div class="grid-transactions-content">
+                    <div class="content-header">Account Info</div>
+                    <div class="content-row-1">IdNumber:</div>
+                    <div class="content-value-1">059828392 </div>
+                    <div class="content-side content-side-1"><i class="material-icons">account_circle</i></div>
+                    <div class="content-row-2">Name:</div>
+                    <div class="content-value-2">Yosef Levy</div>
+                    <div class="content-side content-side-2"><i class="material-icons">mood</i></div>
+                    <div class="content-row-3">Update:</div>
+                    <div class="content-value-3">10/12/2019</div>
+                    <div class="content-side content-side-3"><i class="material-icons">update</i></div>
+
+                </div>
+                <div class="grid-transactions-content">
+                    <div class="content-header">Account Balance</div>
+                    <div class="content-row-1">Cash:</div>
+                    <div class="content-value-1">120</div>
+                    <div class="content-side content-side-1"><i class="material-icons">$</i></div>
+                    <div class="content-row-2">Flight:</div>
+                    <div class="content-value-2">14.6</div>
+                    <div class="content-side content-side-2"><i class="material-icons">flight</i></div>
+
+                </div>
+                <div class="grid-transactions-content">
+                    <div class="content-header">Flight Summary</div>
+                    <div class="content-row-1">Total:</div>
+                    <div class="content-value-1">120</div>
+                    <div class="content-side content-side-1"><i class="material-icons">$</i></div>
+                    <div class="content-row-2">Hours:</div>
+                    <div class="content-value-2">14.6</div>
+                    <div class="content-side content-side-2"><i class="material-icons">flight</i></div>
+                    <div class="content-row-3">Flights:</div>
+                    <div class="content-value-3">19</div>
+                    <div class="content-side content-side-3"><i class="material-icons">flight</i></div>
+                    <div class="content-row-4">Per Hour</div>
+                    <div class="content-value-4">650</div>
+                    <div class="content-side content-side-4"><i class="material-icons">$</i></div>
+
+
+                </div>
+                <div class="grid-transactions-content">
+                    <div class="content-header">Invoices Status</div>
+                    <div class="content-row-1">Cash:</div>
+                    <div class="content-value-1">120</div>
+                    <div class="content-side content-side-1"><i class="material-icons">$</i></div>
+                    <div class="content-row-2">Flight:</div>
+                    <div class="content-value-2">14.6</div>
+                    <div class="content-side content-side-2"><i class="material-icons">flight</i></div>
+
+                </div>
+
+            </div>
+            <div class="transactions-footer">
+                <span>Status:</span>
+            </div>
+        </main>
+    </div>
+    @*<div class="footAccount">
         <ul>
             @foreach (var item in MessageList)
             {
                 <li>@item</li>
             }
         </ul>
-    </div>
+    </div>*@
 </div>
 
 @code {
@@ -56,8 +123,8 @@
         MessageList.Add($"OnInitializedAsync accountListViewModels.Accounts = out");
 
         MessageList.Add($"OnInitializedAsync accountListViewModels.Accounts =  {AccountListViewModel.Accounts.Count()}");
-        
-        
+
+
         List<ClubContactsViewModel> contacts = await Http.GetJsonAsync<List<ClubContactsViewModel>>("api/ClubContacts/Members");
         MessageList.Add($"OnInitializedAsync contact {contacts.Count}");
         MessageList.Add($"OnInitializedAsync out");

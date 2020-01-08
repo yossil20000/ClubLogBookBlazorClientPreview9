@@ -32,7 +32,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{01D4E203
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.UnitTests", "tests\Application.UnitTests\Application.UnitTests.csproj", "{518E8B9F-1EC9-4293-A794-5F3F4D01B93D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Text", "Text\Text.csproj", "{AFEF16F3-986E-43B9-B908-57724D02A7EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Text", "Text\Text.csproj", "{AFEF16F3-986E-43B9-B908-57724D02A7EF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
