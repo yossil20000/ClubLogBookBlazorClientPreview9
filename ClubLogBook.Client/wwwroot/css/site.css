@@ -200,6 +200,12 @@ app {
             border-top-right-radius: 0;
         }
 /*My Changes */
+@media (max-width: 321) {
+    html {
+        font-size: 8px;
+    }
+}
+
 div.scroll {
     margin: 4px, 4px;
     padding: 4px;

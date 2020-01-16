@@ -527,11 +527,22 @@ html {
 }
 
 @media (max-width: 500px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 14px;
+    }
 }
 
+@media (max-width: 400) {
+    html {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 321) {
+    html {
+        font-size: 8px;
+    }
+}
 /**
  * Basic typography style for copy text
  */
@@ -608,8 +619,8 @@ body {
 .grid-transactions {
   display: -ms-grid;
   display: grid;
-  -ms-grid-columns: 1fr 1fr 1fr;
-      grid-template-columns: 1fr 1fr 1fr;
+  -ms-grid-columns: 1fr 0.5fr 1fr;
+      grid-template-columns: 1fr 0.5fr 1fr;
   -ms-grid-rows: 45px auto auto auto 1fr auto;
       grid-template-rows: 45px auto auto auto 1fr auto;
   min-height: 100vh;
