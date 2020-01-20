@@ -7,7 +7,7 @@ namespace ClubLogBook.Infrastructure.Files.Maps
     {
         public TodoItemRecordMap()
         {
-            AutoMap();
+            //AutoMap()
             Map(m => m.Done).ConvertUsing(c => c.Done ? "Yes" : "No");
         }
     }

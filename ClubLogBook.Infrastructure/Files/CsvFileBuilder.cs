@@ -11,16 +11,20 @@ namespace ClubLogBook.Infrastructure.Files
     {
         public byte[] BuildTodoItemsFile(IEnumerable<TodoItemRecord> records)
         {
-            using var memoryStream = new MemoryStream();
-            using (var streamWriter = new StreamWriter(memoryStream))
+            using (MemoryStream memoryStream = new MemoryStream())
             {
-                using var csvWriter = new CsvWriter(streamWriter);
+                using (TextWriter tw = new StreamWriter(memoryStream))
+                using (CsvWriter csvWriter = new CsvWriter(tw, new System.Globalization.CultureInfo(1)))
+                {
 
-                csvWriter.Configuration.RegisterClassMap<TodoItemRecordMap>();
-                csvWriter.WriteRecords(records);
+
+                    csvWriter.Configuration.RegisterClassMap<TodoItemRecordMap>();
+                    csvWriter.WriteRecords(records);
+                }
+                return memoryStream.ToArray();
             }
-
-            return memoryStream.ToArray();
         }
+
+
     }
 }
