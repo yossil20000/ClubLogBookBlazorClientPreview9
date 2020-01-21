@@ -1,0 +1,11 @@
+// -----------------------------------------------------------------------------
+// This file contains all styles related to the button component.
+// -----------------------------------------------------------------------------
+ %btn-transaction {
+     background-color: $grid-btn-background-color;
+     color: $grid-btn-color;
+     font-size:map-get($map: $primary-font, $key: item-title);
+ }
+ .btn-transaction{
+     @extend %btn-transaction;
+ }

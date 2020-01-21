@@ -1,0 +1,59 @@
+// -----------------------------------------------------------------------------
+// This file contains all application-wide Sass mixins.
+// -----------------------------------------------------------------------------
+
+/// Event wrapper
+/// @author Harry Roberts
+/// @param {Bool} $self [false] - Whether or not to include current selector
+/// @link https://twitter.com/csswizardry/status/478938530342006784 Original tweet from Harry Roberts
+@mixin on-event($self: false) {
+  @if $self {
+    &,
+    &:hover,
+    &:active,
+    &:focus {
+      @content;
+    }
+  } @else {
+    &:hover,
+    &:active,
+    &:focus {
+      @content;
+    }
+  }
+}
+
+/// Make a context based selector a little more friendly
+/// @author Hugo Giraudel
+/// @param {String} $context
+@mixin when-inside($context) {
+  #{$context} & {
+    @content;
+  }
+}
+
+//My added
+//Color Mixin
+
+@mixin contrast($background: 'light', $type: 'primary') {
+  color: contrast($background, $type)
+}
+
+///
+//Text Mixin
+@mixin text-setting($level) {
+  font-size: text-scale($level);
+  line-height: line-height($level);
+}
+
+//Media Mixin
+@mixin max-mobile($mobile){
+  @media (max-width: $mobile) {
+      @content;
+  }
+}
+//Set a Property with a default value from map Mixin
+@mixin property-css-var($property , $variable , $map-name){
+  #{$property}: map-get($map: $map-name, $key: $variable );
+  #{$property}: var(--#{$variable});
+}

@@ -1,0 +1,100 @@
+
+.grid-transactions-content-summary{
+    @extend %grid-transactions-content;
+    
+    grid-template-columns: minmax(auto,1fr)  minmax(auto,1fr) minmax(auto,0.5fr);
+    grid-template-rows: 35px 30px 30px 30px 30px;
+    grid-template-rows: auto;
+    
+    grid-template-areas: 
+    "content-header  content-header content-header"
+    "content-row-1  content-value-1 content-side-1" 
+    "content-row-2  content-value-2 content-side-2" 
+    "content-row-3  content-value-3 content-side-3" 
+    "content-row-4  content-value-4 content-side-4";
+
+    // "content-header content-header content-header content-header"
+    // "content-row-1 content-row-1 content-value-1 content-side-1" 
+    // "content-row-2 content-row-2 content-value-2 content-side-2" 
+    // "content-row-3 content-row-3 content-value-3 content-side-3" 
+    // "content-row-4 content-row-4 content-value-4 content-side-4";
+
+    
+   
+    
+    
+}
+
+.content-header
+{
+    @extend %content-header;
+    justify-self: center;
+    
+   
+}
+
+
+.content-row-1{
+    grid-area: content-row-1;
+    color: $white-color;
+}   
+
+
+.content-row-2{
+    grid-area: content-row-2;
+    
+}   
+.content-row-3{
+    grid-area: content-row-3;
+    
+}   
+.content-row-4{
+    grid-area: content-row-4;
+    
+}   
+
+
+.content-value-1{
+    display: flex;
+    align-self: center;
+    justify-self: start;
+    grid-area: content-value-1;
+   
+}
+
+.content-value-2{
+    grid-area: content-value-2;
+   
+}
+.content-value-3{
+    grid-area: content-value-3;
+   
+}
+.content-value-4{
+    grid-area: content-value-4;
+   
+}
+.content-side-1{
+    display: table-cell;
+    justify-self: center;
+    align-self: right;
+    grid-area: content-side-1;
+   
+}
+
+.content-side-2{
+    
+    grid-area: content-side-2;
+   
+}
+
+.content-side-3{
+    
+    grid-area: content-side-3;
+   
+}
+.content-side-4{
+    
+    grid-area: content-side-4;
+   
+}

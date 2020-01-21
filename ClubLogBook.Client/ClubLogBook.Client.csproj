@@ -17,6 +17,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="compilerconfig.json" />
     <Content Remove="wwwroot\Image\CGC_LLHA.jpg" />
     <Content Remove="wwwroot\Image\CGC_LLMG.jpg" />
   </ItemGroup>
@@ -24,6 +25,10 @@
   <ItemGroup>
     <EmbeddedResource Include="wwwroot\Image\CGC_LLHA.jpg" />
     <EmbeddedResource Include="wwwroot\Image\CGC_LLMG.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="compilerconfig.json" />
   </ItemGroup>
 
   <ItemGroup>

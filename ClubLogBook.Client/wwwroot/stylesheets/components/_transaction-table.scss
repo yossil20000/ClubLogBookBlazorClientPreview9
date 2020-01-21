@@ -1,0 +1,70 @@
+.grid-transactions {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: var(--header-line-hight) auto auto auto 1fr auto;
+    min-height: 100vh;
+    grid-template-areas:
+        "header header header"
+        "nav-back nav-transactions nav-invoices"
+        "filter-date-from filter-date-main filter-date-to"
+        "filter-1 filter-2 filter-3"
+        "main-content main-content main-content"
+        "footer footer footer"
+    ;
+    align-content: center;
+    justify-content: center;
+    font-size: map-get($map: $primary-font, $key: primary);
+    padding: 2px;
+    grid-gap: $grid-gap;
+    background-color: $primary-color;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+%grid-transactions-content {
+    display: grid;
+    padding: 2px 10px;
+    border-radius: 10px;
+    background-color: $grid-item-background-color;
+}
+%filter-date
+{
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    text-align: center;
+}
+%filter {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    text-align: center;
+}
+.filter-date-from{
+    @extend %filter-date;
+    grid-area: filter-date-from;
+}
+.filter-date-main {
+    @extend %filter-date;
+    grid-area: filter-date-main;
+}
+.filter-date-to {
+    @extend %filter-date;
+    grid-area: filter-date-to;
+}
+.filter-1 {
+
+    grid-area: filter-1;
+
+}
+
+.filter-2 {
+    @extend %filter;
+    grid-area: filter-2;
+
+}
+
+.filter-3 {
+    @extend %filter;
+    grid-area: filter-3;
+
+}

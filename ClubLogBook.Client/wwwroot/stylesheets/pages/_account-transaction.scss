@@ -1,0 +1,113 @@
+.grid-transactions-content-transaction{
+    @extend %grid-transactions-content;
+    grid-template-columns: minmax(1fr,1.2fr) minmax(auto, 0.5fr) minmax(auto,0.7fr) minmax(auto,0.7fr);
+    /* grid-template-rows: 35px 20px 20px; */
+    grid-template-rows: auto;
+    
+    grid-template-areas: 
+    "content-header-left content-header-left-1 content-header-right-1 content-header-right"
+    "content-item content-unit content-per-unit content-total" 
+    "content-footer content-footer content-footer content-footer" 
+    ;
+}
+
+
+.content-footer{
+    display: flex;
+    grid-area: content-footer;
+    justify-self: left;
+    align-self: center;
+}
+
+
+.content-header-right-1
+{
+    @extend %content-header;
+    grid-area: content-header-right-1;
+    justify-self: center;
+    
+   
+}
+
+
+//For Account Summary
+.content-header-right
+{
+    @extend %content-header;
+    grid-area: content-header-right;
+    
+}
+.content-header-left
+{
+    @extend %content-header;
+    justify-content: left;
+    grid-area: content-header-left;
+}
+.content-header-left-1
+{
+    @extend %content-header;
+    justify-content: center;
+    align-content: center;
+    grid-area: content-header-left-1;
+// }
+// .content-row-*{
+//     grid-row-gap: 10px;
+//     font-size:map-get($map: $primary-font, $key: title );
+//     font-weight: map-get($map:$font-weight,$key:medium);
+//     color: $white-color;
+// }
+}
+
+.content-item{
+    grid-area: content-item;
+    color: $white-color;
+}   
+
+.content-value{
+    display: flex;
+    align-self: center;
+    justify-self: start;
+    grid-area: content-value-1;
+   
+}
+
+.content-per-unit{
+    display: flex;
+    align-self: center;
+    justify-self: center;
+    grid-area: content-per-unit;
+   
+}
+.content-unit
+{
+    grid-area: content-unit;
+    text-align: center;
+}
+.content-side{
+    display: flex;
+    flex-direction: column;
+    
+    align-self: center;
+    justify-self: center;
+   .material-icons{
+        font-size:1.6rem;color:lightblue;text-shadow:2px 2px 4px #3c6d61;
+        font-size:map-get($map: $primary-font, $key: title );
+    font-weight: map-get($map:$font-weight,$key:medium);
+    }
+}
+
+
+.content-side-up{
+    display: flex;
+    flex-direction: column;
+    align-self: flex-start;
+    justify-self: center;
+}
+
+.content-total{
+    display: table-cell;
+    justify-self: center;
+    align-self: right;
+    grid-area: content-total;
+   
+}

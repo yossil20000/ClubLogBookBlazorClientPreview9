@@ -1,0 +1,125 @@
+// -----------------------------------------------------------------------------
+// This file contains all application-wide Sass variables.
+// -----------------------------------------------------------------------------
+:root{
+    --html-font-size: 20px;
+    --header-line-hight: 35px;
+}
+
+
+
+
+/// Regular font family
+/// @type List
+$text-font-stack: 'Open Sans', 'Helvetica Neue Light', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif !default;
+
+/// Code (monospace) font family
+/// @type List
+$code-font-stack: 'Courier New', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Monaco', monospace !default;
+
+/// Copy text color
+/// @type Color
+$text-color: rgb(34, 34, 34) !default;
+
+/// Main brand color
+/// @type Color
+$brand-color: rgb(229, 0, 80) !default;
+
+/// Light grey
+/// @type Color
+$light-grey: rgb(237, 237, 237) !default;
+
+/// Medium grey
+/// @type Color
+$mid-grey: rgb(153, 153, 153) !default;
+
+/// Dark grey
+/// @type Color
+$dark-grey: rgb(68, 68, 68) !default;
+
+/// Container's maximum width
+/// @type Length
+$max-width: 1180px !default;
+
+/// Relative or absolute URL where all assets are served from
+/// @type String
+/// @example scss - When using a CDN
+///   $base-url: 'http://cdn.example.com/assets/';
+$base-url: '/assets/' !default;
+$base-font-size: 1rem !default;
+$base-line-height: 1.25 * $base-font-size;
+
+///////////////////
+// maps
+//////////////////
+
+/// Breakpoints map
+/// @prop {String} keys - Keys are identifiers mapped to a given length
+/// @prop {Map} values - Values are actual breakpoints expressed in pixels
+$breakpoints: (
+  'small': 320px,
+  'medium': 768px,
+  'large': 1024px,
+) !default;
+
+
+
+//Transaction variable
+$primary-color: #fff !default !global;
+$accent-color: #f527 !important;
+$white-color: #fff;
+$text-color: #fff;
+$grid-title-color:rgba(4, 78, 47, 0.637);
+$grid-page-color: #f6f6f6;
+$grid-search-color:#f6f6f0;
+$grid-row-odd-color: #f6f6e6;
+$grid-row-even-color: #f6f6d6;
+$grid-btn-background-color:rgba(4, 78, 47, 0.637);
+$grid-btn-color: rgb(209, 240, 237);
+$grid-item-background-color:rgb(52, 121, 116);
+$grid-content-header-color: $white-color;
+$grid-content-item-color: $white-color ;
+$grid-gap: 2px;
+$primary-font:
+(
+    "primary": 1.5rem,
+    "header": 1.3rem,
+    "item-title": 1.1rem,
+    "item-data": 0.5rem
+);
+$item-text-color:
+(
+    "primary":#fff,
+    "header": #565656,
+    "item-title":#454545,
+    "item-data":#121212,
+    "footer":#767676,
+);
+$item-background-color:
+(
+    "primary":#fff,
+    "header": #565656,
+    "item-title":#454545,
+    "item-data":#121212,
+    "footer":#767676,
+);
+$item-color:
+(
+    "primary":#fff,
+    "header": #565656,
+    "item-title":#454545,
+    "item-data":#121212,
+    "footer":#767676,
+);
+$mobile: 500px;
+$private: 500px;
+$colors:(rgb(255,100,255), rgb(211, 173, 211),rgb(145, 58, 145),rgb(255,100,255),rgb(177, 34, 177));
+$font-weight:
+(
+    "regular": 400,
+    "medium": 600,
+    "bold": 700
+);
+
+
+

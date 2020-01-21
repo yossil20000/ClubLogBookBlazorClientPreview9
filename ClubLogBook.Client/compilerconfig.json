@@ -1,0 +1,9 @@
+﻿[
+  {
+    "outputFile": "wwwroot/stylesheets/main.css",
+    "inputFile": "wwwroot/stylesheets/main.scss",
+    "minify": { "enabled": true },
+    "includeInProject": true,
+    "options": { "sourceMap": true }
+  }
+]

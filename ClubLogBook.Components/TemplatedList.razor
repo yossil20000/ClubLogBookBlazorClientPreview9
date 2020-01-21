@@ -12,7 +12,7 @@ else
     <div class="list-group @ListGroupClass">
         @foreach (var item in items)
         {
-            <div class="list-group-item">
+            <div class="@ItemClass">
                 @Item(item)
             </div>
         }
@@ -25,6 +25,7 @@ else
     [Parameter] public RenderFragment Empty { get; set; }
     [Parameter] public RenderFragment<TItem> Item { get; set; }
     [Parameter] public string ListGroupClass { get; set; }
+    [Parameter] public string ItemClass { get; set; }
     protected override async Task OnParametersSetAsync()
     {
         items = await Loader();
