@@ -4,93 +4,141 @@
 @inject HttpClient Http
 @inject IdentityAuthenticationStateProvider authStateProvider
 
-<h1>Flights Reservation</h1>
 <AuthorizeView Roles="Administrators,AccountManage,Members">
     <Authorized>
         @if (RecordsViewModel.FilterViewModel == null || RecordsViewModel.PaginationInfo == null || items == null)
         {
             <div>Loading Filter</div>
-            
+
         }
         else
         {
+            <div class="base-page">
+                <div class="page-header">Reservation</div>
+                <div class="page-content">
+                    <div class="aircraft-reservation">
+                        <div class="a-r-header">
+                            <div class="a-r-header--1 btn-transaction"><p>Total:</p></div>
+                            <div class="a-r-header--2 btn-transaction"><p>Total selection:</p></div>
+                            <div class="a-r-header--3 btn-transaction"><p>Total Today:</p></div>
+                            <select class="a-r-filter--1 btn-transaction" name="a-r-filter--1" id="a-m-t-filter--1"></select>
+                            <select class="a-r-filter--2 btn-transaction" name="a-r-filter--2" id="a-m-t-filter--2"></select>
+                            <select class="a-r-filter--3 btn-transaction" name="a-r-filter--3" id="a-m-t-filter--3"></select>
 
-            <div>
-                <div class="container-fluid">
-                    <div class=" text-center row">
-                        <div class="col-8">
-                            <div class="row">
-                                <div class="col-2">
-                                    <button type="button" class="btn btn-primary  @RecordsViewModel.PaginationInfo.Previous" @onclick="@(async () => await PrevClick(RecordsViewModel.PaginationInfo.ActualPage -1))"
-                                            id="Previous"
-                                            asp-route-pageid="@(RecordsViewModel.PaginationInfo.ActualPage - 1)"
-                                            aria-label="Previous">
-                                        Previous
-                                    </button>
-                                </div>
-
-                                <div class="text-center col-8">
-                                    Showing @RecordsViewModel.PaginationInfo.ItemsPerPage of @RecordsViewModel.PaginationInfo.TotalItems products - Page @(RecordsViewModel.PaginationInfo.ActualPage + 1) - @RecordsViewModel.PaginationInfo.TotalPages
-
-                                </div>
-
-                                <div class="col-2">
-                                    <button type="button" class="btn btn-primary @RecordsViewModel.PaginationInfo.Next " @onclick="@(async () => await NextClick())"
-                                            id="Next"
-                                            asp-route-pageid="@(RecordsViewModel.PaginationInfo.ActualPage + 1)"
-                                            aria-label="Next">
-                                        Next
-                                    </button>
-                                    @*aria-disabled="@FlightRecordIndexViewModel.PaginationInfo.Next"*@
-                                </div>
+                            <div class="a-r-page--1 btn-transaction"><button>Prev</button></div>
+                            <div class="a-r-page--2 btn-transaction"><label for="">Page 1 From 10 total 15</label></div>
+                            <div class="a-r-page--3 btn-transaction"><button>Next</button></div>
+                        </div>
+                        <div class="a-r-content">
+                            <div class="a-r-list-header">
+                                <div class="a-r-list-h-1 btn-grid-sort"><button value="status">Date</button></div>
+                                <div class="a-r-list-h-2 btn-grid-sort"><button value="status">Aircraft</button></div>
+                                <div class="a-r-list-h-3 btn-grid-sort"><button value="status">Pilot</button></div>
+                                <div class="a-r-list-h-4 btn-grid-sort"><button value="status">From</button></div>
+                                <div class="a-r-list-h-5 btn-grid-sort"><button value="status">To</button></div>
+                                <div class="a-r-list-h-6 btn-grid-sort"><button  @onclick="@CreateReservation">Create</button></div>
                             </div>
+                            @foreach (var item in items)
+                            {
+                                <div class="a-r-list-row">
+                                    <div class="a-r-list-c-1">@item.ClubId</div>
+                                    <div class="a-r-list-c-2">@item.TailNumber</div>
+                                    <div class="a-r-list-c-3">@item.PilotId</div>
+                                    <div class="a-r-list-c-4">@item.DateFrom</div>
+                                    <div class="a-r-list-c-5">@item.DateTo</div>
+                                    @if (IsCurrentAdmin || item.UserId.ToString() == CurrentUser.Id)
+                                    {
+                                
+                                        <div class="a-r-list-c-6 btn-grid-cmd"><button  @onclick="@(async () => await SaveNewReservation())">Edit</button></div>
+                                    }
+
+                                </div>
+                            }
 
 
                         </div>
 
                     </div>
                 </div>
+                <div class="page-footer">Reservation Footer</div>
             </div>
-            
-            <FilterSelection FilterViewModel="RecordsViewModel.FilterViewModel" PaginationInfo="RecordsViewModel.PaginationInfo"></FilterSelection>
-            @if(ShowReservation)
+            /*
+                        <div>
+                            <div class="container-fluid">
+                                <div class=" text-center row">
+                                    <div class="col-8">
+                                        <div class="row">
+                                            <div class="col-2">
+                                                <button type="button" class="btn btn-primary  @RecordsViewModel.PaginationInfo.Previous" @onclick="@(async () => await PrevClick(RecordsViewModel.PaginationInfo.ActualPage -1))"
+                                                        id="Previous"
+                                                        asp-route-pageid="@(RecordsViewModel.PaginationInfo.ActualPage - 1)"
+                                                        aria-label="Previous">
+                                                    Previous
+                                                </button>
+                                            </div>
+
+                                            <div class="text-center col-8">
+                                                Showing @RecordsViewModel.PaginationInfo.ItemsPerPage of @RecordsViewModel.PaginationInfo.TotalItems products - Page @(RecordsViewModel.PaginationInfo.ActualPage + 1) - @RecordsViewModel.PaginationInfo.TotalPages
+
+                                            </div>
+
+                                            <div class="col-2">
+                                                <button type="button" class="btn btn-primary @RecordsViewModel.PaginationInfo.Next " @onclick="@(async () => await NextClick())"
+                                                        id="Next"
+                                                        asp-route-pageid="@(RecordsViewModel.PaginationInfo.ActualPage + 1)"
+                                                        aria-label="Next">
+                                                    Next
+                                                </button>
+                                                @*aria-disabled="@FlightRecordIndexViewModel.PaginationInfo.Next"*@
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+             */
+           // <FilterSelection FilterViewModel="RecordsViewModel.FilterViewModel" PaginationInfo="RecordsViewModel.PaginationInfo"></FilterSelection>
+            @if (ShowReservation)
             {
-             <div class="container-fluid">
-                <div class="alert @StatusClass">@StatusMessage</div>    
-                <EditForm EditContext="@EditContext1" Context="Yossi" OnInvalidSubmit="HandleInvalidSubmit" OnValidSubmit="SaveNewReservation">
-                    <DataAnnotationsValidator />
-                    <ValidationSummary></ValidationSummary>
-                    <h3>From</h3>
+                <div class="container-fluid">
+                    <div class="alert @StatusClass">@StatusMessage</div>
+                    <EditForm EditContext="@EditContext1" Context="Yossi" OnInvalidSubmit="HandleInvalidSubmit" OnValidSubmit="SaveNewReservation">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary></ValidationSummary>
+                        <h3>From</h3>
 
-                    <div class="col pr-0">
-                        <div class="form-control d-flex">
-                            <div><i>🗓</i>&nbsp;&nbsp;Date:</div>
-                            <input id="dateFrom" type="date" @bind="objReservation.DateFrom" @bind:format="yyyy-MM-dd" />
-                            <div><i>🗓</i>&nbsp;&nbsp;Time:</div>
-                            <input id="timeFrom" type="time" @bind="objReservation.TimeFrom" format-value="HH:mm" />
+                        <div class="col pr-0">
+                            <div class="form-control d-flex">
+                                <div><i>🗓</i>&nbsp;&nbsp;Date:</div>
+                                <input id="dateFrom" type="date" @bind="objReservation.DateFrom" @bind:format="yyyy-MM-dd" />
+                                <div><i>🗓</i>&nbsp;&nbsp;Time:</div>
+                                <input id="timeFrom" type="time" @bind="objReservation.TimeFrom" format-value="HH:mm" />
+                            </div>
                         </div>
-                    </div>
-                    <h3>To</h3>
-                    <div class="col pr-0">
-                        <div class="form-control d-flex">
-                            <div><i>🗓</i>&nbsp;&nbsp;Date:</div>
-                            <input type="date" @bind="objReservation.DateTo" @bind:format="yyyy-MM-dd" />
-                            <div><i>🗓</i>&nbsp;&nbsp;Time:</div>
-                            <input type="time" @bind="objReservation.TimeTo" format-value="HH:mm" />
+                        <h3>To</h3>
+                        <div class="col pr-0">
+                            <div class="form-control d-flex">
+                                <div><i>🗓</i>&nbsp;&nbsp;Date:</div>
+                                <input type="date" @bind="objReservation.DateTo" @bind:format="yyyy-MM-dd" />
+                                <div><i>🗓</i>&nbsp;&nbsp;Time:</div>
+                                <input type="time" @bind="objReservation.TimeTo" format-value="HH:mm" />
+                            </div>
                         </div>
-                    </div>
-                    <label for="TailNumber" @onchange="@(() => OnChangeValue("TailNumber"))">Tail Numbr:@objReservation.TailNumber</label>
-                    <input id="TailNumber" type="text" class="text-hide" @bind="@objReservation.TailNumber" />
-                    <ValidationMessage For="@(() => objReservation.TailNumber)" />
+                        <label for="TailNumber" @onchange="@(() => OnChangeValue("TailNumber"))">Tail Numbr:@objReservation.TailNumber</label>
+                        <input id="TailNumber" type="text" class="text-hide" @bind="@objReservation.TailNumber" />
+                        <ValidationMessage For="@(() => objReservation.TailNumber)" />
 
-                    <label for="IdNumber" type="text" @onchange="@(() => OnChangeValue("IdNumber"))">Id Number:@objReservation.IdNumber</label>
-                    <input id="IdNumberr" type="text" @bind="@objReservation.IdNumber" />
-                    <ValidationMessage For="@(() => objReservation.IdNumber)" />
-                    <button type="submit">Ok</button>
-                </EditForm>
-            </div>
+                        <label for="IdNumber" type="text" @onchange="@(() => OnChangeValue("IdNumber"))">Id Number:@objReservation.IdNumber</label>
+                        <input id="IdNumberr" type="text" @bind="@objReservation.IdNumber" />
+                        <ValidationMessage For="@(() => objReservation.IdNumber)" />
+                        <button type="submit">Ok</button>
+                    </EditForm>
+                </div>
             }
-            <div class="container-fluid row">
+            /*<div class="container-fluid row">
                 <table class="table table-bordered table-hover table-striped col-sm-12 col-md-12 col-xs-12">
                     <thead>
                         <tr>
@@ -118,7 +166,7 @@
                             </th>
                             <th>
                                 <button class="btn btn-info"
-                                               @onclick="@CreateReservation">
+                                        @onclick="@CreateReservation">
                                     Create Reservation
                                 </button>
                             </th>
@@ -151,13 +199,13 @@
                     </tbody>
                 </table>
             </div>
-
+            */
 
             @if (ShowPopup)
             {
 
 
-                <div class="modal"  tabindex="-1" style="display:block" role="dialog">
+                <div class="modal" tabindex="-1" style="display:block" role="dialog">
                     <div class="modal-dialog  modal-dialog-centered">
 
                         <div class="modal-content">
@@ -202,7 +250,9 @@
                                             @foreach (var i in RecordsViewModel.FilterViewModel.PilotSelects)
                                             {
                                                 if (IsCurrentAdmin || i.UserId.ToString() == CurrentUser.Id)
-                                                {<option value="@i.Id">@i.FullName - (@(i.IdNumber))</option>}
+                                                {
+                                                    <option value="@i.Id">@i.FullName - (@(i.IdNumber))</option>
+}
                                             }
                                         </select>
                                     </div>
@@ -210,22 +260,21 @@
                                 <EditForm Model="@objReservation" OnValidSubmit="@SaveNewReservation" OnInvalidSubmit="@Refresh" Context="EdirReservationContext">
                                     <DataAnnotationsValidator />
                                     <ValidationSummary />
-                                    
-                                    <Reservation Item=objReservation SelectedFromTime="SelectedFromTime"  StatusMessage="StatusMessage" StatusClass="StatusClass"/>
+
+                                    <Reservation Item=objReservation SelectedFromTime="SelectedFromTime" StatusMessage="StatusMessage" StatusClass="StatusClass" />
                                     @*<ReservationForm Item=objReservation></ReservationForm>*@
                                     @*<ValidationMessage For="@(() => objReservation.IdNumber)" />
-        <DataAnnotationsValidator />
-        <ValidationSummary />*@
+                                    <DataAnnotationsValidator />
+                                    <ValidationSummary />*@
                                 </EditForm>
 
-                               
+
                             </div>
                             <div class="modal-footer">
                                 @if (objReservation.Id == 0)
                                 {
                                     <!-- Button to save the forecast -->
-                                    <button class="btn btn-primary" type="submit" @onclick="SaveNewReservation"
-                                           >
+                                    <button class="btn btn-primary" type="submit" @onclick="SaveNewReservation">
                                         Create
                                     </button>
                                 }

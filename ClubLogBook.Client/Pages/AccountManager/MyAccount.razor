@@ -2,282 +2,312 @@
 @using ClubLogBook.Application.Accounts.Queries.GetAccountsList
 @inject HttpClient Http
 @inject IdentityAuthenticationStateProvider authStateProvider
-
-    <div class="grid-transactions">
-
-        <div class="transactions-header">@SelectedTab</div>
-        <input type="button" class="btn-transaction nav-back" @onclick="OnSummary" value="Back">Summary</input>
-        <button class="btn-transaction nav-transactions" @onclick="OnTransaction" value="Transactions">Transactions</button>
-        <button class="btn-transaction nav-invoices" @onclick="OnInvoice" value="Invoices">Invoices</button>
-        @if (bShowSearch)
-        {
-            <select class="btn-transaction filter-1">
-                <option value="All">All</option>
-                <option value="Debit">Debit</option>
-                <option value="Credit">Credit</option>
-            </select>
-            <input type="search" class="btn-transaction filter-2" placeholder="Type Search String">
-            <button class="btn-transaction filter-3" value="search">
-                <i class="fa fa-search"
-                   aria-hidden="true"></i>
-            </button>
-
-        }
-        @if (bShowDateFilter)
-        {
-            <input type="date" class="btn-transaction filter-date-from">
-            <div class="btn-transaction filter-date-main"><i class="material-icons">date_range</i></div>
-            <input type="date" class="btn-transaction filter-date-to">
-
-        }
-        @if (bShowTranaction)
-        {
-            <div class="transactions-content">
-
-
-                <div class="grid-transactions-content-transaction">
-                    <div class="content-header-left-1"><i class="mdi mdi-numeric mdi-light"></i></div>
-                    <div class="content-side-up content-right"><i class="mdi mdi-sigma"></i></div>
-                    <div class="content-header-right-1"><i class="mdi mdi-database-plus"></i> </div>
-                    <div class="content-header-left">23/08/2009</div>
-                    <div class="content-item">Montly</div>
-                    <div class="content-unit">3.6</div>
-                    <div class="content-per-unit">
-                        <p>3/M</p>
-                    </div>
-                    <div class="content-side-up content-total">150$</div>
-                    <div class="content-footer">PerMont:50$</div>
-                </div>
-                <div class="grid-transactions-content-transaction">
-                    <div class="content-header-right-1"><i class="mdi mdi-light mdi-cart-outline"></i></div>
-                    <div class="content-header-left-1"><i class="mdi mdi-numeric mdi-light"></i></div>
-                    <div class="content-side-up content-right"><i class="mdi mdi-sigma"></i></div>
-                    <div class="content-header-left">23/08/2009</div>
-                    <div class="content-item">Montly</div>
-                    <div class="content-unit">3.7</div>
-                    <div class="content-per-unit">
-                        <p>3/M</p>
-                    </div>
-                    <div class="content-side-up content-total">150$</div>
-                    <div class="content-footer">PerMont:50$</div>
-                </div>
-                <div class="grid-transactions-content-transaction">
-                    <div class="content-header-right-1"><i class="mdi  mdi-database-plus"></i></div>
-                    <div class="content-header-left-1"><i class="mdi mdi-numeric mdi-light"></i></div>
-                    <div class="content-side-up content-right"><i class="mdi mdi-sigma mdi-light"></i></div>
-                    <div class="content-header-left">23/08/2009</div>
-                    <div class="content-item">Montly</div>
-                    <div class="content-unit">3.8</div>
-                    <div class="content-per-unit">
-                        <p>3/M</p>
-                    </div>
-                    <div class="content-side-up content-total">150$</div>
-                    <div class="content-footer">PerMont:50$</div>
-                </div>
-                <div class="grid-transactions-content-transaction">
-                    <div class="content-header-right-1"><i class="mdi mdi-light mdi-database-plus"></i> </div>
-                    <div class="content-header-left-1"><i class="mdi mdi-numeric mdi-light"></i></div>
-                    <div class="content-side-up content-right"><i class="mdi mdi-sigma"></i></div>
-                    <div class="content-header-left">23/08/2009</div>
-                    <div class="content-item">Montly</div>
-                    <div class="content-unit">3.10</div>
-                    <div class="content-per-unit">
-                        <p>3/M</p>
-                    </div>
-                    <div class="content-side-up content-total">150$</div>
-                    <div class="content-footer">PerMont:50$ nnnnnnnnnnnnnlllllllllllll</div>
-                </div>
-                <div class="grid-transactions-content-transaction">
-                    <div class="content-header-right-1"><i class="mdi mdi-credit-card"></i> </div>
-                    <div class="content-header-left-1"><i class="mdi mdi-numeric mdi-light"></i></div>
-                    <div class="content-side-up content-right"><i class="mdi mdi-sigma"></i></div>
-                    <div class="content-header-left">23/08/2009</div>
-                    <div class="content-item">Montly</div>
-                    <div class="content-unit">3</div>
-                    <div class="content-per-unit">
-                        <p>50</p>
-                    </div>
-                    <div class="content-side-up content-total">150$</div>
-                    <div class="content-footer">PerMont:50$</div>
-                </div>
-
-
-            </div>
-            <div class="transactions-footer">
-                <span>Lorem ipsum dolor sit amet </span>
-            </div>
-        }
-        @if (bShowSumarry)
-        {
-            <div class="transactions-content">
-
-                <div class="grid-transactions-content-summary">
-                    <div class="content-header">Account Info</div>
-                    <div class="content-row-1">Id:</div>
-                    <div class="content-value-1">059828392 </div>
-                    <div class="content-side content-side-1"><i class="material-icons">account_circle</i></div>
-                    <div class="content-row-2">Name:</div>
-                    <div class="content-value-2">Yosef Levy</div>
-                    <div class="content-side content-side-2"><i class="material-icons">mood</i></div>
-                    <div class="content-row-3">Update:</div>
-                    <div class="content-value-3">10/12/2019</div>
-                    <div class="content-side content-side-3"><i class="material-icons">update</i></div>
-
-                </div>
-                <div class="grid-transactions-content-summary">
-                    <div class="content-header">Account Balance</div>
-                    <div class="content-row-1">Cash:</div>
-                    <div class="content-value-1">120</div>
-                    <div class="content-side content-side-1"><i class="material-icons">$</i></div>
-                    <div class="content-row-2">Flight:</div>
-                    <div class="content-value-2">14.6</div>
-                    <div class="content-side content-side-2"><i class="material-icons">flight</i></div>
-
-                </div>
-                <div class="grid-transactions-content-summary">
-                    <div class="content-header">Flight Summary</div>
-                    <div class="content-row-1">Total:</div>
-                    <div class="content-value-1">120</div>
-                    <div class="content-side content-side-1"><i class="material-icons">$</i></div>
-                    <div class="content-row-2">Hours:</div>
-                    <div class="content-value-2">14.6</div>
-                    <div class="content-side content-side-2"><i class="material-icons">flight</i></div>
-                    <div class="content-row-3">Flights:</div>
-                    <div class="content-value-3">19</div>
-                    <div class="content-side content-side-3"><i class="material-icons">flight</i></div>
-                    <div class="content-row-4">Per Hour</div>
-                    <div class="content-value-4">650</div>
-                    <div class="content-side content-side-4"><i class="material-icons">$</i></div>
-
-
-                </div>
-                <div class="grid-transactions-content-summary">
-                    <div class="content-header">Invoices Status</div>
-                    <div class="content-row-1">Cash:</div>
-                    <div class="content-value-1">120</div>
-                    <div class="content-side content-side-1"><i class="material-icons">$</i></div>
-                    <div class="content-row-2">Flight:</div>
-                    <div class="content-value-2">14.6</div>
-                    <div class="content-side content-side-2"><i class="material-icons">flight</i></div>
-
-                </div>
-
-            </div>
-            <div class="transactions-footer">
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil, sed!</p>
-            </div>
-        }
-        @if (bShowInvoice)
-        {
-            <div class="transactions-content">
-
-                <div class="grid-transactions-content-transaction">
-                    <div class="content-header-left">21/08/2009</div>
-                    <div class="content-header-left-1"><i class="mdi mdi-numeric mdi-light"></i></div>
-                    <div class="content-header-right-1"><i class="material-icons">credit_card</i></div>
-                    <div class="content-side-up content-right"><i class="fas fa-shekel-sign"></i></div>
-                    <div class="content-item">Payment</div>
-                    <div class="content-unit">3.2</div>
-                    <div class="content-per-unit"><p>500</p></div>
-                    <div class="content-side-up content-total">1550</div>
-                    <div class="content-footer">PerHour:150$</div>
-                </div>
-                <div class="grid-transactions-content-transaction">
-                    <div class="content-header-right-1"><i class="fas fa-cart-plus"></i></div>
-                    <div class="content-header-left">22/08/2009</div>
-                    <div class="content-header-left-1"><i class="mdi mdi-numeric mdi-light"></i></div>
-                    <div class="content-side-up content-right"><i class="mdi mdi-sigma"></i></div>
-                    <div class="content-item">Montly</div>
-                    <div class="content-unit">3.3</div>
-                    <div class="content-per-unit"><p>3/M</p></div>
-                    <div class="content-side-up content-total">150$</div>
-                    <div class="content-footer">PerMont:50$</div>
-                </div>
-                <div class="grid-transactions-content-transaction">
-
-                    <div class="content-header-left">23/08/2009</div>
-                    <div class="content-header-right-1"><i class="fas fa-cart-arrow-down"></i></div>
-                    <div class="content-header-left-1"><i class="mdi mdi-numeric mdi-light"></i></div>
-                    <div class="content-item">Montly</div>
-                    <div class="content-unit">3.4</div>
-                    <div class="content-per-unit"><p>3/M</p></div>
-                    <div class="content-side-up content-total">150$</div>
-                    <div class="content-footer">PerMont:50$</div>
-                </div>
-                <div class="grid-transactions-content-transaction">
-                    <div class="content-header-right-1"><i class="mdi mdi-database-minus"></i>    </div>
-                    <div class="content-header-left">23/08/2009</div>
-                    <div class="content-header-left-1"><i class="mdi mdi-numeric mdi-light"></i></div>
-                    <div class="content-item">Montly</div>
-                    <div class="content-unit">3.5</div>
-                    <div class="content-per-unit"><p>3/M</p></div>
-                    <div class="content-side-up content-total">150$</div>
-                    <div class="content-footer">PerMont:50$</div>
-                </div>
-                <div class="grid-transactions-content-transaction">
-                    <div class="content-header-left-1"><i class="mdi mdi-numeric mdi-light"></i></div>
-                    <div class="content-side-up content-right"><i class="mdi mdi-sigma"></i></div>
-                    <div class="content-header-right-1"><i class="mdi mdi-database-plus"></i>    </div>
-                    <div class="content-header-left">23/08/2009</div>
-                    <div class="content-item">Montly</div>
-                    <div class="content-unit">3.6</div>
-                    <div class="content-per-unit"><p>3/M</p></div>
-                    <div class="content-side-up content-total">150$</div>
-                    <div class="content-footer">PerMont:50$</div>
-                </div>
-                <div class="grid-transactions-content-transaction">
-                    <div class="content-header-right-1"><i class="mdi mdi-light mdi-cart-outline"></i></div>
-                    <div class="content-header-left-1"><i class="mdi mdi-numeric mdi-light"></i></div>
-                    <div class="content-side-up content-right"><i class="mdi mdi-sigma"></i></div>
-                    <div class="content-header-left">23/08/2009</div>
-                    <div class="content-item">Montly</div>
-                    <div class="content-unit">3.7</div>
-                    <div class="content-per-unit"><p>3/M</p></div>
-                    <div class="content-side-up content-total">150$</div>
-                    <div class="content-footer">PerMont:50$</div>
-                </div>
-                <div class="grid-transactions-content-transaction">
-                    <div class="content-header-right-1"><i class="mdi  mdi-database-plus"></i></div>
-                    <div class="content-header-left-1"><i class="mdi mdi-numeric mdi-light"></i></div>
-                    <div class="content-side-up content-right"><i class="mdi mdi-sigma mdi-light"></i></div>
-                    <div class="content-header-left">23/08/2009</div>
-                    <div class="content-item">Montly</div>
-                    <div class="content-unit">3.8</div>
-                    <div class="content-per-unit"><p>3/M</p></div>
-                    <div class="content-side-up content-total">150$</div>
-                    <div class="content-footer">PerMont:50$</div>
-                </div>
-                <div class="grid-transactions-content-transaction">
-                    <div class="content-header-right-1"><i class="mdi mdi-light mdi-database-plus"></i>    </div>
-                    <div class="content-header-left-1"><i class="mdi mdi-numeric mdi-light"></i></div>
-                    <div class="content-side-up content-right"><i class="mdi mdi-sigma"></i></div>
-                    <div class="content-header-left">23/08/2009</div>
-                    <div class="content-item">Montly</div>
-                    <div class="content-unit">3.10</div>
-                    <div class="content-per-unit"><p>3/M</p></div>
-                    <div class="content-side-up content-total">150$</div>
-                    <div class="content-footer">PerMont:50$ nnnnnnnnnnnnnlllllllllllll</div>
-                </div>
-                <div class="grid-transactions-content-transaction">
-                    <div class="content-header-right-1"><i class="mdi mdi-credit-card"></i>    </div>
-                    <div class="content-header-left-1"><i class="mdi mdi-numeric mdi-light"></i></div>
-                    <div class="content-side-up content-right"><i class="mdi mdi-sigma"></i></div>
-                    <div class="content-header-left">23/08/2009</div>
-                    <div class="content-item">Montly</div>
-                    <div class="content-unit">3</div>
-                    <div class="content-per-unit"><p>50</p></div>
-                    <div class="content-side-up content-total">150$</div>
-                    <div class="content-footer">PerMont:50$</div>
-                </div>
-
-
-            </div>
-            <div class="transactions-footer">
-                <span>Lorem ipsum dolor sit amet </span>
-            </div>
-        }
-
+<div class="base-page">
+    <div class="page-header">
+        My Account
     </div>
+    <div class="page-content">
+        <div class="grid-transactions">
+
+            <div class="transactions-header">@SelectedTab</div>
+            <button class="btn-transaction nav-back" @onclick="OnSummary" value="Back">Summary</button>
+            <button class="btn-transaction nav-transactions" @onclick="OnTransaction" value="Transactions">Transactions</button>
+            <button class="btn-transaction nav-invoices" @onclick="OnInvoice" value="Invoices">Invoices</button>
+            @if (bShowSearch)
+            {
+                <select class="btn-transaction filter-1">
+                    <option value="All">All</option>
+                    <option value="Debit">Debit</option>
+                    <option value="Credit">Credit</option>
+                </select>
+                <input type="text" class="btn-transaction filter-2" placeholder="Type Search String">
+                <button class="btn-transaction filter-3" value="search"><i class="fa fa-search" aria-hidden="true"></i></button>
+
+
+            }
+            @if (bShowDateFilter)
+            {
+                <input type="date" class="btn-transaction filter-date-from">
+                <div class="btn-transaction filter-date-main"><i class="material-icons">date_range</i></div>
+                <input type="date" class="btn-transaction filter-date-to">
+            }
+            @if (bShowTranaction)
+            {
+
+                <div class="transactions-content">
+
+                    <div class="grid-transactions-content-transaction">
+                        <div class="content-header-left">21/08/2009</div>
+                        <div class="content-header-left-1"><i class="mdi mdi-numeric mdi-light"></i></div>
+                        <div class="content-header-right-1"><i class="material-icons">credit_card</i></div>
+                        <div class="content-side-up content-right"><i class="fas fa-shekel-sign"></i></div>
+                        <div class="content-item">Payment</div>
+                        <div class="content-unit">3.2</div>
+                        <div class="content-per-unit"><p>500</p></div>
+                        <div class="content-side-up content-total">1550</div>
+                        <div class="content-footer">PerHour:150$</div>
+                    </div>
+                    <div class="grid-transactions-content-transaction">
+                        <div class="content-header-right-1"><i class="fas fa-cart-plus"></i></div>
+                        <div class="content-header-left">22/08/2009</div>
+                        <div class="content-header-left-1"><i class="mdi mdi-numeric mdi-light"></i></div>
+                        <div class="content-side-up content-right"><i class="mdi mdi-sigma"></i></div>
+                        <div class="content-item">Montly</div>
+                        <div class="content-unit">3.3</div>
+                        <div class="content-per-unit"><p>3/M</p></div>
+                        <div class="content-side-up content-total">150$</div>
+                        <div class="content-footer">PerMont:50$</div>
+                    </div>
+                    <div class="grid-transactions-content-transaction">
+                        <div class="content-header-left">23/08/2009</div>
+                        <div class="content-header-right-1"><i class="fas fa-cart-arrow-down"></i></div>
+                        <div class="content-header-left-1"><i class="mdi mdi-numeric mdi-light"></i></div>
+                        <div class="content-item">Montly</div>
+                        <div class="content-unit">3.4</div>
+                        <div class="content-per-unit"><p>3/M</p></div>
+                        <div class="content-side-up content-total">150$</div>
+                        <div class="content-footer">PerMont:50$</div>
+                    </div>
+                    <div class="grid-transactions-content-transaction">
+                        <div class="content-header-right-1"><i class="mdi mdi-database-minus"></i>    </div>
+                        <div class="content-header-left">23/08/2009</div>
+                        <div class="content-header-left-1"><i class="mdi mdi-numeric mdi-light"></i></div>
+                        <div class="content-item">Montly</div>
+                        <div class="content-unit">3.5</div>
+                        <div class="content-per-unit"><p>3/M</p></div>
+                        <div class="content-side-up content-total">150$</div>
+                        <div class="content-footer">PerMont:50$</div>
+                    </div>
+                    <div class="grid-transactions-content-transaction">
+                        <div class="content-header-left-1"><i class="mdi mdi-numeric mdi-light"></i></div>
+                        <div class="content-side-up content-right"><i class="mdi mdi-sigma"></i></div>
+                        <div class="content-header-right-1"><i class="mdi mdi-database-plus"></i>    </div>
+                        <div class="content-header-left">23/08/2009</div>
+                        <div class="content-item">Montly</div>
+                        <div class="content-unit">3.6</div>
+                        <div class="content-per-unit"><p>3/M</p></div>
+                        <div class="content-side-up content-total">150$</div>
+                        <div class="content-footer">PerMont:50$</div>
+                    </div>
+                    <div class="grid-transactions-content-transaction">
+                        <div class="content-header-right-1"><i class="mdi mdi-light mdi-cart-outline"></i></div>
+                        <div class="content-header-left-1"><i class="mdi mdi-numeric mdi-light"></i></div>
+                        <div class="content-side-up content-right"><i class="mdi mdi-sigma"></i></div>
+                        <div class="content-header-left">23/08/2009</div>
+                        <div class="content-item">Montly</div>
+                        <div class="content-unit">3.7</div>
+                        <div class="content-per-unit"><p>3/M</p></div>
+                        <div class="content-side-up content-total">150$</div>
+                        <div class="content-footer">PerMont:50$</div>
+                    </div>
+                    <div class="grid-transactions-content-transaction">
+                        <div class="content-header-right-1"><i class="mdi  mdi-database-plus"></i></div>
+                        <div class="content-header-left-1"><i class="mdi mdi-numeric mdi-light"></i></div>
+                        <div class="content-side-up content-right"><i class="mdi mdi-sigma mdi-light"></i></div>
+                        <div class="content-header-left">23/08/2009</div>
+                        <div class="content-item">Montly</div>
+                        <div class="content-unit">3.8</div>
+                        <div class="content-per-unit"><p>3/M</p></div>
+                        <div class="content-side-up content-total">150$</div>
+                        <div class="content-footer">PerMont:50$</div>
+                    </div>
+                    <div class="grid-transactions-content-transaction">
+                        <div class="content-header-right-1"><i class="mdi mdi-light mdi-database-plus"></i>    </div>
+                        <div class="content-header-left-1"><i class="mdi mdi-numeric mdi-light"></i></div>
+                        <div class="content-side-up content-right"><i class="mdi mdi-sigma"></i></div>
+                        <div class="content-header-left">23/08/2009</div>
+                        <div class="content-item">Montly</div>
+                        <div class="content-unit">3.10</div>
+                        <div class="content-per-unit"><p>3/M</p></div>
+                        <div class="content-side-up content-total">150$</div>
+                        <div class="content-footer">PerMont:50$ nnnnnnnnnnnnnlllllllllllll</div>
+                    </div>
+                    <div class="grid-transactions-content-transaction">
+                        <div class="content-header-right-1"><i class="mdi mdi-credit-card"></i>    </div>
+                        <div class="content-header-left-1"><i class="mdi mdi-numeric mdi-light"></i></div>
+                        <div class="content-side-up content-right"><i class="mdi mdi-sigma"></i></div>
+                        <div class="content-header-left">23/08/2009</div>
+                        <div class="content-item">Montly</div>
+                        <div class="content-unit">3</div>
+                        <div class="content-per-unit"><p>50</p></div>
+                        <div class="content-side-up content-total">150$</div>
+                        <div class="content-footer">PerMont:50$</div>
+                    </div>
+
+
+                </div>
+
+
+            }
+            @if (bShowSumarry)
+            {
+                <div class="transactions-content">
+
+                    <div class="grid-transactions-content-summary">
+                        <div class="content-header">Account Info</div>
+                        <div class="content-row--1">Id:</div>
+                        <div class="content-value--1">059828392 </div>
+                        <div class="content-side content-side--1"><i class="material-icons">account_circle</i></div>
+                        <div class="content-row--2">Name:</div>
+                        <div class="content-value--2">Yosef Levy</div>
+                        <div class="content-side content-side--2"><i class="material-icons">mood</i></div>
+                        <div class="content-row--3">Update:</div>
+                        <div class="content-value--3">10/12/2019</div>
+                        <div class="content-side content-side--3"><i class="material-icons">update</i></div>
+
+                    </div>
+                    <div class="grid-transactions-content-summary">
+                        <div class="content-header">Account Balance</div>
+                        <div class="content-row--1">Cash:</div>
+                        <div class="content-value--1">120</div>
+                        <div class="content-side content-side--1"><i class="material-icons">$</i></div>
+                        <div class="content-row--2">Flight:</div>
+                        <div class="content-value--2">14.6</div>
+                        <div class="content-side content-side--2"><i class="material-icons">flight</i></div>
+
+                    </div>
+                    <div class="grid-transactions-content-summary">
+                        <div class="content-header">Flight Summary</div>
+                        <div class="content-row--1">Total:</div>
+                        <div class="content-value--1">120</div>
+                        <div class="content-side content-side--1"><i class="material-icons">$</i></div>
+                        <div class="content-row--2">Hours:</div>
+                        <div class="content-value--2">14.6</div>
+                        <div class="content-side content-side--2"><i class="material-icons">flight</i></div>
+                        <div class="content-row--3">Flights:</div>
+                        <div class="content-value--3">19</div>
+                        <div class="content-side content-side--3"><i class="material-icons">flight</i></div>
+                        <div class="content-row--4">Per Hour</div>
+                        <div class="content-value--4">650</div>
+                        <div class="content-side content-side--4"><i class="material-icons">$</i></div>
+
+
+                    </div>
+                    <div class="grid-transactions-content-summary">
+                        <div class="content-header">Invoices Status</div>
+                        <div class="content-row--1">Cash:</div>
+                        <div class="content-value--1">120</div>
+                        <div class="content-side content-side--1"><i class="material-icons">$</i></div>
+                        <div class="content-row--2">Flight:</div>
+                        <div class="content-value--2">14.6</div>
+                        <div class="content-side content-side--2"><i class="material-icons">flight</i></div>
+
+                    </div>
+
+                </div>
+                <div class="transactions-footer">
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil, sed!</p>
+                </div>
+            }
+            @if (bShowInvoice)
+            {
+                <div class="transactions-content">
+
+
+                    <div class="grid-transactions-content-transaction">
+                        <div class="content-header-left-1"><i class="mdi mdi-numeric mdi-light"></i></div>
+                        <div class="content-side-up content-right"><i class="mdi mdi-sigma"></i></div>
+                        <div class="content-header-right-1"><i class="mdi mdi-database-plus"></i> </div>
+                        <div class="content-header-left">23/08/2009</div>
+                        <div class="content-item">Montly</div>
+                        <div class="content-unit">3.6</div>
+                        <div class="content-per-unit">
+                            <p>3/M</p>
+                        </div>
+                        <div class="content-side-up content-total">150$</div>
+                        <div class="content-footer">PerMont:50$</div>
+                    </div>
+                    <div class="grid-transactions-content-transaction">
+                        <div class="content-header-right-1"><i class="mdi mdi-light mdi-cart-outline"></i></div>
+                        <div class="content-header-left-1"><i class="mdi mdi-numeric mdi-light"></i></div>
+                        <div class="content-side-up content-right"><i class="mdi mdi-sigma"></i></div>
+                        <div class="content-header-left">23/08/2009</div>
+                        <div class="content-item">Montly</div>
+                        <div class="content-unit">3.7</div>
+                        <div class="content-per-unit">
+                            <p>3/M</p>
+                        </div>
+                        <div class="content-side-up content-total">150$</div>
+                        <div class="content-footer">PerMont:50$</div>
+                    </div>
+                    <div class="grid-transactions-content-transaction">
+                        <div class="content-header-right-1"><i class="mdi  mdi-database-plus"></i></div>
+                        <div class="content-header-left-1"><i class="mdi mdi-numeric mdi-light"></i></div>
+                        <div class="content-side-up content-right"><i class="mdi mdi-sigma mdi-light"></i></div>
+                        <div class="content-header-left">23/08/2009</div>
+                        <div class="content-item">Montly</div>
+                        <div class="content-unit">3.8</div>
+                        <div class="content-per-unit">
+                            <p>3/M</p>
+                        </div>
+                        <div class="content-side-up content-total">150$</div>
+                        <div class="content-footer">PerMont:50$</div>
+                    </div>
+                    <div class="grid-transactions-content-transaction">
+                        <div class="content-header-right-1"><i class="mdi mdi-light mdi-database-plus"></i> </div>
+                        <div class="content-header-left-1"><i class="mdi mdi-numeric mdi-light"></i></div>
+                        <div class="content-side-up content-right"><i class="mdi mdi-sigma"></i></div>
+                        <div class="content-header-left">23/08/2009</div>
+                        <div class="content-item">Montly</div>
+                        <div class="content-unit">3.10</div>
+                        <div class="content-per-unit">
+                            <p>3/M</p>
+                        </div>
+                        <div class="content-side-up content-total">150$</div>
+                        <div class="content-footer">PerMont:50$ nnnnnnnnnnnnnlllllllllllll</div>
+                    </div>
+                    <div class="grid-transactions-content-transaction">
+                        <div class="content-header-right-1"><i class="mdi mdi-credit-card"></i> </div>
+                        <div class="content-header-left-1"><i class="mdi mdi-numeric mdi-light"></i></div>
+                        <div class="content-side-up content-right"><i class="mdi mdi-sigma"></i></div>
+                        <div class="content-header-left">23/08/2009</div>
+                        <div class="content-item">Montly</div>
+                        <div class="content-unit">3</div>
+                        <div class="content-per-unit">
+                            <p>50</p>
+                        </div>
+                        <div class="content-side-up content-total">150$</div>
+                        <div class="content-footer">PerMont:50$</div>
+                    </div>
+                    <div class="grid-transactions-content-transaction">
+                        <div class="content-header-right-1"><i class="mdi mdi-credit-card"></i> </div>
+                        <div class="content-header-left-1"><i class="mdi mdi-numeric mdi-light"></i></div>
+                        <div class="content-side-up content-right"><i class="mdi mdi-sigma"></i></div>
+                        <div class="content-header-left">23/08/2009</div>
+                        <div class="content-item">Montly</div>
+                        <div class="content-unit">3</div>
+                        <div class="content-per-unit">
+                            <p>50</p>
+                        </div>
+                        <div class="content-side-up content-total">150$</div>
+                        <div class="content-footer">PerMont:50$</div>
+                    </div>
+                    <div class="grid-transactions-content-transaction">
+                        <div class="content-header-right-1"><i class="mdi mdi-credit-card"></i> </div>
+                        <div class="content-header-left-1"><i class="mdi mdi-numeric mdi-light"></i></div>
+                        <div class="content-side-up content-right"><i class="mdi mdi-sigma"></i></div>
+                        <div class="content-header-left">23/08/2009</div>
+                        <div class="content-item">Montly</div>
+                        <div class="content-unit">3</div>
+                        <div class="content-per-unit">
+                            <p>50</p>
+                        </div>
+                        <div class="content-side-up content-total">150$</div>
+                        <div class="content-footer">PerMont:50$</div>
+                    </div>
+
+
+                </div>
+              
+
+            }
+
+        </div>
+    </div>
+    <div class="page-footer">
+        Page Footer
+    </div>
+</div>
 
 
 @code {
