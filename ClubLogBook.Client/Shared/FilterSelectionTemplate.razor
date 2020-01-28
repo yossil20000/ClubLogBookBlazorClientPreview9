@@ -1,0 +1,90 @@
+﻿@using ClubLogBook.Application.ViewModels
+@if (FilterViewModel == null | FilterViewModel.ClubSelects == null)
+{
+    <div>"Loading FilterViewModel"</div>
+}
+else
+{
+
+}
+
+    @*<div class="@parent_container">*@
+        <select class="@select_1" onchange="ClubSelected">
+            <option value="null">(Select All)</option>
+
+            @foreach (var i in FilterViewModel.ClubSelects)
+            {
+                <option value="@i.Id">@i.ClubName - (@(i.Id))</option>
+            }
+        </select>
+        <select class="@select_2" onchange="AirplaneSelected">
+            <option value="null">(Select All)</option>
+
+            @foreach (var i in @FilterViewModel.AirplaneSelects)
+            {
+                <option value="@i.Id">@i.TailNumber - (@(i.Id))</option>
+            }
+        </select>
+        <select class="@select_3" onchange="PilotSelected">
+            <option value="null">(Select All)</option>
+
+            @foreach (var i in @FilterViewModel.PilotSelects)
+            {
+                <option value="@i.Id">@i.FullName - (@(i.IdNumber))</option>
+            }
+        </select>
+
+
+    @*</div>*@
+
+@code
+{
+
+    [Parameter] public PaginationInfoViewModel PaginationInfo { get; set; }
+    [Parameter] public FilterViewModel FilterViewModel { get; set; }
+    [Parameter] public Task Refresh { get; set; }
+    [Parameter] public string parent_container { get; set; }
+    [Parameter] public string select_1 { get; set; }
+    [Parameter] public string select_2 {get;set;}
+    [Parameter] public string select_3 { get; set;}
+    void PilotSelected(ChangeEventArgs e)
+    {
+        PaginationInfo.ActualPage = -1;
+        PaginationInfo.Next = "";
+        if (int.TryParse((string)e.Value, out var index) && index >= 0)
+        {
+            //emp.Pilot = pilots[index];
+            FilterViewModel.PilotFilterApplied = index;
+
+        }
+        else
+            FilterViewModel.PilotFilterApplied = null;
+
+    }
+    void ClubSelected(ChangeEventArgs e)
+    {
+        PaginationInfo.ActualPage = -1;
+        PaginationInfo.Next = "";
+        if (int.TryParse((string)e.Value, out var index) && index >= 0)
+        {
+            //emp.Pilot = pilots[index];
+            FilterViewModel.ClubFilterApplied = index;
+
+        }
+        else
+            FilterViewModel.ClubFilterApplied = null;
+    }
+    void AirplaneSelected(ChangeEventArgs e)
+    {
+        PaginationInfo.ActualPage = -1;
+        PaginationInfo.Next = "";
+        if (int.TryParse((string)e.Value, out var index) && index >= 0)
+        {
+            //emp.Pilot = pilots[index];
+            FilterViewModel.AirplaneFilterApplied = index;
+
+        }
+        else
+            FilterViewModel.AirplaneFilterApplied = null;
+    }
+}

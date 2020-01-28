@@ -16,14 +16,16 @@
             <div class="base-page">
                 <div class="page-header">Reservation</div>
                 <div class="page-content">
+                    
                     <div class="aircraft-reservation">
                         <div class="a-r-header">
+                            <FilterSelectionTemplate FilterViewModel="RecordsViewModel.FilterViewModel" PaginationInfo="RecordsViewModel.PaginationInfo" parent_container="" select_1="a-r-filter--1 btn-transaction" select_2="a-r-filter--2 btn-transaction" select_3="a-r-filter--3 btn-transaction"></FilterSelectionTemplate>
                             <div class="a-r-header--1 btn-transaction"><p>Total:</p></div>
                             <div class="a-r-header--2 btn-transaction"><p>Total selection:</p></div>
                             <div class="a-r-header--3 btn-transaction"><p>Total Today:</p></div>
-                            <select class="a-r-filter--1 btn-transaction" name="a-r-filter--1" id="a-m-t-filter--1"></select>
+                            @*<select class="a-r-filter--1 btn-transaction" name="a-r-filter--1" id="a-m-t-filter--1"></select>
                             <select class="a-r-filter--2 btn-transaction" name="a-r-filter--2" id="a-m-t-filter--2"></select>
-                            <select class="a-r-filter--3 btn-transaction" name="a-r-filter--3" id="a-m-t-filter--3"></select>
+                            <select class="a-r-filter--3 btn-transaction" name="a-r-filter--3" id="a-m-t-filter--3"></select>*@
 
                             <div class="a-r-page--1 btn-transaction"><button>Prev</button></div>
                             <div class="a-r-page--2 btn-transaction"><label for="">Page 1 From 10 total 15</label></div>
@@ -36,7 +38,7 @@
                                 <div class="a-r-list-h-3 btn-grid-sort"><button value="status">Pilot</button></div>
                                 <div class="a-r-list-h-4 btn-grid-sort"><button value="status">From</button></div>
                                 <div class="a-r-list-h-5 btn-grid-sort"><button value="status">To</button></div>
-                                <div class="a-r-list-h-6 btn-grid-sort"><button  @onclick="@CreateReservation">Create</button></div>
+                                <div class="a-r-list-h-6 btn-grid-sort"><button @onclick="@CreateReservation">Create</button></div>
                             </div>
                             @foreach (var item in items)
                             {
@@ -48,8 +50,8 @@
                                     <div class="a-r-list-c-5">@item.DateTo</div>
                                     @if (IsCurrentAdmin || item.UserId.ToString() == CurrentUser.Id)
                                     {
-                                
-                                        <div class="a-r-list-c-6 btn-grid-cmd"><button  @onclick="@(async () => await SaveNewReservation())">Edit</button></div>
+
+                                        <div class="a-r-list-c-6 btn-grid-cmd"><button @onclick="@(async () => await SaveNewReservation())">Edit</button></div>
                                     }
 
                                 </div>
@@ -100,7 +102,7 @@
                             </div>
                         </div>
              */
-           // <FilterSelection FilterViewModel="RecordsViewModel.FilterViewModel" PaginationInfo="RecordsViewModel.PaginationInfo"></FilterSelection>
+          
             @if (ShowReservation)
             {
                 <div class="container-fluid">

@@ -34,7 +34,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.UnitTests", "te
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Text", "Text\Text.csproj", "{AFEF16F3-986E-43B9-B908-57724D02A7EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClubLogBook.Components", "ClubLogBook.Components\ClubLogBook.Components.csproj", "{90EDFAEF-E610-4E36-B754-14072729012F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClubLogBook.Components", "ClubLogBook.Components\ClubLogBook.Components.csproj", "{90EDFAEF-E610-4E36-B754-14072729012F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
