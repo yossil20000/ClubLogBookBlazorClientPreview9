@@ -4,12 +4,13 @@
 @inject IdentityAuthenticationStateProvider authStateProvider
 <div class="base-page">
     <div class="page-header">
-        My Account
-    </div>
+        @(CurrentUser == null? "My" : CurrentUser.UserName) Account @SelectedTab
+        @*@if (pilot.UserId.ToString() == CurrentUser.Id || IsCurrentAdmin)*@
+        </div>
     <div class="page-content">
         <div class="grid-transactions">
 
-            <div class="transactions-header">@SelectedTab</div>
+            
             <button class="btn-transaction nav-back" @onclick="OnSummary" value="Back">Summary</button>
             <button class="btn-transaction nav-transactions" @onclick="OnTransaction" value="Transactions">Transactions</button>
             <button class="btn-transaction nav-invoices" @onclick="OnInvoice" value="Invoices">Invoices</button>
@@ -195,9 +196,6 @@
                     </div>
 
                 </div>
-                <div class="transactions-footer">
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil, sed!</p>
-                </div>
             }
             @if (bShowInvoice)
             {
@@ -311,6 +309,20 @@
 
 
 @code {
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
+    AdminUserInfo CurrentUser { get; set; }
+    bool IsCurrentAdmin { get; set; } = false;
+    protected override async Task OnInitializedAsync()
+    {
+        
+        var authState = await authenticationStateTask;
+        var user = authState.User;
+        CurrentUser = await authStateProvider.CurrentUser();
+        IsCurrentAdmin = user.IsInRole(IdentityInfo.Roles.Administrators.ToString());
+        
+
+    }
     string SelectedTab = "Summary";
     bool bShowSumarry = true;
     bool bShowInvoice = false;
