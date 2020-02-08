@@ -7,9 +7,7 @@
 
 <AuthorizeView Roles="Administrators,AccountManage,Members">
     <Authorized>
-        <div class="base-page">
-            <div class="page-header">Club Contact</div>
-            <div class="page-content">
+
                 @if (contacts == null)
                 {
                     <p><em>Loading...</em></p>
@@ -163,10 +161,7 @@
 
                 }
 
-            </div>
-            <div class="page-footer">@message</div>
-        </div>
-
+      
 
     </Authorized>
     <NotAuthorized>

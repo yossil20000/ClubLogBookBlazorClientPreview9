@@ -17,6 +17,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\stylesheets\**" />
+    <Content Remove="wwwroot\stylesheets\**" />
+    <EmbeddedResource Remove="wwwroot\stylesheets\**" />
+    <None Remove="wwwroot\stylesheets\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="compilerconfig.json" />
     <Content Remove="wwwroot\Image\CGC_LLHA.jpg" />
     <Content Remove="wwwroot\Image\CGC_LLMG.jpg" />

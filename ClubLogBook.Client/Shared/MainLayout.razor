@@ -2,29 +2,168 @@
 @inject NavigationManager navigationManager
 @inject IdentityAuthenticationStateProvider authStateProvider
 @using Radzen.Blazor
+    <div class="l__page ">
 
-<div class="sidebar">
-    <NavMenu />
-</div>
+        <div class="l__page__logo">
+            <img src="./img/club-image.png" alt="club-image" class="l__page__logo__img">
+        </div>
+        <div class="l__page__header">
+            <span class="float-left">Baz Flight Club User:</span>
+            <span class="float-left">Administrator</span>
 
-<div class="main">
-    <div class="top-row px-4">
-        @if (CurrentUser != null)
-        {
-            <span>Hello: @CurrentUser.UserName</span>
-        }
-        else
-        {
-            <span>Hello : @name</span>
-        }
+            <NavLink class=" float-right link" href="#">
+                <span class="oi oi-account-logout  " aria-hidden="true"></span> Logout
+            </NavLink>
+        </div>
+        <div class="l__page__nav__header">I am page nav  header</div>
+        <div class="l__page__side l__page__side--hide">
+            i amm page side
+        </div>
+        <div class="l__page__nav__button">
 
-        <button type="button" class="btn btn-link ml-md-auto" @onclick="LogoutClick">Logout Me</button>
+            <NavLink class="nav-link link" href="counter">
+                <span class="oi oi-list" aria-hidden="true"></span> Menue
+            </NavLink>
+        </div>
+        <div class="l__page__nav l__page__nav--show show">
+            <div class="l__page__nav__item">
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="Index" Match="NavLinkMatch.All">
+                        <span class="oi oi-home" aria-hidden="true"></span> Home
+                    </NavLink>
+                </li>
+            </div>
+            <div class="l__page__nav__item">
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="counter">
+                        <span class="oi oi-plus" aria-hidden="true"></span> Counter
+                    </NavLink>
+                </li>
+            </div>
+
+            <div class="l__page__nav__item">
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="fetchdata">
+                        <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
+                    </NavLink>
+                </li>
+            </div>
+
+            <div class="l__page__nav__item">
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="ClubContacts">
+                        <span class="iconify" data-icon="bx:bxs-group" data-inline="false"></span> Club Contact
+                    </NavLink>
+                </li>
+            </div>
+            <div class="l__page__nav__item">
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="Reservation/FlightReservation">
+                        <span class="iconify" data-icon="ic:baseline-airline-seat-recline-extra" data-inline="false"></span> Flight Reservation
+                    </NavLink>
+                </li>
+            </div>
+            <div class="l__page__nav__item">
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="AccountManager/MyAccount">
+                        <span class="iconify" data-icon="ic:baseline-account-balance" data-inline="false"></span> My Account
+                    </NavLink>
+                </li>
+            </div>
+            <div class="l__page__nav__item">
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="Contact/ContactEditor">
+                        <span class="iconify" data-icon="mdi:account-plus" data-inline="false"></span> Contact Editor
+                    </NavLink>
+                </li>
+            </div>
+            <div class="l__page__nav__item">
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="Flight/ClubFlight">
+                        <span class="iconify" data-icon="ion:airplane-sharp" data-inline="false"></span> Flight
+                    </NavLink>
+                </li>
+            </div>
+            <div class="l__page__nav__item">
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="AccountManager/AccountManager">
+                        <span class="iconify" data-icon="ic:outline-supervisor-account" data-inline="false"></span> Account Manager
+                    </NavLink>
+                </li>
+            </div>
+            <div class="l__page__nav__item">
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="Administration">
+                        <span class="iconify" data-icon="flat-color-icons:manager" data-inline="false"></span> Administration
+                    </NavLink>
+                </li>
+            </div>
+        </div>
+        <div class="l__page__content">
+            @Body
+        </div>
+
+        <div class="l__page__footer">I am page footer</div>
     </div>
 
-    <div>
-        @Body
+
+@*<div class="l__page">
+        <div class="l__page__logo">l__page__logo</div>
+        <div class="l__page__side ">
+
+        </div>
+        <div class="l__page__nav__button">
+            <a class="navbar-brand" href="">ClubLogBook</a>
+            <button class="navbar-toggler" @onclick="@ToggleNavMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+        </div>
+        <div class="l__page__nav">
+
+            <NavMenu NavMenuCssClass="@NavMenuCssClass" />
+        </div>
+        <div class="l__page__nav__header">
+            <div class="top-row px-4">
+                @if (CurrentUser != null)
+                {
+                    <span>Hello: @CurrentUser.UserName</span>
+                }
+                else
+                {
+                    <span>Hello : @name</span>
+                }
+
+                <button type="button" class="btn btn-link ml-md-auto" @onclick="LogoutClick">Logout Me</button>
+            </div>
+        </div>
+        <div class="l__page__header">I am l__page__header</div>
+       C
+        <div class="l__page__footer">I am l__page__footer</div>
+    </div>*@
+
+@*<div class="sidebar">
+        <NavMenu />
     </div>
-</div>
+
+    <div class="main">
+        <div class="top-row px-4">
+            @if (CurrentUser != null)
+            {
+                <span>Hello: @CurrentUser.UserName</span>
+            }
+            else
+            {
+                <span>Hello : @name</span>
+            }
+
+            <button type="button" class="btn btn-link ml-md-auto" @onclick="LogoutClick">Logout Me</button>
+        </div>
+
+        <div>
+            @Body
+        </div>
+    </div>*@
 
 
 
@@ -32,6 +171,9 @@
 
     [CascadingParameter]
     Task<AuthenticationState> AuthenticationState { get; set; }
+
+    [Parameter] public string NavMenuCssClass { get; set; }
+    bool collapseNavMenu = true;
     AdminUserInfo CurrentUser { get; set; }
     string name = "Unknown";
 
@@ -48,6 +190,7 @@
         {
             //navigationManager.NavigateTo("/index");
         }
+        NavMenuCssClass = collapseNavMenu ? "collapse" : null;
     }
 
     async Task LogoutClick()
@@ -62,5 +205,13 @@
         //CurrentUser = await authStateProvider.CurrentUser();
         CurrentUser = await authStateProvider.CurrentUser();
 
+    }
+
+
+
+    void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+        NavMenuCssClass = collapseNavMenu ? "collapse" : null;
     }
 }
