@@ -2,45 +2,42 @@
 @using ClubLogBook.Shared
 @inject HttpClient Http
 
-<h1>Weather forecast</h1>
+    <div class="l__page__content">
+        <h1>Weather forecast</h1>
 
-<p>This component demonstrates fetching data from the server.</p>
+        <p>This component demonstrates fetching data from the server.</p>
 
-@if (forecasts == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-<div class="form-group row">
-    <label for="example-time-input" class="col-2 col-form-label">Time</label>
-    <div class="col-10">
-        
-        <input type="time" @bind="t" format-value="HH:mm" />
+        @if (forecasts == null)
+        {
+            <p><em>Loading...</em></p>
+        }
+        else
+        {
+            
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Temp. (C)</th>
+                        <th>Temp. (F)</th>
+                        <th>Summary</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var forecast in forecasts)
+                    {
+                        <tr>
+                            <td>@forecast.Date.ToShortDateString()</td>
+                            <td>@forecast.TemperatureC</td>
+                            <td>@forecast.TemperatureF</td>
+                            <td>@t.ToLongTimeString()</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
     </div>
-</div>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Temp. (C)</th>
-                <th>Temp. (F)</th>
-                <th>Summary</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var forecast in forecasts)
-            {
-                <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@t.ToLongTimeString()</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+
 
 @functions {
 

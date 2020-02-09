@@ -495,6 +495,7 @@ div.scroll {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
+  visibility: hidden;
   padding: 0px;
   margin: 0px;
   line-height: 20px;
@@ -665,6 +666,7 @@ div.scroll {
         -ms-flex-direction: column;
             flex-direction: column;
     grid-gap: 2px 5px;
+    visibility: visible;
   }
   .l__page__side {
     background-color: #4a6572;
@@ -891,10 +893,17 @@ input:nth-child(even) {
   display: grid;
   -ms-grid-columns: 1fr;
       grid-template-columns: 1fr;
-      grid-template-areas: "edit-content";
-  -ms-grid-rows: 1fr;
-      grid-template-rows: 1fr;
+  -ms-grid-rows: minmax(auto, 35px) 1fr;
+      grid-template-rows: minmax(auto, 35px) 1fr;
+      grid-template-areas: "edit-header" "edit-content";
+  grid-template-rows: minmax(auto, 35px) 1fr;
   margin: 2px;
+}
+
+.c_grid__edit__header {
+  -ms-grid-row: 1;
+  -ms-grid-column: 1;
+  grid-area: edit-header;
 }
 
 .c_grid__edit__content {
@@ -905,7 +914,7 @@ input:nth-child(even) {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  -ms-grid-row: 1;
+  -ms-grid-row: 2;
   -ms-grid-column: 1;
   grid-area: edit-content;
   padding: 1px 1px;

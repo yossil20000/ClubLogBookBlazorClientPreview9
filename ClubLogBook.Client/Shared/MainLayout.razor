@@ -5,15 +5,18 @@
     <div class="l__page ">
 
         <div class="l__page__logo">
-            <img src="./img/club-image.png" alt="club-image" class="l__page__logo__img">
+            <img src="/Image/club-image.png" alt="club-image" class="l__page__logo__img">
         </div>
         <div class="l__page__header">
-            <span class="float-left">Baz Flight Club User:</span>
-            <span class="float-left">Administrator</span>
-
-            <NavLink class=" float-right link" href="#">
-                <span class="oi oi-account-logout  " aria-hidden="true"></span> Logout
-            </NavLink>
+            @if (CurrentUser != null)
+            {
+                <span class="float-left">Hello: @CurrentUser.UserName</span>
+                <button type="button" class="btn btn-link ml-md-auto float-right" @onclick="LogoutClick">Logout Me</button>
+            }
+            else
+            {
+                <span>Hello : @name</span>
+            }
         </div>
         <div class="l__page__nav__header">I am page nav  header</div>
         <div class="l__page__side l__page__side--hide">

@@ -27,11 +27,13 @@
     <Content Remove="compilerconfig.json" />
     <Content Remove="wwwroot\Image\CGC_LLHA.jpg" />
     <Content Remove="wwwroot\Image\CGC_LLMG.jpg" />
+    <Content Remove="wwwroot\Image\club-image.png" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="wwwroot\Image\CGC_LLHA.jpg" />
     <EmbeddedResource Include="wwwroot\Image\CGC_LLMG.jpg" />
+    <EmbeddedResource Include="wwwroot\Image\club-image.png" />
   </ItemGroup>
 
   <ItemGroup>
