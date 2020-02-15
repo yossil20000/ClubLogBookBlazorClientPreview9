@@ -10,7 +10,7 @@
         <div class="l__page__header">
             @if (CurrentUser != null)
             {
-                <span class="float-left">Hello: @CurrentUser.UserName</span>
+                <span class="float-left">Baz Club Flight Hello: @CurrentUser.UserName</span>
                 <button type="button" class="btn btn-link ml-md-auto float-right" @onclick="LogoutClick">Logout Me</button>
             }
             else
@@ -18,23 +18,22 @@
                 <span>Hello : @name</span>
             }
         </div>
-        <div class="l__page__nav__header">I am page nav  header</div>
+        <div class="l__page__nav__header">@PageHeader</div>
         <div class="l__page__side l__page__side--hide">
             i amm page side
         </div>
-        <div class="l__page__nav__button">
+        <div class="l__page__nav__button ">
 
-            <NavLink class="nav-link link" href="counter">
+            <NavLink class="nav-link link" href="#">
                 <span class="oi oi-list" aria-hidden="true"></span> Menue
             </NavLink>
         </div>
-        <div class="l__page__nav l__page__nav--show show">
+        <div class="l__page__nav l__page__nav--show">
             <div class="l__page__nav__item">
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="Index" Match="NavLinkMatch.All">
-                        <span class="oi oi-home" aria-hidden="true"></span> Home
-                    </NavLink>
-                </li>
+                <NavLink class="nav-link" href="Index" Match="NavLinkMatch.All">
+                    <span class="oi oi-home" aria-hidden="true"></span> Home
+                </NavLink>
+               
             </div>
             <div class="l__page__nav__item">
                 <li class="nav-item px-3">
@@ -45,11 +44,10 @@
             </div>
 
             <div class="l__page__nav__item">
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="fetchdata">
-                        <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
-                    </NavLink>
-                </li>
+                <NavLink class="nav-link" href="fetchdata">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
+                </NavLink>
+               
             </div>
 
             <div class="l__page__nav__item">
@@ -106,7 +104,7 @@
             @Body
         </div>
 
-        <div class="l__page__footer">I am page footer</div>
+        <div class="l__page__footer">@PageFooter</div>
     </div>
 
 
@@ -176,6 +174,8 @@
     Task<AuthenticationState> AuthenticationState { get; set; }
 
     [Parameter] public string NavMenuCssClass { get; set; }
+    [Parameter] public string PageHeader { get; set; }
+    [Parameter] public string PageFooter { get; set; }
     bool collapseNavMenu = true;
     AdminUserInfo CurrentUser { get; set; }
     string name = "Unknown";
