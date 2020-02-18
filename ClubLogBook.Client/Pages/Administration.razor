@@ -42,28 +42,33 @@
                 @foreach (var user in ColUsers)
                 {
                     <div class="c_g__grid-6__content__row">
-                        <div class="c_g__grid-6__content__row__col-1-1  btn-grid-sort">
+                        <div class="c_g__grid-6__content__row__col-1-1  grid-style">
                             <span>@user.Id.Substring(0, 5) ...</span>
                         </div>
-                        <div class="c_g__grid-6__content__row__col-2-1  btn-grid-sort">
+                        <div class="c_g__grid-6__content__row__col-2-1  grid-style">
                             <span>@user.UserName</span>
                         </div>
-                        <div class="c_g__grid-6__content__row__col-3-1  btn-grid-sort">
+                        <div class="c_g__grid-6__content__row__col-3-1  grid-style">
                             <span>@user.Email</span>
 
                         </div>
-                        <div class="c_g__grid-6__content__row__col-4-1  btn-grid-sort">
+                        <div class="c_g__grid-6__content__row__col-4-1 grid-style ">
                             @foreach (var i in user.Roles)
-                            {<p>@i</p>}
+                            {
+                            <p>@i</p>
+                               
+                               
+                            }
 
                         </div>
-                        <div class="c_g__grid-6__content__row__col-5-1  btn-grid-sort">
+                        <div class="c_g__grid-6__content__row__col-5-1  grid-style">
                             <span>@user.MemberDescription</span>
 
                         </div>
-                        <div class="c_g__grid-6__content__row__col-6-1  btn-grid-sort ">
-                            <span>Action</span>
-
+                        <div class="c_g__grid-6__content__row__col-6-1  grid-style ">
+                            <p>Action</p>
+                            <p>Action 1</p>
+                            <p>Action 1</p>
                         </div>
                     </div>
                 }
