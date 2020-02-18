@@ -3,11 +3,11 @@
 
 @inject HttpClient Http
 @inject IdentityAuthenticationStateProvider authStateProvider
-<h1>Club Contacts</h1>
+
 
 <AuthorizeView Roles="Administrators,AccountManage,Members">
     <Authorized>
-        <div class="l__page__content">
+        
             @if (contacts == null)
             {
                 <p><em>Loading...</em></p>
@@ -19,10 +19,59 @@
                     @*<a href='/Create'>Create Contact</a>*@
                     @if (IsCurrentAdmin)
                     {
-                        <a href='/Add'>Add Contact To Baz Club</a>
+                        //<a href='/Add'>Add Contact To Baz Club</a>
                     }
                 </div>
-                @if (true)
+                @if(true)
+                {
+                    <div class="c_flights">
+                        <div class="c_flights__header">
+                            <div class="a-f-header--1">Flights 1</div>
+                            <div class="a-f-header--2">Flights 2</div>
+                            <div class="a-f-header--3">Flights 3</div>
+                            <div class="a-f-filter--1">filter 1</div>
+                            <div class="a-f-filter--2">filter 2</div>
+                            <div class="a-f-filter--3">filter 3</div>
+                            <div class="a-f-page--1">filter 1</div>
+                            <div class="a-f-page--2">filter 2</div>
+                            <div class="a-f-page--3">filter 3</div>
+                        </div>
+                        <div class="c_flights__content">
+                            @foreach (var pilot in contacts)
+                            {
+                            <div class="c_flights__list__row">
+                                <div class="a-f-l-header-c-1">Id Number</div>
+                                <div class="a-f-l-data-c-1">@pilot.IdNumber</div>
+                                <div class="a-f-l-header-c-2">Name</div>
+                                <div class="a-f-l-data-c-2">@pilot.GetFullName()</div>
+                                <div class="a-f-l-header-c-3">Birthday</div>
+                                <div class="a-f-l-data-c-3">@pilot.DateOfBirth</div>
+                                <div class="a-f-l-header-c-4">Gender</div>
+                                <div class="a-f-l-data-c-4">@pilot.Gender</div>
+                                <div class="a-f-l-header-c-5">Address</div>
+                                <div class="a-f-l-data-c-5">@pilot.Addresses.FirstOrDefault().GetFormated()</div>
+                                <div class="a-f-l-header-c-6">Mobile</div>
+                                <div class="a-f-l-data-c-6">@pilot.Phones?.FirstOrDefault().GetFormated()</div>
+                                <div class="a-f-l-header-c-7">E-Mail</div>
+                                <div class="a-f-l-data-c-7">@pilot.Emails?.FirstOrDefault().GetFormated()</div>
+                                <div class="a-f-l-header-c-8">Action</div>
+                                @if (pilot.UserId.ToString() == CurrentUser.Id || IsCurrentAdmin)
+                                {
+                                    <div class="a-f-l-data-c-8 btn-grid-sort">
+                                        <button type="button" class="btn-grid-cmd" @onclick="@(() => EditContact(pilot.Id))" value="Edit">Edit</button>
+                                    </div>
+                                    
+                                }
+
+
+                            </div>
+                            }
+
+                        </div>
+                      
+                    </div>
+                }
+                @if (false)
                 {
                     <table class="table">
 
@@ -161,8 +210,7 @@
 
             }
 
-        </div>
- 
+      
       
 
     </Authorized>

@@ -23,81 +23,92 @@
             i amm page side
         </div>
         <div class="l__page__nav__button ">
-
-            <NavLink class="nav-link link" href="#">
+            <button @onclick="@ToggleNavMenu">
                 <span class="oi oi-list" aria-hidden="true"></span> Menue
-            </NavLink>
+            </button>
+           
         </div>
-        <div class="l__page__nav l__page__nav--show">
+        <div class="@NavMenuCssClass">
             <div class="l__page__nav__item">
-                <NavLink class="nav-link" href="Index" Match="NavLinkMatch.All">
-                    <span class="oi oi-home" aria-hidden="true"></span> Home
-                </NavLink>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="Index" Match="NavLinkMatch.All">
+                        <span class="oi oi-home" aria-hidden="true"> Home</span> 
+                    </NavLink>
+                </div>
+                
+               
                
             </div>
             <div class="l__page__nav__item">
                 <li class="nav-item px-3">
                     <NavLink class="nav-link" href="counter">
-                        <span class="oi oi-plus" aria-hidden="true"></span> Counter
+                        <span class="oi oi-plus" aria-hidden="true"> Counter</span> 
                     </NavLink>
                 </li>
             </div>
 
             <div class="l__page__nav__item">
-                <NavLink class="nav-link" href="fetchdata">
-                    <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
-                </NavLink>
-               
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="fetchdata">
+                        <span class="oi oi-list-rich" aria-hidden="true"> Fetch Data</span> 
+                    </NavLink>
+                </div>
             </div>
 
             <div class="l__page__nav__item">
-                <li class="nav-item px-3">
+                <div class="nav-item px-3">
                     <NavLink class="nav-link" href="ClubContacts">
-                        <span class="iconify" data-icon="bx:bxs-group" data-inline="false"></span> Club Contact
+                        <span class="iconify" data-icon="bx:bxs-group" data-inline="true"></span><span> Administration</span> 
                     </NavLink>
-                </li>
+                </div>
             </div>
             <div class="l__page__nav__item">
-                <li class="nav-item px-3">
+                <div class="nav-item px-3">
                     <NavLink class="nav-link" href="Reservation/FlightReservation">
-                        <span class="iconify" data-icon="ic:baseline-airline-seat-recline-extra" data-inline="false"></span> Flight Reservation
+                        <span class="iconify" data-icon="ic:baseline-airline-seat-recline-extra" data-inline="false"></span>
+                        <span> Flight Reservation</span>
                     </NavLink>
-                </li>
+                </div>
             </div>
             <div class="l__page__nav__item">
-                <li class="nav-item px-3">
+                <div class="nav-item px-3">
                     <NavLink class="nav-link" href="AccountManager/MyAccount">
-                        <span class="iconify" data-icon="ic:baseline-account-balance" data-inline="false"></span> My Account
+                        <span class="iconify" data-icon="ic:baseline-account-balance" data-inline="false"></span>
+                        <span> My Account</span>
                     </NavLink>
-                </li>
+                </div>
             </div>
             <div class="l__page__nav__item">
-                <li class="nav-item px-3">
+                <div class="nav-item px-3">
                     <NavLink class="nav-link" href="Contact/ContactEditor">
-                        <span class="iconify" data-icon="mdi:account-plus" data-inline="false"></span> Contact Editor
+                        <span class="iconify" data-icon="mdi:account-plus" data-inline="false"></span> 
+                        <span> Contact Editor</span>
                     </NavLink>
-                </li>
+                </div>
             </div>
             <div class="l__page__nav__item">
                 <li class="nav-item px-3">
                     <NavLink class="nav-link" href="Flight/ClubFlight">
-                        <span class="iconify" data-icon="ion:airplane-sharp" data-inline="false"></span> Flight
+                        <span class="iconify" data-icon="ion:airplane-sharp" data-inline="false"></span>
+                        <span> Flight</span>
                     </NavLink>
                 </li>
             </div>
             <div class="l__page__nav__item">
-                <li class="nav-item px-3">
+                <div class="nav-item px-3">
                     <NavLink class="nav-link" href="AccountManager/AccountManager">
-                        <span class="iconify" data-icon="ic:outline-supervisor-account" data-inline="false"></span> Account Manager
+                        <span class="iconify" data-icon="ic:outline-supervisor-account" data-inline="false"></span>
+                        <span> Account Manager</span>
                     </NavLink>
-                </li>
+                </div>
             </div>
             <div class="l__page__nav__item">
-                <li class="nav-item px-3">
+                <div class="nav-item px-3">
                     <NavLink class="nav-link" href="Administration">
-                        <span class="iconify" data-icon="flat-color-icons:manager" data-inline="false"></span> Administration
+                        <span class="iconify" data-icon="flat-color-icons:manager" data-inline="false"></span>
+                        <span> Administration</span>
                     </NavLink>
-                </li>
+                </div>
             </div>
         </div>
         <div class="l__page__content">
@@ -173,9 +184,9 @@
     [CascadingParameter]
     Task<AuthenticationState> AuthenticationState { get; set; }
 
-    [Parameter] public string NavMenuCssClass { get; set; }
+    [Parameter] public string NavMenuCssClass { get; set; } = "l__page__nav l__page__nav--show";
     [Parameter] public string PageHeader { get; set; }
-    [Parameter] public string PageFooter { get; set; }
+    [Parameter] public string PageFooter { get; set; } = "Main";
     bool collapseNavMenu = true;
     AdminUserInfo CurrentUser { get; set; }
     string name = "Unknown";
@@ -193,7 +204,7 @@
         {
             //navigationManager.NavigateTo("/index");
         }
-        NavMenuCssClass = collapseNavMenu ? "collapse" : null;
+        NavMenuCssClass = collapseNavMenu ? "l__page__nav l__page__nav--show" : "l__page__nav l__page__nav--hide";
     }
 
     async Task LogoutClick()
@@ -215,6 +226,6 @@
     void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
-        NavMenuCssClass = collapseNavMenu ? "collapse" : null;
+        NavMenuCssClass = collapseNavMenu ? "l__page__nav l__page__nav--show" : "l__page__nav l__page__nav--hide";
     }
 }

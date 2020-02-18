@@ -4,12 +4,54 @@
 @inject HttpClient Http
 @inject IdentityAuthenticationStateProvider authStateProvider
 
-<h1>Club Flights</h1>
 <AuthorizeView Roles="Administrators,AccountManage,Members">
     <Authorized>
         @if (flights == null)
         {
             <p><em>Loading...</em></p>
+        }
+        else if(true)
+        {
+            <div class="c_flights">
+                <div class="c_flights__header">
+                    <div class="a-f-header--1">Flights 1</div>
+                    <div class="a-f-header--2">Flights 2</div>
+                    <div class="a-f-header--3">Flights 3</div>
+                    <div class="a-f-filter--1">filter 1</div>
+                    <div class="a-f-filter--2">filter 2</div>
+                    <div class="a-f-filter--3">filter 3</div>
+                    <div class="a-f-page--1">filter 1</div>
+                    <div class="a-f-page--2">filter 2</div>
+                    <div class="a-f-page--3">filter 3</div>
+
+                </div>
+                <div class="c_flights__content">
+                    @foreach(var flight in FlightRecordIndexViewModel.FlightRecords)
+                    {
+                    <div class="c_flights__list__row">
+                        <div class="a-f-l-header-c-1">Flight</div>
+                        <div class="a-f-l-data-c-1">@flight.Date</div>
+                        <div class="a-f-l-header-c-2">Pilot</div>
+                        <div class="a-f-l-data-c-2">@flight.Pilot.FirstName @flight.Pilot.LastName</div>
+                        <div class="a-f-l-header-c-3">Aircraft</div>
+                        <div class="a-f-l-data-c-3">@flight.Aircraft.TailNumber</div>
+                        <div class="a-f-l-header-c-4">Routh</div>
+                        <div class="a-f-l-data-c-4">@flight.Routh</div>
+                        <div class="a-f-l-header-c-5">hobs start</div>
+                        <div class="a-f-l-data-c-5">@flight.HobbsStart</div>
+                        <div class="a-f-l-header-c-6">Hobs end</div>
+                        <div class="a-f-l-data-c-6">@flight.HobbsEnd</div>
+                        <div class="a-f-l-header-c-7">Engien Start</div>
+                        <div class="a-f-l-data-c-7">@flight.EngineStart</div>
+                        <div class="a-f-l-header-c-8">Engien End</div>
+                        <div class="a-f-l-data-c-8">@flight.EngineEnd</div>
+                        <div class="a-f-l-header-c-9">Action</div>
+                        <div class="a-f-l-data-c-9">edit</div>
+
+                    </div>
+                    }
+                </div>
+            </div>
         }
         else
         {

@@ -3,11 +3,6 @@
 /**
  * Set up a decent box model on the root element
  */
-html {
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-}
-
 :root {
   --html-font-size: 20px;
   --header-line-hight: 35px;
@@ -57,6 +52,7 @@ html {
   --fg-color-edit-value-even: black;
   --fg-color-page-nav-item-selected: #f9AA33;
   --fg-color-page-nav-item-hover: #f8a01a;
+  --bg-image-color: linear-gradient(180deg, #052767 0%, #3a0647 70%);
 }
 
 /**
@@ -164,6 +160,7 @@ app {
 .sidebar {
   background-image: -webkit-gradient(linear, left top, left bottom, from(#052767), color-stop(70%, #3a0647));
   background-image: linear-gradient(180deg, #052767 0%, #3a0647 70%);
+  background-image: var(--bg-image-color);
 }
 
 .sidebar .top-row {
@@ -442,8 +439,8 @@ div.scroll {
   display: grid;
   -ms-grid-columns: minmax(auto, 1.5fr) 2fr 60px;
       grid-template-columns: minmax(auto, 1.5fr) 2fr 60px;
-  -ms-grid-rows: 20px  25px 1fr 0.5fr 25px 25px;
-      grid-template-rows: 20px  25px 1fr 0.5fr 25px 25px;
+  -ms-grid-rows: 35px  35px 1fr 0.5fr 25px 25px;
+      grid-template-rows: 35px  35px 1fr 0.5fr 25px 25px;
       grid-template-areas: "page-header page-header page-logo"  "page-nav-button page-nav-header page-nav-header" "page-content page-content page-content" "page-side page-side page-side" "page-side page-side page-side" "page-footer page-footer page-footer";
   -ms-flex-line-pack: center;
       align-content: center;
@@ -505,10 +502,12 @@ div.scroll {
 
 .l__page__nav--hide {
   z-index: -10;
+  visibility: hidden;
 }
 
 .l__page__nav--show {
   z-index: 10;
+  visibility: visible;
 }
 
 .l__page__nav__item {
@@ -666,6 +665,14 @@ div.scroll {
         -ms-flex-direction: column;
             flex-direction: column;
     grid-gap: 2px 5px;
+    visibility: visible;
+  }
+  .l__page__nav--hide {
+    z-index: 10;
+    visibility: visible;
+  }
+  .l__page__nav--show {
+    z-index: 10;
     visibility: visible;
   }
   .l__page__side {
