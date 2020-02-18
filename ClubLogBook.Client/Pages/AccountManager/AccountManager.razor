@@ -4,140 +4,137 @@
 @inject IdentityAuthenticationStateProvider authStateProvider
 @*<h3>AccountManager</h3>*@
 
-<div class="l__page__content">
-    <div class="account-manager">
-        <div class="account-manager-task">
-            <div class="a-m-task-header">Account Task</div>
-            <div class="a-m-task-filter">
-                <select class="a-m-t-filter--1"
-                        name="a-m-t-filter--1"
-                        id="1"></select>
-                <select class="a-m-t-filter--2"
-                        name="a-m-t-filter--2"
-                        id="2"></select>
-                <select class="a-m-t-filter--3"
-                        name="a-m-t-filter--3"
-                        id="3"></select>
-            </div>
-
-            <div class="a-m-task-list">
-                <div class="a-m-t-list-header">
-                    <div class="task-list-h-1 btn-grid-sort"><button value="date">Date</button></div>
-                    <div class="task-list-h-2 btn-grid-sort"><button value="pilot">Pilot</button></div>
-                    <div class="task-list-h-3 btn-grid-sort"><button value="Flight">Flight</button></div>
-                    <div class="task-list-h-4 btn-grid-sort"><button value="status">Status</button></div>
-                    <div class="task-list-h-5 btn-grid-cmd"><button value="Action">Action </button></div>
-
-                </div>
-                <div class="a-m-t-list-row">
-                    <div class="task-list-c-1">29/09/2020</div>
-                    <div class="task-list-c-2">Yosef Levy</div>
-                    <div class="task-list-c-3">23.1</div>
-                    <div class="task-list-c-4">Null</div>
-                    <div class="task-list-c-5 btn-grid-cmd"><button value="Action">Add </button></div>
-
-                </div>
-                <div class="a-m-t-list-row">
-                    <div class="task-list-c-1">27/08/2000</div>
-                    <div class="task-list-c-2">Yosef</div>
-                    <div class="task-list-c-3">100.5</div>
-                    <div class="task-list-c-4">Inv</div>
-                    <div class="task-list-c-5 btn-grid-cmd"><button value="Action">Edit </button></div>
-
-                </div>
-                <div class="a-m-t-list-row">
-                    <div class="task-list-c-1">28/05/2200</div>
-                    <div class="task-list-c-2">Payevsky</div>
-                    <div class="task-list-c-3">120.3</div>
-                    <div class="task-list-c-4">P</div>
-                    <div class="task-list-c-5 btn-grid-cmd"><button value="Action">dELETE </button></div>
-
-                </div>
-                <!--<div class="a-m-t-list-row">
-                    <div class="task-list-c-1">C1</div>
-                    <div class="task-list-c-2">C1</div>
-                    <div class="task-list-c-3">C1</div>
-                    <div class="task-list-c-4">C1</div>
-                    <div class="task-list-c-5">C1</div>
-                    <div class="task-list-c-6">C1</div>
-                </div>
-                <div class="a-m-t-list-row">
-                    <div class="task-list-c-1">C1</div>
-                    <div class="task-list-c-2">C1</div>
-                    <div class="task-list-c-3">C1</div>
-                    <div class="task-list-c-4">C1</div>
-                    <div class="task-list-c-5">C1</div>
-                    <div class="task-list-c-6">C1</div>
-                </div> -->
-
-            </div>
+<div class="account-manager">
+    <div class="account-manager-task">
+        <div class="a-m-task-header">Account Task</div>
+        <div class="a-m-task-filter">
+            <select class="a-m-t-filter--1"
+                    name="a-m-t-filter--1"
+                    id="1"></select>
+            <select class="a-m-t-filter--2"
+                    name="a-m-t-filter--2"
+                    id="2"></select>
+            <select class="a-m-t-filter--3"
+                    name="a-m-t-filter--3"
+                    id="3"></select>
         </div>
-        <div class="account-manager-task-process">
-            <div class="a-m-t-p-header">
-                Account Task Process
-            </div>
-            <!-- <div class="a-m-t-p-filter">
-                <select class="a-m-t-p-filter-1" name="a-m-t-p-filter--1" id="1"></select>
 
-            </div> -->
-            <!-- <div class="a-m-t-p-filter-1-1-2">
-                <select class="a-m-t-p-filter-1" name="a-m-t-p-filter--1" id="1"></select>
-                <select class="a-m-t-p-filter-2" name="a-m-t-p-filter--2" id="1"></select>
-            </div> -->
-            <div class="a-m-t-p-filter-1-2">
-                <select class="a-m-t-p-filter-1" name="a-m-t-p-filter--1" id="1"></select>
-                <select class="a-m-t-p-filter-2" name="a-m-t-p-filter--2" id="2"></select>
+        <div class="a-m-task-list">
+            <div class="a-m-t-list-header">
+                <div class="task-list-h-1 btn-grid-sort"><button value="date">Date</button></div>
+                <div class="task-list-h-2 btn-grid-sort"><button value="pilot">Pilot</button></div>
+                <div class="task-list-h-3 btn-grid-sort"><button value="Flight">Flight</button></div>
+                <div class="task-list-h-4 btn-grid-sort"><button value="status">Status</button></div>
+                <div class="task-list-h-5 btn-grid-cmd"><button value="Action">Action </button></div>
+
             </div>
-            <div class="a-m-t-p-list">
-                <div class="a-m-t-p-list-row">
-                    <div class="a-m-t-p-list-header--1">header1</div>
-                    <div class="a-m-t-p-list-header--2">header2</div>
-                    <div class="a-m-t-p-list-header--3">header3</div>
-                    <div class="a-m-t-p-list-header--4"><p onclick="myFunction()"><i class="mdi  mdi-database-plus"></i></p></div>
-                    <div class="a-m-t-p-list-item--1">item1</div>
-                    <div class="a-m-t-p-list-item--2">item2</div>
-                    <div class="a-m-t-p-list-item--3">item3</div>
-                    <div class="a-m-t-p-list-item--4"><i class="material-icons">delete</i></div>
-                    <div class="a-m-t-p-list-footer">footer nnnnn kkkkkkkk</div>
-                </div>
-                <div class="a-m-t-p-list-row">
-                    <div class="a-m-t-p-list-header--1">header1</div>
-                    <div class="a-m-t-p-list-header--2">header2</div>
-                    <div class="a-m-t-p-list-header--3">header3</div>
-                    <div class="a-m-t-p-list-header--4"><i class="mdi  mdi-database-plus"></i></div>
-                    <div class="a-m-t-p-list-item--1">item1</div>
-                    <div class="a-m-t-p-list-item--2">item2</div>
-                    <div class="a-m-t-p-list-item--3">item3</div>
-                    <div class="a-m-t-p-list-item--4"><i class="material-icons">delete</i></div>
-                    <div class="a-m-t-p-list-footer">footer nnnnn kkkkkkkk</div>
-                </div>
-                <div class="a-m-t-p-list-row">
-                    <div class="a-m-t-p-list-header--1">header1</div>
-                    <div class="a-m-t-p-list-header--2">header2</div>
-                    <div class="a-m-t-p-list-header--3">header3</div>
-                    <div class="a-m-t-p-list-header--4"><i class="mdi  mdi-database-plus"></i></div>
-                    <div class="a-m-t-p-list-item--1">item1</div>
-                    <div class="a-m-t-p-list-item--2">item2</div>
-                    <div class="a-m-t-p-list-item--3">item3</div>
-                    <div class="a-m-t-p-list-item--4"><i class="material-icons">delete</i></div>
-                    <div class="a-m-t-p-list-footer">footer nxxx ccccccccccccccc vvvvvv xnnnn kkkkkkkk</div>
-                </div>
-                <div class="a-m-t-p-list-row">
-                    <div class="a-m-t-p-list-header--1">header1</div>
-                    <div class="a-m-t-p-list-header--2">header2</div>
-                    <div class="a-m-t-p-list-header--3">header3</div>
-                    <div class="a-m-t-p-list-header--4"><i class="mdi  mdi-database-plus"></i></div>
-                    <div class="a-m-t-p-list-item--1">item1</div>
-                    <div class="a-m-t-p-list-item--2">item2   cccccccc ccccc</div>
-                    <div class="a-m-t-p-list-item--3">item3</div>
-                    <div class="a-m-t-p-list-item--4"><i class="material-icons">delete</i></div>
-                    <div class="a-m-t-p-list-footer">footer xxxxxxxxxxxxxxxx xxxxxxnxxx ccccccccccccccc vvvvvv xnnnn kkkkkkkk</div>
-                </div>
+            <div class="a-m-t-list-row">
+                <div class="task-list-c-1">29/09/2020</div>
+                <div class="task-list-c-2">Yosef Levy</div>
+                <div class="task-list-c-3">23.1</div>
+                <div class="task-list-c-4">Null</div>
+                <div class="task-list-c-5 btn-grid-cmd"><button value="Action">Add </button></div>
+
+            </div>
+            <div class="a-m-t-list-row">
+                <div class="task-list-c-1">27/08/2000</div>
+                <div class="task-list-c-2">Yosef</div>
+                <div class="task-list-c-3">100.5</div>
+                <div class="task-list-c-4">Inv</div>
+                <div class="task-list-c-5 btn-grid-cmd"><button value="Action">Edit </button></div>
+
+            </div>
+            <div class="a-m-t-list-row">
+                <div class="task-list-c-1">28/05/2200</div>
+                <div class="task-list-c-2">Payevsky</div>
+                <div class="task-list-c-3">120.3</div>
+                <div class="task-list-c-4">P</div>
+                <div class="task-list-c-5 btn-grid-cmd"><button value="Action">dELETE </button></div>
+
+            </div>
+            <!--<div class="a-m-t-list-row">
+                <div class="task-list-c-1">C1</div>
+                <div class="task-list-c-2">C1</div>
+                <div class="task-list-c-3">C1</div>
+                <div class="task-list-c-4">C1</div>
+                <div class="task-list-c-5">C1</div>
+                <div class="task-list-c-6">C1</div>
+            </div>
+            <div class="a-m-t-list-row">
+                <div class="task-list-c-1">C1</div>
+                <div class="task-list-c-2">C1</div>
+                <div class="task-list-c-3">C1</div>
+                <div class="task-list-c-4">C1</div>
+                <div class="task-list-c-5">C1</div>
+                <div class="task-list-c-6">C1</div>
+            </div> -->
+
+        </div>
+    </div>
+    <div class="account-manager-task-process">
+        <div class="a-m-t-p-header">
+            Account Task Process
+        </div>
+        <!-- <div class="a-m-t-p-filter">
+            <select class="a-m-t-p-filter-1" name="a-m-t-p-filter--1" id="1"></select>
+
+        </div> -->
+        <!-- <div class="a-m-t-p-filter-1-1-2">
+            <select class="a-m-t-p-filter-1" name="a-m-t-p-filter--1" id="1"></select>
+            <select class="a-m-t-p-filter-2" name="a-m-t-p-filter--2" id="1"></select>
+        </div> -->
+        <div class="a-m-t-p-filter-1-2">
+            <select class="a-m-t-p-filter-1" name="a-m-t-p-filter--1" id="1"></select>
+            <select class="a-m-t-p-filter-2" name="a-m-t-p-filter--2" id="2"></select>
+        </div>
+        <div class="a-m-t-p-list">
+            <div class="a-m-t-p-list-row">
+                <div class="a-m-t-p-list-header--1">header1</div>
+                <div class="a-m-t-p-list-header--2">header2</div>
+                <div class="a-m-t-p-list-header--3">header3</div>
+                <div class="a-m-t-p-list-header--4"><p onclick="myFunction()"><i class="mdi  mdi-database-plus"></i></p></div>
+                <div class="a-m-t-p-list-item--1">item1</div>
+                <div class="a-m-t-p-list-item--2">item2</div>
+                <div class="a-m-t-p-list-item--3">item3</div>
+                <div class="a-m-t-p-list-item--4"><i class="material-icons">delete</i></div>
+                <div class="a-m-t-p-list-footer">footer nnnnn kkkkkkkk</div>
+            </div>
+            <div class="a-m-t-p-list-row">
+                <div class="a-m-t-p-list-header--1">header1</div>
+                <div class="a-m-t-p-list-header--2">header2</div>
+                <div class="a-m-t-p-list-header--3">header3</div>
+                <div class="a-m-t-p-list-header--4"><i class="mdi  mdi-database-plus"></i></div>
+                <div class="a-m-t-p-list-item--1">item1</div>
+                <div class="a-m-t-p-list-item--2">item2</div>
+                <div class="a-m-t-p-list-item--3">item3</div>
+                <div class="a-m-t-p-list-item--4"><i class="material-icons">delete</i></div>
+                <div class="a-m-t-p-list-footer">footer nnnnn kkkkkkkk</div>
+            </div>
+            <div class="a-m-t-p-list-row">
+                <div class="a-m-t-p-list-header--1">header1</div>
+                <div class="a-m-t-p-list-header--2">header2</div>
+                <div class="a-m-t-p-list-header--3">header3</div>
+                <div class="a-m-t-p-list-header--4"><i class="mdi  mdi-database-plus"></i></div>
+                <div class="a-m-t-p-list-item--1">item1</div>
+                <div class="a-m-t-p-list-item--2">item2</div>
+                <div class="a-m-t-p-list-item--3">item3</div>
+                <div class="a-m-t-p-list-item--4"><i class="material-icons">delete</i></div>
+                <div class="a-m-t-p-list-footer">footer nxxx ccccccccccccccc vvvvvv xnnnn kkkkkkkk</div>
+            </div>
+            <div class="a-m-t-p-list-row">
+                <div class="a-m-t-p-list-header--1">header1</div>
+                <div class="a-m-t-p-list-header--2">header2</div>
+                <div class="a-m-t-p-list-header--3">header3</div>
+                <div class="a-m-t-p-list-header--4"><i class="mdi  mdi-database-plus"></i></div>
+                <div class="a-m-t-p-list-item--1">item1</div>
+                <div class="a-m-t-p-list-item--2">item2   cccccccc ccccc</div>
+                <div class="a-m-t-p-list-item--3">item3</div>
+                <div class="a-m-t-p-list-item--4"><i class="material-icons">delete</i></div>
+                <div class="a-m-t-p-list-footer">footer xxxxxxxxxxxxxxxx xxxxxxnxxx ccccccccccccccc vvvvvv xnnnn kkkkkkkk</div>
             </div>
         </div>
     </div>
 </div>
-
 
 @code {
     private AccountListViewModel AccountListViewModel { get; set; }
