@@ -27,6 +27,7 @@ namespace ClubLogBook.Application.Accounts.Queries.GetAccountInvoice
 		public void CreateMappings(Profile configuration)
 		{
 			configuration.CreateMap<Invoice, AccountInvoiceModel>();
+			configuration.CreateMap<AccountInvoiceModel, Invoice>();
 		}
 	}
 	public class AccountInvoiceViewModel 

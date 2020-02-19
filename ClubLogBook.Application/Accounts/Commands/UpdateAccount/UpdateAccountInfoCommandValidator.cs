@@ -7,10 +7,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ClubLogBook.Application.Accounts.Commands.UpdateAccount
 {
-	public class UpdateAccountCommandValidator : AbstractValidator<UpdateAccountCommand>
+	public class UpdateAccountInfoCommandValidator : AbstractValidator<UpdateAccountInfoCommand>
 	{
 		private readonly IApplicationDbContext _context;
-		public UpdateAccountCommandValidator(IApplicationDbContext context)
+		public UpdateAccountInfoCommandValidator(IApplicationDbContext context)
 		{
 			_context = context;
 			RuleFor(v => v.MemeberId).GreaterThan(0).WithMessage("MemeberId Must Be > 0");

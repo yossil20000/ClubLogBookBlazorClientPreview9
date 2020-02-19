@@ -7,17 +7,17 @@ using System.Threading.Tasks;
 
 namespace ClubLogBook.Application.Accounts.Commands.UpdateAccount
 {
-	public class UpdateAccountCommand : IRequest<int>
+	public class UpdateAccountInfoCommand : IRequest<int>
 	{
 		public int MemeberId { get; set; } = 0;
 		public string MemberInfo { get; set; } = "";
 		public string Description { get; set; } = "";
-		public class UpdateAccountCommandHandler : IRequestHandler<UpdateAccountCommand, int>
+		public class UpdateAccountCommandHandler : IRequestHandler<UpdateAccountInfoCommand, int>
 		{
 			private readonly IApplicationDbContext _context;
 			public UpdateAccountCommandHandler(IApplicationDbContext context) => _context = context;
 			
-			public async Task<int> Handle(UpdateAccountCommand request, CancellationToken cancellationToken)
+			public async Task<int> Handle(UpdateAccountInfoCommand request, CancellationToken cancellationToken)
 			{
 				var entity = _context.Set<Account>().Where(val => val.MemeberId == request.MemeberId).FirstOrDefault();
 				if (entity == null)
