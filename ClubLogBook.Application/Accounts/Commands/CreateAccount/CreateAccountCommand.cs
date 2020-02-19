@@ -2,8 +2,6 @@
 using ClubLogBook.Core.Entities;
 using MediatR;
 using System.Linq;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -13,6 +11,7 @@ namespace ClubLogBook.Application.Accounts.Commands.CreateAccount
 	{
 		public int MemeberId { get; set; } = 0;
 		public string MemberInfo { get; set; } = "";
+		public string Description { get; set; } = "";
 		public class CreateAccountCommandHandler : IRequestHandler<CreateAccountCommand,Account>
 		{
 			private readonly IApplicationDbContext _context;

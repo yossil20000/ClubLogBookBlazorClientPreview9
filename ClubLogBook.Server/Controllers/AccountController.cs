@@ -7,6 +7,7 @@ using MediatR;
 using ClubLogBook.Application.Accounts.Queries.GetAccountsList;
 using ClubLogBook.Application.Interfaces;
 using ClubLogBook.Application.Accounts.Commands.CreateAccount;
+using ClubLogBook.Application.Accounts.Commands.UpdateAccount;
 using ClubLogBook.Application.Accounts.Queries.GetAccount;
 
 namespace ClubLogBook.Server.Controllers
@@ -25,7 +26,7 @@ namespace ClubLogBook.Server.Controllers
         }
         // GET: api/Account
         [HttpGet]
-        public async Task<AccountListViewModel> AccountsListQueryGet()
+        public async Task<AccountListViewModel> GetAccountsList()
         {
             CancellationToken ct = new CancellationToken();
             AccountListViewModel list = new AccountListViewModel();
@@ -45,21 +46,50 @@ namespace ClubLogBook.Server.Controllers
             }
             return list;
         }
-        [HttpGet]
-        public async Task<AccountLookupModel> GetAccountByMemberId([FromBody] int  memberId)
+        [HttpGet("{id}")]
+        public async Task<AccountLookupModel> GetAccountByMemberId(int  id)
         {
-            GetAccountByMemberIdQuery getAccountByMemberId = new GetAccountByMemberIdQuery(memberId);
+            GetAccountByMemberIdQuery getAccountByMemberId = new GetAccountByMemberIdQuery(id);
             var result = await mediator.Send(getAccountByMemberId);
             return result;
         }
        
 
         // POST: api/Account
-        [HttpPost]
-        public void Post([FromBody] string value)
+       
+        public async Task<IActionResult> PostCreateAccount(int memeberId, string memberInfo, string description)
         {
+            CancellationToken ct = new CancellationToken();
+            CreateAccountCommand createAccountCommand = new CreateAccountCommand();
+            createAccountCommand.MemeberId = memeberId;
+            createAccountCommand.MemberInfo = memberInfo;
+            createAccountCommand.Description = description;
+            var result =  await mediator.Send(createAccountCommand, ct);
+            return Ok(result);
         }
-
+        public async Task<IActionResult> PostUpdateAccountInfo(int memeberId, string memberInfo , string description)
+        {
+            CancellationToken ct = new CancellationToken();
+            UpdateAccountCommand updateAccountCommand = new UpdateAccountCommand();
+            updateAccountCommand.MemeberId = memeberId;
+            updateAccountCommand.MemberInfo = memberInfo;
+            updateAccountCommand.Description = description;
+            var result = await mediator.Send(updateAccountCommand, ct);
+            return Ok(result);
+        }
+        public async Task<IActionResult> PostUpdateAccountBalance(int memeberId, Decimal flightBalance, Decimal cashBalance )
+        {
+            CancellationToken ct = new CancellationToken();
+            UpdateAccountBalanceCommand updateAccountBalanceCommand = new UpdateAccountBalanceCommand
+            {
+                MemeberId = memeberId,
+                FlightBalance = flightBalance,
+                CashBalance = cashBalance
+            };
+            //createAccountCommand.MemberInfo = memberInfo;
+            var account = await mediator.Send(updateAccountBalanceCommand, ct);
+            return Ok(account);
+        }
         // PUT: api/Account/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)

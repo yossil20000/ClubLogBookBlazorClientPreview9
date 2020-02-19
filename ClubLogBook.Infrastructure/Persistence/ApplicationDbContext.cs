@@ -51,6 +51,7 @@ namespace ClubLogBook.Infrastructure.Persistence
         public DbSet<Invoice> Invoices { get; set; }
         public DbSet<AircraftPrice> AircraftPrices { get; set; }
 
+        
 
 
 
