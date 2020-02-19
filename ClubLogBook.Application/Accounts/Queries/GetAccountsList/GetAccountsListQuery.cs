@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
-using ClubLogBook.Application.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 

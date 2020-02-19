@@ -14,14 +14,14 @@ namespace ClubLogBook.Application.Accounts.Commands.CreateAccount
 		{
 			_context = context;
 			RuleFor(v => v.MemeberId)
-				   .NotEmpty().WithMessage("Title is required.")
-				   .GreaterThan(0).WithMessage("Title must not exceed 200 characters.")
-				   .MustAsync(BeUniqueMemberId).WithMessage("The specified title already exists.");
+				   .NotEmpty().WithMessage("MemeberId is required.")
+				   .GreaterThan(0).WithMessage("MemeberId Must Be > 0")
+				   .MustAsync(BeUniqueMemberId).WithMessage("The specified MemeberId: already exists.");
 		}
 
-		public async Task<bool> BeUniqueMemberId(int id, CancellationToken cancellationToken)
+		public async Task<bool> BeUniqueMemberId(int memeberId, CancellationToken cancellationToken)
 		{
-			return await _context.Set<Account>().AllAsync(l => l.Id != id);
+			return await _context.Set<Account>().AllAsync(l => l.MemeberId != memeberId);
 		}
 	}
 }

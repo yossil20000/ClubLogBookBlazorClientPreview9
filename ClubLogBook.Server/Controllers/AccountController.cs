@@ -7,7 +7,10 @@ using MediatR;
 using ClubLogBook.Application.Accounts.Queries.GetAccountsList;
 using ClubLogBook.Application.Interfaces;
 using ClubLogBook.Application.Accounts.Commands.CreateAccount;
+using ClubLogBook.Application.Accounts.Commands.UpdateAccount;
 using ClubLogBook.Application.Accounts.Queries.GetAccount;
+using ClubLogBook.Application.Accounts.Queries.GetAccountInvoice;
+using ClubLogBook.Application.Accounts.Commands.DeleteAccount;
 
 namespace ClubLogBook.Server.Controllers
 {
@@ -25,7 +28,7 @@ namespace ClubLogBook.Server.Controllers
         }
         // GET: api/Account
         [HttpGet]
-        public async Task<AccountListViewModel> AccountsListQueryGet()
+        public async Task<AccountListViewModel> GetAccountsList()
         {
             CancellationToken ct = new CancellationToken();
             AccountListViewModel list = new AccountListViewModel();
@@ -45,21 +48,109 @@ namespace ClubLogBook.Server.Controllers
             }
             return list;
         }
-        [HttpGet]
-        public async Task<AccountLookupModel> GetAccountByMemberId([FromBody] int  memberId)
+        [HttpGet("{id}")]
+        public async Task<AccountLookupModel> GetAccountByMemberId(int  id)
         {
-            GetAccountByMemberIdQuery getAccountByMemberId = new GetAccountByMemberIdQuery(memberId);
+            GetAccountByMemberIdQuery getAccountByMemberId = new GetAccountByMemberIdQuery(id);
             var result = await mediator.Send(getAccountByMemberId);
             return result;
         }
        
 
         // POST: api/Account
-        [HttpPost]
-        public void Post([FromBody] string value)
+       
+        public async Task<IActionResult> PostCreateAccount(int memeberId, string memberInfo, string description)
         {
+            CancellationToken ct = new CancellationToken();
+            CreateAccountCommand createAccountCommand = new CreateAccountCommand();
+            createAccountCommand.MemeberId = memeberId;
+            createAccountCommand.MemberInfo = memberInfo;
+            createAccountCommand.Description = description;
+            var result =  await mediator.Send(createAccountCommand, ct);
+            return Ok(result);
+        }
+        public async Task<IActionResult> PostUpdateAccountInfo(int memeberId, string memberInfo , string description)
+        {
+            CancellationToken ct = new CancellationToken();
+            UpdateAccountInfoCommand updateAccountCommand = new UpdateAccountInfoCommand();
+            updateAccountCommand.MemeberId = memeberId;
+            updateAccountCommand.MemberInfo = memberInfo;
+            updateAccountCommand.Description = description;
+            var result = await mediator.Send(updateAccountCommand, ct);
+            return Ok(result);
+        }
+        public async Task<IActionResult> PostUpdateAccountBalance(int memeberId, Decimal flightBalance, Decimal cashBalance )
+        {
+            CancellationToken ct = new CancellationToken();
+            UpdateAccountBalanceCommand updateAccountBalanceCommand = new UpdateAccountBalanceCommand
+            {
+                MemeberId = memeberId,
+                FlightBalance = flightBalance,
+                CashBalance = cashBalance
+            };
+            //createAccountCommand.MemberInfo = memberInfo;
+            var account = await mediator.Send(updateAccountBalanceCommand, ct);
+            return Ok(account);
+        }
+        public async Task<IActionResult> PostCreateInvoice()
+        {
+            CancellationToken ct = new CancellationToken();
+            CreateAccountInvoiceCommand createAccountInvoiceCommand = new CreateAccountInvoiceCommand();
+            createAccountInvoiceCommand.accountInvoiceModel.Id = 0;
+            createAccountInvoiceCommand.accountInvoiceModel.InvoiceState = Core.Interfaces.InvoiceState.Create;
+            createAccountInvoiceCommand.accountInvoiceModel.InvoiceType = Core.Interfaces.InvoiceType.Flight;
+            createAccountInvoiceCommand.accountInvoiceModel.MemeberId = 8;
+            createAccountInvoiceCommand.accountInvoiceModel.Amount = 1.3m;
+            var result =  await mediator.Send(createAccountInvoiceCommand, ct);
+            if (result > 0)
+                return Ok(result);
+            else
+                return BadRequest(result);
+
+        }
+        public async Task<IActionResult> GetInvoiceList()
+        {
+            CancellationToken ct = new CancellationToken();
+            GetAccountInvoiceQuery getAccountInvoiceQuery = new GetAccountInvoiceQuery();
+            var result = await mediator.Send(getAccountInvoiceQuery, ct);
+            if (result != null)
+                return Ok(result);
+            else
+                return BadRequest(result);
+
         }
 
+        public async Task<IActionResult> DeleteInvoice(int id)
+        {
+            CancellationToken ct = new CancellationToken();
+            DeleteAccountInvoiceCommand deleteAccountInvoiceCommand = new DeleteAccountInvoiceCommand() { Id = id };
+            var result = await mediator.Send(deleteAccountInvoiceCommand, ct);
+            if (result != null)
+                return Ok(result);
+            else
+                return BadRequest(result);
+
+        }
+        public async Task<IActionResult> UpdateTransaction(int accountId)
+        {
+            CancellationToken ct = new CancellationToken();
+            UpdateAccountTransactionCommand updateAccountTransactionCommand = new UpdateAccountTransactionCommand();
+            updateAccountTransactionCommand.AccountTransactionModel.AccountId = accountId;
+            updateAccountTransactionCommand.AccountTransactionModel.Invoice.Amount = 1.4m;
+            updateAccountTransactionCommand.AccountTransactionModel.Invoice.InvoiceState = Core.Interfaces.InvoiceState.InTransaction;
+            updateAccountTransactionCommand.AccountTransactionModel.Invoice.InvoiceType = Core.Interfaces.InvoiceType.ClubFee;
+            updateAccountTransactionCommand.AccountTransactionModel.TransactionType = Core.Interfaces.TransactionType.Credit;
+            updateAccountTransactionCommand.AccountTransactionModel.Description = "For club FeeFebrueary";
+            updateAccountTransactionCommand.AccountTransactionModel.ProcessInvoice();
+            var result = await mediator.Send(updateAccountTransactionCommand, ct);
+
+            var invoice = GetInvoiceList();
+            if (result != null)
+                return Ok(result);
+            else
+                return BadRequest(result);
+
+        }
         // PUT: api/Account/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)

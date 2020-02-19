@@ -19,6 +19,7 @@ namespace ClubLogBook.Application.Accounts.Queries.GetAccountsList
 		public void CreateMappings(Profile configuration)
 		{
 			configuration.CreateMap<Account, AccountLookupModel>();
+			
 		}
 	}
 }
