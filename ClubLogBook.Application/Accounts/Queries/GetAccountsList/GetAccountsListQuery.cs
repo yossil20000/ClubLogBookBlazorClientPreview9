@@ -7,11 +7,13 @@ using AutoMapper.QueryableExtensions;
 using ClubLogBook.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using ClubLogBook.Application.Common.Interfaces;
+using System.Collections.Generic;
 
 namespace ClubLogBook.Application.Accounts.Queries.GetAccountsList
 {
 	public class GetAccountsListQuery : IRequest<AccountListViewModel>
 	{
+
 		public class Handler : IRequestHandler<GetAccountsListQuery, AccountListViewModel>
 		{
 			private readonly IApplicationDbContext context;
@@ -30,4 +32,5 @@ namespace ClubLogBook.Application.Accounts.Queries.GetAccountsList
 			}
 		}
 	}
+	
 }

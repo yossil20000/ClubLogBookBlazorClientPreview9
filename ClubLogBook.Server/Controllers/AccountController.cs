@@ -114,8 +114,18 @@ namespace ClubLogBook.Server.Controllers
             CancellationToken ct = new CancellationToken();
             GetAccountInvoiceQuery getAccountInvoiceQuery = new GetAccountInvoiceQuery();
             var result = await mediator.Send(getAccountInvoiceQuery, ct);
+           
+            if (result != null)
+                return Ok(result);
+            else
+                return BadRequest(result);
+
+        }
+        public async Task<IActionResult> GetFlightsWithoutInvoiceList()
+        {
+            CancellationToken ct = new CancellationToken();
             GetFlightsWithoutInvoiceQuery getFlightsWithoutInvoiceQuery = new GetFlightsWithoutInvoiceQuery();
-            var flights = await mediator.Send(getFlightsWithoutInvoiceQuery, ct);
+            var result = await mediator.Send(getFlightsWithoutInvoiceQuery, ct);
             if (result != null)
                 return Ok(result);
             else
