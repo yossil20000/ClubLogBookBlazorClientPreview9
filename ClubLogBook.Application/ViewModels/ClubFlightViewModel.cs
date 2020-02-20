@@ -2,12 +2,18 @@
 using System;
 using System.Linq;
 using System.Text;
+using MediatR;
+using System.Threading;
+using System.Threading.Tasks;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using ClubLogBook.Application.Interfaces.Mapping;
 
 namespace ClubLogBook.Application.ViewModels
 {
 
 
-	public class ClubFlightViewModel
+	public class ClubFlightViewModel : IHaveCustomMapping
 	{
 		public ClubFlightViewModel()
 		{
@@ -106,7 +112,10 @@ namespace ClubLogBook.Application.ViewModels
 			return new ClubFlightViewModel();
 		}
 
-		
+		public void CreateMappings(Profile configuration)
+		{
+			
+		}
 	}
 	public class ClubFlightViewModel22
 	{

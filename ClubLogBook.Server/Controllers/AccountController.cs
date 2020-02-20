@@ -11,6 +11,7 @@ using ClubLogBook.Application.Accounts.Commands.UpdateAccount;
 using ClubLogBook.Application.Accounts.Queries.GetAccount;
 using ClubLogBook.Application.Accounts.Queries.GetAccountInvoice;
 using ClubLogBook.Application.Accounts.Commands.DeleteAccount;
+using ClubLogBook.Application.Flights.Queries.GetFlightWithoutInvoice;
 
 namespace ClubLogBook.Server.Controllers
 {
@@ -113,6 +114,8 @@ namespace ClubLogBook.Server.Controllers
             CancellationToken ct = new CancellationToken();
             GetAccountInvoiceQuery getAccountInvoiceQuery = new GetAccountInvoiceQuery();
             var result = await mediator.Send(getAccountInvoiceQuery, ct);
+            GetFlightsWithoutInvoiceQuery getFlightsWithoutInvoiceQuery = new GetFlightsWithoutInvoiceQuery();
+            var flights = await mediator.Send(getFlightsWithoutInvoiceQuery, ct);
             if (result != null)
                 return Ok(result);
             else
