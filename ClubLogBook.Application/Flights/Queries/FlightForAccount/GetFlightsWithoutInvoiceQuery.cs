@@ -59,7 +59,7 @@ namespace ClubLogBook.Application.Flights.Queries.GetFlightWithoutInvoice
 				//			   select f);
 				//var a = _context.Set<Flight>().Where(f =>  !(_context.Set<Invoice>().Select(i => i.InvoiceReferance).Contains(f.Id)));
 				var flighInvoices = _context.Set<Invoice>().Where(i => i.InvoiceType == InvoiceType.Flight);
-				var flightWithoutInvoice = _context.Set<Flight>().Include(p => p.Pilot).Where(f => !(flighInvoices.Select(i => i.InvoiceReferance).Contains(f.Id))).ToList();
+				var flightWithoutInvoice = _context.Set<Flight>().Where(f => !(flighInvoices.Select(i => i.InvoiceReferance).Contains(f.Id))).ToList();
 				//var noExistList = (from n in _context.Set<Flight>()
 				//				   join o in _context.Set<Invoice>() on n.Id equals o.InvoiceReferance
 				//				   where o.InvoiceType == InvoiceType.Flight

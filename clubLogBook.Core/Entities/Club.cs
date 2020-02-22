@@ -19,32 +19,65 @@ namespace ClubLogBook.Core.Entities
 		public Club()
 		{
 			Name = "";
-			ClubMembers = new HashSet<Pilot>();
-			ClubAircrafts = new HashSet<Aircraft>();
+			Members = new HashSet<Pilot>();
+			Aircrafts = new HashSet<Aircraft>();
 		}
-		
+
 		public string Name { get; set; }
-		private HashSet<Pilot> ClubMembers { get;  }
-		private HashSet<Aircraft> ClubAircrafts { get;  }
+		//private HashSet<Pilot> _ClubMembers { get; }
+		//private HashSet<Aircraft> _ClubAircrafts { get; }
 		public void AddMember(Pilot member)
 		{
 
-			if(!ClubMembers.Any(i => i.IdNumber == member.IdNumber))
+			if (!Members.Any(i => i.IdNumber == member.IdNumber))
 			{
-				ClubMembers.Add(member);
+				Members.Add(member);
 			}
 			return;
 		}
 		public void AddAircraft(Aircraft aircraft)
 		{
-			if(!ClubAircrafts.Any(i => i.Id == aircraft.Id))
+			if (!Aircrafts.Any(i => i.Id == aircraft.Id))
 			{
-				ClubAircrafts.Add(aircraft);
+				Aircrafts.Add(aircraft);
 			}
 			return;
 		}
 
-		public virtual ICollection<Pilot> Members => ClubMembers;
-		public virtual ICollection<Aircraft> Aircrafts => ClubAircrafts;
+		public virtual ICollection<Pilot> Members { get; set; }
+		public virtual ICollection<Aircraft> Aircrafts { get; set; }
 	}
+	//public class Club : AuditableEntity, IClub
+	//{
+	//	public Club()
+	//	{
+	//		Name = "";
+	//		_ClubMembers = new HashSet<Pilot>();
+	//		_ClubAircrafts = new HashSet<Aircraft>();
+	//	}
+
+	//	public string Name { get; set; }
+	//	private HashSet<Pilot> _ClubMembers { get;  }
+	//	private HashSet<Aircraft> _ClubAircrafts { get;  }
+	//	public void AddMember(Pilot member)
+	//	{
+
+	//		if(!_ClubMembers.Any(i => i.IdNumber == member.IdNumber))
+	//		{
+	//			_ClubMembers.Add(member);
+	//		}
+	//		return;
+	//	}
+	//	public void AddAircraft(Aircraft aircraft)
+	//	{
+	//		if(!_ClubAircrafts.Any(i => i.Id == aircraft.Id))
+	//		{
+	//			_ClubAircrafts.Add(aircraft);
+	//		}
+	//		return;
+	//	}
+
+	//	public virtual ICollection<Pilot> Members => _ClubMembers;
+	//	public virtual ICollection<Aircraft> Aircrafts => _ClubAircrafts;
+	//}
 }

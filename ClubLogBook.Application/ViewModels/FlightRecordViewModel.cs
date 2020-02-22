@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ClubLogBook.Application.ViewModels
 {
@@ -24,6 +25,12 @@ namespace ClubLogBook.Application.ViewModels
 		public int? AirplaneFilterApplied { get; set; } = 0;
 		public int? ClubFilterApplied { get; set; } = 0;
 		public int? PilotFilterApplied { get; set; } = 0;
-		
+		public FilterDateViewModel FilterDateViewModel { get; set; } = new FilterDateViewModel();
+
+	}
+	public class FilterDateViewModel
+	{
+		public DateTime FilterDateFrom { get; set; } = DateTime.Now;
+		public DateTime FilterDateTo { get; set; } =  DateTime.Now.AddDays(1);
 	}
 }

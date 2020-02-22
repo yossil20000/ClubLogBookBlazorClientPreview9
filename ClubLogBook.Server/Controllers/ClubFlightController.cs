@@ -12,6 +12,9 @@ using ClubLogBook.Application.ViewModels;
 using ClubLogBook.Server.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using MediatR;
+using ClubLogBook.Application.Accounts.Queries.GetAccount;
+using ClubLogBook.Application.Flights.Queries;
 
 namespace ClubLogBook.Server.Controllers
 {
@@ -20,12 +23,16 @@ namespace ClubLogBook.Server.Controllers
     [ApiController]
     public class ClubFlightController : ControllerBase
     {
+     
+		private readonly IMediator _mediator;
+		IAppLogger<AccountController> _logger;
 		private IMapper _mapper;
 		IClubService _clubService;
 		IRecordViewModelService<FlightRecordIndexViewModel> _flightRecordViewModelService;
 		IAircraftManagerService aircraftManagerService;
 		public FlightRecordIndexViewModel FlightRecordIndexViewModel { get; set; }
-		public ClubFlightController(IMapper mapper, IClubService clubService, IRecordViewModelService<FlightRecordIndexViewModel> flightRecordViewModelService,IAircraftManagerService aircraftManagerService)
+		public ClubFlightController(IMapper mapper, IClubService clubService, IRecordViewModelService<FlightRecordIndexViewModel> flightRecordViewModelService,IAircraftManagerService aircraftManagerService,
+			IMediator mediator, IAppLogger<AccountController> logger)
 		{
 			//MapperUtils.MapperInit(typeof(ClubFlightViewModel), typeof(Flight));
 			_mapper = mapper;
@@ -33,13 +40,21 @@ namespace ClubLogBook.Server.Controllers
 			_flightRecordViewModelService = flightRecordViewModelService;
 			//Mapper.Initialize(cfg => cfg.CreateMap<ClubFlightViewModel2, ClubFlightViewModel1>());
 			this.aircraftManagerService = aircraftManagerService;
+			_mediator = mediator;
+			_logger = logger;
 		}
 		[HttpGet]
 		[Route("FlightWithFilter")]
 		public async Task<FlightRecordIndexViewModel> FlightWithFilter()
 		{
+			FlightRecordIndexViewModel flightRecordIndexViewModel = new FlightRecordIndexViewModel();
+
+			GetAllFlightsQuery getAllFlights = new GetAllFlightsQuery();
+			flightRecordIndexViewModel = await _mediator.Send(getAllFlights);
+			flightRecordIndexViewModel.FilterViewModel = await FilterViewModelPut(flightRecordIndexViewModel.FilterViewModel);
+			return flightRecordIndexViewModel; 
 			
-			return await _flightRecordViewModelService.GetRecord(0, 10,null, null);
+			//return await _flightRecordViewModelService.GetRecord(0, 10,null, null);
 		}
 
 		[HttpPost]
@@ -49,8 +64,8 @@ namespace ClubLogBook.Server.Controllers
 			int? clubId = filterViewModel.ClubFilterApplied;
 			IEnumerable<Aircraft> aircrafts;
 			IEnumerable<Pilot> pilots;
-			IEnumerable <Club> clubs = await (clubId == null ? _clubService.GetClubs() : _clubService.GetClubById((int)clubId));
-			if (clubs == null || clubs.Count() > 1)
+			IEnumerable <Club> clubs = await ((clubId == null || clubId == 0) ? _clubService.GetClubs() : _clubService.GetClubById((int)clubId));
+			if (clubs == null || clubs.Count() == 0)
 			{
 				aircrafts = await _clubService.GetClubAircrafts("");
 				pilots = await _clubService.GetClubMembers("");
@@ -72,17 +87,25 @@ namespace ClubLogBook.Server.Controllers
 		[Route("Put")]
 		public async Task<FlightRecordIndexViewModel> Put([FromBody] FlightRecordIndexViewModel flightRecordIndexViewModel)
 		{
-			int ActualPage = flightRecordIndexViewModel.PaginationInfo.ActualPage;
-			switch (flightRecordIndexViewModel.PaginationInfo.PageCommand)
-			{
-				case PageCommand.MoveNext:
-					ActualPage = flightRecordIndexViewModel.PaginationInfo.ActualPage + 1;
-					break;
-				case PageCommand.MovePrevious:
-					ActualPage = flightRecordIndexViewModel.PaginationInfo.ActualPage - 1;
-					break;
-			}
-			return await _flightRecordViewModelService.GetRecord(ActualPage, 10, flightRecordIndexViewModel.FilterViewModel.AirplaneFilterApplied,flightRecordIndexViewModel.FilterViewModel.PilotFilterApplied);
+			
+			GetFilteredFlightsQuery getFilteredFlightsQuery = new GetFilteredFlightsQuery();
+			getFilteredFlightsQuery.FilterViewModel = flightRecordIndexViewModel.FilterViewModel;
+			//getFilteredFlightsQuery.PaginationInfoViewModel = flightRecordIndexViewModel.PaginationInfo;
+
+			var result = await _mediator.Send(getFilteredFlightsQuery);
+			flightRecordIndexViewModel.FlightRecords = result.FlightRecords;
+			return flightRecordIndexViewModel;
+			//int ActualPage = flightRecordIndexViewModel.PaginationInfo.ActualPage;
+			//switch (flightRecordIndexViewModel.PaginationInfo.PageCommand)
+			//{
+			//	case PageCommand.MoveNext:
+			//		ActualPage = flightRecordIndexViewModel.PaginationInfo.ActualPage + 1;
+			//		break;
+			//	case PageCommand.MovePrevious:
+			//		ActualPage = flightRecordIndexViewModel.PaginationInfo.ActualPage - 1;
+			//		break;
+			//}
+			//return await _flightRecordViewModelService.GetRecord(ActualPage, 10, flightRecordIndexViewModel.FilterViewModel.AirplaneFilterApplied,flightRecordIndexViewModel.FilterViewModel.PilotFilterApplied);
 		}
 		// GET: api/ClubFlight
 		[HttpGet]

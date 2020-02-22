@@ -22,6 +22,6 @@ namespace ClubLogBook.Core.Entities
         public PriorityLevel Priority { get; set; } = PriorityLevel.None;
 
 
-        public TodoList List { get; set; }
+        public virtual TodoList List { get; set; }
     }
 }

@@ -16,6 +16,6 @@ namespace ClubLogBook.Core.Entities
 
         public string Colour { get; set; } = string.Empty;
 
-        public IList<TodoItem> Items { get; set; }
+        public virtual IList<TodoItem> Items { get; set; }
     }
 }

@@ -88,7 +88,7 @@ namespace ClubLogBook.Core.Entities
 
 
 		public int AirCraftModelId { get; set; } = 0;
-		public AirCraftModel AirCraftModel { get; set; } 
+		public virtual AirCraftModel AirCraftModel { get; set; } 
 
 		//public virtual FlightRecord FlightRecord { get; set; }
 		public override string ToString()

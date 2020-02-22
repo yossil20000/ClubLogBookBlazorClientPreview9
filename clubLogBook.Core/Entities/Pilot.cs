@@ -61,10 +61,10 @@ namespace ClubLogBook.Core.Entities
 			}
 			return;
 		}
-		public IReadOnlyCollection<License> Licenses => licenses.AsReadOnly();
-		public IReadOnlyCollection<Endorsment> Endorsments => endorsments.AsReadOnly();
+		public virtual IReadOnlyCollection<License> Licenses => licenses.AsReadOnly();
+		public virtual IReadOnlyCollection<Endorsment> Endorsments => endorsments.AsReadOnly();
 
-		public IReadOnlyCollection<Checkride> Checkrides => checkrides.AsReadOnly();
+		public virtual IReadOnlyCollection<Checkride> Checkrides => checkrides.AsReadOnly();
 		//public virtual  List<Club> Clubs { get; set; }
 		public override string ToString()
 		{

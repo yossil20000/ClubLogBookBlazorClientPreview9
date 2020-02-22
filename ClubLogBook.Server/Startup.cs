@@ -92,10 +92,10 @@ namespace ClubLogBook.Server
             });
 
 			//var connectionString = Configuration.GetConnectionString("DefaultConnection");
-			services.AddDbContext<ApplicationDbContext>(options =>
-			options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
-			services.Configure<ApiBehaviorOptions>(options =>
+			//services.AddDbContext<ApplicationDbContext>(options =>
+			//options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<ApplicationDbContext>( b => b.UseLazyLoadingProxies().UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.Configure<ApiBehaviorOptions>(options =>
             {
                 options.SuppressModelStateInvalidFilter = true;
             });

@@ -21,7 +21,7 @@ namespace ClubLogBook.Core.Entities
 		public Decimal CashBalance { get; set; } = 0;
 		public string Description { get; set; } = "";
 
-		public ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
+		public virtual ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
 		
 
 	}
