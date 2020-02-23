@@ -20,7 +20,7 @@ namespace ClubLogBook.Application.Flights.Queries
 	
 	public class GetFilteredFlightsQuery : IRequest<FlightRecordIndexViewModel>
 	{
-		public FilterViewModel FilterViewModel { get; set; }
+		public FlightRecordIndexViewModel flightRecordIndexView { get; set; }
 		
 		public class GetFilteredFlightsHandler : IRequestHandler<GetFilteredFlightsQuery, FlightRecordIndexViewModel>
 		{
@@ -43,23 +43,33 @@ namespace ClubLogBook.Application.Flights.Queries
 				//		ActualPage = request.PaginationInfoViewModel.ActualPage - 1;
 				//		break;
 				//}
-				DateTime fromDate = request.FilterViewModel.FilterDateViewModel.FilterDateFrom;
-				DateTime toDate = request.FilterViewModel.FilterDateViewModel.FilterDateTo;
-				var clubId = request.FilterViewModel.ClubFilterApplied ?? 0;
-				var aircraftId = request.FilterViewModel.AirplaneFilterApplied ?? 0;
-				var pilotId = request.FilterViewModel.PilotFilterApplied ?? 0;
+				DateTime fromDate = request.flightRecordIndexView.FilterViewModel.FilterDateViewModel.FilterDateFrom;
+				DateTime toDate = request.flightRecordIndexView.FilterViewModel.FilterDateViewModel.FilterDateTo;
+				var clubId = request.flightRecordIndexView.FilterViewModel.ClubFilterApplied ?? 0;
+				var aircraftId = request.flightRecordIndexView.FilterViewModel.AirplaneFilterApplied ?? 0;
+				var pilotId = request.flightRecordIndexView.FilterViewModel.PilotFilterApplied ?? 0;
 				//var club = _context.Set<Club>().Find(clubId);
 				//var flights = (_context.Set<Club>().Where(c => c.Id == clubId)).Select(a => a.Aircrafts).ToList();
-				var bb = (from fl in _context.Set<Flight>()
-						 join ar in _context.Set<Aircraft>() on fl.Aircraft.Id equals ar.Id
-						 where fl.Pilot.Id == pilotId && fl.Date >= fromDate && fl.Date <= toDate
-						 select fl).ToList();
+				//var filteredFlight = (from fl in _context.Set<Flight>()
+				//		 join ar in _context.Set<Aircraft>() on fl.Aircraft.Id equals ar.Id
+				//		 where fl.Pilot.Id == pilotId && fl.Date >= fromDate && fl.Date <= toDate
+				//		 select fl).ToList();
 
+				var filteredFlight = (from fl in _context.Set<Flight>()
+									  join ar in _context.Set<Aircraft>() on true equals true
+									  where (pilotId == 0 ? true : fl.Pilot.Id == pilotId && fl.Date >= fromDate && fl.Date <= toDate && aircraftId == 0 ? true : ar.Id == aircraftId)
+									  select fl).ToList();
 
-
-				FlightRecordIndexViewModel flightRecordIndexViewModel = new FlightRecordIndexViewModel();
-				flightRecordIndexViewModel.FlightRecords = _mapper.Map<List<Flight>, List<ClubFlightViewModel>>(bb);
-				return flightRecordIndexViewModel;
+				int totalFlight = filteredFlight.Count();
+				request.flightRecordIndexView.PaginationInfo.TotalItems = filteredFlight.Count();
+				request.flightRecordIndexView.PaginationInfo.ActualPage = 1;
+				
+				request.flightRecordIndexView.PaginationInfo.TotalItems = totalFlight;
+				request.flightRecordIndexView.PaginationInfo.TotalPages = int.Parse(Math.Ceiling((decimal)totalFlight / request.flightRecordIndexView.PaginationInfo.ItemsPerPage).ToString());
+				request.flightRecordIndexView.PaginationInfo.Next = request.flightRecordIndexView.PaginationInfo.ActualPage >= request.flightRecordIndexView.PaginationInfo.TotalPages  ? "disabled" : "";
+				request.flightRecordIndexView.PaginationInfo.Previous = request.flightRecordIndexView.PaginationInfo.ActualPage == 1 ? "disabled" : "";
+				request.flightRecordIndexView.FlightRecords = _mapper.Map<List<Flight>, List<ClubFlightViewModel>>(filteredFlight);
+				return request.flightRecordIndexView;
 			}
 		}
 
@@ -67,10 +77,10 @@ namespace ClubLogBook.Application.Flights.Queries
 		{
 			public GetFilteredFlightsQueryValidator()
 			{
-				RuleFor(x => x.FilterViewModel.AirplaneFilterApplied).GreaterThan(0).WithMessage("AirplaneFilterApplied Must Be > 0");
-				RuleFor(x => x.FilterViewModel.ClubFilterApplied).GreaterThan(0).WithMessage("ClubFilterApplied Must Be > 0");
-				RuleFor(x => x.FilterViewModel.PilotFilterApplied).GreaterThan(0).WithMessage("PilotFilterApplied Must Be > 0");
-				RuleFor(x => x.FilterViewModel.FilterDateViewModel).MustAsync(DateCheck).WithMessage("Date To Must Be Greater The Date From");
+				RuleFor(x => x.flightRecordIndexView.FilterViewModel.AirplaneFilterApplied).GreaterThan(0).WithMessage("AirplaneFilterApplied Must Be > 0");
+				RuleFor(x => x.flightRecordIndexView.FilterViewModel.ClubFilterApplied).GreaterThan(0).WithMessage("ClubFilterApplied Must Be > 0");
+				RuleFor(x => x.flightRecordIndexView.FilterViewModel.PilotFilterApplied).GreaterThan(0).WithMessage("PilotFilterApplied Must Be > 0");
+				RuleFor(x => x.flightRecordIndexView.FilterViewModel.FilterDateViewModel).MustAsync(DateCheck).WithMessage("Date To Must Be Greater The Date From");
 
 
 			}

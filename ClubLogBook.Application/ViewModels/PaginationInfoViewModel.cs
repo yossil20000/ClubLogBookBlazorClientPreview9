@@ -14,9 +14,9 @@ namespace ClubLogBook.Application.ViewModels
 	public class PaginationInfoViewModel
 	{
 		public int TotalItems { get; set; } = 0;
-		public int ItemsPerPage { get; set; } = 0;
-		public int ActualPage { get; set; } = 0;
-		public int TotalPages { get; set; } = 0;
+		public int ItemsPerPage { get; set; } = 10;
+		public int ActualPage { get; set; } = 1;
+		public int TotalPages { get; set; } = 1;
 		public string Previous { get; set; } = "";
 		public string Next { get; set; } = "";
 		public PageCommand PageCommand { get; set; } = PageCommand.Current;

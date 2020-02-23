@@ -26,10 +26,10 @@ namespace UnitsTest.ApplicationCore.MemberTest
 			addUpdate.City = "Holon";
 			contact.AddUpdateAddress(addUpdate);
 			DumpAddressAddRemoveTest();
-			contact.DeleteAddress(addUpdate.Id);
+			//contact.DeleteAddress(addUpdate.Id);
 			DumpAddressAddRemoveTest();
 			contact.AddAddress("Ofir 60", "gilon", "Israel", "US", "2010300", ContactType.HOME);
-			contact.DeleteAddress(addUpdate.Id);
+			//contact.DeleteAddress(addUpdate.Id);
 			DumpAddressAddRemoveTest();
 			addressBooks.AddContact(contact);
 		}

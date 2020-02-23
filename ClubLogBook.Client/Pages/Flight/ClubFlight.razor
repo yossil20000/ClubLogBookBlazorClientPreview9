@@ -6,11 +6,11 @@
 
 <AuthorizeView Roles="Administrators,AccountManage,Members">
     <Authorized>
-        @if (flights == null)
+        @if (bInitialized == false)
         {
             <p><em>Loading...</em></p>
         }
-        else if(true)
+        else if(bInitialized)
         {
             <div class="c_flights">
                 <div class="c_flights__header">
@@ -18,7 +18,7 @@
                     <div class="a-f-header--2">Flights 2</div>
                     <div class="a-f-header--3">Flights 3</div>*@
                     <input type="date" class="btn-transaction a-f-header--1" @bind="@FlightRecordIndexViewModel.FilterViewModel.FilterDateViewModel.FilterDateFrom" >
-                    <div class="btn-transaction a-f-header--2" @bind="OnSearch"><i class="material-icons">date_range</i></div>
+                    <div class="btn-transaction a-f-header--2" ><button  @onclick="@OnSearch"><i class="material-icons">date_range</i></button></div>
                     <input type="date" class="btn-transaction a-f-header--3"  @bind="@FlightRecordIndexViewModel.FilterViewModel.FilterDateViewModel.FilterDateTo">
                     <div class=" btn-transaction  a-f-filter--1">
                         <select value="@FlightRecordIndexViewModel.FilterViewModel.ClubFilterApplied" class="custom-select" @onchange="ClubSelected">
@@ -51,7 +51,7 @@
                         </select>
                     </div>
                     <div class="a-f-page--1">
-                        <button type="button" class="btn-transaction   @FlightRecordIndexViewModel.PaginationInfo.Previous" @onclick="@(async () => await PrevClick(FlightRecordIndexViewModel.PaginationInfo.ActualPage -1))"
+                        <button type="button" class="btn-transaction   @FlightRecordIndexViewModel.PaginationInfo.Previous" @onclick="@(async () => await PrevClick())"
                                 id="Previous"
                                 asp-route-pageid="@(FlightRecordIndexViewModel.PaginationInfo.ActualPage - 1)"
                                 aria-label="Previous">
@@ -60,7 +60,7 @@
                     </div>
                     <div class="a-f-page--2">
                         <span class="btn-transaction ">
-                            Showing @FlightRecordIndexViewModel.PaginationInfo.ItemsPerPage of @FlightRecordIndexViewModel.PaginationInfo.TotalItems products - Page @(FlightRecordIndexViewModel.PaginationInfo.ActualPage + 1) - @FlightRecordIndexViewModel.PaginationInfo.TotalPages
+                            @PageMessage 
                         </span>
                     </div>
                     <div class="a-f-page--3">
@@ -125,7 +125,7 @@
                     <div class="text-center  row">
 
                         <div class="col-md-2 col-xs-12">
-                            <button type="button" class="btn btn-primary  @FlightRecordIndexViewModel.PaginationInfo.Previous" @onclick="@(async () => await PrevClick(FlightRecordIndexViewModel.PaginationInfo.ActualPage -1))"
+                            <button type="button" class="btn btn-primary  @FlightRecordIndexViewModel.PaginationInfo.Previous" @onclick="@(async () => await PrevClick())"
                                     id="Previous"
                                     asp-route-pageid="@(FlightRecordIndexViewModel.PaginationInfo.ActualPage - 1)"
                                     aria-label="Previous">
@@ -293,12 +293,13 @@
 
 @functions {
     [CascadingParameter] private Task<AuthenticationState> authenticationStateTask { get; set; }
-    List<ClubFlightViewModel> flights;
+    List<ClubFlightViewModel> flights = new List<ClubFlightViewModel>();
     FlightRecordIndexViewModel FlightRecordIndexViewModel { get; set; }
     FilterViewModel FilterViewModel { get; set; } = new FilterViewModel();
     bool IsCurrentAdmin { get; set; } = false;
     AdminUserInfo CurrentUser { get; set; }
-
+    string PageMessage { get; set; } = "Not filterd";
+    bool bInitialized { get; set; } = false;
     async Task SortDate()
     {
         FlightRecordIndexViewModel.FlightRecords = FlightRecordIndexViewModel.FlightRecords.OrderByDescending(x => x.Date).ThenByDescending(x => x.EngineStart).ToArray();
@@ -317,36 +318,64 @@
         FlightRecordIndexViewModel = await Http.GetJsonAsync<FlightRecordIndexViewModel>("api/ClubFlight/FlightWithFilter");
         //flights = await Http.GetJsonAsync<ClubFlightViewModel[]>("api/ClubFlight");
         flights = FlightRecordIndexViewModel.FlightRecords.ToList();
-        FilterViewModel.ClubFilterApplied = null;
-        FilterViewModel.PilotFilterApplied = 15;
-        FilterViewModel = await Http.PostJsonAsync<FilterViewModel>("api/ClubFlight/FilterViewModelPut", FilterViewModel);
+        //FilterViewModel.ClubFilterApplied = null;
+        //FilterViewModel.PilotFilterApplied = 15;
+        //FilterViewModel = await Http.PostJsonAsync<FilterViewModel>("api/ClubFlight/FilterViewModelPut", FilterViewModel);
+        FilterViewModel = FlightRecordIndexViewModel.FilterViewModel;
         var authState = await authenticationStateTask;
         var user = authState.User;
         CurrentUser = await authStateProvider.CurrentUser();
         IsCurrentAdmin = user.IsInRole(IdentityInfo.Roles.Administrators.ToString());
-
+        bInitialized = true;
     }
-    protected async Task PrevClick(int id)
+    private void OnActualPageChanged()
     {
-        if (FlightRecordIndexViewModel.PaginationInfo.Previous == "")
+        int taken = (FlightRecordIndexViewModel.PaginationInfo.ActualPage -1 ) * FlightRecordIndexViewModel.PaginationInfo.ItemsPerPage;
+        int skip = (FlightRecordIndexViewModel.PaginationInfo.ActualPage - 1) * FlightRecordIndexViewModel.PaginationInfo.ItemsPerPage;
+
+        int take = FlightRecordIndexViewModel.PaginationInfo.TotalItems - skip > 0 ? FlightRecordIndexViewModel.PaginationInfo.ItemsPerPage : FlightRecordIndexViewModel.PaginationInfo.TotalItems - taken;
+        flights = FlightRecordIndexViewModel.FlightRecords.Skip(skip).Take(take).ToList();
+    }
+    protected async Task PrevClick()
+    {
+
+        if ( FlightRecordIndexViewModel.PaginationInfo.ActualPage  > 1)
         {
-            FlightRecordIndexViewModel.PaginationInfo.PageCommand = PageCommand.MovePrevious;
+            //FlightRecordIndexViewModel.PaginationInfo.PageCommand = PageCommand.MovePrevious;
             //FlightRecordIndexViewModel = await Http.PutJsonAsync<FlightRecordIndexViewModel>("api/ClubFlight/Put", FlightRecordIndexViewModel);
+            FlightRecordIndexViewModel.PaginationInfo.ActualPage--;
+            OnActualPageChanged();
         }
 
     }
     protected async Task NextClick()
     {
-        if (FlightRecordIndexViewModel.PaginationInfo.Next == "")
+        if ((FlightRecordIndexViewModel.PaginationInfo.TotalPages - FlightRecordIndexViewModel.PaginationInfo.ActualPage) > 0)
         {
-            FlightRecordIndexViewModel.PaginationInfo.PageCommand = PageCommand.MoveNext;
+            //FlightRecordIndexViewModel.PaginationInfo.PageCommand = PageCommand.MoveNext;
             //FlightRecordIndexViewModel = await Http.PutJsonAsync<FlightRecordIndexViewModel>("api/ClubFlight/Put", FlightRecordIndexViewModel);
+            FlightRecordIndexViewModel.PaginationInfo.ActualPage++;
+            OnActualPageChanged();
         }
 
+    }
+    private void OnSearchDone()
+    {
+        int itemShown = FlightRecordIndexViewModel.PaginationInfo.ItemsPerPage * FlightRecordIndexViewModel.PaginationInfo.ActualPage;
+        int totalItems = FlightRecordIndexViewModel.PaginationInfo.TotalItems;
+        int remain = totalItems - itemShown;
+        if (remain > 0)
+            PageMessage = $"Showing {itemShown} :  {totalItems} -Page {FlightRecordIndexViewModel.PaginationInfo.ActualPage }  : { @FlightRecordIndexViewModel.PaginationInfo.TotalPages}";
+        else
+        {
+            PageMessage = $"Showing {Math.Abs(remain)} :  {totalItems} -Page {FlightRecordIndexViewModel.PaginationInfo.ActualPage}  : { @FlightRecordIndexViewModel.PaginationInfo.TotalPages}";
+
+        }
     }
     protected async Task OnSearch()
     {
         FlightRecordIndexViewModel = await Http.PutJsonAsync<FlightRecordIndexViewModel>("api/ClubFlight/Put", FlightRecordIndexViewModel);
+        OnSearchDone();
     }
     void OnDateChanged()
     {
@@ -354,7 +383,7 @@
     }
     void PilotSelected(ChangeEventArgs e)
     {
-        FlightRecordIndexViewModel.PaginationInfo.ActualPage = -1;
+        FlightRecordIndexViewModel.PaginationInfo.ActualPage = 1;
         FlightRecordIndexViewModel.PaginationInfo.Next = "";
         if (int.TryParse((string)e.Value, out var index) && index >= 0)
         {
@@ -368,7 +397,7 @@
     }
     void ClubSelected(ChangeEventArgs e)
     {
-        FlightRecordIndexViewModel.PaginationInfo.ActualPage = -1;
+        FlightRecordIndexViewModel.PaginationInfo.ActualPage = 1;
         if (int.TryParse((string)e.Value, out var index) && index >= 0)
         {
             //emp.Pilot = pilots[index];
@@ -380,7 +409,7 @@
     }
     void AirplaneSelected(ChangeEventArgs e)
     {
-        FlightRecordIndexViewModel.PaginationInfo.ActualPage = -1;
+        FlightRecordIndexViewModel.PaginationInfo.ActualPage = 1;
         if (int.TryParse((string)e.Value, out var index) && index >= 0)
         {
             //emp.Pilot = pilots[index];

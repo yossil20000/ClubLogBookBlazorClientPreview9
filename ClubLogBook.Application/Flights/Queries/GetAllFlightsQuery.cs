@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using FluentValidation;
 using ClubLogBook.Application.ViewModels;
 using ClubLogBook.Core.Interfaces;
+using System;
 
 namespace ClubLogBook.Application.Flights.Queries
 {
@@ -53,6 +54,16 @@ namespace ClubLogBook.Application.Flights.Queries
 				
 				ClubFlightViewModel clubFlightViewModel = new ClubFlightViewModel();
 				flightRecordIndexViewModel.FlightRecords = _mapper.Map<List<Flight>, List<ClubFlightViewModel>>(flights);
+
+				int totalFlight = flights.Count();
+				flightRecordIndexViewModel.PaginationInfo.TotalItems = totalFlight;
+				flightRecordIndexViewModel.PaginationInfo.ActualPage = 1;
+
+				flightRecordIndexViewModel.PaginationInfo.TotalItems = totalFlight;
+				flightRecordIndexViewModel.PaginationInfo.TotalPages = int.Parse(Math.Ceiling((decimal)totalFlight / flightRecordIndexViewModel.PaginationInfo.ItemsPerPage).ToString());
+				flightRecordIndexViewModel.PaginationInfo.Next = flightRecordIndexViewModel.PaginationInfo.ActualPage >= flightRecordIndexViewModel.PaginationInfo.TotalPages ? "disabled" : "";
+				flightRecordIndexViewModel.PaginationInfo.Previous = flightRecordIndexViewModel.PaginationInfo.ActualPage == 1 ? "disabled" : "";
+				
 				return flightRecordIndexViewModel;
 			}
 		}
