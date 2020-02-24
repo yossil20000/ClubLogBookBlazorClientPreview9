@@ -19,9 +19,9 @@ namespace ClubLogBook.Application.ViewModels
 	public class FilterViewModel
 	{
 
-		public IEnumerable<AirplaneSelectViewModel> AirplaneSelects { get; set; } = new List<AirplaneSelectViewModel>();
+		public List<AirplaneSelectViewModel> AirplaneSelects { get; set; } = new List<AirplaneSelectViewModel>();
 		public IEnumerable<ClubSelectViewModel> ClubSelects { get; set; } = new List<ClubSelectViewModel>();
-		public IEnumerable<PilotSelectViewModel> PilotSelects { get; set; } = new List<PilotSelectViewModel>();
+		public List<PilotSelectViewModel> PilotSelects { get; set; } = new List<PilotSelectViewModel>();
 		public int? AirplaneFilterApplied { get; set; } = 0;
 		public int? ClubFilterApplied { get; set; } = 0;
 		public int? PilotFilterApplied { get; set; } = 0;

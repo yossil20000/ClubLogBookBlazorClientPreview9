@@ -29,7 +29,7 @@ namespace ClubLogBook.Server.Services
 
 		
 
-		public async Task<IEnumerable<AirplaneSelectViewModel>> GetAirplans(int? clubId)
+		public async Task<List<AirplaneSelectViewModel>> GetAirplans(int? clubId)
 		{
 			_logger.LogInformation("GetAirplans called");
 
@@ -89,7 +89,7 @@ namespace ClubLogBook.Server.Services
 			return clubSelectViewModel;
 		}
 
-		 public async Task<IEnumerable<PilotSelectViewModel>> GetPilots(int? clubId)
+		 public async Task<List<PilotSelectViewModel>> GetPilots(int? clubId)
 		{
 			_logger.LogInformation("GetAirplans called");
 
@@ -135,6 +135,8 @@ namespace ClubLogBook.Server.Services
 
 			var flightOnPage = await _reservationRepository.ListAsync(flightPagingSpec);
 			var totalFlight = await _reservationRepository.CountAsync(flightSpec);
+			var airplanes = await GetAirplans(1);
+			airplanes.Add(new AirplaneSelectViewModel() { Id = 0, TailNumber = "Select All" });
 			var vm = new RecordsViewModel<FlightReservationViewModel>()
 			{
 				Records = flightOnPage.Select(i => new FlightReservationViewModel()
@@ -151,7 +153,8 @@ namespace ClubLogBook.Server.Services
 				}),
 				FilterViewModel = new FilterViewModel()
 				{
-					AirplaneSelects = await GetAirplans(1),
+					
+					AirplaneSelects = airplanes,
 					ClubSelects = await GetClubs(1),
 					PilotSelects = await GetPilots(1),
 					PilotFilterApplied = pilotId,

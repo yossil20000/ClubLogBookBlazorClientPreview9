@@ -23,7 +23,7 @@ namespace ClubLogBook.Server.Services
 			_logger = loggerFactory;_clubRepository = clubRepository;_aircraftRepository = aircraftRepository;_fligthRepository = flightRepository;
 			_clubService = clubService;
 		}
-		public async Task<IEnumerable<PilotSelectViewModel>> GetPilots(int? clubId)
+		public async Task<List<PilotSelectViewModel>> GetPilots(int? clubId)
 		{
 			_logger.LogInformation("GetAirplans called");
 
@@ -47,7 +47,7 @@ namespace ClubLogBook.Server.Services
 			}
 			return pilotSelectViewModel;
 		}
-		public async Task<IEnumerable<AirplaneSelectViewModel>> GetAirplans(int? clubId)
+		public async Task<List<AirplaneSelectViewModel>> GetAirplans(int? clubId)
 		{
 			_logger.LogInformation("GetAirplans called");
 

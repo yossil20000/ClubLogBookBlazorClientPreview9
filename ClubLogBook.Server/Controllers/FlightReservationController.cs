@@ -81,8 +81,8 @@ namespace ClubLogBook.Server.Controllers
 				pilots = await _clubService.GetClubMembers(clubs.FirstOrDefault().Name);
 			}
 			filterViewModel.ClubSelects = clubs.Select(c => new ClubSelectViewModel() { Id = c.Id, ClubName = c.Name });
-			filterViewModel.AirplaneSelects = aircrafts.Select(ar => new AirplaneSelectViewModel() { Id = ar.Id, TailNumber = ar.TailNumber });
-			filterViewModel.PilotSelects = pilots.Select(p => new PilotSelectViewModel() { Id = p.Id, FirstName = p.FirstName, LastName = p.LastName, IdNumber = p.IdNumber,UserId = p.UserId });
+			filterViewModel.AirplaneSelects = aircrafts.Select(ar => new AirplaneSelectViewModel() { Id = ar.Id, TailNumber = ar.TailNumber }).ToList();
+			filterViewModel.PilotSelects = pilots.Select(p => new PilotSelectViewModel() { Id = p.Id, FirstName = p.FirstName, LastName = p.LastName, IdNumber = p.IdNumber,UserId = p.UserId }).ToList();
 
 			return filterViewModel;
 

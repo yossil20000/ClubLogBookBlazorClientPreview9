@@ -76,8 +76,11 @@ namespace ClubLogBook.Server.Controllers
 				pilots = await _clubService.GetClubMembers(clubs.FirstOrDefault().Name);
 			}
 			filterViewModel.ClubSelects =  clubs.Select(c => new ClubSelectViewModel() { Id = c.Id, ClubName = c.Name });
-			filterViewModel.AirplaneSelects = aircrafts.Select(ar => new AirplaneSelectViewModel() { Id = ar.Id, TailNumber = ar.TailNumber });
-			filterViewModel.PilotSelects = pilots.Select(p => new PilotSelectViewModel() {Id = p.Id, FirstName = p.FirstName, LastName = p.LastName, IdNumber = p.IdNumber });
+			filterViewModel.AirplaneSelects.Add(new AirplaneSelectViewModel() { Id = 0, TailNumber = "All Airplanes" });
+			filterViewModel.AirplaneSelects.AddRange(aircrafts.Select(ar => new AirplaneSelectViewModel() { Id = ar.Id, TailNumber = ar.TailNumber }).ToList());
+
+			filterViewModel.PilotSelects.Add(new PilotSelectViewModel() { Id = 0, FirstName = "All Pilots" });
+			filterViewModel.PilotSelects.AddRange(pilots.Select(p => new PilotSelectViewModel() {Id = p.Id, FirstName = p.FirstName, LastName = p.LastName, IdNumber = p.IdNumber }).ToList());
 			filterViewModel.ClubFilterApplied = filterViewModel.ClubSelects.FirstOrDefault().Id;
 			filterViewModel.AirplaneFilterApplied = filterViewModel.AirplaneSelects.FirstOrDefault().Id;
 			filterViewModel.PilotFilterApplied = filterViewModel.PilotSelects.FirstOrDefault().Id;
@@ -95,8 +98,9 @@ namespace ClubLogBook.Server.Controllers
 			//getFilteredFlightsQuery.PaginationInfoViewModel = flightRecordIndexViewModel.PaginationInfo;
 
 			var result = await _mediator.Send(getFilteredFlightsQuery);
-			flightRecordIndexViewModel.FlightRecords = result.FlightRecords;
-			return flightRecordIndexViewModel;
+			return result;
+			//flightRecordIndexViewModel.FlightRecords = result.FlightRecords;
+			//return flightRecordIndexViewModel;
 			//int ActualPage = flightRecordIndexViewModel.PaginationInfo.ActualPage;
 			//switch (flightRecordIndexViewModel.PaginationInfo.PageCommand)
 			//{
