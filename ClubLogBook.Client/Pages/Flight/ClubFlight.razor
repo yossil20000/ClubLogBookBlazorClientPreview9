@@ -118,17 +118,40 @@
     AdminUserInfo CurrentUser { get; set; }
     string PageMessage { get; set; } = "Not filterd";
     bool bInitialized { get; set; } = false;
+    bool sortDateDescending = true;
+    bool sortNameDescending = true;
+    bool sortEngienDescending = true;
+    delegate void
+    private void SortDate(bool sortDecending)
+    {
+        if (sortDateDescending)
+            flights = flights.OrderByDescending(x => x.Date).ThenByDescending(x => x.EngineStart).AsEnumerable();
+        else
+            flights = flights.OrderBy(x => x.Date).ThenBy(x => x.EngineStart).AsEnumerable();
+    }
     async Task SortDate()
     {
-       flights = flights.OrderByDescending(x => x.Date).ThenByDescending(x => x.EngineStart).AsEnumerable();
+        SortDate(sortDateDescending);
+        sortDateDescending = !sortDateDescending;
+
     }
+
     async Task SortName()
     {
-        flights = flights.OrderByDescending(x => x.Pilot.FirstName).ThenByDescending(x => x.Pilot.LastName).ThenByDescending(x => x.Date).AsEnumerable();
+        if(sortNameDescending)
+            flights = flights.OrderByDescending(x => x.Pilot.FirstName).ThenByDescending(x => x.Pilot.LastName).ThenByDescending(x => x.Date).AsEnumerable();
+        else
+            flights = flights.OrderBy(x => x.Pilot.FirstName).ThenBy(x => x.Pilot.LastName).ThenBy(x => x.Date).AsEnumerable();
+        sortNameDescending = !sortNameDescending;
+
     }
     async Task SortEngienStart()
     {
-        flights = flights.OrderByDescending(x => x.EngineStart).ThenByDescending(x => x.Date).ThenByDescending(x => x.Pilot.FirstName).AsEnumerable();
+        if(sortEngienDescending)
+            flights = flights.OrderByDescending(x => x.EngineStart).ThenByDescending(x => x.Date).ThenByDescending(x => x.Pilot.FirstName).AsEnumerable();
+        else
+            flights = flights.OrderBy(x => x.EngineStart).ThenBy(x => x.Date).ThenBy(x => x.Pilot.FirstName).AsEnumerable();
+        sortEngienDescending = !sortEngienDescending;
     }
 
     protected override async Task OnInitializedAsync()
