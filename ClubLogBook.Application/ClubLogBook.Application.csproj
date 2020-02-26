@@ -20,7 +20,6 @@
   <ItemGroup>
     <Folder Include="ClubContact\Commands\" />
     <Folder Include="ClubContact\Queries\" />
-    <Folder Include="Flights\Commands\" />
     <Folder Include="Infrastructure\Logging\" />
   </ItemGroup>
 

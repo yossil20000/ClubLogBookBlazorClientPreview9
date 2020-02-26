@@ -114,7 +114,8 @@ namespace ClubLogBook.Application.ViewModels
 
 		public void CreateMappings(Profile configuration)
 		{
-			
+			configuration.CreateMap<ClubFlightViewModel, Flight>();
+			configuration.CreateMap<Flight,ClubContactsViewModel>();
 		}
 	}
 	public class ClubFlightViewModel22

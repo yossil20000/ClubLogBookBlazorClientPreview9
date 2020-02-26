@@ -75,6 +75,7 @@
                     </div>
 
                 </div>
+                <button class="btn btn-grid-sort" @onclick="@(async () => await OnCreateFlight())"><u>Edit</u></button>
                 <div class="c_flights__content">
                     @foreach (var flight in flights)
                     {
@@ -111,9 +112,55 @@
         }
         else if (bShowEdit)
         {
+
             <form class="c_grid__edit">
                 <div class="c_grid__edit__header  text-warning text-capitalize text-center">Edit Flight: @editFlightModel.Pilot.FirstName (@editFlightModel.Pilot.IdNumber) </div>
                 <div class="c_grid__edit__content">
+                    if(bCreate)
+                    {
+                    <div>
+                       
+                        @if (@FlightRecordIndexViewModel.FilterViewModel == null)
+                        {
+                            <select class="custom-select" disabled>
+                                <option>(loading...)</option>
+                            </select>
+                        }
+                        else
+                        {
+                            <select class="custom-select" @onchange="OnCreateAircraftSelected">
+                                <option value="-1" disabled selected>(select)</option>
+                                @for (var i = 0; i < @FlightRecordIndexViewModel.FilterViewModel.AirplaneSelects.Count; i++)
+                                {
+                                     <option value="@FlightRecordIndexViewModel.FilterViewModel.AirplaneSelects[i].Id">@FlightRecordIndexViewModel.FilterViewModel.AirplaneSelects[i].TailNumber - (@(FlightRecordIndexViewModel.FilterViewModel.PilotSelects[i].Id))</option>
+                                }
+                            </select>
+                        }
+                    </div>
+                    <div>
+                       
+                        @if (@FlightRecordIndexViewModel.FilterViewModel.PilotSelects == null)
+                        {
+                            <select class="custom-select" disabled>
+                                <option>(loading...)</option>
+                            </select>
+                        }
+                        else
+                        {
+                            <select class="custom-select" @onchange="OnCreatePilotSelected">
+                                <option value="-1" disabled selected>(select)</option>
+                                @for (var i = 0; i < @FlightRecordIndexViewModel.FilterViewModel.PilotSelects.Count; i++)
+                                {
+                                    if (IsCurrentAdmin || CurrentUser.Id == @FlightRecordIndexViewModel.FilterViewModel.PilotSelects[i].UserId.ToString())
+                                    {
+                            <option value="@FlightRecordIndexViewModel.FilterViewModel.PilotSelects[i].Id">@FlightRecordIndexViewModel.FilterViewModel.PilotSelects[i].FullName - (@(FlightRecordIndexViewModel.FilterViewModel.PilotSelects[i].IdNumber))</option>
+                                    }
+
+                                }
+                            </select>
+                        }
+                    </div>
+                    }
                     <div class="c_grid__edit__content__row">
                         <label class="c_grid__edit__content__row__title grid-title">Flight</label>
 
@@ -146,9 +193,17 @@
 
                     </div>
                     <div class="c_grid__edit__content__row">
-                        
-                        <button class="btn btn-grid-sort c_grid__edit__content__row__title grid-title" @onclick="@(async () => await OnEditDelete(editFlightModel.Id))"><u>Delete</u></button>
-                        <button class="btn btn-grid-sort c_grid__edit__content__row__description grid-input" @onclick="@(async () => await OnEditSave())"><u>Save</u></button>
+                        @if (bIsCreateFlight)
+                        {
+                            <button class="btn btn-grid-sort c_grid__edit__content__row__title grid-title" @onclick="@(async () => await OnCancle())"><u>Delete</u></button>
+                            <button class="btn btn-grid-sort c_grid__edit__content__row__description grid-input" @onclick="@(async () => await CreateFlight())"><u>Save</u></button>
+                        }
+                        else
+                        {
+                            <button class="btn btn-grid-sort c_grid__edit__content__row__title grid-title" @onclick="@(async () => await OnEditDelete(editFlightModel.Id))"><u>Delete</u></button>
+                            <button class="btn btn-grid-sort c_grid__edit__content__row__description grid-input" @onclick="@(async () => await OnEditSave())"><u>Save</u></button>
+                        }
+
                     </div>
 
                 </div>
@@ -179,7 +234,16 @@
     delegate void SortCommand(bool sortCommand);
     SortCommand lastSortCommand;
     bool bShowEdit { get; set; } = false;
+    bool bIsCreateFlight { get; set; } = false;
     ClubFlightViewModel editFlightModel { get; set; }
+    int selectedAircraft { get; set; }
+    int selectedPilot { get; set; }
+    private async Task OnCreateFlight()
+    {
+        editFlightModel = new ClubFlightViewModel();
+        bShowEdit = true;
+        bIsCreateFlight = true;
+    }
     private async Task OnShowEdit(int id)
     {
         editFlightModel = FlightRecordIndexViewModel.FlightRecords.Where(i => i.Id == id).FirstOrDefault();
@@ -351,10 +415,44 @@
     }
     private async Task OnEditDelete(int id)
     {
+        await Http.SendJsonAsync(HttpMethod.Delete, $"api/ClubFlight", editFlightModel.Id);
         bShowEdit = false;
     }
     private async Task OnEditSave()
     {
+        await Http.SendJsonAsync(HttpMethod.Post, "api/ClubFlight", editFlightModel);
         bShowEdit = false;
+    }
+
+
+    //For Create
+    protected async Task CreateFlight()
+    {
+        editFlightModel.Pilot.Id = selectedPilot;
+        editFlightModel.Aircraft.Id = selectedAircraft;
+        await Http.SendJsonAsync(HttpMethod.Put, "api/ClubFlight", editFlightModel);
+
+
+    }
+    void OnCreatePilotSelected(ChangeEventArgs e)
+    {
+        if (int.TryParse((string)e.Value, out var index) && index >= 0)
+        {
+            //emp.Pilot = pilots[index];
+            selectedPilot = index;
+        }
+    }
+    void OnCreateAircraftSelected(ChangeEventArgs e)
+    {
+        if (int.TryParse((string)e.Value, out var index) && index >= 0)
+        {
+            //emp.Pilot = pilots[index];
+            selectedAircraft = index;
+        }
+    }
+    protected async Task OnCancle()
+    {
+        bShowEdit = false;
+        bIsCreateFlight = false;
     }
 }

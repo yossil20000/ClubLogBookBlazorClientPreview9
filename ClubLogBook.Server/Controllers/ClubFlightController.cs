@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using MediatR;
 using ClubLogBook.Application.Accounts.Queries.GetAccount;
 using ClubLogBook.Application.Flights.Queries;
-
+using ClubLogBook.Application.Flights.Commands;
 namespace ClubLogBook.Server.Controllers
 {
 	
@@ -176,14 +176,24 @@ namespace ClubLogBook.Server.Controllers
         [HttpPost]
         public async Task Post([FromBody] ClubFlightViewModel value)
         {
-			Flight flight = _mapper.Map<Flight>(value);
-			await _clubService.UpdateFlight(flight);
+			//Flight flight = _mapper.Map<Flight>(value);
+			//await _clubService.UpdateFlight(flight);
+			
+			UpdateFlightCommand updateFlightCommand = new UpdateFlightCommand();
+			updateFlightCommand.ClubFlightViewModel = value;
+			var ressult = _mediator.Send(updateFlightCommand);
+			return ;
 		}
 		[HttpPut]
 		public async Task   Put([FromBody] ClubFlightViewModel value)
 		{
-			Flight flight = _mapper.Map<Flight>(value);
-			await _clubService.AddFlight("BAZ",flight, value.Aircraft.Id, value.Pilot.Id);
+			//Flight flight = _mapper.Map<Flight>(value);
+			//await _clubService.AddFlight("BAZ",flight, value.Aircraft.Id, value.Pilot.Id);
+			CreateFlightCommand createFlightCommand = new CreateFlightCommand();
+			createFlightCommand.ClubFlightViewModel = value;
+			createFlightCommand.ClubId = 1;
+			var result = _mediator.Send(createFlightCommand);
+
 		}
         // PUT: api/ClubFlight/5
   //      [HttpPut]
@@ -201,7 +211,10 @@ namespace ClubLogBook.Server.Controllers
 			if (ModelState.IsValid)
 			{
 				System.Diagnostics.Debug.WriteLine(id.ToString());
-				await _clubService.DeleteFlight(id);
+				DeleteFlightCommand deleteFlightCommand = new DeleteFlightCommand(id);
+				var result = await  _mediator.Send(deleteFlightCommand);
+
+				return;
 			}
 		}
 		//public Task<IEnumerable<ClubFlightViewModel>> Get()
