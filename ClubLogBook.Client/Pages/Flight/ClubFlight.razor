@@ -1,8 +1,11 @@
 ﻿@page "/Flight/ClubFlight"
 @using ClubLogBook.Application.ViewModels
 @using System.Globalization
+@using Microsoft.Extensions.Logging
 @inject HttpClient Http
 @inject IdentityAuthenticationStateProvider authStateProvider
+
+@inject ILogger<Index> logger
 
 <AuthorizeView Roles="Administrators,AccountManage,Members">
     <Authorized>
@@ -10,19 +13,19 @@
         {
             <p><em>Loading...</em></p>
         }
-        else if(bInitialized)
+        else if (bInitialized && !bShowEdit)
         {
             <div class="c_flights">
                 <div class="c_flights__header">
                     @*<div class="a-f-header--1"><input type="date" class="btn-transaction c_account__cell--2-1"></div>
-                    <div class="a-f-header--2">Flights 2</div>
-                    <div class="a-f-header--3">Flights 3</div>*@
-                    <input type="date" class="btn-transaction a-f-header--1" @bind="@FlightRecordIndexViewModel.FilterViewModel.FilterDateViewModel.FilterDateFrom" >
-                    <div class="btn-transaction a-f-header--2" ><button  @onclick="@OnSearch"><i class="material-icons">search</i></button></div>
-                    <input type="date" class="btn-transaction a-f-header--3"  @bind="@FlightRecordIndexViewModel.FilterViewModel.FilterDateViewModel.FilterDateTo">
+                        <div class="a-f-header--2">Flights 2</div>
+                        <div class="a-f-header--3">Flights 3</div>*@
+                    <input type="date" class="btn-transaction a-f-header--1" @bind="@FlightRecordIndexViewModel.FilterViewModel.FilterDateViewModel.FilterDateFrom">
+                    <div class="btn-transaction a-f-header--2"><button @onclick="@OnSearch"><i class="material-icons">search</i></button></div>
+                    <input type="date" class="btn-transaction a-f-header--3" @bind="@FlightRecordIndexViewModel.FilterViewModel.FilterDateViewModel.FilterDateTo">
                     <div class=" btn-transaction  a-f-filter--1">
                         <select value="@FlightRecordIndexViewModel.FilterViewModel.ClubFilterApplied" class="custom-select" @onchange="ClubSelected">
-                           
+
 
                             @foreach (var i in @FlightRecordIndexViewModel.FilterViewModel.ClubSelects)
                             {
@@ -32,7 +35,7 @@
                     </div>
                     <div class="btn-transaction  a-f-filter--2">
                         <select class="custom-select" @onchange="AirplaneSelected" value="@FlightRecordIndexViewModel.FilterViewModel.AirplaneFilterApplied">
-                            
+
 
                             @foreach (var i in @FlightRecordIndexViewModel.FilterViewModel.AirplaneSelects)
                             {
@@ -42,7 +45,7 @@
                     </div>
                     <div class="btn-transaction  a-f-filter--3">
                         <select class="custom-select" @onchange="PilotSelected" value="@FlightRecordIndexViewModel.FilterViewModel.PilotFilterApplied">
-                           
+
                             @foreach (var i in @FlightRecordIndexViewModel.FilterViewModel.PilotSelects)
                             {
                                 <option value="@i.Id">@i.FullName - (@(i.IdNumber))</option>
@@ -59,7 +62,7 @@
                     </div>
                     <div class="a-f-page--2">
                         <span class="btn-transaction ">
-                            @PageMessage 
+                            @PageMessage
                         </span>
                     </div>
                     <div class="a-f-page--3">
@@ -73,32 +76,83 @@
 
                 </div>
                 <div class="c_flights__content">
-                    @foreach(var flight in flights)
+                    @foreach (var flight in flights)
                     {
-                    <div class="c_flights__list__row">
-                        <div class="a-f-l-header-c-1"><button class="btn btn-grid-sort" @onclick="SortDate">Flight</button></div>
-                        <div class="a-f-l-data-c-1">@flight.Date.ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)</div>
-                        <div class="a-f-l-header-c-2"><button class="btn btn-grid-sort" @onclick="SortName">Pilot</button></div>
-                        <div class="a-f-l-data-c-2">@flight.Pilot.FirstName @flight.Pilot.LastName</div>
-                        <div class="a-f-l-header-c-3">Aircraft</div>
-                        <div class="a-f-l-data-c-3">@flight.Aircraft.TailNumber</div>
-                        <div class="a-f-l-header-c-4">Routh</div>
-                        <div class="a-f-l-data-c-4">@flight.Routh</div>
-                        <div class="a-f-l-header-c-5">Hobbs Start</div>
-                        <div class="a-f-l-data-c-5">@flight.HobbsStart</div>
-                        <div class="a-f-l-header-c-6">Hobbs End</div>
-                        <div class="a-f-l-data-c-6">@flight.HobbsEnd</div>
-                        <div class="a-f-l-header-c-7"><button class="btn btn-grid-sort" @onclick="SortEngienStart">Engien Start</button></div>
-                        <div class="a-f-l-data-c-7">@flight.EngineStart</div>
-                        <div class="a-f-l-header-c-8">Engien End</div>
-                        <div class="a-f-l-data-c-8">@flight.EngineEnd</div>
-                        <div class="a-f-l-header-c-9">Action</div>
-                        <div class="a-f-l-data-c-9">edit</div>
+                        <div class="c_flights__list__row">
+                            <div class="a-f-l-header-c-1"><button class="btn btn-grid-sort" @onclick="SortDate"><u>Flight</u></button></div>
+                            <div class="a-f-l-data-c-1">@flight.Date.ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)</div>
+                            <div class="a-f-l-header-c-2"><button class="btn btn-grid-sort" @onclick="SortName"><u>Pilot</u></button></div>
+                            <div class="a-f-l-data-c-2">@flight.Pilot.FirstName @flight.Pilot.LastName</div>
+                            <div class="a-f-l-header-c-3">Aircraft</div>
+                            <div class="a-f-l-data-c-3">@flight.Aircraft.TailNumber</div>
+                            <div class="a-f-l-header-c-4">Routh</div>
+                            <div class="a-f-l-data-c-4">@flight.Routh</div>
+                            <div class="a-f-l-header-c-5">Hobbs Start</div>
+                            <div class="a-f-l-data-c-5">@flight.HobbsStart</div>
+                            <div class="a-f-l-header-c-6">Hobbs End</div>
+                            <div class="a-f-l-data-c-6">@flight.HobbsEnd</div>
+                            <div class="a-f-l-header-c-7"><button class="btn btn-grid-sort" @onclick="SortEngienStart"><u>Engien Start</u></button></div>
+                            <div class="a-f-l-data-c-7">@flight.EngineStart</div>
+                            <div class="a-f-l-header-c-8">Engien End</div>
+                            <div class="a-f-l-data-c-8">@flight.EngineEnd</div>
+                            <div class="a-f-l-header-c-9">Action</div>
+                            <div class="a-f-l-data-c-9"><button class="btn btn-grid-sort" @onclick="@(async () => await OnShowEdit(flight.Id))"><u>Edit</u></button></div>
 
-                    </div>
+                        </div>
                     }
                 </div>
             </div>
+        }
+        else if(false)
+        {
+            <div>
+                <h1>Show Edit</h1>
+            </div>
+        }
+        else if (bShowEdit)
+        {
+            <form class="c_grid__edit">
+                <div class="c_grid__edit__header  text-warning text-capitalize text-center">Edit Flight: @editFlightModel.Pilot.FirstName (@editFlightModel.Pilot.IdNumber) </div>
+                <div class="c_grid__edit__content">
+                    <div class="c_grid__edit__content__row">
+                        <label class="c_grid__edit__content__row__title grid-title">Flight</label>
+
+                        <input type="date" class="c_grid__edit__content__row__description grid-input" @bind="@editFlightModel.Date">
+                    </div>
+
+                    <div class="c_grid__edit__content__row">
+                        <label class="c_grid__edit__content__row__title grid-title">Routh</label>
+                        <input type="text" class="c_grid__edit__content__row__description grid-input" @bind="@editFlightModel.Routh" placeholder="Enter Yor Rouht" />
+
+                    </div>
+                    <div class="c_grid__edit__content__row">
+                        <label class="c_grid__edit__content__row__title grid-title">Engien Start</label>
+                        <input type="number" class="c_grid__edit__content__row__description grid-input" @bind="@editFlightModel.EngineStart" placeholder="Enter Engien Start" />
+
+                    </div>
+                    <div class="c_grid__edit__content__row">
+                        <label class="c_grid__edit__content__row__title grid-title">Engien End</label>
+                        <input type="number" class="c_grid__edit__content__row__description grid-input" @bind="@editFlightModel.EngineEnd" placeholder="Enter Engien Start" />
+
+                    </div>
+                    <div class="c_grid__edit__content__row">
+                        <label class="c_grid__edit__content__row__title grid-title">Hobbs Start</label>
+                        <input type="number" class="c_grid__edit__content__row__description grid-input" @bind="@editFlightModel.HobbsStart" placeholder="Enter Hobbs Start" />
+
+                    </div>
+                    <div class="c_grid__edit__content__row">
+                        <label class="c_grid__edit__content__row__title grid-title">Hobbs End</label>
+                        <input type="number" class="c_grid__edit__content__row__description grid-input" @bind="@editFlightModel.HobbsEnd" placeholder="Enter Hobbs Start" />
+
+                    </div>
+                    <div class="c_grid__edit__content__row">
+                        
+                        <button class="btn btn-grid-sort c_grid__edit__content__row__title grid-title" @onclick="@(async () => await OnEditDelete(editFlightModel.Id))"><u>Delete</u></button>
+                        <button class="btn btn-grid-sort c_grid__edit__content__row__description grid-input" @onclick="@(async () => await OnEditSave())"><u>Save</u></button>
+                    </div>
+
+                </div>
+            </form>
         }
 
 
@@ -121,13 +175,46 @@
     bool sortDateDescending = true;
     bool sortNameDescending = true;
     bool sortEngienDescending = true;
-    delegate void
-    private void SortDate(bool sortDecending)
+    bool lastSortParam = true;
+    delegate void SortCommand(bool sortCommand);
+    SortCommand lastSortCommand;
+    bool bShowEdit { get; set; } = false;
+    ClubFlightViewModel editFlightModel { get; set; }
+    private async Task OnShowEdit(int id)
     {
-        if (sortDateDescending)
+        editFlightModel = FlightRecordIndexViewModel.FlightRecords.Where(i => i.Id == id).FirstOrDefault();
+        if (editFlightModel == null)
+            editFlightModel = new ClubFlightViewModel();
+        bShowEdit = true;
+    }
+    private void SortDate(bool sortDecending = true)
+    {
+        if (sortDecending)
             flights = flights.OrderByDescending(x => x.Date).ThenByDescending(x => x.EngineStart).AsEnumerable();
         else
             flights = flights.OrderBy(x => x.Date).ThenBy(x => x.EngineStart).AsEnumerable();
+        lastSortCommand = SortDate;
+        lastSortParam = sortDecending;
+
+    }
+    private void SortName(bool sortDecending = true)
+    {
+        if (sortDecending)
+            flights = flights.OrderByDescending(x => x.Pilot.FirstName).ThenByDescending(x => x.Pilot.LastName).ThenByDescending(x => x.Date).AsEnumerable();
+        else
+            flights = flights.OrderBy(x => x.Pilot.FirstName).ThenBy(x => x.Pilot.LastName).ThenBy(x => x.Date).AsEnumerable();
+        lastSortCommand = SortName;
+        lastSortParam = sortDecending;
+
+    }
+    private void SortEngienStart(bool sortDecending = true)
+    {
+        if (sortDecending)
+            flights = flights.OrderByDescending(x => x.EngineStart).ThenByDescending(x => x.Date).ThenByDescending(x => x.Pilot.FirstName).AsEnumerable();
+        else
+            flights = flights.OrderBy(x => x.EngineStart).ThenBy(x => x.Date).ThenBy(x => x.Pilot.FirstName).AsEnumerable();
+        lastSortCommand = SortEngienStart;
+        lastSortParam = sortDecending;
     }
     async Task SortDate()
     {
@@ -138,19 +225,13 @@
 
     async Task SortName()
     {
-        if(sortNameDescending)
-            flights = flights.OrderByDescending(x => x.Pilot.FirstName).ThenByDescending(x => x.Pilot.LastName).ThenByDescending(x => x.Date).AsEnumerable();
-        else
-            flights = flights.OrderBy(x => x.Pilot.FirstName).ThenBy(x => x.Pilot.LastName).ThenBy(x => x.Date).AsEnumerable();
+        SortName(sortNameDescending);
         sortNameDescending = !sortNameDescending;
 
     }
     async Task SortEngienStart()
     {
-        if(sortEngienDescending)
-            flights = flights.OrderByDescending(x => x.EngineStart).ThenByDescending(x => x.Date).ThenByDescending(x => x.Pilot.FirstName).AsEnumerable();
-        else
-            flights = flights.OrderBy(x => x.EngineStart).ThenBy(x => x.Date).ThenBy(x => x.Pilot.FirstName).AsEnumerable();
+        SortEngienStart(sortEngienDescending);
         sortEngienDescending = !sortEngienDescending;
     }
 
@@ -168,23 +249,27 @@
         CurrentUser = await authStateProvider.CurrentUser();
         IsCurrentAdmin = user.IsInRole(IdentityInfo.Roles.Administrators.ToString());
         bInitialized = true;
-        OnActualPageChanged();
+        //OnActualPageChanged();
+        System.Diagnostics.Debug.WriteLine($"ClubFlight.razor 1: OnInitializedAsync User {CurrentUser.UserName} flight Count: {flights?.Count() ?? -1}");
+        logger.LogDebug($"ClubFlight.razor : OnInitializedAsync User ");
+        System.Diagnostics.Debug.WriteLine($"ClubFlight.razor 2: OnInitializedAsync User {CurrentUser.UserName} flight Count: {flights?.Count() ?? -1}");
     }
     private void OnActualPageChanged()
     {
+
         int totalItems = FlightRecordIndexViewModel.PaginationInfo.TotalItems;
-        int taken = (FlightRecordIndexViewModel.PaginationInfo.ActualPage -1 ) * FlightRecordIndexViewModel.PaginationInfo.ItemsPerPage;
+        int taken = (FlightRecordIndexViewModel.PaginationInfo.ActualPage - 1) * FlightRecordIndexViewModel.PaginationInfo.ItemsPerPage;
         int skip = (FlightRecordIndexViewModel.PaginationInfo.ActualPage - 1) * FlightRecordIndexViewModel.PaginationInfo.ItemsPerPage;
         int itemPerPage = FlightRecordIndexViewModel.PaginationInfo.ItemsPerPage;
         int take = (totalItems - skip) > itemPerPage ? FlightRecordIndexViewModel.PaginationInfo.ItemsPerPage : totalItems - taken;
         flights = FlightRecordIndexViewModel.FlightRecords.Skip(skip).Take(take).ToList();
         PageMessage = $"Showing {taken + take} :  {totalItems} - Page {FlightRecordIndexViewModel.PaginationInfo.ActualPage }  : { @FlightRecordIndexViewModel.PaginationInfo.TotalPages}";
-
+        lastSortCommand(lastSortParam);
     }
     protected async Task PrevClick()
     {
 
-        if ( FlightRecordIndexViewModel.PaginationInfo.ActualPage  > 1)
+        if (FlightRecordIndexViewModel.PaginationInfo.ActualPage > 1)
         {
             //FlightRecordIndexViewModel.PaginationInfo.PageCommand = PageCommand.MovePrevious;
             //FlightRecordIndexViewModel = await Http.PutJsonAsync<FlightRecordIndexViewModel>("api/ClubFlight/Put", FlightRecordIndexViewModel);
@@ -243,7 +328,7 @@
     void ClubSelected(ChangeEventArgs e)
     {
         FlightRecordIndexViewModel.PaginationInfo.ActualPage = 1;
-        if (int.TryParse((string)e.Value, out var index) )
+        if (int.TryParse((string)e.Value, out var index))
         {
             //emp.Pilot = pilots[index];
             FlightRecordIndexViewModel.FilterViewModel.ClubFilterApplied = index;
@@ -263,5 +348,13 @@
         }
         else
             FlightRecordIndexViewModel.FilterViewModel.AirplaneFilterApplied = null;
+    }
+    private async Task OnEditDelete(int id)
+    {
+        bShowEdit = false;
+    }
+    private async Task OnEditSave()
+    {
+        bShowEdit = false;
     }
 }

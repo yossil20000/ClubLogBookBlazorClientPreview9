@@ -11,7 +11,7 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
-    <PackageReference Include="FluentValidation" Version="8.6.1" />
+    <PackageReference Include="FluentValidation" Version="9.0.0-preview2" />
     <!--<PackageReference Include="MediatR" Version="7.0.0" />-->
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.2" />
@@ -21,6 +21,7 @@
     <Folder Include="ClubContact\Commands\" />
     <Folder Include="ClubContact\Queries\" />
     <Folder Include="Flights\Commands\" />
+    <Folder Include="Infrastructure\Logging\" />
   </ItemGroup>
 
 </Project>

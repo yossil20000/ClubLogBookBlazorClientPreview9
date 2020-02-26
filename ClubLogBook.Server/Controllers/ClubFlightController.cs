@@ -47,6 +47,7 @@ namespace ClubLogBook.Server.Controllers
 		[Route("FlightWithFilter")]
 		public async Task<FlightRecordIndexViewModel> FlightWithFilter()
 		{
+			_logger.LogInformation("FlightWithFilter");
 			FlightRecordIndexViewModel flightRecordIndexViewModel = new FlightRecordIndexViewModel();
 
 			GetAllFlightsQuery getAllFlights = new GetAllFlightsQuery();
@@ -61,6 +62,7 @@ namespace ClubLogBook.Server.Controllers
 		[Route("FilterViewModelPut")]
 		public async Task<FilterViewModel> FilterViewModelPut([FromBody] FilterViewModel filterViewModel)
 		{
+			_logger.LogInformation("FilterViewModelPut");
 			int? clubId = filterViewModel.ClubFilterApplied;
 			IEnumerable<Aircraft> aircrafts;
 			IEnumerable<Pilot> pilots;

@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Blazor.Hosting;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration;
 
 namespace ClubLogBook.Client
 {
@@ -10,7 +12,6 @@ namespace ClubLogBook.Client
         }
 
         public static IWebAssemblyHostBuilder CreateHostBuilder(string[] args) =>
-            BlazorWebAssemblyHost.CreateDefaultBuilder()
-                .UseBlazorStartup<Startup>();
+            BlazorWebAssemblyHost.CreateDefaultBuilder().UseBlazorStartup<Startup>();
     }
 }

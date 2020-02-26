@@ -1,11 +1,12 @@
+using Blazor.Extensions.Logging;
 using ClubLogBook.Client.Services.Contracts;
 using ClubLogBook.Client.Services.Implementations;
 using ClubLogBook.Client.States;
 using Microsoft.AspNetCore.Blazor.Http;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace ClubLogBook.Client
 {
@@ -17,6 +18,11 @@ namespace ClubLogBook.Client
             services.AddScoped<IdentityAuthenticationStateProvider>();
             services.AddScoped<AuthenticationStateProvider>(s => s.GetRequiredService<IdentityAuthenticationStateProvider>());
             services.AddScoped<IAuthorizeApi, AuthorizeApi>();
+            services.AddLogging(builder => builder
+            .AddBrowserConsole() // Add Blazor.Extensions.Logging.BrowserConsoleLogger
+            .SetMinimumLevel(LogLevel.Trace)
+            
+    );
         }
 
         public void Configure(IComponentsApplicationBuilder app)
