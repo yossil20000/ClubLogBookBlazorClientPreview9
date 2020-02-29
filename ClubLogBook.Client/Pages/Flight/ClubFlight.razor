@@ -75,7 +75,7 @@
                     </div>
 
                 </div>
-                <button class="btn btn-grid-sort" @onclick="@(async () => await OnCreateFlight())"><u>Edit</u></button>
+               
                 <div class="c_flights__content">
                     @foreach (var flight in flights)
                     {
@@ -84,19 +84,19 @@
                             <div class="a-f-l-data-c-1">@flight.Date.ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)</div>
                             <div class="a-f-l-header-c-2"><button class="btn btn-grid-sort" @onclick="SortName"><u>Pilot</u></button></div>
                             <div class="a-f-l-data-c-2">@flight.Pilot.FirstName @flight.Pilot.LastName</div>
-                            <div class="a-f-l-header-c-3">Aircraft</div>
+                            <div class="a-f-l-header-c-3"><u>Aircraft</u></div>
                             <div class="a-f-l-data-c-3">@flight.Aircraft.TailNumber</div>
-                            <div class="a-f-l-header-c-4">Routh</div>
+                            <div class="a-f-l-header-c-4"><u>Routh</u></div>
                             <div class="a-f-l-data-c-4">@flight.Routh</div>
-                            <div class="a-f-l-header-c-5">Hobbs Start</div>
+                            <div class="a-f-l-header-c-5"><u>Hobbs Start</u></div>
                             <div class="a-f-l-data-c-5">@flight.HobbsStart</div>
-                            <div class="a-f-l-header-c-6">Hobbs End</div>
+                            <div class="a-f-l-header-c-6"><u>Hobbs End</u></div>
                             <div class="a-f-l-data-c-6">@flight.HobbsEnd</div>
                             <div class="a-f-l-header-c-7"><button class="btn btn-grid-sort" @onclick="SortEngienStart"><u>Engien Start</u></button></div>
                             <div class="a-f-l-data-c-7">@flight.EngineStart</div>
-                            <div class="a-f-l-header-c-8">Engien End</div>
+                            <div class="a-f-l-header-c-8"><u>Engien End</u></div>
                             <div class="a-f-l-data-c-8">@flight.EngineEnd</div>
-                            <div class="a-f-l-header-c-9">Action</div>
+                            <div class="a-f-l-header-c-9"><button class="btn btn-grid-sort" @onclick="@(async () => await OnShowCreate())"><u>Create</u></button></div>
                             <div class="a-f-l-data-c-9"><button class="btn btn-grid-sort" @onclick="@(async () => await OnShowEdit(flight.Id))"><u>Edit</u></button></div>
 
                         </div>
@@ -116,7 +116,7 @@
             <form class="c_grid__edit">
                 <div class="c_grid__edit__header  text-warning text-capitalize text-center">Edit Flight: @editFlightModel.Pilot.FirstName (@editFlightModel.Pilot.IdNumber) </div>
                 <div class="c_grid__edit__content">
-                    if(bCreate)
+                    @if(bIsCreateFlight)
                     {
                     <div>
                        
@@ -137,6 +137,7 @@
                             </select>
                         }
                     </div>
+                    
                     <div>
                        
                         @if (@FlightRecordIndexViewModel.FilterViewModel.PilotSelects == null)
@@ -174,34 +175,39 @@
                     </div>
                     <div class="c_grid__edit__content__row">
                         <label class="c_grid__edit__content__row__title grid-title">Engien Start</label>
-                        <input type="number" class="c_grid__edit__content__row__description grid-input" @bind="@editFlightModel.EngineStart" placeholder="Enter Engien Start" />
+                        <input type="number" class="c_grid__edit__content__row__description grid-input" @bind="@editFlightModel.EngineStart" placeholder="Enter Engien Start" min="0" step="0.1" />
 
                     </div>
                     <div class="c_grid__edit__content__row">
                         <label class="c_grid__edit__content__row__title grid-title">Engien End</label>
-                        <input type="number" class="c_grid__edit__content__row__description grid-input" @bind="@editFlightModel.EngineEnd" placeholder="Enter Engien Start" />
+                        <input type="number" class="c_grid__edit__content__row__description grid-input" @bind="@editFlightModel.EngineEnd" placeholder="Enter Engien Start" min="0" step="0.1" />
 
                     </div>
                     <div class="c_grid__edit__content__row">
                         <label class="c_grid__edit__content__row__title grid-title">Hobbs Start</label>
-                        <input type="number" class="c_grid__edit__content__row__description grid-input" @bind="@editFlightModel.HobbsStart" placeholder="Enter Hobbs Start" />
+                        <input type="number" class="c_grid__edit__content__row__description grid-input" @bind="@editFlightModel.HobbsStart" placeholder="Enter Hobbs Start"min="0" step="0.1" />
 
                     </div>
                     <div class="c_grid__edit__content__row">
                         <label class="c_grid__edit__content__row__title grid-title">Hobbs End</label>
-                        <input type="number" class="c_grid__edit__content__row__description grid-input" @bind="@editFlightModel.HobbsEnd" placeholder="Enter Hobbs Start" />
+                        <input type="number" class="c_grid__edit__content__row__description grid-input" @bind="@editFlightModel.HobbsEnd" placeholder="Enter Hobbs Start" min="0" step="0.1" />
 
                     </div>
                     <div class="c_grid__edit__content__row">
                         @if (bIsCreateFlight)
                         {
-                            <button class="btn btn-grid-sort c_grid__edit__content__row__title grid-title" @onclick="@(async () => await OnCancle())"><u>Delete</u></button>
-                            <button class="btn btn-grid-sort c_grid__edit__content__row__description grid-input" @onclick="@(async () => await CreateFlight())"><u>Save</u></button>
+                            <button class="btn btn-grid-sort " @onclick="@(async () => await OnEditCancel())"><u>Cancel</u></button>
+                            <button class="btn btn-grid-sort c_grid__edit__content__row__description grid-input" @onclick="@(async () => await CreateFlight())"><u>Create & Save</u></button>
                         }
                         else
                         {
-                            <button class="btn btn-grid-sort c_grid__edit__content__row__title grid-title" @onclick="@(async () => await OnEditDelete(editFlightModel.Id))"><u>Delete</u></button>
-                            <button class="btn btn-grid-sort c_grid__edit__content__row__description grid-input" @onclick="@(async () => await OnEditSave())"><u>Save</u></button>
+
+                            <div class="btn btn-grid-sort c_grid__edit__content__row__description grid-input">
+                                <button class="btn btn-grid-sort " @onclick="@(async () => await OnEditDelete(editFlightModel.Id))"><u>Delete</u></button>
+                                <button class="btn btn-grid-sort " @onclick="@(async () => await OnEditCancel())"><u>Cancel</u></button>
+                                <button class="btn btn-grid-sort " @onclick="@(async () => await OnEditSave())"><u>Save</u></button>
+                            </div>
+
                         }
 
                     </div>
@@ -238,9 +244,13 @@
     ClubFlightViewModel editFlightModel { get; set; }
     int selectedAircraft { get; set; }
     int selectedPilot { get; set; }
-    private async Task OnCreateFlight()
+    private async Task OnShowCreate()
     {
-        editFlightModel = new ClubFlightViewModel();
+
+
+        decimal maxEngien = 5000;/*FlightRecordIndexViewModel.FlightRecords.Max(x => x.EngineEnd);*/
+        decimal maxhobbs = 6000; // FlightRecordIndexViewModel.FlightRecords.Max(x => x.HobbsEnd);
+        editFlightModel = new ClubFlightViewModel(maxEngien,maxhobbs);
         bShowEdit = true;
         bIsCreateFlight = true;
     }
@@ -450,7 +460,7 @@
             selectedAircraft = index;
         }
     }
-    protected async Task OnCancle()
+    protected async Task OnEditCancel()
     {
         bShowEdit = false;
         bIsCreateFlight = false;

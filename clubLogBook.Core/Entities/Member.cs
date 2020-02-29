@@ -37,6 +37,7 @@ namespace ClubLogBook.Core.Entities
 		public Decimal Weight { get; set; } = 0;
 
 		public virtual Contact Contact { get; set; } = new Contact();
+		
 		//public ClubRoll ClubRoll { get; set; } = ClubRoll.ClubMember;
 		public string UserId { get; set; } = string.Empty;
 		

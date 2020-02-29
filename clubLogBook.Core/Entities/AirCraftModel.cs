@@ -4,6 +4,7 @@ using System.Text;
 using System.Linq;
 using ClubLogBook.Core.Interfaces;
 using ClubLogBook.Core.Common;
+using System.ComponentModel.DataAnnotations;
 
 namespace ClubLogBook.Core.Entities
 {
@@ -63,11 +64,15 @@ namespace ClubLogBook.Core.Entities
 			NextELT = DateTime.Now.AddYears(-5);
 			NextPitotStatic = DateTime.Now.AddYears(-5);
 		}
-
+		[MaxLength(100)]
 		public string TrainingDeviceKind { get; set; } = "";
+		[MaxLength(100)]
 		public string Manufacturer { get; set; } = "";
+		[MaxLength(25)]
 		public string Model { get; set; } = "";
+		[MaxLength(25)]
 		public string TypeDesignation { get; set; } = "";
+		[MaxLength(100)]
 		public string ModelFullName { get; set; } = "";
 		public DateTime? LastAnnual { get; set; }
 		public DateTime? LastVOR { get; set; }
@@ -85,13 +90,17 @@ namespace ClubLogBook.Core.Entities
 		public DateTime? OilChange { get; set; } = DateTime.Now.AddYears(-5); 
 		public Decimal? EngineTime { get; set; } = -1;
 		public DateTime? RegistrationRenewalDate { get; set; } = DateTime.Now.AddYears(-5);
+		[MaxLength(25)]
 		public string FrequentlyUsed { get; set; } = "";
+		[MaxLength(100)]
 		public string PublicNotes { get; set; } = "";
+		[MaxLength(100)]
 		public string PrivateNotes { get; set; } = "";
 		public int FlightCount { get; set; } = -1;
 		public Decimal Hours { get; set; } = -1;
 		public DateTime? FirstFlight { get; set; } = DateTime.Now.AddYears(-5);
 		public DateTime? LastFlight { get; set; } = DateTime.Now.AddYears(-5);
+		[MaxLength(100)]
 		public string Notes { get; set; } = "";
 
 	}

@@ -1,6 +1,7 @@
 ﻿using ClubLogBook.Core.Common;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace ClubLogBook.Core.Entities
 {
@@ -22,7 +23,7 @@ namespace ClubLogBook.Core.Entities
 	}
 	public interface IWeightAndBalance<TAircraft>
 	{
-		int WeightAndBalanceId { get; set; }
+		int Id { get; set; }
 		DateTime IssueDate { get; set; }
 		decimal EmptyWeight { get;  }
 		decimal EmptyWeightLongCg { get;  }
@@ -49,15 +50,20 @@ namespace ClubLogBook.Core.Entities
 			FuelLoadingTableFormat = $"JSON";
 
 		}
-		public int WeightAndBalanceId { get; set; }
+		[Required]
 		public DateTime IssueDate { get; set; }
+		[Required]
 		public decimal EmptyWeight { get; private set; }
+		[Required]
 		public decimal EmptyWeightLongCg { get; private set; }
+		[Required]
 		public decimal EmptyWeightLatCg { get; private set; }
 		public string Stations { get; set; }
 		public string StationFormat { get; set; }
 		public string FuelLoadingTable { get; set; }
 		public string FuelLoadingTableFormat { get; set; }
 		public virtual ICollection<WBProfile> Profile { get; set; } = new List<WBProfile>();
+		[Timestamp]
+		public byte[] RowVersion { get; set; }
 	}
 }

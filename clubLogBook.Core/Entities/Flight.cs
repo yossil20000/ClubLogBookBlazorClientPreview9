@@ -4,6 +4,7 @@ using System.Text;
 using System.Linq;
 using ClubLogBook.Core.Interfaces;
 using ClubLogBook.Core.Common;
+using System.ComponentModel.DataAnnotations;
 
 namespace ClubLogBook.Core.Entities
 {
@@ -41,18 +42,25 @@ namespace ClubLogBook.Core.Entities
 
 
 		}
-
+		[Required]
 		public DateTime Date { get; set; } = DateTime.Now;
-
+		[Required]
 		virtual public Aircraft Aircraft { get; set; }
+		[Required]
 		virtual public Pilot Pilot { get; set; }
+		[MaxLength(100)]
 		public string Routh { get; set; } = "";
-
+		[Required]
 		public Decimal EngineStart { get; set; } = 0;
+		[Required]
 
 		public Decimal EngineEnd { get; set; } = 0;
+		[Required]
 		public Decimal HobbsStart { get; set; } = 0;
+		[Required]
 		public Decimal HobbsEnd { get; set; } = 0;
+		[Timestamp]
+		public byte[] RowVersion { get; set; }
 		public override string ToString()
 		{
 			StringBuilder sb = new StringBuilder();

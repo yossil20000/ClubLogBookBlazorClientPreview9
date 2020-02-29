@@ -1,6 +1,8 @@
 ﻿using ClubLogBook.Core.Common;
 using ClubLogBook.Core.Interfaces;
 using System;
+using System.ComponentModel.DataAnnotations;
+
 namespace ClubLogBook.Core.Entities
 {
 	
@@ -14,7 +16,11 @@ namespace ClubLogBook.Core.Entities
 		
 		public Decimal PerMonth { get; set; }
 		public Decimal PerHour { get; set; }
+		[Required]
+		[MaxLength(10)]
 		public string TailNumber { get; set; } = "";
+		
+		[MaxLength(100)]
 		public string Description { get; set; } = "";
 		public override string ToString()
 		{

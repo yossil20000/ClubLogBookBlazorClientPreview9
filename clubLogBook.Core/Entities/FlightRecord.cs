@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 using ClubLogBook.Core.Common;
 using ClubLogBook.Core.Interfaces;
@@ -93,6 +94,8 @@ namespace ClubLogBook.Core.Entities
 		//public virtual FlightProperty FlightPropertie { get; set; }
 		//public virtual Student Student { get; set; }
 		public virtual Aircraft Aircraft { get; set; }
+		[Timestamp]
+		public byte[] RowVersion { get; set; }
 		public override string ToString()
 		{
 			StringBuilder sb = new StringBuilder();

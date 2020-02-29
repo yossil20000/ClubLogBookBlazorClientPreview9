@@ -65,3 +65,13 @@ dotnet tool uninstall --global dotn
 dotnet tool install --global dotnet-ef --version 3.1.0-preview3.19554.8
 
 dotnet tool install --global dotnet-ef --version 3.1.0
+dotnet tool uninstall --global dotnet-ef
+dotnet tool install --global dotnet-ef --version 3.1.2
+
+
+29/02/20
+
+dotnet ef migrations add Annotation --context ApplicationDbContext --startup-project ..\clublogbook.server 
+ dotnet ef database update Annotation --context ApplicationDbContext --startup-project ..\Clublogbook.server
+cd "D:\Users\yossil\Documents\Visual Studio 2019\ProjectsOnYossil\ClubLogBookBlazorClientPreview9\ClubLogBook.Server"
+ dotnet ef database update initialIdentity --context ApplicationIdentityDbContext --startup-project ..\Clublogbook.server

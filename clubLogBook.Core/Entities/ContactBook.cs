@@ -11,7 +11,9 @@ namespace ClubLogBook.Core.Entities
 	{
 
 		public string Name { get; set; } = "Global";
-		public ContactBook() { }
+		public ContactBook() {
+			Contacts = new HashSet<Contact>();
+		}
 		public void  AddContact(Contact contact)
 		{
 			if (!Contacts.Any(i => i.Id == contact.Id) || contact.Id == 0)

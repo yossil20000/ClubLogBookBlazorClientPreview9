@@ -11,6 +11,7 @@ using System.Security.Cryptography.X509Certificates;
 using ClubLogBook.Core.Entities;
 using ClubLogBook.Core.Interfaces;
 using ClubLogBook.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore.Internal;
 //using SixLabors.ImageSharp;
 //using SixLabors.ImageSharp.PixelFormats;
 
@@ -653,8 +654,14 @@ namespace ClubLogBook.Infrastructure.Data.Import
 
                         if (row.Length == 8)
                         {
-	                        Member pilot = db.Members.SingleOrDefault(x => x.IdNumber == row[1]);
                             total++;
+                            Member pilot = db.Members.SingleOrDefault(x => x.IdNumber == row[1]);
+                            if(pilot == null)
+                            {
+                                Trace.WriteLine($"ConverBuzClubAirplaneFlight: Flight: Pilot is null in row :{string.Join(",",row)}");
+                                continue;
+                            }
+                            
                             fl.Aircraft = clubAircraft;
 	                        fl.Pilot = pilot as Pilot;
                             fl.Date = DateTime.ParseExact(row[2], formats, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None);
@@ -688,7 +695,8 @@ namespace ClubLogBook.Infrastructure.Data.Import
                             }
 
                             airplaneLogBook.Add(fl);
-
+                            //db.AircraftLogBooks.Update(airplaneLogBook);
+                            //db.SaveChanges();
                         }
                         else
                         {
@@ -765,11 +773,11 @@ namespace ClubLogBook.Infrastructure.Data.Import
                             cpt.DateOfBirth = DateTime.Now;
 							EMAIL eMAIL = new EMAIL() { EMail = row[3] };
 							Phone phone = new Phone() { PhoneNumber = row[4], Type = ContactType.HOME };
-							contact.AddEmail(eMAIL);
-							contact.AddPhone(phone);
+							contact.EMAILs.Add(eMAIL);
+							contact.Phones.Add(phone);
 							Address address = new Address();
 							address.Street = row[6];
-                            contact.AddAddress( address);
+                            contact.Addresses.Add( address);
 							//contactBook.AddContact(contact);
 							//db.Addresses.Update(address);
 							//db.EMAILs.Update(eMAIL);
@@ -797,7 +805,7 @@ namespace ClubLogBook.Infrastructure.Data.Import
                         {
                             Trace.WriteLine("Error Num Of Field");
                         }
-						contactBook.AddContact(contact);
+						contactBook.Contacts.Add(contact);
 						//db.Contacts.Add(contact);
 						//db.SaveChanges();
 						

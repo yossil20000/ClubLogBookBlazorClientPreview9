@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 using ClubLogBook.Core.Common;
 using ClubLogBook.Core.Interfaces;
@@ -25,6 +26,8 @@ namespace ClubLogBook.Core.Entities
 			flights.Add(flight);
 		}
 		public int AircraftLogBookId { get; set; }
+		[Required]
+		[MaxLength(10)]
 		public string TaiNumber { get; set; } = "";
 		public virtual ICollection<Flight> Flights => flights;
 	}

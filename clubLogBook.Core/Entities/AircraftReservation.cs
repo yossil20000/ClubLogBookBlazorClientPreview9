@@ -1,6 +1,7 @@
 ﻿using ClubLogBook.Core.Common;
 using ClubLogBook.Core.Interfaces;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace ClubLogBook.Core.Entities
 {
@@ -24,16 +25,21 @@ namespace ClubLogBook.Core.Entities
 		public AircraftReservation() { }
 	
 		
-	
+		[Required]
 		public DateTime DateFrom { get; set; }
-
+		[Required]
 		public DateTime DateTo { get; set; }
 
 		public string IdNumber { get; set; }
-
+	
+		[MaxLength(10)]
 		public string TailNumber { get; set; }
+		
+		[MaxLength(100)]
 		public string ReservationInfo { get; set; } = "";
+		[Required]
 		public int AircraftId { get; set; }
+		[Required]
 		public int PilotId { get; set; }
 		public static bool operator >(AircraftReservation f1, AircraftReservation f2)
 		{

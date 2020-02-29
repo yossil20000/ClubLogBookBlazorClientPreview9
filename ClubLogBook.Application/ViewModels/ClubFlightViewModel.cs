@@ -20,6 +20,7 @@ namespace ClubLogBook.Application.ViewModels
 			Pilot = new PilotSelectViewModel();
 			Aircraft = new AircraftViewModel();
 		}
+
 		public ClubFlightViewModel(DateTime date, string routh, Decimal es, Decimal ee)
 		{
 			Date = date;
@@ -33,7 +34,13 @@ namespace ClubLogBook.Application.ViewModels
 
 
 		}
-		public ClubFlightViewModel(Pilot pilot,Aircraft aircraft)
+		public ClubFlightViewModel(decimal maxEngien, decimal maxHobbs)
+		{
+			EngineStart = EngineEnd = maxEngien;
+			HobbsStart = HobbsEnd = maxHobbs;
+
+		}
+		public ClubFlightViewModel(Pilot pilot, Aircraft aircraft)
 		{
 			Pilot = new PilotSelectViewModel(pilot);
 			Aircraft = new AircraftViewModel(aircraft);
@@ -51,6 +58,8 @@ namespace ClubLogBook.Application.ViewModels
 		public Decimal EngineEnd { get; set; }
 		public Decimal HobbsStart { get; set; }
 		public Decimal HobbsEnd { get; set; }
+		public bool IsValid { get; set; } = true;
+		public InvoiceStateViewModel InvoiceStateViewModel  { get;set;} = InvoiceStateViewModel.Initial;
 		public override string ToString()
 		{
 			StringBuilder sb = new StringBuilder();

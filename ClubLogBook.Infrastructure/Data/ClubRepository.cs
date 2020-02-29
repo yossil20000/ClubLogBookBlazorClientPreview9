@@ -18,7 +18,7 @@ namespace ClubLogBook.Infrastructure.Data
 		public Club GetAllByIdAsync(int id)
 		{
 			//Task<Club> club;
-			var membersVar = _dbContex.Members;
+			var membersVar = _dbContex.Set<Pilot>();
 			List<Pilot> members1 = _dbContex.Members.ToList();
 			//List<EMAIL> eMAILs = _dbContex.EMAILs.ToList();
 			//List<Phone> phones = _dbContex.Phones.ToList();

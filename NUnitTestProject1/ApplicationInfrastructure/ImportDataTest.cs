@@ -13,7 +13,7 @@ namespace UnitsTest.ApplicationInfrastructure
 		public void InitContext()
 		{
 			var dbOptions = new DbContextOptionsBuilder<ApplicationDbContext>()
-			   .UseSqlServer("Server=(localdb)\\mssqllocaldb;Integrated Security=true;Initial Catalog=Yossil_16;")
+			   .UseSqlServer("Server=(localdb)\\mssqllocaldb;Integrated Security=true;Initial Catalog=Yossil_17;")
 			   .Options;
 			_context = new ApplicationDbContext(dbOptions);
 		}

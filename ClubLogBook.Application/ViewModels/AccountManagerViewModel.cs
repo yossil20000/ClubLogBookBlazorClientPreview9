@@ -13,9 +13,9 @@ namespace ClubLogBook.Application.ViewModels
 
 
 	}
-	public enum InvoiceStateVieModel
+	public enum InvoiceStateViewModel
 	{
-
+		Initial,
 		Create,
 		Deleted,
 		InTransaction,
@@ -34,7 +34,7 @@ namespace ClubLogBook.Application.ViewModels
 		public decimal Amount { get; set; } = 0;
 		public string Description { get; set; } = "";
 		public InvoiceTypeViewModel InvoiceType { get; set; } = InvoiceTypeViewModel.Flight;
-		public InvoiceStateVieModel InvoiceState { get; set; } = InvoiceStateVieModel.Create;
+		public InvoiceStateViewModel InvoiceState { get; set; } = InvoiceStateViewModel.Create;
 		public int InvoiceReferance { get; set; } = 0;
 
 		public override string ToString()

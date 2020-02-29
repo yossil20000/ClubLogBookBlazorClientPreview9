@@ -56,10 +56,17 @@ namespace ClubLogBook.Server.Controllers
             var result = await mediator.Send(getAccountByMemberId);
             return result;
         }
-       
+        [HttpPost]
+        public async Task<IActionResult> PostCreateAccounts()
+        {
+            CancellationToken ct = new CancellationToken();
+            CreateAccountsCommand createAccountsCommand = new CreateAccountsCommand();
+            var result = await mediator.Send(createAccountsCommand, ct);
+            return Ok(result);
+        }
 
         // POST: api/Account
-       
+        [HttpPost]
         public async Task<IActionResult> PostCreateAccount(int memeberId, string memberInfo, string description)
         {
             CancellationToken ct = new CancellationToken();
