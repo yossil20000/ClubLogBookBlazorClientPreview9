@@ -60,13 +60,13 @@ namespace UnitsTest.ApplicationCore.MemberTest
 			AddressBuilder builderAddress = new AddressBuilder();
 			MemberBuilder builder = new MemberBuilder();
 			Pilot member = builder.WithDefaultValues();
-			member.Contact.AddUpdateAddress(builderAddress.WithDefaultValues());
-			member.Contact.AddUpdateEmail(new EMAIL() { Id = 1, EMail = "yos.1965@gmail.com" });
-			member.Contact.AddUpdatePhone(new Phone() { Id = 1, PhoneNumber = "0549050750", Type = ContactType.HOME });
-			club.AddMember(member);
-			Pilot p = new Pilot();
-			p.Id = 1;
-			club.AddMember(p);
+			//member.Contact.AddUpdateAddress(builderAddress.WithDefaultValues());
+			//member.Contact.AddUpdateEmail(new EMAIL() { Id = 1, EMail = "yos.1965@gmail.com" });
+			//member.Contact.AddUpdatePhone(new Phone() { Id = 1, PhoneNumber = "0549050750", Type = ContactType.HOME });
+			//club.AddMember(member);
+			//Pilot p = new Pilot();
+			//p.Id = 1;
+			//club.AddMember(p);
 			
 		}
 	}

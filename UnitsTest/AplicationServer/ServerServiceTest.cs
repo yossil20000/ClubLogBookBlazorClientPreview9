@@ -47,10 +47,10 @@ namespace UnitsTest.AplicationServer
 				//var p = clubContacs.Where(i => i.IdNumber == "059828392").FirstOrDefault();
 				ClubContactsViewModel clubContactUpdate = new ClubContactsViewModel();
 				Contact contact = new Contact();
-				contact.AddUpdateAddress(new Address() { City = "Gilon", Country = "Israel", State = "IL", Zipcode = "2010300", Street = "Ofir 60", Type = ContactType.HOME });
+				contact.Addresses.Add(new Address() { City = "Gilon", Country = "Israel", State = "IL", Zipcode = "2010300", Street = "Ofir 60", Type = ContactType.HOME });
 				
-				contact.AddUpdateEmail(new EMAIL() { EMail = "yonyon@gmail.com", Type = ContactType.WORK });
-				contact.AddUpdatePhone(new Phone() { PhoneNumber = "05490777553", Type = ContactType.HOME });
+				contact.EMAILs.Add(new EMAIL() { EMail = "yonyon@gmail.com", Type = ContactType.WORK });
+				contact.Phones.Add(new Phone() { PhoneNumber = "05490777553", Type = ContactType.HOME });
 				clubContactUpdate.DateOfBirth = DateTime.Now;
 				
 				//var members = await clubService.GetClubMembers("BAZ");

@@ -1,19 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace ClubLogBook.Application.ViewModels
 {
-
+	
 	public class FlightRecordIndexViewModel
 	{
 		public List<ClubFlightViewModel> FlightRecords { get; set; }
 		public FilterViewModel FilterViewModel { get; set; } = new FilterViewModel();
 		public PaginationInfoViewModel PaginationInfo { get; set; } = new PaginationInfoViewModel();
-		public void MarkNonValidFlight()
-		{
-			FlightRecords.OrderBy(x => x.EngineStart).ThenBy(x => x.EngineEnd).Select(x => x.EngineEnd - x )
-		}
+		
 	}
 	public class RecordsViewModel<T> where T : class
 	{

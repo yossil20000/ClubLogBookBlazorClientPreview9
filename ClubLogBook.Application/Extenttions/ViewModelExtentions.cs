@@ -10,10 +10,21 @@ namespace ClubLogBook.Application.Extenttions
 {
 	public static class ViewModelExtentions
 	{
+		public static void MarkNonValidFlight(this List<ClubFlightViewModel> FlightRecords)
+		{
+			var order = FlightRecords.OrderBy(x => x.EngineStart).ThenBy(x => x.EngineEnd).ToList();
+			for (int i = 0; i < order.Count; i++)
+			{
+				if (order[i].EngineEnd != order[i + 1].EngineStart)
+				{
+					order[i].IsValid = false;
+				}
+			}
+		}
 		//public static void CopyPilot(this ClubContactsViewModel obj,PilotSelectViewModel pilot)
 		//{
 		//	obj.DateOfBirth = pilot.DateOfBirth;
-			
+
 		//	obj.Gender = pilot.Gender;
 		//	obj.FirstName = pilot.FirstName;
 		//	obj.LastName = pilot.LastName;

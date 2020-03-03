@@ -126,7 +126,7 @@ namespace ClubLogBook.Server.Services
 					Routh = i.Routh
 
 
-				}),
+				}) as List<ClubFlightViewModel>,
 				FilterViewModel = new FilterViewModel() { 
 					AirplaneSelects = await GetAirplans(1),
 					ClubSelects = await GetClubs(1),

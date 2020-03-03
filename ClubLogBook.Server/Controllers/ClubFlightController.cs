@@ -16,6 +16,8 @@ using MediatR;
 using ClubLogBook.Application.Accounts.Queries.GetAccount;
 using ClubLogBook.Application.Flights.Queries;
 using ClubLogBook.Application.Flights.Commands;
+using ClubLogBook.Application.Extenttions;
+
 namespace ClubLogBook.Server.Controllers
 {
 	
@@ -53,6 +55,7 @@ namespace ClubLogBook.Server.Controllers
 			GetAllFlightsQuery getAllFlights = new GetAllFlightsQuery();
 			flightRecordIndexViewModel = await _mediator.Send(getAllFlights);
 			flightRecordIndexViewModel.FilterViewModel = await FilterViewModelPut(flightRecordIndexViewModel.FilterViewModel);
+			flightRecordIndexViewModel.FlightRecords.MarkNonValidFlight();
 			return flightRecordIndexViewModel; 
 			
 			//return await _flightRecordViewModelService.GetRecord(0, 10,null, null);

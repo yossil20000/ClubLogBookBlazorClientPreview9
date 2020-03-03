@@ -73,5 +73,9 @@ dotnet tool install --global dotnet-ef --version 3.1.2
 
 dotnet ef migrations add Annotation --context ApplicationDbContext --startup-project ..\clublogbook.server 
  dotnet ef database update Annotation --context ApplicationDbContext --startup-project ..\Clublogbook.server
+ //fOR hOME
 cd "D:\Users\yossil\Documents\Visual Studio 2019\ProjectsOnYossil\ClubLogBookBlazorClientPreview9\ClubLogBook.Server"
  dotnet ef database update initialIdentity --context ApplicationIdentityDbContext --startup-project ..\Clublogbook.server
+
+//for work
+cd "C:\Users\Administrator\Documents\Visual Studio 2019\Projects\ClubLogBookBlazorClientPreview9\ClubLogBook.Infrastructure"
