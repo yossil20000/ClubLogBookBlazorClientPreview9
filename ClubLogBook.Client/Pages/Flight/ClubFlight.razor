@@ -81,9 +81,9 @@
                     {
                         <div class="c_flights__list__row">
                             <div class="a-f-l-header-c-1"><button class="btn btn-grid-sort" @onclick="SortDate"><u>Flight</u></button></div>
-                            <div class="a-f-l-data-c-1">@flight.Date.ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)</div>
+                            <div class="a-f-l-data-c-1" style="background-color:aqua;">@flight.Date.ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)</div>
                             <div class="a-f-l-header-c-2"><button class="btn btn-grid-sort" @onclick="SortName"><u>Pilot</u></button></div>
-                            <div class="a-f-l-data-c-2">@flight.Pilot.FirstName @flight.Pilot.LastName</div>
+                            <div class="a-f-l-data-c-2 "  style="@flight.IsValid ? background-color:red; : background-color:yellow;">@flight.Pilot.FirstName @flight.Pilot.LastName</div>
                             <div class="a-f-l-header-c-3"><u>Aircraft</u></div>
                             <div class="a-f-l-data-c-3">@flight.Aircraft.TailNumber</div>
                             <div class="a-f-l-header-c-4"><u>Routh</u></div>

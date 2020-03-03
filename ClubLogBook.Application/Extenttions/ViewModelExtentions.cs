@@ -13,11 +13,12 @@ namespace ClubLogBook.Application.Extenttions
 		public static void MarkNonValidFlight(this List<ClubFlightViewModel> FlightRecords)
 		{
 			var order = FlightRecords.OrderBy(x => x.EngineStart).ThenBy(x => x.EngineEnd).ToList();
-			for (int i = 0; i < order.Count; i++)
+			for (int i = 0; i < order.Count - 1; i++)
 			{
 				if (order[i].EngineEnd != order[i + 1].EngineStart)
 				{
 					order[i].IsValid = false;
+					order[i+1].IsValid = false;
 				}
 			}
 		}
