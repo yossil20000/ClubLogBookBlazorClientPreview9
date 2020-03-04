@@ -75,31 +75,49 @@
                     </div>
 
                 </div>
-               
+                <div class="c_flights__command">
+                    <div>
+                        <button class="btn btn-grid-sort" @onclick="SortEngienStart"><u>Add New Flight</u></button>
+
+                    </div>
+                   
+                    <div>
+                        <button class="btn btn-grid-sort" ><u>Show Not Valid</u><input type="checkbox"  @bind-value="IsShowNotValid" @onchange="@(async () => await OnIsShowNotValid())"/></button>
+
+                    </div>
+                </div>
                 <div class="c_flights__content">
                     @foreach (var flight in flights)
                     {
-                        <div class="c_flights__list__row">
-                            <div class="a-f-l-header-c-1"><button class="btn btn-grid-sort" @onclick="SortDate"><u>Flight</u></button></div>
-                            <div class="a-f-l-data-c-1" style="background-color:aqua;">@flight.Date.ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)</div>
-                            <div class="a-f-l-header-c-2"><button class="btn btn-grid-sort" @onclick="SortName"><u>Pilot</u></button></div>
-                            <div class="a-f-l-data-c-2 "  style="@flight.IsValid ? background-color:red; : background-color:yellow;">@flight.Pilot.FirstName @flight.Pilot.LastName</div>
-                            <div class="a-f-l-header-c-3"><u>Aircraft</u></div>
-                            <div class="a-f-l-data-c-3">@flight.Aircraft.TailNumber</div>
-                            <div class="a-f-l-header-c-4"><u>Routh</u></div>
-                            <div class="a-f-l-data-c-4">@flight.Routh</div>
-                            <div class="a-f-l-header-c-5"><u>Hobbs Start</u></div>
-                            <div class="a-f-l-data-c-5">@flight.HobbsStart</div>
-                            <div class="a-f-l-header-c-6"><u>Hobbs End</u></div>
-                            <div class="a-f-l-data-c-6">@flight.HobbsEnd</div>
-                            <div class="a-f-l-header-c-7"><button class="btn btn-grid-sort" @onclick="SortEngienStart"><u>Engien Start</u></button></div>
-                            <div class="a-f-l-data-c-7">@flight.EngineStart</div>
-                            <div class="a-f-l-header-c-8"><u>Engien End</u></div>
-                            <div class="a-f-l-data-c-8">@flight.EngineEnd</div>
-                            <div class="a-f-l-header-c-9"><button class="btn btn-grid-sort" @onclick="@(async () => await OnShowCreate())"><u>Create</u></button></div>
-                            <div class="a-f-l-data-c-9"><button class="btn btn-grid-sort" @onclick="@(async () => await OnShowEdit(flight.Id))"><u>Edit</u></button></div>
+                        @if(flight.IsValid)
+                        {
+                            isValidClass = "";
+                        }
+                        else
+                        {
+                            isValidClass = "is-not-valid-data";
+                        }
+                    <div class="c_flights__list__row @isValidClass">
+                        <div class="a-f-l-header-c-1"><button class="btn btn-grid-sort" @onclick="SortDate"><u>Flight</u></button></div>
+                        <div class="a-f-l-data-c-1" >@flight.Date.ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)</div>
+                        <div class="a-f-l-data-c-2 ">@flight.Pilot.FirstName @flight.Pilot.LastName</div>
+                        <div class="a-f-l-header-c-2"><button class="btn btn-grid-sort" @onclick="SortName"><u>Pilot</u></button></div>
+                        <div class="a-f-l-header-c-3"><u>Aircraft</u></div>
+                        <div class="a-f-l-data-c-3 ">@flight.Aircraft.TailNumber</div>
+                        <div class="a-f-l-header-c-4"><u>Routh</u></div>
+                        <div class="a-f-l-data-c-4">@flight.Routh</div>
+                        <div class="a-f-l-header-c-5"><u>Hobbs Start</u></div>
+                        <div class="a-f-l-data-c-5">@flight.HobbsStart</div>
+                        <div class="a-f-l-header-c-6"><u>Hobbs End</u></div>
+                        <div class="a-f-l-data-c-6">@flight.HobbsEnd</div>
+                        <div class="a-f-l-header-c-7"><button class="btn btn-grid-sort" @onclick="SortEngienStart"><u>Engien Start</u></button></div>
+                        <div class="a-f-l-data-c-7">@flight.EngineStart</div>
+                        <div class="a-f-l-header-c-8"><u>Engien End</u></div>
+                        <div class="a-f-l-data-c-8">@flight.EngineEnd</div>
+                        <div class="a-f-l-header-c-9"><button class="btn btn-grid-sort" @onclick="@(async () => await OnShowCreate())"><u>Create</u></button></div>
+                        <div class="a-f-l-data-c-9"><button class="btn btn-grid-sort" @onclick="@(async () => await OnShowEdit(flight.Id))"><u>Edit</u></button></div>
 
-                        </div>
+                    </div>
                     }
                 </div>
             </div>
@@ -244,6 +262,21 @@
     ClubFlightViewModel editFlightModel { get; set; }
     int selectedAircraft { get; set; }
     int selectedPilot { get; set; }
+    string isValidClass { get; set; } = "";
+    bool IsShowNotValid { get; set; } = false;
+
+    private async Task OnIsShowNotValid()
+    {
+        if(IsShowNotValid)
+        {
+            flights = FlightRecordIndexViewModel.FlightRecords.Where(x => x.IsValid);
+        }
+        else
+        {
+            flights = FlightRecordIndexViewModel.FlightRecords;
+            OnActualPageChanged();
+        }
+    }
     private async Task OnShowCreate()
     {
 
