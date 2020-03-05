@@ -89,6 +89,7 @@ namespace ClubLogBook.Server.Controllers
 			filterViewModel.ClubFilterApplied = filterViewModel.ClubSelects.FirstOrDefault().Id;
 			filterViewModel.AirplaneFilterApplied = filterViewModel.AirplaneSelects.FirstOrDefault().Id;
 			filterViewModel.PilotFilterApplied = filterViewModel.PilotSelects.FirstOrDefault().Id;
+
 			return filterViewModel;
 
 		}
@@ -103,6 +104,7 @@ namespace ClubLogBook.Server.Controllers
 			//getFilteredFlightsQuery.PaginationInfoViewModel = flightRecordIndexViewModel.PaginationInfo;
 
 			var result = await _mediator.Send(getFilteredFlightsQuery);
+			flightRecordIndexViewModel.FlightRecords.MarkNonValidFlight();
 			return result;
 			//flightRecordIndexViewModel.FlightRecords = result.FlightRecords;
 			//return flightRecordIndexViewModel;

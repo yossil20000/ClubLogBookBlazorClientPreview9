@@ -82,7 +82,7 @@
                     </div>
                    
                     <div>
-                        <button class="btn btn-grid-sort" ><u>Show Not Valid</u><input type="checkbox"  @bind-value="IsShowNotValid" @onchange="@(async () => await OnIsShowNotValid())"/></button>
+                        <button class="btn btn-grid-sort" ><u>Show Not Valid</u><input type="checkbox"  @onchange="eventArgs => { OnIsShowNotValid( (bool)eventArgs.Value); }"/></button>
 
                     </div>
                 </div>
@@ -91,15 +91,15 @@
                     {
                         @if(flight.IsValid)
                         {
-                            isValidClass = "";
+                            isValidClass = "background-color-yellow";
                         }
                         else
                         {
                             isValidClass = "is-not-valid-data";
                         }
-                    <div class="c_flights__list__row @isValidClass">
+                    <div class="c_flights__list__row is-not-valid-data">
                         <div class="a-f-l-header-c-1"><button class="btn btn-grid-sort" @onclick="SortDate"><u>Flight</u></button></div>
-                        <div class="a-f-l-data-c-1" >@flight.Date.ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)</div>
+                        <div class="a-f-l-data-c-1 @isValidClass" >@flight.Date.ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)</div>
                         <div class="a-f-l-data-c-2 ">@flight.Pilot.FirstName @flight.Pilot.LastName</div>
                         <div class="a-f-l-header-c-2"><button class="btn btn-grid-sort" @onclick="SortName"><u>Pilot</u></button></div>
                         <div class="a-f-l-header-c-3"><u>Aircraft</u></div>
@@ -115,7 +115,7 @@
                         <div class="a-f-l-header-c-8"><u>Engien End</u></div>
                         <div class="a-f-l-data-c-8">@flight.EngineEnd</div>
                         <div class="a-f-l-header-c-9"><button class="btn btn-grid-sort" @onclick="@(async () => await OnShowCreate())"><u>Create</u></button></div>
-                        <div class="a-f-l-data-c-9"><button class="btn btn-grid-sort" @onclick="@(async () => await OnShowEdit(flight.Id))"><u>Edit</u></button></div>
+                        <div class="a-f-l-data-c-9 is-not-valid-data"><button class="btn btn-grid-sort" @onclick="@(async () => await OnShowEdit(flight.Id))"><u>Edit</u></button></div>
 
                     </div>
                     }
@@ -265,24 +265,27 @@
     string isValidClass { get; set; } = "";
     bool IsShowNotValid { get; set; } = false;
 
-    private async Task OnIsShowNotValid()
+    private void OnIsShowNotValid(bool value)
     {
-        if(IsShowNotValid)
+        if(value)
         {
-            flights = FlightRecordIndexViewModel.FlightRecords.Where(x => x.IsValid);
+            flights = FlightRecordIndexViewModel.FlightRecords.Where(x => x.IsValid == false);
+            PageMessage = $"Non Valid Flight {flights.Count()}";
         }
         else
         {
             flights = FlightRecordIndexViewModel.FlightRecords;
             OnActualPageChanged();
+
         }
+
     }
     private async Task OnShowCreate()
     {
 
 
-        decimal maxEngien = 5000;/*FlightRecordIndexViewModel.FlightRecords.Max(x => x.EngineEnd);*/
-        decimal maxhobbs = 6000; // FlightRecordIndexViewModel.FlightRecords.Max(x => x.HobbsEnd);
+        decimal maxEngien = FlightRecordIndexViewModel.FlightRecords.Max(x => x.EngineEnd);
+        decimal maxhobbs = FlightRecordIndexViewModel.FlightRecords.Max(x => x.HobbsEnd);
         editFlightModel = new ClubFlightViewModel(maxEngien,maxhobbs);
         bShowEdit = true;
         bIsCreateFlight = true;
