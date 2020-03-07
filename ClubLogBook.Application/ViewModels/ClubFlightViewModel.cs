@@ -38,6 +38,8 @@ namespace ClubLogBook.Application.ViewModels
 		{
 			EngineStart = EngineEnd = maxEngien;
 			HobbsStart = HobbsEnd = maxHobbs;
+			Pilot = new PilotSelectViewModel();
+			Aircraft = new AircraftViewModel();
 
 		}
 		public ClubFlightViewModel(Pilot pilot, Aircraft aircraft)

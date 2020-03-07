@@ -77,27 +77,28 @@
                 </div>
                 <div class="c_flights__command">
                     <div>
-                        <button class="btn btn-grid-sort" @onclick="SortEngienStart"><u>Add New Flight</u></button>
+                        <button type="button" class="btn btn-grid-sort" @onclick="@(async () => await OnShowCreate())"><u>Add New Flight</u></button>
 
                     </div>
                    
                     <div>
-                        <button class="btn btn-grid-sort" ><u>Show Not Valid</u><input type="checkbox"  @onchange="eventArgs => { OnIsShowNotValid( (bool)eventArgs.Value); }"/></button>
+                        <button class="btn btn-grid-sort" ><p><u>Show Not Valid</u><input type="checkbox" @onchange="eventArgs => { OnIsShowNotValid((bool)eventArgs.Value); }" /></p></button>
 
                     </div>
                 </div>
                 <div class="c_flights__content">
+                    
                     @foreach (var flight in flights)
                     {
                         @if(flight.IsValid)
                         {
-                            isValidClass = "background-color-yellow";
+                            isValidClass = "";
                         }
                         else
                         {
                             isValidClass = "is-not-valid-data";
                         }
-                    <div class="c_flights__list__row is-not-valid-data">
+                    <div class="c_flights__list__row">
                         <div class="a-f-l-header-c-1"><button class="btn btn-grid-sort" @onclick="SortDate"><u>Flight</u></button></div>
                         <div class="a-f-l-data-c-1 @isValidClass" >@flight.Date.ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)</div>
                         <div class="a-f-l-data-c-2 ">@flight.Pilot.FirstName @flight.Pilot.LastName</div>
@@ -114,8 +115,8 @@
                         <div class="a-f-l-data-c-7">@flight.EngineStart</div>
                         <div class="a-f-l-header-c-8"><u>Engien End</u></div>
                         <div class="a-f-l-data-c-8">@flight.EngineEnd</div>
-                        <div class="a-f-l-header-c-9"><button class="btn btn-grid-sort" @onclick="@(async () => await OnShowCreate())"><u>Create</u></button></div>
-                        <div class="a-f-l-data-c-9 is-not-valid-data"><button class="btn btn-grid-sort" @onclick="@(async () => await OnShowEdit(flight.Id))"><u>Edit</u></button></div>
+                        <div class="a-f-l-header-c-9">Action</div>
+                        <div class="a-f-l-data-c-9  @isValidClass"><button class="btn btn-grid-sort" @onclick="@(async () => await OnShowEdit(flight.Id))"><u>Edit</u></button></div>
 
                     </div>
                     }
@@ -215,7 +216,7 @@
                         @if (bIsCreateFlight)
                         {
                             <button class="btn btn-grid-sort " @onclick="@(async () => await OnEditCancel())"><u>Cancel</u></button>
-                            <button class="btn btn-grid-sort c_grid__edit__content__row__description grid-input" @onclick="@(async () => await CreateFlight())"><u>Create & Save</u></button>
+                            <button class="btn btn-grid-sort c_grid__edit__content__row__description grid-input" @onclick="@(async () => await OnCreateFlight())"><u>Create & Save</u></button>
                         }
                         else
                         {
@@ -264,6 +265,24 @@
     int selectedPilot { get; set; }
     string isValidClass { get; set; } = "";
     bool IsShowNotValid { get; set; } = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        FlightRecordIndexViewModel = await Http.GetJsonAsync<FlightRecordIndexViewModel>("api/ClubFlight/FlightWithFilter");
+        flights = FlightRecordIndexViewModel.FlightRecords.ToList();
+        FilterViewModel = FlightRecordIndexViewModel.FilterViewModel;
+        var authState = await authenticationStateTask;
+        var user = authState.User;
+        CurrentUser = await authStateProvider.CurrentUser();
+        IsCurrentAdmin = user.IsInRole(IdentityInfo.Roles.Administrators.ToString());
+
+        bInitialized = true;
+        //OnActualPageChanged();
+        System.Diagnostics.Debug.WriteLine($"ClubFlight.razor 1: OnInitializedAsync User {CurrentUser.UserName} flight Count: {flights?.Count() ?? -1}");
+        logger.LogDebug($"ClubFlight.razor : OnInitializedAsync User ");
+        System.Diagnostics.Debug.WriteLine($"ClubFlight.razor 2: OnInitializedAsync User {CurrentUser.UserName} flight Count: {flights?.Count() ?? -1}");
+
+    }
 
     private void OnIsShowNotValid(bool value)
     {
@@ -345,25 +364,7 @@
         sortEngienDescending = !sortEngienDescending;
     }
 
-    protected override async Task OnInitializedAsync()
-    {
-        FlightRecordIndexViewModel = await Http.GetJsonAsync<FlightRecordIndexViewModel>("api/ClubFlight/FlightWithFilter");
-        //flights = await Http.GetJsonAsync<ClubFlightViewModel[]>("api/ClubFlight");
-        flights = FlightRecordIndexViewModel.FlightRecords.ToList();
-        //FilterViewModel.ClubFilterApplied = null;
-        //FilterViewModel.PilotFilterApplied = 15;
-        //FilterViewModel = await Http.PostJsonAsync<FilterViewModel>("api/ClubFlight/FilterViewModelPut", FilterViewModel);
-        FilterViewModel = FlightRecordIndexViewModel.FilterViewModel;
-        var authState = await authenticationStateTask;
-        var user = authState.User;
-        CurrentUser = await authStateProvider.CurrentUser();
-        IsCurrentAdmin = user.IsInRole(IdentityInfo.Roles.Administrators.ToString());
-        bInitialized = true;
-        //OnActualPageChanged();
-        System.Diagnostics.Debug.WriteLine($"ClubFlight.razor 1: OnInitializedAsync User {CurrentUser.UserName} flight Count: {flights?.Count() ?? -1}");
-        logger.LogDebug($"ClubFlight.razor : OnInitializedAsync User ");
-        System.Diagnostics.Debug.WriteLine($"ClubFlight.razor 2: OnInitializedAsync User {CurrentUser.UserName} flight Count: {flights?.Count() ?? -1}");
-    }
+
     private void OnActualPageChanged()
     {
 
@@ -472,12 +473,14 @@
 
 
     //For Create
-    protected async Task CreateFlight()
+    protected async Task OnCreateFlight()
     {
         editFlightModel.Pilot.Id = selectedPilot;
         editFlightModel.Aircraft.Id = selectedAircraft;
         await Http.SendJsonAsync(HttpMethod.Put, "api/ClubFlight", editFlightModel);
 
+        bShowEdit = false;
+        bIsCreateFlight = false;
 
     }
     void OnCreatePilotSelected(ChangeEventArgs e)

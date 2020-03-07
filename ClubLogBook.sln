@@ -36,7 +36,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Text", "Text\Text.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClubLogBook.Components", "ClubLogBook.Components\ClubLogBook.Components.csproj", "{90EDFAEF-E610-4E36-B754-14072729012F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorClassLibrary", "BlazorClassLibrary\BlazorClassLibrary.csproj", "{CFA98D7D-FA92-4585-B9F0-E7F79D6606F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorClassLibrary", "BlazorClassLibrary\BlazorClassLibrary.csproj", "{CFA98D7D-FA92-4585-B9F0-E7F79D6606F3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

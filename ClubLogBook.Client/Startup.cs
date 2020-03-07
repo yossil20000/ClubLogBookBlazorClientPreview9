@@ -1,7 +1,9 @@
 using Blazor.Extensions.Logging;
+using ClubLogBook.Client.Models;
 using ClubLogBook.Client.Services.Contracts;
 using ClubLogBook.Client.Services.Implementations;
 using ClubLogBook.Client.States;
+using ClubLogBook.Client.ViewModel;
 using Microsoft.AspNetCore.Blazor.Http;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Builder;
@@ -20,9 +22,10 @@ namespace ClubLogBook.Client
             services.AddScoped<IAuthorizeApi, AuthorizeApi>();
             services.AddLogging(builder => builder
             .AddBrowserConsole() // Add Blazor.Extensions.Logging.BrowserConsoleLogger
-            .SetMinimumLevel(LogLevel.Trace)
-            
-    );
+            .SetMinimumLevel(LogLevel.Trace));
+            services.AddTransient<IFetchDataViewModel, FetchDataViewModel>();
+            services.AddTransient<IFetchDataModel, FetchDataModel>();
+            services.AddTransient<IBasicForecastViewModel, BasicForecastViewModel>();
         }
 
         public void Configure(IComponentsApplicationBuilder app)

@@ -1,0 +1,34 @@
+﻿@page "/fetchdatamvvm"
+@using ClubLogBook.Shared
+@using ClubLogBook.Client.ViewModel
+@using ClubLogBook.Client.Components
+
+@inject IFetchDataViewModel fetchDataViewModel
+
+
+<h1>Weather forecast</h1>
+
+<button class="btn btn-primary" @onclick="@fetchDataViewModel.ToggleTemperatureScale">@fetchDataViewModel.DisplayTemperatureScaleLong</button>
+
+<button class="btn btn-primary" @onclick="@(async () => await fetchDataViewModel.TogglePremiumMembership())">@fetchDataViewModel.DisplayPremiumToggleMessage</button>
+<p>This component demonstrates fetching data from the server.</p>
+
+@if (fetchDataViewModel.BasicForecastViewModel.WeatherForecasts == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <BasicForecast ViewModel="@fetchDataViewModel.BasicForecastViewModel" />
+}
+
+
+
+@functions {
+
+    string PageFooter { get; set; } = "I am from Fetch Data";
+    protected override async Task OnInitializedAsync()
+    {
+        await fetchDataViewModel.RetrieveForcastAsync();
+    }
+}

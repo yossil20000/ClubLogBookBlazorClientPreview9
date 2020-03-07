@@ -56,17 +56,18 @@ namespace ClubLogBook.Application.Flights.Queries
 									  select lb;
 				
 				var club = _context.Set<Club>().Find(clubId);
+				var flights1 = _context.Set<Flight>().ToList();
 				var flights = (_context.Set<Club>().Where(c => c.Id == clubId)).Select(a => a.Aircrafts).ToList();
 				//var filteredFlight = (from fl in _context.Set<Flight>()
 				//		 join ar in _context.Set<Aircraft>() on fl.Aircraft.Id equals ar.Id
 				//		 where fl.Pilot.Id == pilotId && fl.Date >= fromDate && fl.Date <= toDate
 				//		 select fl).ToList();
 
-				var filteredFlight = (from fl in _context.Set<Flight>()
+				//var filteredFlight = (from fl in _context.Set<Flight>().Include(x => x.Aircraft)
 									 
-									  where ( fl.Date >= fromDate && fl.Date <= toDate  && aircraftIds.Contains(fl.Aircraft.Id) && pilotIds.Contains(fl.Pilot.Id))
-									  select fl).ToList();
-
+				//					  where ( fl.Date.Date >= fromDate.Date && fl.Date.Date <= toDate.Date  && aircraftIds.Contains(fl.Aircraft.Id) && pilotIds.Contains(fl.Pilot.Id))
+				//					  select fl).ToList();
+				var filteredFlight = _context.Set<Flight>().Include(x => x.Aircraft).Where(fl => fl.Date.Date >= fromDate.Date && fl.Date.Date <= toDate.Date && aircraftIds.Contains(fl.Aircraft.Id) && pilotIds.Contains(fl.Pilot.Id)).Select(fl => fl).ToList(); 
 				int totalFlight = filteredFlight.Count();
 				request.flightRecordIndexView.PaginationInfo.TotalItems = filteredFlight.Count();
 				request.flightRecordIndexView.PaginationInfo.ActualPage = 1;
