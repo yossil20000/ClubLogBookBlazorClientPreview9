@@ -101,49 +101,24 @@ namespace ClubLogBook.Server.Controllers
 			
 			GetFilteredFlightsQuery getFilteredFlightsQuery = new GetFilteredFlightsQuery();
 			getFilteredFlightsQuery.flightRecordIndexView = flightRecordIndexViewModel;
-			//getFilteredFlightsQuery.PaginationInfoViewModel = flightRecordIndexViewModel.PaginationInfo;
-
 			var result = await _mediator.Send(getFilteredFlightsQuery);
 			flightRecordIndexViewModel.FlightRecords.MarkNonValidFlight();
 			return result;
-			//flightRecordIndexViewModel.FlightRecords = result.FlightRecords;
-			//return flightRecordIndexViewModel;
-			//int ActualPage = flightRecordIndexViewModel.PaginationInfo.ActualPage;
-			//switch (flightRecordIndexViewModel.PaginationInfo.PageCommand)
-			//{
-			//	case PageCommand.MoveNext:
-			//		ActualPage = flightRecordIndexViewModel.PaginationInfo.ActualPage + 1;
-			//		break;
-			//	case PageCommand.MovePrevious:
-			//		ActualPage = flightRecordIndexViewModel.PaginationInfo.ActualPage - 1;
-			//		break;
-			//}
-			//return await _flightRecordViewModelService.GetRecord(ActualPage, 10, flightRecordIndexViewModel.FilterViewModel.AirplaneFilterApplied,flightRecordIndexViewModel.FilterViewModel.PilotFilterApplied);
+			
 		}
 		// GET: api/ClubFlight
 		[HttpGet]
         public async Task<IEnumerable<ClubFlightViewModel>> Get()
         {
 			ICollection<Flight> flight;
-
-			//var air = await  _flightRecordViewModelService.GetAirplans(null);
-			//var cl = await _flightRecordViewModelService.GetClubs(null);
-			//FlightRecordIndexViewModel flightRecordIndexViewModel = await _flightRecordViewModelService.GetFlightRecord(0, 10, 8, 14);
-			//flightRecordIndexViewModel = await _flightRecordViewModelService.GetFlightRecord(1, 10, 8, 14);
-			//flightRecordIndexViewModel = await _flightRecordViewModelService.GetFlightRecord(2, 10, 8, 14);
-			//flight.Add(new Flight(DateTime.Now.AddHours(1),"LLHA",1234,1235));
-			//flight.Add(new Flight(DateTime.Now.AddHours(1), "LLSD", 2345, 2346));
-			
 			Flight f = (new Flight(DateTime.Now.AddHours(1), "LLSD", 2345, 2346));
 			flight = await _clubService.GetClubAircraftFlight("BAZ", 8);
-
-
-
 			ICollection<ClubFlightViewModel> ienumerableDest;
 
 			ienumerableDest =  _mapper.Map<ICollection<Flight>, IList<ClubFlightViewModel>>(flight);
 			return ienumerableDest;
         }
+
 		[HttpGet]
 		[Route("Aircraft")]
 		public async Task<IEnumerable<AirplaneSelectViewModel>> Aircraft()
@@ -153,23 +128,15 @@ namespace ClubLogBook.Server.Controllers
 			airplaneSelectViewModels = _mapper.Map<IEnumerable<AirplaneSelectViewModel>>(clubAircraft);
 			return airplaneSelectViewModels;
 		}
+		
 		// GET: api/ClubFlight/5
 		[HttpGet("{id}", Name = "Get")]
         public async Task<ClubFlightViewModel> Get(int id)
         {
 			Flight flight;
-
-
-			//flight.Add(new Flight(DateTime.Now.AddHours(1),"LLHA",1234,1235));
-			//flight.Add(new Flight(DateTime.Now.AddHours(1), "LLSD", 2345, 2346));
 			ClubFlightViewModel clubFlightViewModel;
-			Flight f = (new Flight(DateTime.Now.AddHours(1), "LLSD", 2345, 2346));
 			var flightlist = await _clubService.GetClubAircraftFlight("BAZ", 8);
 			flight = flightlist.Where(i => i.Id == id).FirstOrDefault();
-
-			
-
-
 			clubFlightViewModel = _mapper.Map<Flight, ClubFlightViewModel>(flight);
 			if (clubFlightViewModel.Routh == null)
 				clubFlightViewModel.Routh = "NULL";
@@ -181,9 +148,6 @@ namespace ClubLogBook.Server.Controllers
         [HttpPost]
         public async Task Post([FromBody] ClubFlightViewModel value)
         {
-			//Flight flight = _mapper.Map<Flight>(value);
-			//await _clubService.UpdateFlight(flight);
-			
 			UpdateFlightCommand updateFlightCommand = new UpdateFlightCommand();
 			updateFlightCommand.ClubFlightViewModel = value;
 			var ressult = _mediator.Send(updateFlightCommand);
@@ -192,8 +156,6 @@ namespace ClubLogBook.Server.Controllers
 		[HttpPut]
 		public async Task   Put([FromBody] ClubFlightViewModel value)
 		{
-			//Flight flight = _mapper.Map<Flight>(value);
-			//await _clubService.AddFlight("BAZ",flight, value.Aircraft.Id, value.Pilot.Id);
 			CreateFlightCommand createFlightCommand = new CreateFlightCommand();
 			createFlightCommand.ClubFlightViewModel = value;
 			createFlightCommand.ClubId = 1;
@@ -222,49 +184,5 @@ namespace ClubLogBook.Server.Controllers
 				return;
 			}
 		}
-		//public Task<IEnumerable<ClubFlightViewModel>> Get()
-		//{
-		//	List<Flight> flight = new List<Flight>();
-		//	Mapper.Initialize(cfg =>
-		//	{
-		//		cfg.AllowNullCollections = true;
-		//		cfg.CreateMap<Flight, ClubFlightViewModel>();
-		//	});
-		//	Pilot p = new Pilot();
-		//	Contact contact = new Contact();
-		//	ClubContactsViewModel clubContactsViewModel = new ClubContactsViewModel();
-		//	FlightRecord flightRecord = new FlightRecord();
-		//	FlightRecordViewModel flightRecordViewModel = new FlightRecordViewModel();
-		//	MapperUtils.MapperInit(typeof(FlightRecord), typeof(FlightRecordViewModel));
-		//	MapperUtils.MapperMap(flightRecord, flightRecordViewModel);
-
-
-		//	p.Contact.AddAddress(new Address());
-		//	p.DateOfBirth = DateTime.Now;
-		//	p.FirstName = "Yooo";
-		//	p.Contact.AddEmail(new EMAIL() { EMail = "yos.1965@gmail" });
-		//	MapperUtils.MapperInit(typeof(Pilot), typeof(ClubContactsViewModel));
-		//	MapperUtils.MapperMap(p, clubContactsViewModel);
-
-		//	flight.Add(new Flight(DateTime.Now.AddHours(1), "LLHA", 1234, 1235));
-		//	flight.Add(new Flight(DateTime.Now.AddHours(1), "LLSD", 2345, 2346));
-		//	List<ClubFlightViewModel> clubFlightViewModel = new List<ClubFlightViewModel>();
-		//	Flight f = (new Flight(DateTime.Now.AddHours(1), "LLSD", 2345, 2346));
-
-		//	Aircraft ar = new Aircraft();
-		//	f.Aircraft = ar;
-		//	f.Pilot = p;
-		//	ClubFlightViewModel2 cf2 = new ClubFlightViewModel2(f, f.Pilot) { Routh = "Yossi" };
-		//	ClubFlightViewModel1 cf = new ClubFlightViewModel1();
-		//	MapperUtils.MapperInit(typeof(ClubFlightViewModel2), typeof(ClubFlightViewModel1));
-		//	MapperUtils.MapperMap(cf2, cf);
-		//	MapperUtils.MapperInit(typeof(Flight), typeof(ClubFlightViewModel1));
-		//	MapperUtils.MapperMap(f, cf);
-		//	MapperUtils.MapperInit(typeof(Flight), typeof(ClubFlightViewModel));
-		//	List<ClubFlightViewModel> ienumerableDest = new List<ClubFlightViewModel>();
-		//	MapperUtils.MapperMap(flight, ienumerableDest);
-		//	await _mapper.Map<Flight, ClubFlightViewModel>(flight, clubFlightViewModel);
-		//	return Task.FromResult<IEnumerable<ClubFlightViewModel>>(ienumerableDest);
-		//}
 	}
 }

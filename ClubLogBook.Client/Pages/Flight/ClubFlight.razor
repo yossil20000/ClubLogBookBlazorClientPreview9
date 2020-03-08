@@ -15,113 +15,127 @@
         }
         else if (bInitialized && !bShowEdit)
         {
-            <div class="c_flights">
-                <div class="c_flights__header">
-                    @*<div class="a-f-header--1"><input type="date" class="btn-transaction c_account__cell--2-1"></div>
-                        <div class="a-f-header--2">Flights 2</div>
-                        <div class="a-f-header--3">Flights 3</div>*@
-                    <input type="date" class="btn-transaction a-f-header--1" @bind="@FlightRecordIndexViewModel.FilterViewModel.FilterDateViewModel.FilterDateFrom">
-                    <div class="btn-transaction a-f-header--2"><button @onclick="@OnSearch"><i class="material-icons">search</i></button></div>
-                    <input type="date" class="btn-transaction a-f-header--3" @bind="@FlightRecordIndexViewModel.FilterViewModel.FilterDateViewModel.FilterDateTo">
-                    <div class=" btn-transaction  a-f-filter--1">
-                        <select value="@FlightRecordIndexViewModel.FilterViewModel.ClubFilterApplied" class="custom-select" @onchange="ClubSelected">
+    <div class="c_flights">
+        <div class="c_flights__header">
+            @*<div class="a-f-header--1"><input type="date" class="btn-transaction c_account__cell--2-1"></div>
+            <div class="a-f-header--2">Flights 2</div>
+            <div class="a-f-header--3">Flights 3</div>*@
+            <input type="date" class="btn-transaction a-f-header--1" @bind="@FlightRecordIndexViewModel.FilterViewModel.FilterDateViewModel.FilterDateFrom">
+            <div class="btn-transaction a-f-header--2"><button @onclick="@OnSearch"><i class="material-icons">search</i></button></div>
+            <input type="date" class="btn-transaction a-f-header--3" @bind="@FlightRecordIndexViewModel.FilterViewModel.FilterDateViewModel.FilterDateTo">
+            <div class=" btn-transaction  a-f-filter--1">
+                <select value="@FlightRecordIndexViewModel.FilterViewModel.ClubFilterApplied" class="custom-select" @onchange="ClubSelected">
 
 
-                            @foreach (var i in @FlightRecordIndexViewModel.FilterViewModel.ClubSelects)
-                            {
-                                <option value="@i.Id">@i.ClubName - (@(i.Id))</option>
-                            }
-                        </select>
-                    </div>
-                    <div class="btn-transaction  a-f-filter--2">
-                        <select class="custom-select" @onchange="AirplaneSelected" value="@FlightRecordIndexViewModel.FilterViewModel.AirplaneFilterApplied">
-
-
-                            @foreach (var i in @FlightRecordIndexViewModel.FilterViewModel.AirplaneSelects)
-                            {
-                                <option value="@i.Id">@i.TailNumber - (@(i.Id))</option>
-                            }
-                        </select>
-                    </div>
-                    <div class="btn-transaction  a-f-filter--3">
-                        <select class="custom-select" @onchange="PilotSelected" value="@FlightRecordIndexViewModel.FilterViewModel.PilotFilterApplied">
-
-                            @foreach (var i in @FlightRecordIndexViewModel.FilterViewModel.PilotSelects)
-                            {
-                                <option value="@i.Id">@i.FullName - (@(i.IdNumber))</option>
-                            }
-                        </select>
-                    </div>
-                    <div class="a-f-page--1">
-                        <button type="button" class="btn-transaction   @FlightRecordIndexViewModel.PaginationInfo.Previous" @onclick="@(async () => await PrevClick())"
-                                id="Previous"
-                                asp-route-pageid="@(FlightRecordIndexViewModel.PaginationInfo.ActualPage - 1)"
-                                aria-label="Previous">
-                            Previous
-                        </button>
-                    </div>
-                    <div class="a-f-page--2">
-                        <span class="btn-transaction ">
-                            @PageMessage
-                        </span>
-                    </div>
-                    <div class="a-f-page--3">
-                        <button type="button" class="btn-transaction  @FlightRecordIndexViewModel.PaginationInfo.Next " @onclick="@(async () => await NextClick())"
-                                id="Next"
-                                asp-route-pageid="@(FlightRecordIndexViewModel.PaginationInfo.ActualPage + 1)"
-                                aria-label="Next">
-                            Next
-                        </button>
-                    </div>
-
-                </div>
-                <div class="c_flights__command">
-                    <div>
-                        <button type="button" class="btn btn-grid-sort" @onclick="@(async () => await OnShowCreate())"><u>Add New Flight</u></button>
-
-                    </div>
-                   
-                    <div>
-                        <button class="btn btn-grid-sort" ><p><u>Show Not Valid</u><input type="checkbox" @onchange="eventArgs => { OnIsShowNotValid((bool)eventArgs.Value); }" /></p></button>
-
-                    </div>
-                </div>
-                <div class="c_flights__content">
-                    
-                    @foreach (var flight in flights)
+                    @foreach (var i in @FlightRecordIndexViewModel.FilterViewModel.ClubSelects)
                     {
-                        @if(flight.IsValid)
-                        {
-                            isValidClass = "";
-                        }
-                        else
-                        {
-                            isValidClass = "is-not-valid-data";
-                        }
-                    <div class="c_flights__list__row">
-                        <div class="a-f-l-header-c-1"><button class="btn btn-grid-sort" @onclick="SortDate"><u>Flight</u></button></div>
-                        <div class="a-f-l-data-c-1 @isValidClass" >@flight.Date.ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)</div>
-                        <div class="a-f-l-data-c-2 ">@flight.Pilot.FirstName @flight.Pilot.LastName</div>
-                        <div class="a-f-l-header-c-2"><button class="btn btn-grid-sort" @onclick="SortName"><u>Pilot</u></button></div>
-                        <div class="a-f-l-header-c-3"><u>Aircraft</u></div>
-                        <div class="a-f-l-data-c-3 ">@flight.Aircraft.TailNumber</div>
-                        <div class="a-f-l-header-c-4"><u>Routh</u></div>
-                        <div class="a-f-l-data-c-4">@flight.Routh</div>
-                        <div class="a-f-l-header-c-5"><u>Hobbs Start</u></div>
-                        <div class="a-f-l-data-c-5">@flight.HobbsStart</div>
-                        <div class="a-f-l-header-c-6"><u>Hobbs End</u></div>
-                        <div class="a-f-l-data-c-6">@flight.HobbsEnd</div>
-                        <div class="a-f-l-header-c-7"><button class="btn btn-grid-sort" @onclick="SortEngienStart"><u>Engien Start</u></button></div>
-                        <div class="a-f-l-data-c-7">@flight.EngineStart</div>
-                        <div class="a-f-l-header-c-8"><u>Engien End</u></div>
-                        <div class="a-f-l-data-c-8">@flight.EngineEnd</div>
-                        <div class="a-f-l-header-c-9">Action</div>
-                        <div class="a-f-l-data-c-9  @isValidClass"><button class="btn btn-grid-sort" @onclick="@(async () => await OnShowEdit(flight.Id))"><u>Edit</u></button></div>
-
-                    </div>
+                        <option value="@i.Id">@i.ClubName - (@(i.Id))</option>
                     }
-                </div>
+                </select>
             </div>
+            <div class="btn-transaction  a-f-filter--2">
+                <select class="custom-select" @onchange="AirplaneSelected" value="@FlightRecordIndexViewModel.FilterViewModel.AirplaneFilterApplied">
+
+
+                    @foreach (var i in @FlightRecordIndexViewModel.FilterViewModel.AirplaneSelects)
+                    {
+                        <option value="@i.Id">@i.TailNumber - (@(i.Id))</option>
+                    }
+                </select>
+            </div>
+            <div class="btn-transaction  a-f-filter--3">
+                <select class="custom-select" @onchange="PilotSelected" value="@FlightRecordIndexViewModel.FilterViewModel.PilotFilterApplied">
+
+                    @foreach (var i in @FlightRecordIndexViewModel.FilterViewModel.PilotSelects)
+                    {
+                        <option value="@i.Id">@i.FullName - (@(i.IdNumber))</option>
+                    }
+                </select>
+            </div>
+            <div class="a-f-page--1">
+                <button type="button" class="btn-transaction   @FlightRecordIndexViewModel.PaginationInfo.Previous" @onclick="@(async () => await PrevClick())"
+                        id="Previous"
+                        asp-route-pageid="@(FlightRecordIndexViewModel.PaginationInfo.ActualPage - 1)"
+                        aria-label="Previous">
+                    Previous
+                </button>
+            </div>
+            <div class="a-f-page--2">
+                <span class="btn-transaction ">
+                    @PageMessage
+                </span>
+            </div>
+            <div class="a-f-page--3">
+                <button type="button" class="btn-transaction  @FlightRecordIndexViewModel.PaginationInfo.Next " @onclick="@(async () => await NextClick())"
+                        id="Next"
+                        asp-route-pageid="@(FlightRecordIndexViewModel.PaginationInfo.ActualPage + 1)"
+                        aria-label="Next">
+                    Next
+                </button>
+            </div>
+
+        </div>
+        <div class="c_flights__command">
+            <div>
+                <button type="button" class="btn btn-grid-sort" @onclick="@(async () => await OnShowCreate())"><u>Add New Flight</u></button>
+
+            </div>
+
+            <div>
+                <button class="btn btn-grid-sort"><p><u>Show Not Valid</u><input type="checkbox" @onchange="eventArgs => { OnIsShowNotValid((bool)eventArgs.Value); }" /></p></button>
+
+            </div>
+        </div>
+        @{IsFirstItem = true; }
+        @{FirstItemClass = "c_flights__list__row";        }
+
+        <div class="c_flights__content">
+
+            @foreach (var flight in flights)
+            {
+                @if (flight.IsValid)
+                {
+                    isValidClass = "";
+                }
+                else
+                {
+                    isValidClass = "is-not-valid-data";
+                }
+
+                <div class="@FirstItemClass">
+                    @if (IsFirstItem)
+                    {
+                        IsFirstItem = false;
+                        FirstItemClass = "c_flights__list__row-no-header";
+                    }
+                    else
+                    {
+                        FirstItemClass = "c_flights__list__row-no-header";
+                    }
+                    <div class="a-f-l-header-c-1"><button class="btn btn-grid-sort" @onclick="SortDate"><u>Flight</u></button></div>
+                    <div class="a-f-l-data-c-1 @isValidClass">@flight.Date.ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)</div>
+                    <div class="a-f-l-header-c-2"><button class="btn btn-grid-sort" @onclick="SortName"><u>Pilot</u></button></div>
+                    <div class="a-f-l-data-c-2 ">@flight.Pilot.FirstName @flight.Pilot.LastName</div>
+
+                    <div class="a-f-l-header-c-3"><u>Aircraft</u></div>
+                    <div class="a-f-l-data-c-3 ">@flight.Aircraft.TailNumber</div>
+                    <div class="a-f-l-header-c-4"><u>Routh</u></div>
+                    <div class="a-f-l-data-c-4">@flight.Routh</div>
+                    <div class="a-f-l-header-c-5"><u>Hobbs Start</u></div>
+                    <div class="a-f-l-data-c-5">@flight.HobbsStart</div>
+                    <div class="a-f-l-header-c-6"><u>Hobbs End</u></div>
+                    <div class="a-f-l-data-c-6">@flight.HobbsEnd</div>
+                    <div class="a-f-l-header-c-7"><button class="btn btn-grid-sort" @onclick="SortEngienStart"><u>Engien Start</u></button></div>
+                    <div class="a-f-l-data-c-7">@flight.EngineStart</div>
+                    <div class="a-f-l-header-c-8"><u>Engien End</u></div>
+                    <div class="a-f-l-data-c-8">@flight.EngineEnd</div>
+                    <div class="a-f-l-header-c-9">Action</div>
+                    <div class="a-f-l-data-c-9  @isValidClass"><button class="btn btn-grid-sort" @onclick="@(async () => await OnShowEdit(flight.Id))"><u>Edit</u></button></div>
+
+                </div>
+            }
+        </div>
+    </div>
         }
         else if(false)
         {
@@ -265,6 +279,8 @@
     int selectedPilot { get; set; }
     string isValidClass { get; set; } = "";
     bool IsShowNotValid { get; set; } = false;
+    bool IsFirstItem { get; set; } = true;
+    string FirstItemClass { get; set; } = "c_flights__list__row-no-header";
 
     protected override async Task OnInitializedAsync()
     {
