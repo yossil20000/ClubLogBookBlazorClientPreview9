@@ -16,6 +16,13 @@ using ClubLogBook.Shared;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using AutoMapper;
+using MediatR;
+using ClubLogBook.Application.AdministratorManager.Commands.Update;
+using ClubLogBook.Application.AdministratorManager.Commands;
+using ClubLogBook.Application.ClubContact.Queries;
+using ClubLogBook.Application.Common.Models;
+using ClubLogBook.Application.AdministratorManager.Queries;
+
 namespace ClubLogBook.Server.Controllers
 {
 	[Route("api/[controller]/[action]")]
@@ -28,13 +35,15 @@ namespace ClubLogBook.Server.Controllers
 		private readonly RoleManager<IdentityRole<Guid>> _roleManager;
 		private IPasswordHasher<ApplicationUser> _passwordHasher;
 		private readonly IMapper _mapper;
-		private readonly IClubContactsViewModelService _clubContactsViewModelService;
-		IClubService _clubService;
-		IMemberService _memberService;
-		public AdministratorController(IMemberService memberService, IClubContactsViewModelService clubContactsViewModelService, IClubService clubService/*, IMapper mapper*/, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole<Guid>> roleManager, IPasswordHasher<ApplicationUser> passwordHasher)
+		//private readonly IClubContactsViewModelService _clubContactsViewModelService;
+		//IClubService _clubService;
+		//IMemberService _memberService;
+		IMediator _mediator;
+		public AdministratorController(IMediator mediator, IMemberService memberService, IClubContactsViewModelService clubContactsViewModelService, IClubService clubService/*, IMapper mapper*/, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole<Guid>> roleManager, IPasswordHasher<ApplicationUser> passwordHasher)
 		{
+			_mediator = mediator;
 			_userManager = userManager;_signInManager = signInManager; _roleManager = roleManager;
-			_memberService = memberService;_clubContactsViewModelService = clubContactsViewModelService;_clubService = clubService;/*_mapper = mapper;*/
+			/*_memberService = memberService;_clubContactsViewModelService = clubContactsViewModelService;_clubService = clubService;*//*_mapper = mapper;*/
 			_passwordHasher =passwordHasher;
 			var configuration = new MapperConfiguration(cfg => {
 				cfg.AddProfile(new MappingProfile());
@@ -86,8 +95,11 @@ namespace ClubLogBook.Server.Controllers
 						return StatusCode(10000);
 					}
 					await UpdateUserRole(user, adminUserInfo.Roles);
-					await _memberService.UpdatePilotUserId(adminUserInfo.PilotId, user.Id.ToString());
-					return Ok();
+					UpdateUserIdCommand updateUserIdCommand = new UpdateUserIdCommand(adminUserInfo.PilotId, user.Id.ToString());
+					int result = await _mediator.Send(updateUserIdCommand);
+					//await _memberService.UpdatePilotUserId(adminUserInfo.PilotId, user.Id.ToString());
+
+					return result >=0 ? Ok(): StatusCode(10003);
 				}
 				return StatusCode(10002);
 			}
@@ -106,8 +118,10 @@ namespace ClubLogBook.Server.Controllers
 					var error = identityResult.Errors.FirstOrDefault().Description;
 					return StatusCode(10000);
 				}
-				await _memberService.RemoveUserId(user.Id.ToString());
-				return Ok();
+				DeleteUserIdCommand deleteUserIdCommand = new DeleteUserIdCommand(adminUserInfo.PilotId, user.Id.ToString());
+				int result = await _mediator.Send(deleteUserIdCommand);
+
+				return result >= 0 ? Ok() : StatusCode(10003);
 			}
 			return StatusCode(10001);
 
@@ -154,9 +168,13 @@ namespace ClubLogBook.Server.Controllers
 		[HttpGet]
 		public async Task<List<PilotSelectModel>> GetPilots()
 		{
-			IEnumerable<Pilot> pilots = await _memberService.GetAllPilot();
-			IEnumerable<PilotSelectModel> PilotSelects = pilots.Select(p => new PilotSelectModel() { Id = p.Id, FirstName = p.FirstName, LastName = p.LastName, IdNumber = p.IdNumber ,UserId = p.UserId == null ? string.Empty : p.UserId});
-			return PilotSelects.ToList();
+			List<PilotSelectModel> pilotSelectModel= new List<PilotSelectModel>();
+			GetClubMembersListQuery getClubMembersListQuery = new GetClubMembersListQuery(QueryBy.Name,  "",  0);
+
+			var pilotSelectListModel = await _mediator.Send(getClubMembersListQuery);
+			pilotSelectModel.AddRange(pilotSelectListModel.PilotSelectList);
+
+			return pilotSelectModel;
 		}
 		[HttpGet]
 		public async Task<AdminUserInfo> CurrentUser()
@@ -172,12 +190,14 @@ namespace ClubLogBook.Server.Controllers
 			
 			//await EnsureAdmin();
 			var users =  _userManager.Users.ToList();
-			IEnumerable<Pilot> pilots = await _memberService.GetAllPilot();
+			
 			List<AdminUserInfo> adminUserInfos = _mapper.Map<List<ApplicationUser>, List<AdminUserInfo>>(users);
 			foreach(var user in users)
 			{
+				GetPilotByUserIdQuery getPilotByUserIdQuery = new GetPilotByUserIdQuery(user.Id.ToString());
+				var pilot = await _mediator.Send(getPilotByUserIdQuery);
 				var admin = adminUserInfos.Find(ad => ad.Id == user.Id.ToString());
-				var pilot = pilots.Where(p => p.UserId == user.Id.ToString()).FirstOrDefault();
+				
 
 				if(admin != null)
 				{
@@ -273,7 +293,9 @@ namespace ClubLogBook.Server.Controllers
 				if (results.Succeeded)
 				{
 					await UpdateUserRole(user, adminUserInfo.Roles);
-					await _memberService.UpdatePilotUserId(adminUserInfo.PilotId, user.Id.ToString());
+					UpdateUserIdCommand updateUserIdCommand = new UpdateUserIdCommand(adminUserInfo.PilotId, user.Id.ToString());
+					int result = await _mediator.Send(updateUserIdCommand);
+					//await _memberService.UpdatePilotUserId(adminUserInfo.PilotId, user.Id.ToString());
 				}
 			}
 			else
