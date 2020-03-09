@@ -1,4 +1,4 @@
-﻿@using ClubLogBook.Application.ViewModels
+﻿@using ClubLogBook.Application.Models
 @if (FilterViewModel == null | FilterViewModel.ClubSelects == null)
 {
     <div>"Loading FilterViewModel"</div>
@@ -72,8 +72,8 @@ else
 @code
 {
 
-[Parameter] public  PaginationInfoViewModel PaginationInfo { get; set; }
-[Parameter] public FilterViewModel FilterViewModel { get; set; }
+[Parameter] public  PaginationInfoModel PaginationInfo { get; set; }
+[Parameter] public FilterModel FilterViewModel { get; set; }
 [Parameter] public Task Refresh { get; set; }
 void PilotSelected(ChangeEventArgs e)
 {

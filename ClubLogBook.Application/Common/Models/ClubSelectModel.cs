@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ClubLogBook.Application.ViewModels
+namespace ClubLogBook.Application.Models
 {
-	public class ClubSelectViewModel
+	public class ClubSelectModel
 	{
 		public int Id { get; set; }
 		[Display(Name = "Club Name")]

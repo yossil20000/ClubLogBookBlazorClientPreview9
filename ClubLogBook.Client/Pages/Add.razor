@@ -1,5 +1,5 @@
 ﻿@page "/Add"
-@using ClubLogBook.Application.ViewModels
+@using ClubLogBook.Application.Models
 @using Microsoft.AspNetCore.Components
 @inject NavigationManager navigationManager
 
@@ -41,14 +41,14 @@
 
 @code {
     [Parameter]   public string  contactId { get; set; }
-    ClubContactsViewModel emp = new ClubContactsViewModel();
+    ClubContactsModel emp = new ClubContactsModel();
     string navTo = "/ClubContacts";
     public DateTime demi = DateTime.Now;
-    ClubContactsViewModel[] pilots;
+    ClubContactsModel[] pilots;
     int selectedPilot = -1;
     protected override async Task OnInitializedAsync()
     {
-        pilots = await Http.GetJsonAsync<ClubContactsViewModel[]>("api/ClubContacts/PilotsNotInClub");
+        pilots = await Http.GetJsonAsync<ClubContactsModel[]>("api/ClubContacts/PilotsNotInClub");
 
 
     }
@@ -63,7 +63,7 @@
     protected async Task AddContact()
     {
         await Http.SendJsonAsync(HttpMethod.Put, "api/ClubContacts/Add", selectedPilot);
-       
+
         navigationManager.NavigateTo(navTo);
     }
     protected void cancle()

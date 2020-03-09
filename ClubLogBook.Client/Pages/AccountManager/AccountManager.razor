@@ -137,19 +137,19 @@
 </div>
 
 @code {
-    private AccountListViewModel AccountListViewModel { get; set; }
+    private AccountListModel AccountListModel { get; set; }
     private bool ShowCommandDebug { get; set; }
     private List<string> MessageList { get; set; } = new List<string>();
     protected override async Task OnInitializedAsync()
     {
         MessageList.Add($"OnInitializedAsync in ");
-        AccountListViewModel = await Http.GetJsonAsync<AccountListViewModel>("api/Account/AccountsListQueryGet");
-        MessageList.Add($"OnInitializedAsync accountListViewModels.Accounts = out");
+        AccountListModel = await Http.GetJsonAsync<AccountListModel>("api/Account/AccountsListQueryGet");
+        MessageList.Add($"OnInitializedAsync accountListModels.Accounts = out");
 
-        MessageList.Add($"OnInitializedAsync accountListViewModels.Accounts =  {AccountListViewModel.Accounts.Count()}");
+        MessageList.Add($"OnInitializedAsync accountListModels.Accounts =  {AccountListModel.Accounts.Count()}");
 
 
-        List<ClubContactsViewModel> contacts = await Http.GetJsonAsync<List<ClubContactsViewModel>>("api/ClubContacts/Members");
+        List<ClubContactsModel> contacts = await Http.GetJsonAsync<List<ClubContactsModel>>("api/ClubContacts/Members");
         MessageList.Add($"OnInitializedAsync contact {contacts.Count}");
         MessageList.Add($"OnInitializedAsync out");
     }

@@ -1,9 +1,11 @@
-﻿using ClubLogBook.Core.Entities;
+﻿using AutoMapper;
+using ClubLogBook.Application.Interfaces.Mapping;
+using ClubLogBook.Core.Entities;
 using System;
 using System.ComponentModel.DataAnnotations;
-namespace ClubLogBook.Application.ViewModels
+namespace ClubLogBook.Application.Models
 {
-	public class PilotSelectViewModel
+	public class PilotSelectModel : IHaveCustomMapping
 	{
 		public int Id { get; set; }
 		[Display(Name = "Given Name")]
@@ -17,9 +19,9 @@ namespace ClubLogBook.Application.ViewModels
 		public bool IsEnable { get; set; } = true;
 		public string UserId { get; set; }
 		
-		public PilotSelectViewModel()
+		public PilotSelectModel()
 		{ }
-		public PilotSelectViewModel(Pilot p)
+		public PilotSelectModel(Pilot p)
 		{
 			SetPilot(p);
 		}
@@ -30,6 +32,12 @@ namespace ClubLogBook.Application.ViewModels
 			LastName = p.LastName;
 			IdNumber = p.IdNumber;
 			UserId = p.UserId;
+		}
+
+		public void CreateMappings(Profile configuration)
+		{
+			configuration.CreateMap<Pilot, PilotSelectModel>();
+			
 		}
 	}
 

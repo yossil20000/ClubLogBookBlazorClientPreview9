@@ -8,7 +8,7 @@ using ClubLogBook.Application.Services;
 using ClubLogBook.Core.Entities;
 using ClubLogBook.Infrastructure.Data;
 using ClubLogBook.Application.Interfaces;
-using ClubLogBook.Application.ViewModels;
+using ClubLogBook.Application.Models;
 using ClubLogBook.Server.Services;
 using AutoMapper;
 
@@ -22,8 +22,8 @@ namespace ClubLogBook.Server.Controllers
 		private IMapper _mapper;
 		private IReservationService _reservationService;
 		private IClubService _clubService;
-		private IRecordViewModelService<RecordsViewModel<FlightReservationViewModel>> _recordViewModelService;
-		public FlightReservationController(IMemberRepository memberRepository, IMapper mapper,IReservationService reservationService, IClubService clubService, IRecordViewModelService<RecordsViewModel<FlightReservationViewModel>> recordViewModelService)
+		private IRecordViewModelService<RecordsViewModel<FlightReservationModel>> _recordViewModelService;
+		public FlightReservationController(IMemberRepository memberRepository, IMapper mapper,IReservationService reservationService, IClubService clubService, IRecordViewModelService<RecordsViewModel<FlightReservationModel>> recordViewModelService)
 		{
 			_memberRepository = memberRepository;
 			_clubService = clubService;
@@ -34,12 +34,12 @@ namespace ClubLogBook.Server.Controllers
 		// GET: api/FlightReservation
 		[HttpGet]
 		[Route("api/FlightReservation/Reservation")]
-		public async Task<IEnumerable<FlightReservationViewModel>> Reservation()
+		public async Task<IEnumerable<FlightReservationModel>> Reservation()
         {
-			ICollection<FlightReservationViewModel> ienumerableDest;
+			ICollection<FlightReservationModel> ienumerableDest;
 			var reservations = await _reservationService.GetReservation();
 			
-			ienumerableDest = _mapper.Map<IEnumerable<AircraftReservation>, IList<FlightReservationViewModel>>(reservations);
+			ienumerableDest = _mapper.Map<IEnumerable<AircraftReservation>, IList<FlightReservationModel>>(reservations);
 			foreach(var r  in ienumerableDest)
 			{
 				var pilot = await _memberRepository.GetByIdAsync(r.PilotId);
@@ -52,19 +52,19 @@ namespace ClubLogBook.Server.Controllers
 		// GET: api/FlightReservation/5
 		[HttpGet]
 		[Route("api/FlightReservation/Details/{id}")]
-		public async Task<FlightReservationViewModel> Details(int id)
+		public async Task<FlightReservationModel> Details(int id)
 		{
-			FlightReservationViewModel flightReservation;
+			FlightReservationModel flightReservation;
 			AircraftReservation reservation;
 			reservation = await _reservationService.GetReservation(id);
 
-			flightReservation = _mapper.Map<AircraftReservation, FlightReservationViewModel>(reservation);
+			flightReservation = _mapper.Map<AircraftReservation, FlightReservationModel>(reservation);
 			flightReservation.ExtructTime();
 			return flightReservation;
 		}
 		[HttpPost]
 		[Route("api/FlightReservation/FilterViewModelPut")]
-		public async Task<FilterViewModel> FilterViewModelPut([FromBody] FilterViewModel filterViewModel)
+		public async Task<FilterModel> FilterViewModelPut([FromBody] FilterModel filterViewModel)
 		{
 			int? clubId = filterViewModel.ClubFilterApplied;
 			IEnumerable<Aircraft> aircrafts;
@@ -80,16 +80,16 @@ namespace ClubLogBook.Server.Controllers
 				aircrafts = await _clubService.GetClubAircrafts(clubs.FirstOrDefault().Name);
 				pilots = await _clubService.GetClubMembers(clubs.FirstOrDefault().Name);
 			}
-			filterViewModel.ClubSelects = clubs.Select(c => new ClubSelectViewModel() { Id = c.Id, ClubName = c.Name });
-			filterViewModel.AirplaneSelects = aircrafts.Select(ar => new AirplaneSelectViewModel() { Id = ar.Id, TailNumber = ar.TailNumber }).ToList();
-			filterViewModel.PilotSelects = pilots.Select(p => new PilotSelectViewModel() { Id = p.Id, FirstName = p.FirstName, LastName = p.LastName, IdNumber = p.IdNumber,UserId = p.UserId }).ToList();
+			filterViewModel.ClubSelects = clubs.Select(c => new ClubSelectModel() { Id = c.Id, ClubName = c.Name });
+			filterViewModel.AirplaneSelects = aircrafts.Select(ar => new AirplaneSelectModel() { Id = ar.Id, TailNumber = ar.TailNumber }).ToList();
+			filterViewModel.PilotSelects = pilots.Select(p => new PilotSelectModel() { Id = p.Id, FirstName = p.FirstName, LastName = p.LastName, IdNumber = p.IdNumber,UserId = p.UserId }).ToList();
 
 			return filterViewModel;
 
 		}
 		[HttpPut]
 		[Route("api/FlightReservation/RecordViewModel")]
-		public async Task<RecordsViewModel<FlightReservationViewModel>> RecordViewModel([FromBody] RecordsViewModel<FlightReservationViewModel> filterViewModel)
+		public async Task<RecordsViewModel<FlightReservationModel>> RecordViewModel([FromBody] RecordsViewModel<FlightReservationModel> filterViewModel)
 		{
 			int? clubId = filterViewModel.FilterViewModel.ClubFilterApplied;
 			
@@ -117,13 +117,13 @@ namespace ClubLogBook.Server.Controllers
 		// PUT: api/FlightReservation/5
 		[HttpPut]
 		[Route("api/FlightReservation/Edit")]
-        public async Task Edit([FromBody] FlightReservationViewModel reservationViewModel)
+        public async Task Edit([FromBody] FlightReservationModel reservationViewModel)
         {
 			if (ModelState.IsValid)
 			{
 				AircraftReservation aircraftReservation;
 				reservationViewModel.CombineTime();
-				aircraftReservation = _mapper.Map<FlightReservationViewModel, AircraftReservation>(reservationViewModel);
+				aircraftReservation = _mapper.Map<FlightReservationModel, AircraftReservation>(reservationViewModel);
 				await _reservationService.EditReservation(aircraftReservation);
 				bool isValid = await _reservationService.IsValid(aircraftReservation);
 				if (!isValid)
@@ -149,13 +149,13 @@ namespace ClubLogBook.Server.Controllers
 		}
 		[HttpPut]
 		[Route("api/FlightReservation/Create")]
-		public async Task Create([FromBody] FlightReservationViewModel reservationViewModel)
+		public async Task Create([FromBody] FlightReservationModel reservationViewModel)
 		{
 			if (ModelState.IsValid)
 			{
 				AircraftReservation aircraftReservation;
 				reservationViewModel.CombineTime();
-				aircraftReservation = _mapper.Map<FlightReservationViewModel, AircraftReservation>(reservationViewModel);
+				aircraftReservation = _mapper.Map<FlightReservationModel, AircraftReservation>(reservationViewModel);
 				await _reservationService.AddReservation(aircraftReservation);
 				System.Diagnostics.Debug.WriteLine(reservationViewModel?.ToString());
 			}

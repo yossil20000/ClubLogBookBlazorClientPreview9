@@ -5,9 +5,9 @@ using ClubLogBook.Application.Interfaces.Mapping;
 using System.Text;
 using System.ComponentModel;
 
-namespace ClubLogBook.Application.ViewModels
+namespace ClubLogBook.Application.Models
 {
-	public class AirCraftModelViewModel : IHaveCustomMapping
+	public class AirCraftModelModel : IHaveCustomMapping
 	{
 		public int AnnualPeriodCheck { get; } = 12;
 		public int VORPeriodCheck { get; } = 30;
@@ -116,11 +116,11 @@ namespace ClubLogBook.Application.ViewModels
 
 		public void CreateMappings(Profile configuration)
 		{
-			configuration.CreateMap<AirCraftModel, AirCraftModelViewModel>();
+			configuration.CreateMap<AirCraftModel, AirCraftModelModel>();
 		}
 		
 	}
-	public class AircraftViewModel : IHaveCustomMapping
+	public class AircraftModel : IHaveCustomMapping
 	{
 		public int Id { get; set; } = 0;
 		public string TailNumber { get; set; } = "";
@@ -133,28 +133,28 @@ namespace ClubLogBook.Application.ViewModels
 		public bool? Jet { get; set; } = false;
 		public bool? Flaps { get; set; } = false;
 		public byte[] Photo { get; set; } = null;
-		public AircraftStateViewModel AircraftState { get; set; } = AircraftStateViewModel.OutOfService;
-		public AircraftCategoryViewModel AircraftCategory { get; set; } = AircraftCategoryViewModel.Airplane;
-		public AircraftClassViewModel AircraftClass { get; set; } = AircraftClassViewModel.SingleEngineLand;
-		public AirCraftModelViewModel AirCraftModel { get; set; } = new AirCraftModelViewModel();
-		public AircraftViewModel(Aircraft aircraft)
+		public AircraftStateModel AircraftState { get; set; } = AircraftStateModel.OutOfService;
+		public AircraftCategoryModel AircraftCategory { get; set; } = AircraftCategoryModel.Airplane;
+		public AircraftClassModel AircraftClass { get; set; } = AircraftClassModel.SingleEngineLand;
+		public AirCraftModelModel AirCraftModel { get; set; } = new AirCraftModelModel();
+		public AircraftModel(Aircraft aircraft)
 		{
 			Id = aircraft.Id;
 			TailNumber = aircraft.TailNumber;
 		}
-		public AircraftViewModel()
+		public AircraftModel()
 		{
 			
 		}
 
 		public void CreateMappings(Profile configuration)
 		{
-			configuration.CreateMap<Aircraft, AircraftViewModel>();
-			configuration.CreateMap<AircraftViewModel,Aircraft>();
+			configuration.CreateMap<Aircraft, AircraftModel>();
+			configuration.CreateMap<AircraftModel,Aircraft>();
 		}
-		public AircraftStatusViewModel Get()
+		public AircraftStatusModel Get()
 		{
-			return new AircraftStatusViewModel((AirCraftModel.NextAnnual - DateTime.Now).Days, (AirCraftModel.NextVOR - DateTime.Now).Days,
+			return new AircraftStatusModel((AirCraftModel.NextAnnual - DateTime.Now).Days, (AirCraftModel.NextVOR - DateTime.Now).Days,
 				(AirCraftModel.NextELT - DateTime.Now).Days, (AirCraftModel.NextPitotStatic - DateTime.Now).Days,
 				(AirCraftModel.NextAltimeter - DateTime.Now).Days ,(AirCraftModel.NextTransponder - DateTime.Now).Days,
 				100 - (AirCraftModel.EngineTime - AirCraftModel.Hours));
@@ -162,13 +162,13 @@ namespace ClubLogBook.Application.ViewModels
 		}
 	}
 
-	public enum AircraftStateViewModel
+	public enum AircraftStateModel
 	{
 		Service,
 		Maintainace,
 		OutOfService
 	}
-	public enum AircraftCategoryViewModel : int
+	public enum AircraftCategoryModel : int
 	{
 
 		LigherThenAir = 0,
@@ -176,7 +176,7 @@ namespace ClubLogBook.Application.ViewModels
 		Airplane = 2,
 		Glider = 3
 	}
-	public enum AircraftClassViewModel : int
+	public enum AircraftClassModel : int
 	{
 		SingleEngineLand = 0,
 		SingleEngineSea = 1,
@@ -184,9 +184,9 @@ namespace ClubLogBook.Application.ViewModels
 		MultiEngineSea = 3
 	}
 
-	public class AircraftStatusViewModel
+	public class AircraftStatusModel
 	{
-		public AircraftStatusViewModel(int annualDays,int vorDays,int eltDays,int pitotStaticDays,int altimeterDays, int transponderDays, decimal hr100Days)
+		public AircraftStatusModel(int annualDays,int vorDays,int eltDays,int pitotStaticDays,int altimeterDays, int transponderDays, decimal hr100Days)
 		{
 			AnnualInDays = annualDays;VorInDays = vorDays;EltInDays = eltDays;PitotStaticInDays = pitotStaticDays;TransponderInDays = transponderDays;HR100InDays = hr100Days;
 		}

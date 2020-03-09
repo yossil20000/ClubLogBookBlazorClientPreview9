@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ClubLogBook.Core.Entities;
-using ClubLogBook.Application.ViewModels;
+using ClubLogBook.Application.Models;
 using ClubLogBook.Core.Interfaces;
 
 namespace ClubLogBook.Application.Extenttions
 {
 	public static class ViewModelExtentions
 	{
-		public static void MarkNonValidFlight(this List<ClubFlightViewModel> FlightRecords)
+		public static void MarkNonValidFlight(this List<ClubFlightModel> FlightRecords)
 		{
 			var order = FlightRecords.OrderBy(x => x.EngineStart).ThenBy(x => x.EngineEnd).ToList();
 			for (int i = 0; i < order.Count - 1; i++)

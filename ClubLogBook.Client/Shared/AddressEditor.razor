@@ -1,5 +1,5 @@
 ﻿@page "/Shared/AddressEditor"
-@using ClubLogBook.Application.ViewModels
+@using ClubLogBook.Application.Models
 @using Microsoft.AspNetCore.Components
 <div class="form-field">
     <label>Street:</label>
@@ -56,5 +56,5 @@
 
 
 @code {
-    [Parameter] public AddressViewModel AddressViewModel { get; set; }
+    [Parameter] public AddressModel AddressViewModel { get; set; }
 }

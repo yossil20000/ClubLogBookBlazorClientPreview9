@@ -1,5 +1,5 @@
 ﻿@page "/Flight/Edit/{contactId}"
-@using ClubLogBook.Application.ViewModels
+@using ClubLogBook.Application.Models
 @using Microsoft.AspNetCore.Components
 @inject NavigationManager navigationManager
 
@@ -23,12 +23,12 @@
 @code {
 
     [Parameter] public   string contactId { get; set; }
-    ClubFlightViewModel emp = new ClubFlightViewModel();
+    ClubFlightModel emp = new ClubFlightModel();
     string natTo = "/Flight/ClubFlight";
     public DateTime demi = DateTime.Now;
     protected override async Task OnInitializedAsync()
     {
-        emp = await Http.GetJsonAsync<ClubFlightViewModel>
+        emp = await Http.GetJsonAsync<ClubFlightModel>
     ("api/ClubFlight/" + Convert.ToInt32(contactId));
     }
     protected async Task UpdateFlight()

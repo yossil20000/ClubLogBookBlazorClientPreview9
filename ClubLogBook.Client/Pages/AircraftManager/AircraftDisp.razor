@@ -1,4 +1,4 @@
-﻿@using ClubLogBook.Application.ViewModels;
+﻿@using ClubLogBook.Application.Models;
 
 <div>
     <div class="accordion" id="accordionMemberInfo">
@@ -26,7 +26,7 @@
                             <p>
                                 <select asp-for="AircraftCategory" @bind="@item.AircraftCategory">
                                     <option value="">Select Category ...</option>
-                                    @foreach (var state in Enum.GetValues(typeof(AircraftCategoryViewModel)))
+                                    @foreach (var state in Enum.GetValues(typeof(AircraftCategoryModel)))
                                     {
                                         <option>@state</option>
                                     }
@@ -41,7 +41,7 @@
                             <p>
                                 <select asp-for="AircraftCategory" @bind="@item.AircraftClass">
                                     <option value="">Select Category ...</option>
-                                    @foreach (var state in Enum.GetValues(typeof(AircraftClassViewModel)))
+                                    @foreach (var state in Enum.GetValues(typeof(AircraftClassModel)))
                                     {
                                         <option>@state</option>
                                     }
@@ -56,7 +56,7 @@
                             <p>
                                 <select asp-for="AircraftCategory" @bind="@item.AircraftState">
                                     <option value="">Select Category ...</option>
-                                    @foreach (var state in Enum.GetValues(typeof(AircraftStateViewModel)))
+                                    @foreach (var state in Enum.GetValues(typeof(AircraftStateModel)))
                                     {
                                         <option>@state</option>
                                     }
@@ -93,7 +93,7 @@
                             <p>
                                 <select asp-for="AircraftCategory" @bind="@item.AircraftCategory">
                                     <option value="">Select Category ...</option>
-                                    @foreach (var state in Enum.GetValues(typeof(AircraftCategoryViewModel)))
+                                    @foreach (var state in Enum.GetValues(typeof(AircraftCategoryModel)))
                                     {
                                         <option>@state</option>
                                     }
@@ -107,7 +107,7 @@
                             <p>
                                 Aircraft Class:  <select asp-for="AircraftClass" @bind="@item.AircraftClass">
                                     <option value="">Select class ...</option>
-                                    @foreach (var state in Enum.GetValues(typeof(AircraftClassViewModel)))
+                                    @foreach (var state in Enum.GetValues(typeof(AircraftClassModel)))
                                     {
                                         <option>@state</option>
                                     }
@@ -156,7 +156,7 @@
                             <p>
                                 Aircraft State:  <select asp-for="Gender" @bind="@item.AircraftState">
                                     <option value="">Select State ...</option>
-                                    @foreach (var state in Enum.GetValues(typeof(AircraftStateViewModel)))
+                                    @foreach (var state in Enum.GetValues(typeof(AircraftStateModel)))
                                     {
                                         <option>@state</option>
                                     }
@@ -287,7 +287,7 @@
     </div>
 </div>
 @code {
-    [Parameter] public AircraftViewModel item { get; set; }
+    [Parameter] public AircraftModel item { get; set; }
     [Parameter] public bool IsEditable { get; set; }
     public string Style = "";
     public string Disable = "";
@@ -301,7 +301,7 @@
     {
         item.AirCraftModel.Last100 = Convert.ToInt32( number.Value);
     }
-     protected override void OnParametersSet()
+    protected override void OnParametersSet()
     {
         item.AirCraftModel.NextAltimeter = item.AirCraftModel.LastAltimeter.AddMonths(item.AirCraftModel.AnnualPeriodCheck);
     }

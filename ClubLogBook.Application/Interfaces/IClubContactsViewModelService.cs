@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ClubLogBook.Application.ViewModels;
+using ClubLogBook.Application.Models;
 namespace ClubLogBook.Application.Interfaces
 {
 	public interface IClubContactsViewModelService
 	{
-		Task<IEnumerable<ClubContactsViewModel>> GetOrCreateClubContact(string clubName, bool include = true);
-		Task<bool> UpdateOrCreateClubContactMember(string clubName, ClubContactsViewModel clubContactsViewModel);
-		Task<IEnumerable<ClubContactsViewModel>> GetPilotsNotInAnyClub();
+		Task<IEnumerable<ClubContactsModel>> GetOrCreateClubContact(string clubName, bool include = true);
+		Task<bool> UpdateOrCreateClubContactMember(string clubName, ClubContactsModel clubContactsViewModel);
+		Task<IEnumerable<ClubContactsModel>> GetPilotsNotInAnyClub();
 		//Task<bool> UpdateOrCreateClubContactMember(string clubName, ClubContactsViewModel clubContactUpdateViewModel);
-		Task<List<ClubContactsViewModel>> GetAllPilot();
+		Task<List<ClubContactsModel>> GetAllPilot();
 	}
 }

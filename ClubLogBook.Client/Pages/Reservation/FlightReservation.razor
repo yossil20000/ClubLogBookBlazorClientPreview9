@@ -1,5 +1,5 @@
 ﻿@page "/Reservation/FlightReservation"
-@using ClubLogBook.Application.ViewModels
+@using ClubLogBook.Application.Models
 
 @inject HttpClient Http
 @inject IdentityAuthenticationStateProvider authStateProvider
@@ -315,9 +315,9 @@
     //static PaginationInfoViewModel PaginationInfo { get; set; } = new PaginationInfoViewModel();
     bool ShowPopup = false;
     bool ShowReservation = false;
-    List<FlightReservationViewModel> items { get; set; }
-    static RecordsViewModel<FlightReservationViewModel> RecordsViewModel { get; set; } = new RecordsViewModel<FlightReservationViewModel>();
-    FlightReservationViewModel objReservation;
+    List<FlightReservationModel> items { get; set; }
+    static RecordsViewModel<FlightReservationModel> RecordsViewModel { get; set; } = new RecordsViewModel<FlightReservationModel>();
+    FlightReservationModel objReservation;
     bool IsCurrentAdmin { get; set; } = false;
     AdminUserInfo CurrentUser { get; set; }
     public LocalTime SelectedFromTime { get; set; } = new LocalTime();
@@ -336,12 +336,12 @@
     {
         //FilterViewModel = new FilterViewModel();
         //PaginationInfo = new PaginationInfoViewModel();
-        RecordsViewModel = new RecordsViewModel<FlightReservationViewModel>();
+        RecordsViewModel = new RecordsViewModel<FlightReservationModel>();
         RecordsViewModel.FilterViewModel.ClubFilterApplied = null;
         RecordsViewModel.FilterViewModel.PilotFilterApplied = null;
         RecordsViewModel.FilterViewModel.AirplaneFilterApplied = null;
-        RecordsViewModel.FilterViewModel = await Http.PostJsonAsync<FilterViewModel>("api/FlightReservation/FilterViewModelPut", RecordsViewModel.FilterViewModel);
-        items = await Http.GetJsonAsync<List<FlightReservationViewModel>>("api/FlightReservation/Reservation");
+        RecordsViewModel.FilterViewModel = await Http.PostJsonAsync<FilterModel>("api/FlightReservation/FilterViewModelPut", RecordsViewModel.FilterViewModel);
+        items = await Http.GetJsonAsync<List<FlightReservationModel>>("api/FlightReservation/Reservation");
         //items = items = RecordsViewModel.Records.ToList();
         var authState = await authenticationStateTask;
         var user = authState.User;
@@ -378,7 +378,7 @@
         EditContext1.NotifyFieldChanged(id);
     }
 
-    async Task<List<FlightReservationViewModel>> LoadOrders()
+    async Task<List<FlightReservationModel>> LoadOrders()
     {
         //await Init();
         return items;//await Http.GetJsonAsync<List<FlightReservationViewModel>>("api/FlightReservation/Reservation");
@@ -394,7 +394,7 @@
             RecordsViewModel.PaginationInfo.PageCommand = PageCommand.MovePrevious;
 
 
-            RecordsViewModel = await Http.PutJsonAsync<RecordsViewModel<FlightReservationViewModel>>("api/FlightReservation/RecordViewModel", RecordsViewModel);
+            RecordsViewModel = await Http.PutJsonAsync<RecordsViewModel<FlightReservationModel>>("api/FlightReservation/RecordViewModel", RecordsViewModel);
         }
 
     }
@@ -404,7 +404,7 @@
         {
             RecordsViewModel.PaginationInfo.PageCommand = PageCommand.MoveNext;
             //items = await Http.GetJsonAsync<List<FlightReservationViewModel>>("api/FlightReservation/Reservation");
-            RecordsViewModel = await Http.PutJsonAsync<RecordsViewModel<FlightReservationViewModel>>("api/FlightReservation/RecordViewModel", RecordsViewModel);
+            RecordsViewModel = await Http.PutJsonAsync<RecordsViewModel<FlightReservationModel>>("api/FlightReservation/RecordViewModel", RecordsViewModel);
             items = RecordsViewModel.Records.ToList();
         }
 
@@ -424,7 +424,7 @@
         objReservation.TimeFrom.AddHours(SelectedFromTime.Hour);
         objReservation.TimeFrom.AddMinutes(SelectedFromTime.Minute);
         await Http.SendJsonAsync(HttpMethod.Put, "api/FlightReservation/Edit", objReservation);
-        items = await Http.GetJsonAsync<List<FlightReservationViewModel>>("api/FlightReservation/Reservation");
+        items = await Http.GetJsonAsync<List<FlightReservationModel>>("api/FlightReservation/Reservation");
         // Get the current user
 
     }
@@ -438,7 +438,7 @@
         objReservation.TimeFrom.AddHours(SelectedFromTime.Hour);
         objReservation.TimeFrom.AddMinutes(SelectedFromTime.Minute);
         await Http.SendJsonAsync(HttpMethod.Put, "api/FlightReservation/Create", objReservation);
-        items = await Http.GetJsonAsync<List<FlightReservationViewModel>>("api/FlightReservation/Reservation");
+        items = await Http.GetJsonAsync<List<FlightReservationModel>>("api/FlightReservation/Reservation");
         // Get the current user
 
     }
@@ -447,7 +447,7 @@
     {
         // Close the Popup
         ShowPopup = true;
-        objReservation = new FlightReservationViewModel();
+        objReservation = new FlightReservationModel();
         EditContext1 = new EditContext(objReservation);
         EditContext1.OnFieldChanged += EditContext_OnFieldChanged;
 
@@ -459,9 +459,9 @@
         // Close the Popup
         ShowPopup = false;
         await Http.SendJsonAsync(HttpMethod.Put, "api/FlightReservation/Delete", objReservation.Id);
-        items = await Http.GetJsonAsync<List<FlightReservationViewModel>>("api/FlightReservation/Reservation");
+        items = await Http.GetJsonAsync<List<FlightReservationModel>>("api/FlightReservation/Reservation");
     }
-    async Task EditReservation(FlightReservationViewModel weatherForecast)
+    async Task EditReservation(FlightReservationModel weatherForecast)
     {
         // Set the selected forecast
         // as the current forecast
@@ -470,7 +470,7 @@
         // Open the Popup
         ShowPopup = true;
     }
-    void Show(FlightReservationViewModel weatherForecast)
+    void Show(FlightReservationModel weatherForecast)
     {
         // Set the selected forecast
         // as the current forecast

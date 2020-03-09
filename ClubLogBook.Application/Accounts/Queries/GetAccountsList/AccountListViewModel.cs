@@ -6,7 +6,7 @@ using AutoMapper;
 using ClubLogBook.Core.Entities;
 namespace ClubLogBook.Application.Accounts.Queries.GetAccountsList
 {
-	public class AccountListViewModel 
+	public class AccountListModel 
 	{
 		public IList<AccountLookupModel> Accounts { get; set; }
 	}

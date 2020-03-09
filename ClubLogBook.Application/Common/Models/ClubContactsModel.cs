@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-namespace ClubLogBook.Application.ViewModels
+namespace ClubLogBook.Application.Models
 {
 	public enum ContactType
 	{
@@ -16,14 +16,14 @@ namespace ClubLogBook.Application.ViewModels
 	public static class AddressExtention
 	{
 		
-		public static  string GetFullAddress(this AddressViewModel address)
+		public static  string GetFullAddress(this AddressModel address)
 		{
 			
 
 			return $"{address.Street} {address?.City} {address?.State} {address?.Zipcode} {address?.Country}";
 		}
 	}
-	public class ClubContactsViewModel 
+	public class ClubContactsModel 
 	{
 		public int Id { get; set; }
 		[Display(Name ="Id Number")]
@@ -47,9 +47,9 @@ namespace ClubLogBook.Application.ViewModels
 		//[Display(Name ="Home Address")]
 		//public string Address { get; set; }
 		//public string Phone { get; set; }
-		public List<PhoneViewModel> Phones { get; set; } = new List<PhoneViewModel>();
-		public List<EMAILVieModel> Emails { get; set; } = new List<EMAILVieModel>();
-		public List<AddressViewModel> Addresses { get; set; } = new List<AddressViewModel>();
+		public List<PhoneModel> Phones { get; set; } = new List<PhoneModel>();
+		public List<EMAILModel> Emails { get; set; } = new List<EMAILModel>();
+		public List<AddressModel> Addresses { get; set; } = new List<AddressModel>();
 		
 		//[Display(Name ="eMail")]
 		//public string Mail { get; set; }
@@ -60,15 +60,15 @@ namespace ClubLogBook.Application.ViewModels
 		public Decimal Height { get; set; }
 		public Decimal Weight { get; set; }
 		public string UserId { get; set; } = String.Empty;
-		public ClubContactsViewModel() { }
+		public ClubContactsModel() { }
 		
 		
 	}
-	public class AddressViewModel
+	public class AddressModel
 
 	{
 		public int Id { get; set; }
-		public AddressViewModel()
+		public AddressModel()
 		{
 			Street = "";
 			Zipcode = "";
@@ -78,7 +78,7 @@ namespace ClubLogBook.Application.ViewModels
 			Country = "Israel";
 			Zipcode = "0";
 		}
-		public AddressViewModel(string street, string city, string state, string country, string zipCode, ContactType contactType)
+		public AddressModel(string street, string city, string state, string country, string zipCode, ContactType contactType)
 		{
 
 			Street = street; City = city; State = state; Country = country; Zipcode = zipCode; Type = contactType;
@@ -107,10 +107,10 @@ namespace ClubLogBook.Application.ViewModels
 		}
 
 	}
-	public class EMAILVieModel 
+	public class EMAILModel 
 	{
 		public int Id { get; set; }
-		public EMAILVieModel() { Id = 0; }
+		public EMAILModel() { Id = 0; }
 		[Required]
 		[DataType(DataType.EmailAddress)]
 		public string EMail { get; set; } = "";
@@ -125,11 +125,11 @@ namespace ClubLogBook.Application.ViewModels
 			return $"{EMail}";
 		}
 	}
-	public class PhoneViewModel 
+	public class PhoneModel 
 	{
 		public int Id { get; set; }
 	
-		public PhoneViewModel() { Id = 0; }
+		public PhoneModel() { Id = 0; }
 		[Required]
 		public string CountryCode { get; set; } = "972";
 		[Required]

@@ -1,6 +1,6 @@
 ﻿using ClubLogBook.Application.Common.Exceptions;
 using ClubLogBook.Application.Common.Interfaces;
-using ClubLogBook.Application.ViewModels;
+using ClubLogBook.Application.Models;
 using ClubLogBook.Core.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -14,7 +14,7 @@ namespace ClubLogBook.Application.Flights.Commands
 {
 	public class CreateFlightCommand : IRequest<int>
 	{
-		public ClubFlightViewModel ClubFlightViewModel { get; set; }
+		public ClubFlightModel ClubFlightModel { get; set; }
 		public int ClubId { get; set; } 
 		public class CreateFlightCommandHandler : IRequestHandler<CreateFlightCommand, int>
 		{
@@ -28,13 +28,13 @@ namespace ClubLogBook.Application.Flights.Commands
 			public async Task<int> Handle(CreateFlightCommand request, CancellationToken cancellationToken)
 			{
 
-				Flight flight = new Flight(request.ClubFlightViewModel.Date, request.ClubFlightViewModel.Routh, request.ClubFlightViewModel.EngineStart, request.ClubFlightViewModel.EngineEnd);
-				flight.HobbsStart = request.ClubFlightViewModel.HobbsStart;
-				flight.HobbsEnd = request.ClubFlightViewModel.HobbsEnd;
+				Flight flight = new Flight(request.ClubFlightModel.Date, request.ClubFlightModel.Routh, request.ClubFlightModel.EngineStart, request.ClubFlightModel.EngineEnd);
+				flight.HobbsStart = request.ClubFlightModel.HobbsStart;
+				flight.HobbsEnd = request.ClubFlightModel.HobbsEnd;
 				//flight = _mapper.Map<ClubFlightViewModel, Flight>(request.ClubFlightViewModel);
 				var club = _context.Set<Club>().Find(request.ClubId);
-				var pilot = _context.Set<Pilot>().Find(request.ClubFlightViewModel.Pilot.Id);
-				var aircraft = _context.Set<Aircraft>().Find(request.ClubFlightViewModel.Aircraft.Id);
+				var pilot = _context.Set<Pilot>().Find(request.ClubFlightModel.Pilot.Id);
+				var aircraft = _context.Set<Aircraft>().Find(request.ClubFlightModel.Aircraft.Id);
 				//int clubId = club1.FirstOrDefault().Id;
 				//Club club = _clubRepository.GetAllByIdAsync(clubId);
 				//Club club = await _clubRepository.GetByIdAsync(clubId);

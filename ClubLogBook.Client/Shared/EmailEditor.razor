@@ -1,5 +1,5 @@
 ﻿@page "/Shared/EmailEditor"
-@using ClubLogBook.Application.ViewModels
+@using ClubLogBook.Application.Models
 @using Microsoft.AspNetCore.Components
 <div class="form-field">
     <label>Email</label>
@@ -31,5 +31,5 @@
 
 
 @code {
-    [Parameter] public EMAILVieModel obj { get; set; }
+    [Parameter] public EMAILModel obj { get; set; }
 }

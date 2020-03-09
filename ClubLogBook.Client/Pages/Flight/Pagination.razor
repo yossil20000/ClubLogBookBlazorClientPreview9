@@ -1,5 +1,5 @@
 ﻿@page "/Pagination"
-@using ClubLogBook.Application.ViewModels
+@using ClubLogBook.Application.Models
 @using Microsoft.AspNetCore.Components
     <div >
         <div class="container-fluid">
@@ -34,7 +34,7 @@
     </div>
 @code
 {
-[Parameter] public PaginationInfoViewModel PaginationInfoViewModel { get; set; }
+[Parameter] public PaginationInfoModel PaginationInfoViewModel { get; set; }
 [Parameter] public EventCallback<int> OnPrevClick { get; set; }
 [Parameter] public EventCallback<int> OnNextClick { get; set; }
 }

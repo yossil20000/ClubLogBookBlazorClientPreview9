@@ -8,7 +8,7 @@ using ClubLogBook.Application.Services;
 using ClubLogBook.Core.Entities;
 using ClubLogBook.Infrastructure.Data;
 using ClubLogBook.Application.Interfaces;
-using ClubLogBook.Application.ViewModels;
+using ClubLogBook.Application.Models;
 
 using ClubLogBook.Server.Services;
 using ClubLogBook.Server.Models;
@@ -152,10 +152,10 @@ namespace ClubLogBook.Server.Controllers
 			return IdentityInfo.IdentityPolicies;
 		}
 		[HttpGet]
-		public async Task<List<PilotSelectViewModel>> GetPilots()
+		public async Task<List<PilotSelectModel>> GetPilots()
 		{
 			IEnumerable<Pilot> pilots = await _memberService.GetAllPilot();
-			IEnumerable<PilotSelectViewModel> PilotSelects = pilots.Select(p => new PilotSelectViewModel() { Id = p.Id, FirstName = p.FirstName, LastName = p.LastName, IdNumber = p.IdNumber ,UserId = p.UserId == null ? string.Empty : p.UserId});
+			IEnumerable<PilotSelectModel> PilotSelects = pilots.Select(p => new PilotSelectModel() { Id = p.Id, FirstName = p.FirstName, LastName = p.LastName, IdNumber = p.IdNumber ,UserId = p.UserId == null ? string.Empty : p.UserId});
 			return PilotSelects.ToList();
 		}
 		[HttpGet]

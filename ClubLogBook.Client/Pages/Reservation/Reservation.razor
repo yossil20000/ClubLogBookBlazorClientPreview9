@@ -1,5 +1,5 @@
 ﻿@page "/Reservation/Reservation"
-@using ClubLogBook.Application.ViewModels
+@using ClubLogBook.Application.Models
 @using ClubLogBook.Shared
 @using Microsoft.AspNetCore.Components
 @using NodaTime    
@@ -51,7 +51,7 @@
     </div>
 
 @functions {
-    [Parameter] public FlightReservationViewModel Item { get; set; }
+    [Parameter] public FlightReservationModel Item { get; set; }
     [Parameter] public FilterSelection filter { get; set; }
     [Parameter] public LocalTime SelectedFromTime { get; set; }
     [Parameter] public string StatusMessage { get; set; }

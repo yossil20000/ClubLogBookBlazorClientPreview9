@@ -4,10 +4,10 @@ using System.Text;
 using AutoMapper;
 using ClubLogBook.Core.Entities;
 using ClubLogBook.Application.Interfaces.Mapping;
-using ClubLogBook.Application.ViewModels;
+using ClubLogBook.Application.Models;
 namespace ClubLogBook.Application.AircraftManager.Queries
 {
-	public class AircraftLookupModel : AircraftViewModel, IHaveCustomMapping
+	public class AircraftLookupModel : AircraftModel, IHaveCustomMapping
 	{
 		public AircraftLookupModel()
 		{

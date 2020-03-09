@@ -1,7 +1,7 @@
 ﻿@page "/administration"
 @inject NavigationManager navigationManager
 @inject IdentityAuthenticationStateProvider authStateProvider
-@using ClubLogBook.Application.ViewModels
+@using ClubLogBook.Application.Models
 @using ClubLogBook.Shared
 
 <AuthorizeView Roles="Administrators,AccountManage">
@@ -200,9 +200,9 @@
     [CascadingParameter]
     private Task<AuthenticationState> authenticationStateTask { get; set; }
 
-    List<PilotSelectViewModel> pilotSelectViewModels = new List<PilotSelectViewModel>();
+    List<PilotSelectModel> pilotSelectViewModels = new List<PilotSelectModel>();
     AdminUserInfo CurrentUser;
-    PilotSelectViewModel selectedPilot = new PilotSelectViewModel();
+    PilotSelectModel selectedPilot = new PilotSelectModel();
     // Property used to add or edit the currently selected user
     AdminUserInfo objUser = new AdminUserInfo();
 

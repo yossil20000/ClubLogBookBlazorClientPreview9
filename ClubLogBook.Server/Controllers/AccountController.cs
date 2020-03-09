@@ -29,10 +29,10 @@ namespace ClubLogBook.Server.Controllers
         }
         // GET: api/Account
         [HttpGet]
-        public async Task<AccountListViewModel> GetAccountsList()
+        public async Task<AccountListModel> GetAccountsList()
         {
             CancellationToken ct = new CancellationToken();
-            AccountListViewModel list = new AccountListViewModel();
+            AccountListModel list = new AccountListModel();
             list.Accounts = new List<AccountLookupModel>();
             list.Accounts.Add(new AccountLookupModel() { Id = 1 });
             try

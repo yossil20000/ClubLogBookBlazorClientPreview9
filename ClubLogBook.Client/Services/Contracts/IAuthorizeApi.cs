@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ClubLogBook.Application.ViewModels;
+using ClubLogBook.Application.Models;
 
 namespace ClubLogBook.Client.Services.Contracts
 {
@@ -21,6 +21,6 @@ namespace ClubLogBook.Client.Services.Contracts
 		Task EditUser(AdminUserInfo user);
 		Task DeleteUser(AdminUserInfo user);
 		Task<AdminUserInfo> CurrentUser();
-		Task<List<PilotSelectViewModel>> GetPilots();
+		Task<List<PilotSelectModel>> GetPilots();
 	}
 }

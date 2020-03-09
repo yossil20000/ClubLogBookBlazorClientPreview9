@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ClubLogBook.Application.ViewModels;
+using ClubLogBook.Application.Models;
 using ClubLogBook.Application.Interfaces;
 using ClubLogBook.Core.Entities;
 using ClubLogBook.Infrastructure;
@@ -21,18 +21,18 @@ namespace ClubLogBook.Server.Services
 			_memberService = memberService;
 			_mapper = mapper;
 		}
-		public async Task<IEnumerable<ClubContactsViewModel>> GetPilotsNotInAnyClub()
+		public async Task<IEnumerable<ClubContactsModel>> GetPilotsNotInAnyClub()
 		{
 			
-			List<ClubContactsViewModel> contacts = new List<ClubContactsViewModel>();
+			List<ClubContactsModel> contacts = new List<ClubContactsModel>();
 			try
 			{
 
 				IEnumerable<Pilot> pilots = await _memberService.GetAllPilotNotInClub();
 				foreach (var p in pilots)
 				{
-					ClubContactsViewModel ccVM = new ClubContactsViewModel();
-					_mapper.Map<Pilot, ClubContactsViewModel>(p, ccVM);
+					ClubContactsModel ccVM = new ClubContactsModel();
+					_mapper.Map<Pilot, ClubContactsModel>(p, ccVM);
 					//ccVM.CopyPilot(p);
 					ccVM.Id = p.Id; ccVM.IdNumber = p.IdNumber; ccVM.FullName = $"{p.FirstName} {p.LastName}";
 					ccVM.Gender = (Gender)p.Gender;
@@ -51,10 +51,10 @@ namespace ClubLogBook.Server.Services
 			return contacts;
 
 		}
-		public async Task<List<ClubContactsViewModel>> GetAllPilot()
+		public async Task<List<ClubContactsModel>> GetAllPilot()
 		{
 
-			List<ClubContactsViewModel> contacts = new List<ClubContactsViewModel>();
+			List<ClubContactsModel> contacts = new List<ClubContactsModel>();
 			try
 			{
 
@@ -62,31 +62,31 @@ namespace ClubLogBook.Server.Services
 				foreach (var p in pilots)
 				{
 					if (p.UserId == null) p.UserId = string.Empty;
-					ClubContactsViewModel ccVM = new ClubContactsViewModel();
-					_mapper.Map<Pilot, ClubContactsViewModel>(p, ccVM);
+					ClubContactsModel ccVM = new ClubContactsModel();
+					_mapper.Map<Pilot, ClubContactsModel>(p, ccVM);
 					//ccVM.CopyPilot(p);
 					ccVM.Id = p.Id; ccVM.IdNumber = p.IdNumber; ccVM.FullName = $"{p.FirstName} {p.LastName}";
 					ccVM.Gender = (Gender)p.Gender;
 					ccVM.DateOfBirth = p.DateOfBirth == null ? DateTime.Now : p.DateOfBirth;
 					if (p.Contact != null)
 					{
-						_mapper.Map<ICollection<Address>, List<AddressViewModel>>(p.Contact.Addresses, ccVM.Addresses);
-						_mapper.Map<ICollection<Phone>, List<PhoneViewModel>>(p.Contact.Phones, ccVM.Phones);
-						_mapper.Map<ICollection<EMAIL>, List<EMAILVieModel>>(p.Contact.EMAILs, ccVM.Emails);
+						_mapper.Map<ICollection<Address>, List<AddressModel>>(p.Contact.Addresses, ccVM.Addresses);
+						_mapper.Map<ICollection<Phone>, List<PhoneModel>>(p.Contact.Phones, ccVM.Phones);
+						_mapper.Map<ICollection<EMAIL>, List<EMAILModel>>(p.Contact.EMAILs, ccVM.Emails);
 
 					}
 
 					if (ccVM.Phones.Count == 0)
 					{
-						ccVM.Phones.Add(new PhoneViewModel());
+						ccVM.Phones.Add(new PhoneModel());
 					}
 					if (ccVM.Emails.Count == 0)
 					{
-						ccVM.Emails.Add(new EMAILVieModel());
+						ccVM.Emails.Add(new EMAILModel());
 					}
 					if (ccVM.Addresses.Count == 0)
 					{
-						ccVM.Addresses.Add(new AddressViewModel());
+						ccVM.Addresses.Add(new AddressModel());
 					}
 					contacts.Add(ccVM);
 				}
@@ -99,9 +99,9 @@ namespace ClubLogBook.Server.Services
 			return contacts;
 
 		}
-		public async Task<IEnumerable<ClubContactsViewModel>> GetOrCreateClubContact(string clubName , bool include)
+		public async Task<IEnumerable<ClubContactsModel>> GetOrCreateClubContact(string clubName , bool include)
 		{
-			List<ClubContactsViewModel> contacts = new List<ClubContactsViewModel>();
+			List<ClubContactsModel> contacts = new List<ClubContactsModel>();
 			try
 			{
 							
@@ -109,8 +109,8 @@ namespace ClubLogBook.Server.Services
 				foreach (var p in pilots)
 				{
 					if (p.UserId == null) p.UserId = string.Empty;
-					ClubContactsViewModel ccVM = new ClubContactsViewModel();
-					_mapper.Map<Pilot, ClubContactsViewModel>(p, ccVM);
+					ClubContactsModel ccVM = new ClubContactsModel();
+					_mapper.Map<Pilot, ClubContactsModel>(p, ccVM);
 					//ccVM.CopyPilot(p);
 					ccVM.Id = p.Id; ccVM.IdNumber = p.IdNumber; ccVM.FullName = $"{p.FirstName} {p.LastName}";
 					ccVM.Gender = (Gender)p.Gender;
@@ -118,23 +118,23 @@ namespace ClubLogBook.Server.Services
 					ccVM.UserId = p.UserId;
 					if(p.Contact != null)
 					{
-						_mapper.Map<ICollection<Address>, List<AddressViewModel>>(p.Contact.Addresses, ccVM.Addresses);
-						_mapper.Map<ICollection<Phone>, List<PhoneViewModel>>(p.Contact.Phones, ccVM.Phones);
-						_mapper.Map<ICollection<EMAIL>, List<EMAILVieModel>>(p.Contact.EMAILs, ccVM.Emails);
+						_mapper.Map<ICollection<Address>, List<AddressModel>>(p.Contact.Addresses, ccVM.Addresses);
+						_mapper.Map<ICollection<Phone>, List<PhoneModel>>(p.Contact.Phones, ccVM.Phones);
+						_mapper.Map<ICollection<EMAIL>, List<EMAILModel>>(p.Contact.EMAILs, ccVM.Emails);
 						
 					}
 					
 					if(ccVM.Phones.Count == 0)
 					{
-						ccVM.Phones.Add(new PhoneViewModel());
+						ccVM.Phones.Add(new PhoneModel());
 					}
 					if (ccVM.Emails.Count == 0)
 					{
-						ccVM.Emails.Add(new EMAILVieModel());
+						ccVM.Emails.Add(new EMAILModel());
 					}
 					if (ccVM.Addresses.Count == 0)
 					{
-						ccVM.Addresses.Add(new AddressViewModel());
+						ccVM.Addresses.Add(new AddressModel());
 					}
 					contacts.Add(ccVM);
 				}
@@ -161,15 +161,15 @@ namespace ClubLogBook.Server.Services
 		//	await _clubService.AddContactToClub(clubName, pilot);
 		//	return await Task.FromResult<bool>(true);
 		//}
-		public async Task<bool> UpdateOrCreateClubContactMember(string clubName, ClubContactsViewModel objects)
+		public async Task<bool> UpdateOrCreateClubContactMember(string clubName, ClubContactsModel objects)
 		{
-			List<ClubContactsViewModel> contacts = new List<ClubContactsViewModel>();
+			List<ClubContactsModel> contacts = new List<ClubContactsModel>();
 			//var pilot = await _clubService.GetPilotById(clubContactUpdateViewModel.Id);
 			Pilot pilot = new Pilot();
-			_mapper.Map<ClubContactsViewModel,Pilot>(objects,pilot);
-			_mapper.Map<List<AddressViewModel>,ICollection<Address>>(objects.Addresses , pilot.Contact.Addresses);
-			_mapper.Map< List<PhoneViewModel>,ICollection<Phone>>(objects.Phones, pilot.Contact.Phones);
-			_mapper.Map<List<EMAILVieModel>,ICollection<EMAIL>>(objects.Emails, pilot.Contact.EMAILs);
+			_mapper.Map<ClubContactsModel,Pilot>(objects,pilot);
+			_mapper.Map<List<AddressModel>,ICollection<Address>>(objects.Addresses , pilot.Contact.Addresses);
+			_mapper.Map< List<PhoneModel>,ICollection<Phone>>(objects.Phones, pilot.Contact.Phones);
+			_mapper.Map<List<EMAILModel>,ICollection<EMAIL>>(objects.Emails, pilot.Contact.EMAILs);
 			//var members = await _clubService.GetClubMembers(clubName);
 			/*var exist = _memberService.IsExist(pilot);
 			if(exist.Result == false)

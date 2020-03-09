@@ -1,5 +1,5 @@
 ﻿@page "/ClubContacts"
-@using ClubLogBook.Application.ViewModels
+@using ClubLogBook.Application.Models
 
 @inject HttpClient Http
 @inject IdentityAuthenticationStateProvider authStateProvider
@@ -224,14 +224,14 @@
     [CascadingParameter]
     private Task<AuthenticationState> authenticationStateTask { get; set; }
     private string message { get; set; } = "Start";
-    ClubContactsViewModel[] contacts;
+    ClubContactsModel[] contacts;
     AdminUserInfo CurrentUser { get; set; }
     bool IsCurrentAdmin { get; set; } = false;
     bool bShowEdit { get; set; } = false;
-    ClubContactsViewModel selectedContact { get; set; } = new ClubContactsViewModel();
+    ClubContactsModel selectedContact { get; set; } = new ClubContactsModel();
     protected override async Task OnInitializedAsync()
     {
-        contacts = await Http.GetJsonAsync<ClubContactsViewModel[]>("api/ClubContacts/Pilots");
+        contacts = await Http.GetJsonAsync<ClubContactsModel[]>("api/ClubContacts/Pilots");
         var authState = await authenticationStateTask;
         var user = authState.User;
         CurrentUser = await authStateProvider.CurrentUser();

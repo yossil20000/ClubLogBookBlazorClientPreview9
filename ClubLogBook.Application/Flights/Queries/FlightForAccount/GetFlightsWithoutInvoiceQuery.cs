@@ -11,14 +11,14 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using FluentValidation;
-using ClubLogBook.Application.ViewModels;
+using ClubLogBook.Application.Models;
 using ClubLogBook.Core.Interfaces;
 
 namespace ClubLogBook.Application.Flights.Queries.GetFlightWithoutInvoice
 {
 	public class ClubFlightListViewModel
 	{
-		public List<ClubFlightViewModel> clubFlightListViewModel { get; set; }
+		public List<ClubFlightModel> clubFlightListViewModel { get; set; }
 	}
 	public class InvoiceToFlightComaprer : IEqualityComparer<Invoice>
 	{
@@ -64,8 +64,8 @@ namespace ClubLogBook.Application.Flights.Queries.GetFlightWithoutInvoice
 				//				   join o in _context.Set<Invoice>() on n.Id equals o.InvoiceReferance
 				//				   where o.InvoiceType == InvoiceType.Flight
 				//				   select n).ToList();
-				ClubFlightViewModel clubFlightViewModel = new ClubFlightViewModel();
-				clubFlightListViewModel.clubFlightListViewModel = _mapper.Map<List<Flight>, List<ClubFlightViewModel>>(flightWithoutInvoice);
+				ClubFlightModel clubFlightViewModel = new ClubFlightModel();
+				clubFlightListViewModel.clubFlightListViewModel = _mapper.Map<List<Flight>, List<ClubFlightModel>>(flightWithoutInvoice);
 				return clubFlightListViewModel;
 			}
 		}

@@ -9,19 +9,19 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using ClubLogBook.Application.Interfaces.Mapping;
 
-namespace ClubLogBook.Application.ViewModels
+namespace ClubLogBook.Application.Models
 {
 
 
-	public class ClubFlightViewModel : IHaveCustomMapping
+	public class ClubFlightModel : IHaveCustomMapping
 	{
-		public ClubFlightViewModel()
+		public ClubFlightModel()
 		{
-			Pilot = new PilotSelectViewModel();
-			Aircraft = new AircraftViewModel();
+			Pilot = new PilotSelectModel();
+			Aircraft = new AircraftModel();
 		}
 
-		public ClubFlightViewModel(DateTime date, string routh, Decimal es, Decimal ee)
+		public ClubFlightModel(DateTime date, string routh, Decimal es, Decimal ee)
 		{
 			Date = date;
 			Routh = routh;
@@ -29,30 +29,30 @@ namespace ClubLogBook.Application.ViewModels
 			EngineEnd = ee;
 			HobbsStart = es;
 			HobbsEnd = ee;
-			Pilot = new PilotSelectViewModel();
-			Aircraft = new AircraftViewModel();
+			Pilot = new PilotSelectModel();
+			Aircraft = new AircraftModel();
 
 
 		}
-		public ClubFlightViewModel(decimal maxEngien, decimal maxHobbs)
+		public ClubFlightModel(decimal maxEngien, decimal maxHobbs)
 		{
 			EngineStart = EngineEnd = maxEngien;
 			HobbsStart = HobbsEnd = maxHobbs;
-			Pilot = new PilotSelectViewModel();
-			Aircraft = new AircraftViewModel();
+			Pilot = new PilotSelectModel();
+			Aircraft = new AircraftModel();
 
 		}
-		public ClubFlightViewModel(Pilot pilot, Aircraft aircraft)
+		public ClubFlightModel(Pilot pilot, Aircraft aircraft)
 		{
-			Pilot = new PilotSelectViewModel(pilot);
-			Aircraft = new AircraftViewModel(aircraft);
+			Pilot = new PilotSelectModel(pilot);
+			Aircraft = new AircraftModel(aircraft);
 		}
 		public int Id { get; set; }
 
 		public DateTime Date { get; set; } = DateTime.Now;
 
-		virtual public AircraftViewModel Aircraft { get; set; }
-		virtual public PilotSelectViewModel Pilot { get; set; }
+		virtual public AircraftModel Aircraft { get; set; }
+		virtual public PilotSelectModel Pilot { get; set; }
 		public string Routh { get; set; }
 
 		public Decimal EngineStart { get; set; }
@@ -61,36 +61,36 @@ namespace ClubLogBook.Application.ViewModels
 		public Decimal HobbsStart { get; set; }
 		public Decimal HobbsEnd { get; set; }
 		public bool IsValid { get; set; } = true;
-		public InvoiceStateViewModel InvoiceStateViewModel  { get;set;} = InvoiceStateViewModel.Initial;
+		public InvoiceStateModel InvoiceStateViewModel  { get;set;} = InvoiceStateModel.Initial;
 		public override string ToString()
 		{
 			StringBuilder sb = new StringBuilder();
 			sb.Append($"Id:{Id} Date:{Date} Routh:{Routh} EngienStart:{EngineStart} EngienEnd:{EngineEnd}");
 			return sb.ToString();
 		}
-		public static bool operator >(ClubFlightViewModel f1, ClubFlightViewModel f2)
+		public static bool operator >(ClubFlightModel f1, ClubFlightModel f2)
 		{
 			return f1?.EngineStart > f2?.EngineEnd;
 		}
 
-		public static bool operator >=(ClubFlightViewModel f1, ClubFlightViewModel f2)
+		public static bool operator >=(ClubFlightModel f1, ClubFlightModel f2)
 		{
 			return f1?.EngineStart >= f2?.EngineEnd;
 		}
-		public static bool operator <=(ClubFlightViewModel f1, ClubFlightViewModel f2)
+		public static bool operator <=(ClubFlightModel f1, ClubFlightModel f2)
 		{
 			return f1?.EngineEnd <= f2?.EngineStart;
 		}
-		public static bool operator <(ClubFlightViewModel f1, ClubFlightViewModel f2)
+		public static bool operator <(ClubFlightModel f1, ClubFlightModel f2)
 		{
 			return f1?.EngineEnd < f2?.EngineStart;
 		}
-		public static bool operator ==(ClubFlightViewModel f1, ClubFlightViewModel f2)
+		public static bool operator ==(ClubFlightModel f1, ClubFlightModel f2)
 		{
 
 			return f1?.EngineEnd == f2?.EngineEnd && f1?.EngineStart == f2?.EngineStart;
 		}
-		public static bool operator !=(ClubFlightViewModel f1, ClubFlightViewModel f2)
+		public static bool operator !=(ClubFlightModel f1, ClubFlightModel f2)
 		{
 			return !(f1 == f2);
 		}
@@ -101,7 +101,7 @@ namespace ClubLogBook.Application.ViewModels
 				return false;
 			if (this.GetType() != obj.GetType()) return false;
 
-			ClubFlightViewModel other = (ClubFlightViewModel)obj;
+			ClubFlightModel other = (ClubFlightModel)obj;
 			if (other.EngineStart >= this.EngineStart && other.EngineStart < this.EngineEnd || other.EngineEnd <= this.EngineEnd && other.EngineEnd > this.EngineStart)
 			{
 				return true;
@@ -118,15 +118,15 @@ namespace ClubLogBook.Application.ViewModels
 			return this;
 		}
 
-		protected virtual ClubFlightViewModel Create()
+		protected virtual ClubFlightModel Create()
 		{
-			return new ClubFlightViewModel();
+			return new ClubFlightModel();
 		}
 
 		public void CreateMappings(Profile configuration)
 		{
-			configuration.CreateMap<ClubFlightViewModel, Flight>();
-			configuration.CreateMap<Flight,ClubContactsViewModel>();
+			configuration.CreateMap<ClubFlightModel, Flight>();
+			configuration.CreateMap<Flight,ClubContactsModel>();
 		}
 	}
 	public class ClubFlightViewModel22

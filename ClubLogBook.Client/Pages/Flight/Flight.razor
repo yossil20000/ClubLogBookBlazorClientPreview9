@@ -1,5 +1,5 @@
 ﻿@page "/Flight"
-@using ClubLogBook.Application.ViewModels
+@using ClubLogBook.Application.Models
 @using Microsoft.AspNetCore.Components
 
     <div class="form-group">
@@ -26,6 +26,6 @@
     </div>
 
 @functions {
-    [Parameter] public ClubFlightViewModel FlightToView { get; set; }
+    [Parameter] public ClubFlightModel FlightToView { get; set; }
    
 }

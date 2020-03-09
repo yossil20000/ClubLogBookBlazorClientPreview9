@@ -11,7 +11,7 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using FluentValidation;
-using ClubLogBook.Application.ViewModels;
+using ClubLogBook.Application.Models;
 using ClubLogBook.Core.Interfaces;
 using System;
 
@@ -19,7 +19,7 @@ namespace ClubLogBook.Application.Flights.Queries
 {
 	public class ClubFlightListViewModel
 	{
-		public List<ClubFlightViewModel> clubFlightListViewModel { get; set; }
+		public List<ClubFlightModel> clubFlightListViewModel { get; set; }
 	}
 	public class InvoiceToFlightComaprer : IEqualityComparer<Invoice>
 	{
@@ -34,26 +34,26 @@ namespace ClubLogBook.Application.Flights.Queries
 			return obj.GetHashCode();
 		}
 	}
-	public class GetAllFlightsQuery : IRequest<FlightRecordIndexViewModel>
+	public class GetAllFlightsQuery : IRequest<FlightRecordIndexModel>
 	{
 
-		public class GetAllFlightsQueryHandler : IRequestHandler<GetAllFlightsQuery, FlightRecordIndexViewModel>
+		public class GetAllFlightsQueryHandler : IRequestHandler<GetAllFlightsQuery, FlightRecordIndexModel>
 		{
 			private readonly IApplicationDbContext _context;
 			private readonly IMapper _mapper;
 			public GetAllFlightsQueryHandler(IApplicationDbContext context, IMapper mapper) => (_mapper, _context) = (mapper, context);
 
 
-			public async Task<FlightRecordIndexViewModel> Handle(GetAllFlightsQuery request, CancellationToken cancellationToken)
+			public async Task<FlightRecordIndexModel> Handle(GetAllFlightsQuery request, CancellationToken cancellationToken)
 			{
 				InvoiceToFlightComaprer comparer = new InvoiceToFlightComaprer();
-				FlightRecordIndexViewModel flightRecordIndexViewModel = new FlightRecordIndexViewModel();
+				FlightRecordIndexModel flightRecordIndexViewModel = new FlightRecordIndexModel();
 
 
 				var flights = _context.Set<Flight>().ToList();
 				
-				ClubFlightViewModel clubFlightViewModel = new ClubFlightViewModel();
-				flightRecordIndexViewModel.FlightRecords = _mapper.Map<List<Flight>, List<ClubFlightViewModel>>(flights);
+				ClubFlightModel clubFlightViewModel = new ClubFlightModel();
+				flightRecordIndexViewModel.FlightRecords = _mapper.Map<List<Flight>, List<ClubFlightModel>>(flights);
 
 				int totalFlight = flights.Count();
 				flightRecordIndexViewModel.PaginationInfo.TotalItems = totalFlight;

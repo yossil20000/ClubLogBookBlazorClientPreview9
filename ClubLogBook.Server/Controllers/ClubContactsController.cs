@@ -8,7 +8,7 @@ using ClubLogBook.Application.Services;
 using ClubLogBook.Core.Entities;
 using ClubLogBook.Infrastructure.Data;
 using ClubLogBook.Application.Interfaces;
-using ClubLogBook.Application.ViewModels;
+using ClubLogBook.Application.Models;
 
 using ClubLogBook.Server.Services;
 using ClubLogBook.Application.Extenttions;
@@ -33,9 +33,9 @@ namespace ClubLogBook.Server.Controllers
 
 		[HttpGet]
 		[Route("api/ClubContacts/Pilots")]
-		public async Task<List<ClubContactsViewModel>> Pilots()
+		public async Task<List<ClubContactsModel>> Pilots()
 		{
-			List<ClubContactsViewModel> contacts = new List<ClubContactsViewModel>();
+			List<ClubContactsModel> contacts = new List<ClubContactsModel>();
 			//Account account = new Account();
 			//AircraftPrice ap = new AircraftPrice();
 			//AircraftPriceViewModel apvm = new AircraftPriceViewModel();
@@ -58,7 +58,7 @@ namespace ClubLogBook.Server.Controllers
 		}
 		[HttpGet]
 		[Route("api/ClubContacts/Members")]
-		public async Task<List<ClubContactsViewModel>> Members()
+		public async Task<List<ClubContactsModel>> Members()
 		{
 			//List<ClubContactsViewModel> contacts = new List<ClubContactsViewModel>();
 			var contacts = await _clubContactsViewModelService.GetAllPilot();
@@ -66,46 +66,46 @@ namespace ClubLogBook.Server.Controllers
 		}
 		[HttpGet]
 		[Route("api/ClubContacts/PilotsNotInClub")]
-		public async Task<IEnumerable<ClubContactsViewModel>> PilotsNotInClub()
+		public async Task<IEnumerable<ClubContactsModel>> PilotsNotInClub()
 		{
-			List<ClubContactsViewModel> contacts = new List<ClubContactsViewModel>();
+			List<ClubContactsModel> contacts = new List<ClubContactsModel>();
 			return await _clubContactsViewModelService.GetPilotsNotInAnyClub();
 			
 		}
 		// GET: ClubContacts/Details/5
 		[HttpGet]
 		[Route("api/ClubContacts/Details/{id}")]
-		public ClubContactsViewModel Details(int id)
+		public ClubContactsModel Details(int id)
 		{
 			var club = _clubService.GetClubMembers("BAZ");
 			Pilot pilot = club.Result.Where(i => i.Id == id).FirstOrDefault();
 			UserInfo userInfo = new UserInfo(pilot);
 			string user = userInfo.GetJason();
-			ClubContactsViewModel pMode = new ClubContactsViewModel();
-			_mapper.Map<Pilot, ClubContactsViewModel>(pilot, pMode);
+			ClubContactsModel pMode = new ClubContactsModel();
+			_mapper.Map<Pilot, ClubContactsModel>(pilot, pMode);
 			
 			return pMode;
 		}
 
 		[HttpGet]
 		[Route("api/ClubContacts/DetailsForDelete/{id}")]
-		public ClubContactsViewModel DetailsForDelete(int id)
+		public ClubContactsModel DetailsForDelete(int id)
 		{
 			var club = _clubService.GetClubMembers("BAZ");
 			Pilot p = club.Result.Where(i => i.Id == id).FirstOrDefault();
-			ClubContactsViewModel pMode = new ClubContactsViewModel();
+			ClubContactsModel pMode = new ClubContactsModel();
 			//pMode.CopyPilot(p);
 			return pMode;
 		}
 		
 		[HttpPut]
 		[Route("api/ClubContacts/Create")]
-		public async Task Create([FromBody] ClubContactsViewModel clubContactUpdateViewModel)
+		public async Task Create([FromBody] ClubContactsModel clubContactUpdateViewModel)
 		{
 			if (ModelState.IsValid)
 			{
 				Pilot pilot = new Pilot();
-				_mapper.Map<ClubContactsViewModel, Pilot>(clubContactUpdateViewModel, pilot);
+				_mapper.Map<ClubContactsModel, Pilot>(clubContactUpdateViewModel, pilot);
 				await _memberService.UpdatePilot(pilot);
 				System.Diagnostics.Debug.WriteLine(pilot.ToString());
 				System.Diagnostics.Debug.WriteLine(pilot.ToString());
@@ -127,12 +127,12 @@ namespace ClubLogBook.Server.Controllers
 
 		[HttpPut]
 		[Route("api/ClubContacts/Edit")]
-		public async Task Edit([FromBody] ClubContactsViewModel clubContactUpdateViewModel)
+		public async Task Edit([FromBody] ClubContactsModel clubContactUpdateViewModel)
 		{
 			if (ModelState.IsValid)
 			{
 				Pilot pilot = await _memberService.GetPilotById(clubContactUpdateViewModel.Id);
-				_mapper.Map<ClubContactsViewModel, Pilot>(clubContactUpdateViewModel, pilot);
+				_mapper.Map<ClubContactsModel, Pilot>(clubContactUpdateViewModel, pilot);
 				await _memberService.UpdatePilot(pilot);
 				System.Diagnostics.Debug.WriteLine(pilot.ToString());
 			}
@@ -162,7 +162,7 @@ namespace ClubLogBook.Server.Controllers
 		}
 		[HttpPut]
 		[Route("api/ClubContacts/Update")]
-		public async Task Update([FromBody] ClubContactsViewModel clubContactViewModel)
+		public async Task Update([FromBody] ClubContactsModel clubContactViewModel)
 		{
 			//if (ModelState.IsValid)
 			{

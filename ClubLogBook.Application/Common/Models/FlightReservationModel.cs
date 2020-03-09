@@ -1,11 +1,11 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-namespace ClubLogBook.Application.ViewModels
+namespace ClubLogBook.Application.Models
 {
-	public class FlightReservationViewModel
+	public class FlightReservationModel
 	{
 		public int Id { get; set; }
-		public FlightReservationViewModel() { DateTo = DateTime.Now.AddHours(1); DateFrom = DateTime.Now; ExtructTime(); }
+		public FlightReservationModel() { DateTo = DateTime.Now.AddHours(1); DateFrom = DateTime.Now; ExtructTime(); }
 
 
 		[Required(ErrorMessage = "Required")]

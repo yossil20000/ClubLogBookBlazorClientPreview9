@@ -1,5 +1,5 @@
 ﻿@page "/Flight/ClubFlight"
-@using ClubLogBook.Application.ViewModels
+@using ClubLogBook.Application.Models
 @using System.Globalization
 @using Microsoft.Extensions.Logging
 @inject HttpClient Http
@@ -20,33 +20,33 @@
             @*<div class="a-f-header--1"><input type="date" class="btn-transaction c_account__cell--2-1"></div>
             <div class="a-f-header--2">Flights 2</div>
             <div class="a-f-header--3">Flights 3</div>*@
-            <input type="date" class="btn-transaction a-f-header--1" @bind="@FlightRecordIndexViewModel.FilterViewModel.FilterDateViewModel.FilterDateFrom">
+            <input type="date" class="btn-transaction a-f-header--1" @bind="@FlightRecordIndexViewModel.FilterModel.FilterDateViewModel.FilterDateFrom">
             <div class="btn-transaction a-f-header--2"><button @onclick="@OnSearch"><i class="material-icons">search</i></button></div>
-            <input type="date" class="btn-transaction a-f-header--3" @bind="@FlightRecordIndexViewModel.FilterViewModel.FilterDateViewModel.FilterDateTo">
+            <input type="date" class="btn-transaction a-f-header--3" @bind="@FlightRecordIndexViewModel.FilterModel.FilterDateViewModel.FilterDateTo">
             <div class=" btn-transaction  a-f-filter--1">
-                <select value="@FlightRecordIndexViewModel.FilterViewModel.ClubFilterApplied" class="custom-select" @onchange="ClubSelected">
+                <select value="@FlightRecordIndexViewModel.FilterModel.ClubFilterApplied" class="custom-select" @onchange="ClubSelected">
 
 
-                    @foreach (var i in @FlightRecordIndexViewModel.FilterViewModel.ClubSelects)
+                    @foreach (var i in @FlightRecordIndexViewModel.FilterModel.ClubSelects)
                     {
                         <option value="@i.Id">@i.ClubName - (@(i.Id))</option>
                     }
                 </select>
             </div>
             <div class="btn-transaction  a-f-filter--2">
-                <select class="custom-select" @onchange="AirplaneSelected" value="@FlightRecordIndexViewModel.FilterViewModel.AirplaneFilterApplied">
+                <select class="custom-select" @onchange="AirplaneSelected" value="@FlightRecordIndexViewModel.FilterModel.AirplaneFilterApplied">
 
 
-                    @foreach (var i in @FlightRecordIndexViewModel.FilterViewModel.AirplaneSelects)
+                    @foreach (var i in @FlightRecordIndexViewModel.FilterModel.AirplaneSelects)
                     {
                         <option value="@i.Id">@i.TailNumber - (@(i.Id))</option>
                     }
                 </select>
             </div>
             <div class="btn-transaction  a-f-filter--3">
-                <select class="custom-select" @onchange="PilotSelected" value="@FlightRecordIndexViewModel.FilterViewModel.PilotFilterApplied">
+                <select class="custom-select" @onchange="PilotSelected" value="@FlightRecordIndexViewModel.FilterModel.PilotFilterApplied">
 
-                    @foreach (var i in @FlightRecordIndexViewModel.FilterViewModel.PilotSelects)
+                    @foreach (var i in @FlightRecordIndexViewModel.FilterModel.PilotSelects)
                     {
                         <option value="@i.Id">@i.FullName - (@(i.IdNumber))</option>
                     }
@@ -153,7 +153,7 @@
                     {
                     <div>
                        
-                        @if (@FlightRecordIndexViewModel.FilterViewModel == null)
+                        @if (@FlightRecordIndexViewModel.FilterModel == null)
                         {
                             <select class="custom-select" disabled>
                                 <option>(loading...)</option>
@@ -163,9 +163,9 @@
                         {
                             <select class="custom-select" @onchange="OnCreateAircraftSelected">
                                 <option value="-1" disabled selected>(select)</option>
-                                @for (var i = 0; i < @FlightRecordIndexViewModel.FilterViewModel.AirplaneSelects.Count; i++)
+                                @for (var i = 0; i < @FlightRecordIndexViewModel.FilterModel.AirplaneSelects.Count; i++)
                                 {
-                                     <option value="@FlightRecordIndexViewModel.FilterViewModel.AirplaneSelects[i].Id">@FlightRecordIndexViewModel.FilterViewModel.AirplaneSelects[i].TailNumber - (@(FlightRecordIndexViewModel.FilterViewModel.PilotSelects[i].Id))</option>
+                                     <option value="@FlightRecordIndexViewModel.FilterModel.AirplaneSelects[i].Id">@FlightRecordIndexViewModel.FilterModel.AirplaneSelects[i].TailNumber - (@(FlightRecordIndexViewModel.FilterModel.PilotSelects[i].Id))</option>
                                 }
                             </select>
                         }
@@ -173,7 +173,7 @@
                     
                     <div>
                        
-                        @if (@FlightRecordIndexViewModel.FilterViewModel.PilotSelects == null)
+                        @if (@FlightRecordIndexViewModel.FilterModel.PilotSelects == null)
                         {
                             <select class="custom-select" disabled>
                                 <option>(loading...)</option>
@@ -183,11 +183,11 @@
                         {
                             <select class="custom-select" @onchange="OnCreatePilotSelected">
                                 <option value="-1" disabled selected>(select)</option>
-                                @for (var i = 0; i < @FlightRecordIndexViewModel.FilterViewModel.PilotSelects.Count; i++)
+                                @for (var i = 0; i < @FlightRecordIndexViewModel.FilterModel.PilotSelects.Count; i++)
                                 {
-                                    if (IsCurrentAdmin || CurrentUser.Id == @FlightRecordIndexViewModel.FilterViewModel.PilotSelects[i].UserId.ToString())
+                                    if (IsCurrentAdmin || CurrentUser.Id == @FlightRecordIndexViewModel.FilterModel.PilotSelects[i].UserId.ToString())
                                     {
-                            <option value="@FlightRecordIndexViewModel.FilterViewModel.PilotSelects[i].Id">@FlightRecordIndexViewModel.FilterViewModel.PilotSelects[i].FullName - (@(FlightRecordIndexViewModel.FilterViewModel.PilotSelects[i].IdNumber))</option>
+                            <option value="@FlightRecordIndexViewModel.FilterModel.PilotSelects[i].Id">@FlightRecordIndexViewModel.FilterModel.PilotSelects[i].FullName - (@(FlightRecordIndexViewModel.FilterModel.PilotSelects[i].IdNumber))</option>
                                     }
 
                                 }
@@ -259,9 +259,9 @@
 
 @functions {
     [CascadingParameter] private Task<AuthenticationState> authenticationStateTask { get; set; }
-    IEnumerable<ClubFlightViewModel> flights = new List<ClubFlightViewModel>();
-    FlightRecordIndexViewModel FlightRecordIndexViewModel { get; set; }
-    FilterViewModel FilterViewModel { get; set; } = new FilterViewModel();
+    IEnumerable<ClubFlightModel> flights = new List<ClubFlightModel>();
+    FlightRecordIndexModel FlightRecordIndexViewModel { get; set; }
+    FilterModel FilterViewModel { get; set; } = new FilterModel();
     bool IsCurrentAdmin { get; set; } = false;
     AdminUserInfo CurrentUser { get; set; }
     string PageMessage { get; set; } = "Not filterd";
@@ -274,7 +274,7 @@
     SortCommand lastSortCommand;
     bool bShowEdit { get; set; } = false;
     bool bIsCreateFlight { get; set; } = false;
-    ClubFlightViewModel editFlightModel { get; set; }
+    ClubFlightModel editFlightModel { get; set; }
     int selectedAircraft { get; set; }
     int selectedPilot { get; set; }
     string isValidClass { get; set; } = "";
@@ -284,9 +284,9 @@
 
     protected override async Task OnInitializedAsync()
     {
-        FlightRecordIndexViewModel = await Http.GetJsonAsync<FlightRecordIndexViewModel>("api/ClubFlight/FlightWithFilter");
+        FlightRecordIndexViewModel = await Http.GetJsonAsync<FlightRecordIndexModel>("api/ClubFlight/FlightWithFilter");
         flights = FlightRecordIndexViewModel.FlightRecords.ToList();
-        FilterViewModel = FlightRecordIndexViewModel.FilterViewModel;
+        FilterViewModel = FlightRecordIndexViewModel.FilterModel;
         var authState = await authenticationStateTask;
         var user = authState.User;
         CurrentUser = await authStateProvider.CurrentUser();
@@ -321,7 +321,7 @@
 
         decimal maxEngien = FlightRecordIndexViewModel.FlightRecords.Max(x => x.EngineEnd);
         decimal maxhobbs = FlightRecordIndexViewModel.FlightRecords.Max(x => x.HobbsEnd);
-        editFlightModel = new ClubFlightViewModel(maxEngien,maxhobbs);
+        editFlightModel = new ClubFlightModel(maxEngien,maxhobbs);
         bShowEdit = true;
         bIsCreateFlight = true;
     }
@@ -329,7 +329,7 @@
     {
         editFlightModel = FlightRecordIndexViewModel.FlightRecords.Where(i => i.Id == id).FirstOrDefault();
         if (editFlightModel == null)
-            editFlightModel = new ClubFlightViewModel();
+            editFlightModel = new ClubFlightModel();
         bShowEdit = true;
     }
     private void SortDate(bool sortDecending = true)
@@ -431,7 +431,7 @@
     }
     protected async Task OnSearch()
     {
-        FlightRecordIndexViewModel = await Http.PutJsonAsync<FlightRecordIndexViewModel>("api/ClubFlight/Put", FlightRecordIndexViewModel);
+        FlightRecordIndexViewModel = await Http.PutJsonAsync<FlightRecordIndexModel>("api/ClubFlight/Put", FlightRecordIndexViewModel);
         OnActualPageChanged();
     }
     void OnDateChanged()
@@ -445,11 +445,11 @@
         if (int.TryParse((string)e.Value, out var index) && index >= 0)
         {
             //emp.Pilot = pilots[index];
-            FlightRecordIndexViewModel.FilterViewModel.PilotFilterApplied = index;
+            FlightRecordIndexViewModel.FilterModel.PilotFilterApplied = index;
 
         }
         else
-            FlightRecordIndexViewModel.FilterViewModel.PilotFilterApplied = null;
+            FlightRecordIndexViewModel.FilterModel.PilotFilterApplied = null;
 
     }
     void ClubSelected(ChangeEventArgs e)
@@ -458,11 +458,11 @@
         if (int.TryParse((string)e.Value, out var index))
         {
             //emp.Pilot = pilots[index];
-            FlightRecordIndexViewModel.FilterViewModel.ClubFilterApplied = index;
+            FlightRecordIndexViewModel.FilterModel.ClubFilterApplied = index;
 
         }
         else
-            FlightRecordIndexViewModel.FilterViewModel.ClubFilterApplied = null;
+            FlightRecordIndexViewModel.FilterModel.ClubFilterApplied = null;
     }
     void AirplaneSelected(ChangeEventArgs e)
     {
@@ -470,11 +470,11 @@
         if (int.TryParse((string)e.Value, out var index) && index >= 0)
         {
             //emp.Pilot = pilots[index];
-            FlightRecordIndexViewModel.FilterViewModel.AirplaneFilterApplied = index;
+            FlightRecordIndexViewModel.FilterModel.AirplaneFilterApplied = index;
 
         }
         else
-            FlightRecordIndexViewModel.FilterViewModel.AirplaneFilterApplied = null;
+            FlightRecordIndexViewModel.FilterModel.AirplaneFilterApplied = null;
     }
     private async Task OnEditDelete(int id)
     {

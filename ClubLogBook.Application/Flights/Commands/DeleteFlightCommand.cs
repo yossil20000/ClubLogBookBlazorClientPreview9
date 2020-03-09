@@ -1,6 +1,6 @@
 ﻿using ClubLogBook.Application.Common.Exceptions;
 using ClubLogBook.Application.Common.Interfaces;
-using ClubLogBook.Application.ViewModels;
+using ClubLogBook.Application.Models;
 using ClubLogBook.Core.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

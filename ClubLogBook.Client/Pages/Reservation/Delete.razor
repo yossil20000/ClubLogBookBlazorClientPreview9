@@ -1,5 +1,5 @@
 ﻿@page "/Reservation/Delete/{id}"
-@using ClubLogBook.Application.ViewModels
+@using ClubLogBook.Application.Models
 
 @inject HttpClient Http
 @using Microsoft.AspNetCore.Components
@@ -22,11 +22,11 @@
 @code
 {
     [Parameter] public string id { get; set; }
-    protected FlightReservationViewModel reservation = new FlightReservationViewModel();
+    protected FlightReservationModel reservation = new FlightReservationModel();
     string navTo = "/Reservation/FlightReservation";
     protected override async Task OnInitializedAsync()
     {
-        reservation = await Http.GetJsonAsync<FlightReservationViewModel>("api/FlightReservation/Details/" + Convert.ToInt32(id));
+        reservation = await Http.GetJsonAsync<FlightReservationModel>("api/FlightReservation/Details/" + Convert.ToInt32(id));
     }
     protected async Task UpdateFlight(int id)
     {

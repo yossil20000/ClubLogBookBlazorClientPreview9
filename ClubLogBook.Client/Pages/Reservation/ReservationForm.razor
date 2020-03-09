@@ -1,5 +1,5 @@
 ﻿@page "/Reservation/ReservationForm"
-@using ClubLogBook.Application.ViewModels
+@using ClubLogBook.Application.Models
 @using ClubLogBook.Shared
 @using Microsoft.AspNetCore.Components
 <h3>ReservationForm</h3>
@@ -37,7 +37,7 @@
     </div>
 </EditForm>
 @code {
-    [Parameter] public FlightReservationViewModel Item { get; set; }
+    [Parameter] public FlightReservationModel Item { get; set; }
     [Parameter] public FilterSelection filter { get; set; }
     private EditContext EditContext;
     protected override async Task OnInitializedAsync()

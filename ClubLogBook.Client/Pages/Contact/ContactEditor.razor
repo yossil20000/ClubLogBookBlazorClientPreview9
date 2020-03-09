@@ -1,5 +1,5 @@
 ﻿@page "/Contact/ContactEditor"
-@using ClubLogBook.Application.ViewModels
+@using ClubLogBook.Application.Models
 @using W8lessLabs.Blazor.LocalFiles
 @inject HttpClient Http
 @inject IdentityAuthenticationStateProvider authStateProvider
@@ -489,22 +489,22 @@
 @functions {
     [CascadingParameter]
     private Task<AuthenticationState> authenticationStateTask { get; set; }
-    List<ClubContactsViewModel> contacts { get; set; }
+    List<ClubContactsModel> contacts { get; set; }
     AdminUserInfo CurrentUser { get; set; }
     bool IsCurrentAdmin { get; set; } = false;
-    ClubContactsViewModel currentContact = new ClubContactsViewModel();
+    ClubContactsModel currentContact = new ClubContactsModel();
     string selectedFile { get; set; }
     string AfterselectFile { get; set; } = "not Select";
     string imageFileUrl = string.Empty;
-    public AddressViewModel addressViewModel { get; set; }
+    public AddressModel addressViewModel { get; set; }
     bool ShowAdddressEdit { get; set; } = false;
-    public PhoneViewModel phoneViewModel { get; set; }
+    public PhoneModel phoneViewModel { get; set; }
     bool ShowPhoneEdit { get; set; } = false;
-    public EMAILVieModel eMAILVieModel { get; set; }
+    public EMAILModel eMAILVieModel { get; set; }
     public bool ShowEmailEdit { get; set; } = false;
     protected override async Task OnInitializedAsync()
     {
-        contacts = await Http.GetJsonAsync<List<ClubContactsViewModel>>("api/ClubContacts/Members");
+        contacts = await Http.GetJsonAsync<List<ClubContactsModel>>("api/ClubContacts/Members");
         var authState = await authenticationStateTask;
         var user = authState.User;
         CurrentUser = await authStateProvider.CurrentUser();
@@ -513,7 +513,7 @@
         addressViewModel = currentContact.Addresses.FirstOrDefault();
 
     }
-    async Task OnSaveContact(ClubContactsViewModel obj)
+    async Task OnSaveContact(ClubContactsModel obj)
     {
         await Http.SendJsonAsync(HttpMethod.Put, "api/ClubContacts/Update", obj);
     }
@@ -524,34 +524,34 @@
         ShowEmailEdit = false;
         ShowPhoneEdit = false;
     }
-    async Task OnEditAddress(AddressViewModel obj)
+    async Task OnEditAddress(AddressModel obj)
     {
         addressViewModel = obj;
         ShowAdddressEdit = true;
     }
-    async Task OnEditPhone(PhoneViewModel obj)
+    async Task OnEditPhone(PhoneModel obj)
     {
         phoneViewModel = obj;
         ShowPhoneEdit = true;
     }
-    async Task OnEditEmail(EMAILVieModel obj)
+    async Task OnEditEmail(EMAILModel obj)
     {
         eMAILVieModel = obj;
         ShowEmailEdit = true;
     }
     void OnAddAddress()
     {
-        addressViewModel = new AddressViewModel();
+        addressViewModel = new AddressModel();
         ShowAdddressEdit = true;
     }
     void OnAddPhone()
     {
-        phoneViewModel = new PhoneViewModel();
+        phoneViewModel = new PhoneModel();
         ShowPhoneEdit = true;
     }
     void OnAddEmail()
     {
-        eMAILVieModel = new EMAILVieModel();
+        eMAILVieModel = new EMAILModel();
         ShowEmailEdit = true;
     }
     void SaveAddress()
@@ -587,17 +587,17 @@
         currentContact.Emails.Add(eMAILVieModel);
         ClosePopup();
     }
-    async Task OnDeleteAddress(AddressViewModel address)
+    async Task OnDeleteAddress(AddressModel address)
     {
         currentContact.Addresses.Remove(address);
         ClosePopup();
     }
-    async Task OnDeletePhone(PhoneViewModel obj)
+    async Task OnDeletePhone(PhoneModel obj)
     {
         currentContact.Phones.Remove(obj);
         ClosePopup();
     }
-    async Task OnDeleteEmail(EMAILVieModel obj)
+    async Task OnDeleteEmail(EMAILModel obj)
     {
         currentContact.Emails.Remove(obj);
         ClosePopup();
@@ -616,7 +616,7 @@
     {
         currentContact.FullName = $"{currentContact.FirstName} {currentContact.LastName} {currentContact.MiddleName}";
     }
-    async Task EditContact(ClubContactsViewModel clubContactsViewModel)
+    async Task EditContact(ClubContactsModel clubContactsViewModel)
     {
         // Set the selected forecast
         // as the current forecast
@@ -625,7 +625,7 @@
         // Open the Popup
         //ShowPopup = true;
     }
-    async Task DeleteContact(ClubContactsViewModel clubContactsViewModel)
+    async Task DeleteContact(ClubContactsModel clubContactsViewModel)
     {
         // Set the selected forecast
         // as the current forecast
@@ -638,7 +638,7 @@
     async Task AddContact()
     {
 
-        currentContact = new ClubContactsViewModel();
+        currentContact = new ClubContactsModel();
         contacts.Add(currentContact);
 
     }

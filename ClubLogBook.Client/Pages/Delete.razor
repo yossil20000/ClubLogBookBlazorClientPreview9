@@ -1,5 +1,5 @@
 ﻿@page "/Delete/{contactId}"
-@using ClubLogBook.Application.ViewModels
+@using ClubLogBook.Application.Models
 @using Microsoft.AspNetCore.Components
 @inject NavigationManager navigationManager
 @inject HttpClient Http
@@ -31,11 +31,11 @@
 @code
 {
 [Parameter] public string contactId { get; set; }
-ClubContactsViewModel contact = new ClubContactsViewModel();
+ClubContactsModel contact = new ClubContactsModel();
 string navTo = "/ClubContacts";
 protected override async Task OnInitializedAsync()
 {
-    contact = await Http.GetJsonAsync<ClubContactsViewModel>("/api/ClubContacts/DetailsForDelete/" + Convert.ToInt32(contactId));
+    contact = await Http.GetJsonAsync<ClubContactsModel>("/api/ClubContacts/DetailsForDelete/" + Convert.ToInt32(contactId));
 
 }
 protected async Task DeleteContact(int id)

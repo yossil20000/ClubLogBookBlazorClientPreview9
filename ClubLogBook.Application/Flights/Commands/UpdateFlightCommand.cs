@@ -1,6 +1,6 @@
 ﻿using ClubLogBook.Application.Common.Exceptions;
 using ClubLogBook.Application.Common.Interfaces;
-using ClubLogBook.Application.ViewModels;
+using ClubLogBook.Application.Models;
 using ClubLogBook.Core.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -14,7 +14,7 @@ namespace ClubLogBook.Application.Flights.Commands
 {
 	public class UpdateFlightCommand : IRequest<int>
 	{
-		public ClubFlightViewModel ClubFlightViewModel { get; set; }
+		public ClubFlightModel ClubFlightViewModel { get; set; }
 		public class UpdateFlightCommandHandler : IRequestHandler<UpdateFlightCommand, int>
 		{
 			private readonly IApplicationDbContext _context;

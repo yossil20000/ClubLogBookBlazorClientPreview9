@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ClubLogBook.Application.Interfaces;
 using AutoMapper;
-using ClubLogBook.Application.ViewModels;
+using ClubLogBook.Application.Models;
 using ClubLogBook.Core.Entities;
 using Microsoft.Extensions.Logging;
 using MediatR;
@@ -14,6 +14,7 @@ using System.Threading;
 using ClubLogBook.Application.AircraftManager.Commands;
 using ClubLogBook.Application.AircraftManager.Commands.DeleteAircraft;
 using ClubLogBook.Application.AircraftManager.Commands.UpdateAircraft;
+using ClubLogBook.Application.Common.Models;
 
 namespace ClubLogBook.Server.Controllers
 {
@@ -33,7 +34,7 @@ namespace ClubLogBook.Server.Controllers
         // GET: api/Aircraft
         [HttpGet]
         //[Route("api/Aircraft/AircraftGet")]
-        public async  Task<AircraftListViewModel> GetAllAircraft()
+        public async  Task<AircraftListModel> GetAllAircraft()
         {
             CancellationToken ct = new CancellationToken();
             //List<Aircraft> air = await aircraftManagerService.GetAllAircraftsInClub("BAZ");
@@ -47,14 +48,14 @@ namespace ClubLogBook.Server.Controllers
             }
             catch(Exception ex)
             {
-                return new AircraftListViewModel();
+                return new AircraftListModel();
             }
             //return aircraftViewModel;
             //return new List<AircraftViewModel>();
         }
         [HttpGet]
         //[Route("api/Aircraft/AircraftGet")]
-        public async Task<AircraftListViewModel> GetClubAircraft(string clubName)
+        public async Task<AircraftListModel> GetClubAircraft(string clubName)
         {
             CancellationToken ct = new CancellationToken();
             //List<Aircraft> air = await aircraftManagerService.GetAllAircraftsInClub("BAZ");
@@ -64,17 +65,17 @@ namespace ClubLogBook.Server.Controllers
             //mapper.Map(aircraftAll, aircraftViewModel);
             try
             {
-                return await mediator.Send(new GetClubAircraftListQuery() { ClubName=clubName,PageIndex=1,PageSize=30}, ct);
+                return await mediator.Send(new GetClubAircraftListQuery(QueryBy.Name,clubName,0) { PageIndex=1,PageSize=30}, ct);
             }
             catch (Exception ex)
             {
 
             }
             //return aircraftViewModel;
-            return new AircraftListViewModel();
+            return new AircraftListModel();
         }
         [HttpPut]
-        public async Task<ActionResult> CreateAircraft([FromBody] AircraftViewModel airCraftViewModel )
+        public async Task<ActionResult> CreateAircraft([FromBody] AircraftModel airCraftViewModel )
         {
             var result = await mediator.Send(new CreateAircraftCommand() { aircraftViewModel = airCraftViewModel });
             return Ok(result);
@@ -86,7 +87,7 @@ namespace ClubLogBook.Server.Controllers
             return Ok(result);
         }
         [HttpPut]
-        public async Task<ActionResult> UpdateAircraft([FromBody] AircraftViewModel aircraftViewModel)
+        public async Task<ActionResult> UpdateAircraft([FromBody] AircraftModel aircraftViewModel)
         {
             var result =  await mediator.Send(new UpdateAircraftCommand(aircraftViewModel));
             return Ok(result);

@@ -7,7 +7,7 @@ using NUnit.Framework;
 using System.Linq;
 using ClubLogBook.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
-using ClubLogBook.Application.ViewModels;
+using ClubLogBook.Application.Models;
 using UnitsTest.ApplicationInfrastructure;
 using ClubLogBook.Infrastructure.Persistence;
 namespace UnitsTest.AccountManager
@@ -46,8 +46,8 @@ namespace UnitsTest.AccountManager
 			ac = context.Accounts.Where(i => i.Id == 2).SingleOrDefault();
 			accountObj = ac.GetJason<Account>();
 
-			AccountViewModel accountViewModel = new AccountViewModel();
-			mapper.Map<Account, AccountViewModel>(ac, accountViewModel);
+			AccountModel accountViewModel = new AccountModel();
+			mapper.Map<Account, AccountModel>(ac, accountViewModel);
 
 		}
 		[Test]

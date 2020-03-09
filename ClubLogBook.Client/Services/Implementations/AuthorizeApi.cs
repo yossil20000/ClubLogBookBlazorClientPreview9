@@ -10,7 +10,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using ClubLogBook.Application.ViewModels;
+using ClubLogBook.Application.Models;
 
 namespace ClubLogBook.Client.Services.Implementations
 {
@@ -100,9 +100,9 @@ namespace ClubLogBook.Client.Services.Implementations
 			var result = await _httpClient.GetJsonAsync<AdminUserInfo>("api/Administrator/CurrentUser");
 			return result;
 		}
-		public async Task<List<PilotSelectViewModel>> GetPilots()
+		public async Task<List<PilotSelectModel>> GetPilots()
 		{
-			var result = await _httpClient.GetJsonAsync<List<PilotSelectViewModel>>("api/Administrator/GetPilots");
+			var result = await _httpClient.GetJsonAsync<List<PilotSelectModel>>("api/Administrator/GetPilots");
 			return result;
 		}
 	}

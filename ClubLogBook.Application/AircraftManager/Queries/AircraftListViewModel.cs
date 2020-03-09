@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using ClubLogBook.Application.ViewModels;
+using ClubLogBook.Application.Models;
 namespace ClubLogBook.Application.AircraftManager.Queries
 {
-	public class AircraftListViewModel
+	public class AircraftListModel
 	{
-		public IList<AircraftViewModel> AircraftList { get; set; }
+		public List<AircraftModel> AircraftList { get; set; }
 	}
 }

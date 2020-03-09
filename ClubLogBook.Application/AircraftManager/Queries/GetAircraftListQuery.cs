@@ -7,16 +7,16 @@ using AutoMapper.QueryableExtensions;
 
 using ClubLogBook.Core.Entities;
 using Microsoft.EntityFrameworkCore;
-using ClubLogBook.Application.ViewModels;
+using ClubLogBook.Application.Models;
 using System.Collections.Generic;
 using ClubLogBook.Application.Common.Interfaces;
 
 namespace ClubLogBook.Application.AircraftManager.Queries
 {
 	
-	public class GetAircraftListQuery : IRequest<AircraftListViewModel>
+	public class GetAircraftListQuery : IRequest<AircraftListModel>
 	{
-		public class Handler : IRequestHandler<GetAircraftListQuery, AircraftListViewModel>
+		public class Handler : IRequestHandler<GetAircraftListQuery, AircraftListModel>
 		{
 			private readonly IApplicationDbContext context;
 			private readonly IMapper mapper;
@@ -25,12 +25,12 @@ namespace ClubLogBook.Application.AircraftManager.Queries
 				this.mapper = mapper;
 				this.context = context;
 			}
-			public async Task<AircraftListViewModel> Handle(GetAircraftListQuery request, CancellationToken cancellationToken)
+			public async Task<AircraftListModel> Handle(GetAircraftListQuery request, CancellationToken cancellationToken)
 			{
 				var ar = await context.Set<Aircraft>().ToListAsync();
-				IList<AircraftViewModel> aircraftViewModel = new List<AircraftViewModel>();
+				List<AircraftModel> aircraftViewModel = new List<AircraftModel>();
 				mapper.Map(ar, aircraftViewModel);
-				return new AircraftListViewModel
+				return new AircraftListModel
 				{
 					//AircraftList = await context.Set<Aircraft>().ProjectTo<AircraftViewModel>(mapper.ConfigurationProvider).ToListAsync(cancellationToken)
 					AircraftList = aircraftViewModel

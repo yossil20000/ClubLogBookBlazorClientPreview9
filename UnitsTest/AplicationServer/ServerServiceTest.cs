@@ -7,7 +7,7 @@ using ClubLogBook.Infrastructure.Persistence;
 using UnitsTest.ApplicationInfrastructure;
 
 using System.Threading.Tasks;
-using ClubLogBook.Application.ViewModels;
+using ClubLogBook.Application.Models;
 using ClubLogBook.Application.Services;
 using ClubLogBook.Server.Services;
 using AutoMapper;
@@ -45,7 +45,7 @@ namespace UnitsTest.AplicationServer
 				//IEnumerable<ClubContactsViewModel> clubContacs = await  clubContactsViewModelService.GetOrCreateClubContact("Baz");
 				//cl.Members = members;
 				//var p = clubContacs.Where(i => i.IdNumber == "059828392").FirstOrDefault();
-				ClubContactsViewModel clubContactUpdate = new ClubContactsViewModel();
+				ClubContactsModel clubContactUpdate = new ClubContactsModel();
 				Contact contact = new Contact();
 				contact.Addresses.Add(new Address() { City = "Gilon", Country = "Israel", State = "IL", Zipcode = "2010300", Street = "Ofir 60", Type = ContactType.HOME });
 				

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 
 
-namespace ClubLogBook.Application.ViewModels
+namespace ClubLogBook.Application.Models
 {
-	public enum InvoiceTypeViewModel
+	public enum InvoiceTypeModel
 	{
 		Flight,
 		FlightCredit,
@@ -13,7 +13,7 @@ namespace ClubLogBook.Application.ViewModels
 
 
 	}
-	public enum InvoiceStateViewModel
+	public enum InvoiceStateModel
 	{
 		Initial,
 		Create,
@@ -21,20 +21,20 @@ namespace ClubLogBook.Application.ViewModels
 		InTransaction,
 		Lock
 	}
-	public enum TransactionTypeVieModel
+	public enum TransactionTypeModel
 	{
 		Credit,
 		Debit
 	}
-	public class InvoiceViewModel /*: IBasicEntity,IAggregateRoot*/
+	public class InvoiceModel /*: IBasicEntity,IAggregateRoot*/
 	{
-		public InvoiceViewModel() { }
+		public InvoiceModel() { }
 		
 		public int Id { get; set; }
 		public decimal Amount { get; set; } = 0;
 		public string Description { get; set; } = "";
-		public InvoiceTypeViewModel InvoiceType { get; set; } = InvoiceTypeViewModel.Flight;
-		public InvoiceStateViewModel InvoiceState { get; set; } = InvoiceStateViewModel.Create;
+		public InvoiceTypeModel InvoiceType { get; set; } = InvoiceTypeModel.Flight;
+		public InvoiceStateModel InvoiceState { get; set; } = InvoiceStateModel.Create;
 		public int InvoiceReferance { get; set; } = 0;
 
 		public override string ToString()
@@ -42,9 +42,9 @@ namespace ClubLogBook.Application.ViewModels
 			return string.Format($"id:{Id},Amount:{Amount},InvoiceType:{InvoiceType},State:{InvoiceState},Desc:{Description}");
 		}
 	}
-	public class AircraftPriceViewModel 
+	public class AircraftPriceModel 
 	{
-		public AircraftPriceViewModel()
+		public AircraftPriceModel()
 		{
 			PerHour = 400;
 			PerMonth = 450;
@@ -61,16 +61,16 @@ namespace ClubLogBook.Application.ViewModels
 
 		}
 	}
-	public class TransactionViewModel 
+	public class TransactionModel 
 	{
-		public TransactionViewModel() { }
+		public TransactionModel() { }
 		public int Id { get; set; }
 		public DateTime Date { get; set; } = DateTime.Now;
-		public TransactionTypeVieModel TransactionType { get; set; } = TransactionTypeVieModel.Credit;
+		public TransactionTypeModel TransactionType { get; set; } = TransactionTypeModel.Credit;
 
 		public Decimal Cash { get; set; } = 0;
 		public Decimal Flight { get; set; } = 0;
-		public InvoiceViewModel Invoice { get; set; } = new InvoiceViewModel();
+		public InvoiceModel Invoice { get; set; } = new InvoiceModel();
 		public string Description { get; set; } = "";
 		public override string ToString()
 		{
@@ -78,7 +78,7 @@ namespace ClubLogBook.Application.ViewModels
 				$"id:{Id},Date:{Date},Date:{Date},Case:{Cash},Flight:{Flight},Desc:{Description}");
 		}
 	}
-	public class AccountViewModel/*: IBasicEntity, IAccount<TransactionViewModel>*/
+	public class AccountModel/*: IBasicEntity, IAccount<TransactionViewModel>*/
 	{
 		public int Id { get; set; }
 		public int MemeberId { get; set; } = 0;
@@ -87,7 +87,7 @@ namespace ClubLogBook.Application.ViewModels
 		public Decimal CashBalance { get; set; } = 0;
 		public string Description { get; set; } = "";
 
-		public ICollection<TransactionViewModel> Transactions { get; set; } = new List<TransactionViewModel>();
+		public ICollection<TransactionModel> Transactions { get; set; } = new List<TransactionModel>();
 		
 		
 	}

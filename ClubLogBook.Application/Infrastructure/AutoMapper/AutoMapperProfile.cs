@@ -4,7 +4,7 @@ using System.Text;
 using System.Reflection;
 using AutoMapper;
 using ClubLogBook.Core.Entities;
-using ClubLogBook.Application.ViewModels;
+using ClubLogBook.Application.Models;
 namespace ClubLogBook.Application.Infrastructure.AutoMapper
 {
 	public class AutoMapperProfile:Profile
@@ -19,8 +19,8 @@ namespace ClubLogBook.Application.Infrastructure.AutoMapper
 		public void MappingProfile()
 		{
 
-			CreateMap<Flight, ClubFlightViewModel>().PreserveReferences().MaxDepth(4);
-			CreateMap<ClubFlightViewModel, Flight>().PreserveReferences().MaxDepth(4);
+			CreateMap<Flight, ClubFlightModel>().PreserveReferences().MaxDepth(4);
+			CreateMap<ClubFlightModel, Flight>().PreserveReferences().MaxDepth(4);
 			CreateMap<Aircraft, Aircraft>();
 			CreateMap<AirCraftModel, AirCraftModel>();
 			CreateMap<Pilot, Pilot>();
@@ -31,28 +31,28 @@ namespace ClubLogBook.Application.Infrastructure.AutoMapper
 			CreateMap<Endorsment, Endorsment>();
 			CreateMap<License, License>();
 			CreateMap<Checkride, Checkride>();
-			CreateMap<Aircraft, AirplaneSelectViewModel>();
-			CreateMap<AircraftReservation, FlightReservationViewModel>().ReverseMap();
+			CreateMap<Aircraft, AirplaneSelectModel>();
+			CreateMap<AircraftReservation, FlightReservationModel>().ReverseMap();
 			//CreateMap<ApplicationUser, AdminUserInfo>();
 			//CreateMap<AdminUserInfo, ApplicationUser>();
-			CreateMap<Address, AddressViewModel>();
-			CreateMap<Phone, PhoneViewModel>();
-			CreateMap<EMAIL, EMAILVieModel>();
-			CreateMap<ClubContactsViewModel, Pilot>();
-			CreateMap<Pilot, ClubContactsViewModel>();
-			CreateMap<AddressViewModel, Address>();
-			CreateMap<PhoneViewModel, Phone>();
-			CreateMap<EMAILVieModel, EMAIL>();
-			CreateMap<Account, AccountViewModel>().PreserveReferences().MaxDepth(4);
-			CreateMap<Invoice, InvoiceViewModel>().PreserveReferences().MaxDepth(4); ;
-			CreateMap<AircraftPrice, AircraftPriceViewModel>().PreserveReferences().MaxDepth(4);
-			CreateMap<Transaction, TransactionViewModel>().PreserveReferences().MaxDepth(4);
+			CreateMap<Address, AddressModel>();
+			CreateMap<Phone, PhoneModel>();
+			CreateMap<EMAIL, EMAILModel>();
+			CreateMap<ClubContactsModel, Pilot>();
+			CreateMap<Pilot, ClubContactsModel>();
+			CreateMap<AddressModel, Address>();
+			CreateMap<PhoneModel, Phone>();
+			CreateMap<EMAILModel, EMAIL>();
+			CreateMap<Account, AccountModel>().PreserveReferences().MaxDepth(4);
+			CreateMap<Invoice, InvoiceModel>().PreserveReferences().MaxDepth(4); ;
+			CreateMap<AircraftPrice, AircraftPriceModel>().PreserveReferences().MaxDepth(4);
+			CreateMap<Transaction, TransactionModel>().PreserveReferences().MaxDepth(4);
 			//CreateMap<List<Transaction>, List<TransactionViewModel>>();
-			CreateMap<Aircraft, AircraftViewModel>();
-			CreateMap<AirCraftModel, AirCraftModelViewModel>().ReverseMap();
-			CreateMap<AircraftClass, AircraftClassViewModel>().ReverseMap();
-			CreateMap<AircraftCategory, AircraftCategoryViewModel>().ReverseMap();
-			CreateMap<AircraftState, AircraftStateViewModel>().ReverseMap();
+			CreateMap<Aircraft, AircraftModel>();
+			CreateMap<AirCraftModel, AirCraftModelModel>().ReverseMap();
+			CreateMap<AircraftClass, AircraftClassModel>().ReverseMap();
+			CreateMap<AircraftCategory, AircraftCategoryModel>().ReverseMap();
+			CreateMap<AircraftState, AircraftStateModel>().ReverseMap();
 
 		}
 		private void LoadConverters()

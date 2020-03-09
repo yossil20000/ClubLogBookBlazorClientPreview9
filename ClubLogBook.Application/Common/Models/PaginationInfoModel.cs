@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ClubLogBook.Application.ViewModels
+namespace ClubLogBook.Application.Models
 {
 	public enum PageCommand
 	{
@@ -11,7 +11,7 @@ namespace ClubLogBook.Application.ViewModels
 		MoveNext,
 		MovePrevious
 	}
-	public class PaginationInfoViewModel
+	public class PaginationInfoModel
 	{
 		public int TotalItems { get; set; } = 0;
 		public int ItemsPerPage { get; set; } = 10;

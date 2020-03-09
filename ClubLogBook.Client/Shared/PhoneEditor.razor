@@ -1,5 +1,5 @@
 ﻿@page "/Shared/PhoneEditor"
-@using ClubLogBook.Application.ViewModels
+@using ClubLogBook.Application.Models
 @using Microsoft.AspNetCore.Components
 <div class="form-field">
     <label>Country Code</label>
@@ -44,5 +44,5 @@
 
 
 @code {
-    [Parameter] public PhoneViewModel obj { get; set; }
+    [Parameter] public PhoneModel obj { get; set; }
 }

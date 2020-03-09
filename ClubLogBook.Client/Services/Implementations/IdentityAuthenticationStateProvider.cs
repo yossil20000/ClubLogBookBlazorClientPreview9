@@ -10,7 +10,7 @@ using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using ClubLogBook.Application.ViewModels;
+using ClubLogBook.Application.Models;
 
 namespace ClubLogBook.Client.States
 {
@@ -114,7 +114,7 @@ namespace ClubLogBook.Client.States
 			var result = await _authorizeApi.CurrentUser();
 			return result;
 		}
-		public async Task<List<PilotSelectViewModel>> GetPilots()
+		public async Task<List<PilotSelectModel>> GetPilots()
 		{
 			var result = await _authorizeApi.GetPilots();
 			return result;

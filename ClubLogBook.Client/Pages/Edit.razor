@@ -1,5 +1,5 @@
 ﻿@page "/Edit/{contactId}"
-@using ClubLogBook.Application.ViewModels
+@using ClubLogBook.Application.Models
 @using Microsoft.AspNetCore.Components
 @using System.Text.Json
 @inject NavigationManager navigationManager
@@ -52,13 +52,13 @@
 </div>
 @code {
     [Parameter] public     string contactId { get; set; }
-    ClubContactsViewModel emp = new ClubContactsViewModel();
+    ClubContactsModel emp = new ClubContactsModel();
     string navTo = "/ClubContacts";
     public DateTime demi = DateTime.Now;
     string message = "";
     protected override async Task OnInitializedAsync()
     {
-        emp = await Http.GetJsonAsync<ClubContactsViewModel>("api/ClubContacts/Details/" + Convert.ToInt32(contactId));
+        emp = await Http.GetJsonAsync<ClubContactsModel>("api/ClubContacts/Details/" + Convert.ToInt32(contactId));
         message = "Init";
     }
     protected async Task UpdateEmployee()

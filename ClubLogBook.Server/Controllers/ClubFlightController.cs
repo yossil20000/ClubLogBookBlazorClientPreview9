@@ -1,27 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using ClubLogBook.Application.Services;
 using ClubLogBook.Core.Entities;
-using ClubLogBook.Infrastructure.Data;
 using ClubLogBook.Application.Interfaces;
-using ClubLogBook.Application.ViewModels;
-using ClubLogBook.Server.Services;
+using ClubLogBook.Application.Models;
 using AutoMapper;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using MediatR;
-using ClubLogBook.Application.Accounts.Queries.GetAccount;
 using ClubLogBook.Application.Flights.Queries;
 using ClubLogBook.Application.Flights.Commands;
 using ClubLogBook.Application.Extenttions;
+using ClubLogBook.Application.AircraftManager.Queries;
+using ClubLogBook.Application.ClubContact.Queries;
+using ClubLogBook.Application.Common.Models;
 
 namespace ClubLogBook.Server.Controllers
 {
-	
-    [Route("api/[controller]")]
+
+	[Route("api/[controller]")]
     [ApiController]
     public class ClubFlightController : ControllerBase
     {
@@ -29,124 +25,110 @@ namespace ClubLogBook.Server.Controllers
 		private readonly IMediator _mediator;
 		IAppLogger<AccountController> _logger;
 		private IMapper _mapper;
-		IClubService _clubService;
-		IRecordViewModelService<FlightRecordIndexViewModel> _flightRecordViewModelService;
-		IAircraftManagerService aircraftManagerService;
-		public FlightRecordIndexViewModel FlightRecordIndexViewModel { get; set; }
-		public ClubFlightController(IMapper mapper, IClubService clubService, IRecordViewModelService<FlightRecordIndexViewModel> flightRecordViewModelService,IAircraftManagerService aircraftManagerService,
-			IMediator mediator, IAppLogger<AccountController> logger)
+	
+		public ClubFlightController(IMapper mapper, IMediator mediator, IAppLogger<AccountController> logger)
 		{
-			//MapperUtils.MapperInit(typeof(ClubFlightViewModel), typeof(Flight));
 			_mapper = mapper;
-			_clubService = clubService;
-			_flightRecordViewModelService = flightRecordViewModelService;
-			//Mapper.Initialize(cfg => cfg.CreateMap<ClubFlightViewModel2, ClubFlightViewModel1>());
-			this.aircraftManagerService = aircraftManagerService;
 			_mediator = mediator;
 			_logger = logger;
 		}
 		[HttpGet]
 		[Route("FlightWithFilter")]
-		public async Task<FlightRecordIndexViewModel> FlightWithFilter()
+		public async Task<FlightRecordIndexModel> FlightWithFilter()
 		{
 			_logger.LogInformation("FlightWithFilter");
-			FlightRecordIndexViewModel flightRecordIndexViewModel = new FlightRecordIndexViewModel();
+			FlightRecordIndexModel flightRecordIndexModel = new FlightRecordIndexModel();
 
 			GetAllFlightsQuery getAllFlights = new GetAllFlightsQuery();
-			flightRecordIndexViewModel = await _mediator.Send(getAllFlights);
-			flightRecordIndexViewModel.FilterViewModel = await FilterViewModelPut(flightRecordIndexViewModel.FilterViewModel);
-			flightRecordIndexViewModel.FlightRecords.MarkNonValidFlight();
-			return flightRecordIndexViewModel; 
-			
-			//return await _flightRecordViewModelService.GetRecord(0, 10,null, null);
+			flightRecordIndexModel = await _mediator.Send(getAllFlights);
+			flightRecordIndexModel.FilterModel = await FilterModelPut(flightRecordIndexModel.FilterModel);
+			flightRecordIndexModel.FlightRecords.MarkNonValidFlight();
+			return flightRecordIndexModel; 
 		}
 
 		[HttpPost]
-		[Route("FilterViewModelPut")]
-		public async Task<FilterViewModel> FilterViewModelPut([FromBody] FilterViewModel filterViewModel)
+		[Route("FilterModelPut")]
+		public async Task<FilterModel> FilterModelPut([FromBody] FilterModel filterModel)
 		{
-			_logger.LogInformation("FilterViewModelPut");
-			int? clubId = filterViewModel.ClubFilterApplied;
+			_logger.LogInformation("FilterModelPut");
+			int? clubId = filterModel.ClubFilterApplied;
 			IEnumerable<Aircraft> aircrafts;
 			IEnumerable<Pilot> pilots;
-			IEnumerable <Club> clubs = await ((clubId == null || clubId == 0) ? _clubService.GetClubs() : _clubService.GetClubById((int)clubId));
-			if (clubs == null || clubs.Count() == 0)
-			{
-				aircrafts = await _clubService.GetClubAircrafts("");
-				pilots = await _clubService.GetClubMembers("");
-			}
-			else
-			{
-				aircrafts = await _clubService.GetClubAircrafts(clubs.FirstOrDefault().Name);
-				pilots = await _clubService.GetClubMembers(clubs.FirstOrDefault().Name);
-			}
-			filterViewModel.ClubSelects =  clubs.Select(c => new ClubSelectViewModel() { Id = c.Id, ClubName = c.Name });
-			filterViewModel.AirplaneSelects.Add(new AirplaneSelectViewModel() { Id = 0, TailNumber = "All Airplanes" });
-			filterViewModel.AirplaneSelects.AddRange(aircrafts.Select(ar => new AirplaneSelectViewModel() { Id = ar.Id, TailNumber = ar.TailNumber }).ToList());
+			GetClubsListQuery getClubsListQuery = new GetClubsListQuery(QueryBy.ID, "", clubId ?? 0);
+			ClubListViewModel clubs = await _mediator.Send(getClubsListQuery); // ((clubId == null || clubId == 0) ? _clubService.GetClubs() : _clubService.GetClubById((int)clubId));
+			
+			GetClubAircraftListQuery getClubAircraftListQuery = new GetClubAircraftListQuery(QueryBy.Name, (clubs == null || clubs.ClubViewModels.Count() == 0) ? "" : clubs.ClubViewModels.FirstOrDefault().Name , clubId ?? 0);
+			GetClubMembersListQuery getClubMembersListQuery = new GetClubMembersListQuery(QueryBy.Name, (clubs == null || clubs.ClubViewModels.Count() == 0) ? "" : clubs.ClubViewModels.FirstOrDefault().Name, clubId ?? 0);
+			var aircraftListModel = await _mediator.Send(getClubAircraftListQuery);
+			filterModel.ClubSelects =  clubs.ClubViewModels.Select(c => new ClubSelectModel() { Id = c.Id, ClubName = c.Name });
+			filterModel.AirplaneSelects.Add(new AirplaneSelectModel() { Id = 0, TailNumber = "All Airplanes" });
+			filterModel.AirplaneSelects.AddRange(aircraftListModel.AircraftList.Select(ar => new AirplaneSelectModel() { Id = ar.Id, TailNumber = ar.TailNumber }).ToList());
+			var pilotSelectListModel = await _mediator.Send(getClubMembersListQuery);
+			filterModel.PilotSelects.Add(new PilotSelectModel() { Id = 0, FirstName = "All Pilots" });
+			filterModel.PilotSelects.AddRange(pilotSelectListModel.PilotSelectList);
+			filterModel.ClubFilterApplied = filterModel.ClubSelects.FirstOrDefault().Id;
+			filterModel.AirplaneFilterApplied = filterModel.AirplaneSelects.FirstOrDefault().Id;
+			filterModel.PilotFilterApplied = filterModel.PilotSelects.FirstOrDefault().Id;
 
-			filterViewModel.PilotSelects.Add(new PilotSelectViewModel() { Id = 0, FirstName = "All Pilots" });
-			filterViewModel.PilotSelects.AddRange(pilots.Select(p => new PilotSelectViewModel() {Id = p.Id, FirstName = p.FirstName, LastName = p.LastName, IdNumber = p.IdNumber }).ToList());
-			filterViewModel.ClubFilterApplied = filterViewModel.ClubSelects.FirstOrDefault().Id;
-			filterViewModel.AirplaneFilterApplied = filterViewModel.AirplaneSelects.FirstOrDefault().Id;
-			filterViewModel.PilotFilterApplied = filterViewModel.PilotSelects.FirstOrDefault().Id;
-
-			return filterViewModel;
+			return filterModel;
 
 		}
 
 		[HttpPut]
 		[Route("Put")]
-		public async Task<FlightRecordIndexViewModel> Put([FromBody] FlightRecordIndexViewModel flightRecordIndexViewModel)
+		public async Task<FlightRecordIndexModel> Put([FromBody] FlightRecordIndexModel flightRecordIndexModel)
 		{
 			
 			GetFilteredFlightsQuery getFilteredFlightsQuery = new GetFilteredFlightsQuery();
-			getFilteredFlightsQuery.flightRecordIndexView = flightRecordIndexViewModel;
+			getFilteredFlightsQuery.flightRecordIndexView = flightRecordIndexModel;
 			var result = await _mediator.Send(getFilteredFlightsQuery);
-			flightRecordIndexViewModel.FlightRecords.MarkNonValidFlight();
+			flightRecordIndexModel.FlightRecords.MarkNonValidFlight();
 			return result;
 			
 		}
 		// GET: api/ClubFlight
 		[HttpGet]
-        public async Task<IEnumerable<ClubFlightViewModel>> Get()
+        public async Task<IEnumerable<ClubFlightModel>> Get()
         {
-			ICollection<Flight> flight;
-			Flight f = (new Flight(DateTime.Now.AddHours(1), "LLSD", 2345, 2346));
-			flight = await _clubService.GetClubAircraftFlight("BAZ", 8);
-			ICollection<ClubFlightViewModel> ienumerableDest;
+			//ICollection<Flight> flight;
+			//Flight f = (new Flight(DateTime.Now.AddHours(1), "LLSD", 2345, 2346));
+			//flight = await _clubService.GetClubAircraftFlight("BAZ", 8);
+			ICollection<ClubFlightModel> ienumerableDest = new HashSet<ClubFlightModel>();
 
-			ienumerableDest =  _mapper.Map<ICollection<Flight>, IList<ClubFlightViewModel>>(flight);
+			//ienumerableDest =  _mapper.Map<ICollection<Flight>, IList<ClubFlightModel>>(flight);
 			return ienumerableDest;
         }
 
 		[HttpGet]
 		[Route("Aircraft")]
-		public async Task<IEnumerable<AirplaneSelectViewModel>> Aircraft()
+		public async Task<IEnumerable<AirplaneSelectModel>> Aircraft()
 		{
-			IEnumerable<AirplaneSelectViewModel> airplaneSelectViewModels;
-			var clubAircraft = await _clubService.GetClubAircrafts("BAZ");
-			airplaneSelectViewModels = _mapper.Map<IEnumerable<AirplaneSelectViewModel>>(clubAircraft);
-			return airplaneSelectViewModels;
+			IEnumerable<AirplaneSelectModel> airplaneSelectModels;
+			GetClubAircraftListQuery getClubAircraftListQuery = new GetClubAircraftListQuery(QueryBy.Name, "BAZ",1);
+			var aircraftListModel = await _mediator.Send(getClubAircraftListQuery);
+			
+			airplaneSelectModels = aircraftListModel.AircraftList.Select(ar => new AirplaneSelectModel() { Id = ar.Id, TailNumber = ar.TailNumber });
+			return airplaneSelectModels;
 		}
 		
 		// GET: api/ClubFlight/5
 		[HttpGet("{id}", Name = "Get")]
-        public async Task<ClubFlightViewModel> Get(int id)
+        public async Task<ClubFlightModel> Get(int id)
         {
 			Flight flight;
-			ClubFlightViewModel clubFlightViewModel;
-			var flightlist = await _clubService.GetClubAircraftFlight("BAZ", 8);
-			flight = flightlist.Where(i => i.Id == id).FirstOrDefault();
-			clubFlightViewModel = _mapper.Map<Flight, ClubFlightViewModel>(flight);
-			if (clubFlightViewModel.Routh == null)
-				clubFlightViewModel.Routh = "NULL";
-			return clubFlightViewModel;
+			ClubFlightModel clubFlightModel = new ClubFlightModel();
+			//var flightlist = await _clubService.GetClubAircraftFlight("BAZ", 8);
+			//flight = flightlist.Where(i => i.Id == id).FirstOrDefault();
+			//clubFlightModel = _mapper.Map<Flight, ClubFlightModel>(flight);
+			//if (clubFlightModel.Routh == null)
+			//	clubFlightModel.Routh = "NULL";
+			return clubFlightModel;
 			
         }
 
         // POST: api/ClubFlight
         [HttpPost]
-        public async Task Post([FromBody] ClubFlightViewModel value)
+        public async Task Post([FromBody] ClubFlightModel value)
         {
 			UpdateFlightCommand updateFlightCommand = new UpdateFlightCommand();
 			updateFlightCommand.ClubFlightViewModel = value;
@@ -154,10 +136,10 @@ namespace ClubLogBook.Server.Controllers
 			return ;
 		}
 		[HttpPut]
-		public async Task   Put([FromBody] ClubFlightViewModel value)
+		public async Task   Put([FromBody] ClubFlightModel value)
 		{
 			CreateFlightCommand createFlightCommand = new CreateFlightCommand();
-			createFlightCommand.ClubFlightViewModel = value;
+			createFlightCommand.ClubFlightModel = value;
 			createFlightCommand.ClubId = 1;
 			var result = _mediator.Send(createFlightCommand);
 
@@ -165,7 +147,7 @@ namespace ClubLogBook.Server.Controllers
         // PUT: api/ClubFlight/5
   //      [HttpPut]
 		
-		//public void Edit([FromBody] ClubFlightViewModel value)
+		//public void Edit([FromBody] ClubFlightModel value)
   //      {
   //      }
 

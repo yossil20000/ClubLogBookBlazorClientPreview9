@@ -1,5 +1,5 @@
 ﻿@page "/Reservation/Create"
-@using ClubLogBook.Application.ViewModels
+@using ClubLogBook.Application.Models
 
 @inject HttpClient Http
 @using Microsoft.AspNetCore.Components
@@ -23,7 +23,7 @@
 @code
 {
     [Parameter] public  string id { get; set; }
-    protected FlightReservationViewModel reservation = new FlightReservationViewModel();
+    protected FlightReservationModel reservation = new FlightReservationModel();
     string navTo = "/Reservation/FlightReservation";
     //protected override async Task OnInitAsync()
     //{

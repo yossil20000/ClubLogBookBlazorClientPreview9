@@ -4,11 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 
-namespace ClubLogBook.Application.ViewModels
+namespace ClubLogBook.Application.Models
 {
-	public class UserViewModel
+	public class UserModel
 	{
-		public UserViewModel() { }
+		public UserModel() { }
 		public string UserId { get; set; }
 		[Required]
 		public string LoginEmail;
