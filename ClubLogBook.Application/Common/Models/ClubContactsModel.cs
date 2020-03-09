@@ -1,4 +1,7 @@
-﻿using System;
+﻿using AutoMapper;
+using ClubLogBook.Application.Interfaces.Mapping;
+using ClubLogBook.Core.Entities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 namespace ClubLogBook.Application.Models
@@ -23,7 +26,7 @@ namespace ClubLogBook.Application.Models
 			return $"{address.Street} {address?.City} {address?.State} {address?.Zipcode} {address?.Country}";
 		}
 	}
-	public class ClubContactsModel 
+	public class ClubContactsModel  : IHaveCustomMapping
 	{
 		public int Id { get; set; }
 		[Display(Name ="Id Number")]
@@ -57,6 +60,12 @@ namespace ClubLogBook.Application.Models
 		{
 			return $"{FirstName} {LastName}";
 		}
+
+		public void CreateMappings(Profile configuration)
+		{
+			configuration.CreateMap<Pilot, ClubContactsModel>();
+		}
+
 		public Decimal Height { get; set; }
 		public Decimal Weight { get; set; }
 		public string UserId { get; set; } = String.Empty;
@@ -64,7 +73,7 @@ namespace ClubLogBook.Application.Models
 		
 		
 	}
-	public class AddressModel
+	public class AddressModel : IHaveCustomMapping
 
 	{
 		public int Id { get; set; }
@@ -106,8 +115,13 @@ namespace ClubLogBook.Application.Models
 			return $"{Street} {City} {State} {Zipcode} {Country}";
 		}
 
+		public void CreateMappings(Profile configuration)
+		{
+			configuration.CreateMap<Contact, Address>();
+			configuration.CreateMap<Address, AddressModel>();
+		}
 	}
-	public class EMAILModel 
+	public class EMAILModel : IHaveCustomMapping
 	{
 		public int Id { get; set; }
 		public EMAILModel() { Id = 0; }
@@ -124,8 +138,14 @@ namespace ClubLogBook.Application.Models
 		{
 			return $"{EMail}";
 		}
+
+		public void CreateMappings(Profile configuration)
+		{
+			configuration.CreateMap<Contact, EMAIL>();
+			configuration.CreateMap<EMAIL, EMAILModel>();
+		}
 	}
-	public class PhoneModel 
+	public class PhoneModel : IHaveCustomMapping
 	{
 		public int Id { get; set; }
 	
@@ -145,6 +165,12 @@ namespace ClubLogBook.Application.Models
 		public string GetFormated()
 		{
 			return  $"{CountryCode}-{AreaCode}-{PhoneNumber}";
+		}
+
+		public void CreateMappings(Profile configuration)
+		{
+			configuration.CreateMap<Contact, Phone>();
+			configuration.CreateMap<Phone, PhoneModel>();
 		}
 	}
 }

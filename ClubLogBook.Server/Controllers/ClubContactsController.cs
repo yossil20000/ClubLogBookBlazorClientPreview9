@@ -13,6 +13,9 @@ using ClubLogBook.Application.Models;
 using ClubLogBook.Server.Services;
 using ClubLogBook.Application.Extenttions;
 using AutoMapper;
+using MediatR;
+using ClubLogBook.Application.ClubContact.Queries;
+
 namespace ClubLogBook.Server.Controllers
 {
 	//[Route("api/[controller]")]
@@ -23,8 +26,10 @@ namespace ClubLogBook.Server.Controllers
 		IClubContactsViewModelService _clubContactsViewModelService;
 		private IMapper _mapper;
 		private IMemberService _memberService;
-		public ClubContactsController(IMemberService memberService, IClubContactsViewModelService clubContactsViewModelService, IClubService clubService, IMapper mapper)
+		private IMediator _mediator;
+		public ClubContactsController(IMediator mediator, IMemberService memberService, IClubContactsViewModelService clubContactsViewModelService, IClubService clubService, IMapper mapper)
 		{
+			_mediator = mediator;
 			_clubService = clubService;
 			_clubContactsViewModelService = clubContactsViewModelService;
 			_mapper = mapper;
@@ -36,25 +41,10 @@ namespace ClubLogBook.Server.Controllers
 		public async Task<List<ClubContactsModel>> Pilots()
 		{
 			List<ClubContactsModel> contacts = new List<ClubContactsModel>();
-			//Account account = new Account();
-			//AircraftPrice ap = new AircraftPrice();
-			//AircraftPriceViewModel apvm = new AircraftPriceViewModel();
-			//Invoice invoice = new Invoice();
-			//InvoiceViewModel invoiceViewModel = new InvoiceViewModel();
-			//AccountViewModel accountViewModel = new AccountViewModel();
-			//Transaction transaction = new Transaction();
-			//TransactionViewModel transactionViewModel = new TransactionViewModel();
-			//_mapper.Map(ap, apvm);
-			//invoice.Amount = 90;
-			//invoice.InvoiceState = InvoiceStateVieModel.Deleted;
-			//transaction.Invoice = invoice;
-			//account.Transactions.Add(transaction);
-			//account.Transactions.Add(transaction);
-			//_mapper.Map(invoice, invoiceViewModel);
-			//_mapper.Map(transaction, transactionViewModel);
-			//_mapper.Map(account, accountViewModel);
-			var pilots = await  _clubContactsViewModelService.GetOrCreateClubContact("BAZ");
-			return pilots.ToList();
+			GetClubContactsQuery getClubContactsQuery = new GetClubContactsQuery("BAZ");
+			var contactsList = await _mediator.Send(getClubContactsQuery);
+			
+			return contactsList.ClubContactsModelList;
 		}
 		[HttpGet]
 		[Route("api/ClubContacts/Members")]
