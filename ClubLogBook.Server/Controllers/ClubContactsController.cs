@@ -15,6 +15,8 @@ using ClubLogBook.Application.Extenttions;
 using AutoMapper;
 using MediatR;
 using ClubLogBook.Application.ClubContact.Queries;
+using ClubLogBook.Application.ClubContact.Commands;
+using System.Threading;
 
 namespace ClubLogBook.Server.Controllers
 {
@@ -22,25 +24,27 @@ namespace ClubLogBook.Server.Controllers
 	
 	public class ClubContactsController : Controller
 	{
-		IClubService _clubService;
-		IClubContactsViewModelService _clubContactsViewModelService;
+		//IClubService _clubService;
+		//IClubContactsViewModelService _clubContactsViewModelService;
+
+		//private IMemberService _memberService;
 		private IMapper _mapper;
-		private IMemberService _memberService;
 		private IMediator _mediator;
-		public ClubContactsController(IMediator mediator, IMemberService memberService, IClubContactsViewModelService clubContactsViewModelService, IClubService clubService, IMapper mapper)
+		public ClubContactsController(IMediator mediator, /*IMemberService memberService, IClubContactsViewModelService clubContactsViewModelService, IClubService clubService,*/ IMapper mapper)
 		{
-			_mediator = mediator;
-			_clubService = clubService;
-			_clubContactsViewModelService = clubContactsViewModelService;
 			_mapper = mapper;
-			_memberService = memberService;
+			_mediator = mediator;
+			//_clubService = clubService;
+			//_clubContactsViewModelService = clubContactsViewModelService;
+			
+			//_memberService = memberService;
 		}
 
 		[HttpGet]
 		[Route("api/ClubContacts/Pilots")]
 		public async Task<List<ClubContactsModel>> Pilots()
 		{
-			List<ClubContactsModel> contacts = new List<ClubContactsModel>();
+			
 			GetClubContactsQuery getClubContactsQuery = new GetClubContactsQuery("BAZ");
 			var contactsList = await _mediator.Send(getClubContactsQuery);
 			
@@ -50,120 +54,139 @@ namespace ClubLogBook.Server.Controllers
 		[Route("api/ClubContacts/Members")]
 		public async Task<List<ClubContactsModel>> Members()
 		{
-			//List<ClubContactsViewModel> contacts = new List<ClubContactsViewModel>();
-			var contacts = await _clubContactsViewModelService.GetAllPilot();
-			return contacts;
+			
+			GetAllContactsQuery getAllContactsQuery = new GetAllContactsQuery();
+			var clubContactModelList = await _mediator.Send(getAllContactsQuery);
+
+			return clubContactModelList.ClubContactsModelList;
 		}
 		[HttpGet]
 		[Route("api/ClubContacts/PilotsNotInClub")]
 		public async Task<IEnumerable<ClubContactsModel>> PilotsNotInClub()
 		{
-			List<ClubContactsModel> contacts = new List<ClubContactsModel>();
-			return await _clubContactsViewModelService.GetPilotsNotInAnyClub();
 			
+			GetContactsNotInClubQuery getContactsNotInClubQuery = new GetContactsNotInClubQuery();
+			var contactsList = await _mediator.Send(getContactsNotInClubQuery);
+
+			return contactsList.ClubContactsModelList;
+
 		}
 		// GET: ClubContacts/Details/5
 		[HttpGet]
 		[Route("api/ClubContacts/Details/{id}")]
-		public ClubContactsModel Details(int id)
+		public async Task<ClubContactsModel> Details(int id)
 		{
-			var club = _clubService.GetClubMembers("BAZ");
-			Pilot pilot = club.Result.Where(i => i.Id == id).FirstOrDefault();
-			UserInfo userInfo = new UserInfo(pilot);
-			string user = userInfo.GetJason();
-			ClubContactsModel pMode = new ClubContactsModel();
-			_mapper.Map<Pilot, ClubContactsModel>(pilot, pMode);
+			//UserInfo userInfo = new UserInfo(pilot);
+			//string user = userInfo.GetJason();
+			ClubContactsModel clubContactsModel = new ClubContactsModel();
+			GetClubContactByIdQuery getClubContactByIdQuery = new GetClubContactByIdQuery(id);
+			clubContactsModel = await _mediator.Send(getClubContactByIdQuery);
+
+			return clubContactsModel;
 			
-			return pMode;
 		}
 
 		[HttpGet]
 		[Route("api/ClubContacts/DetailsForDelete/{id}")]
-		public ClubContactsModel DetailsForDelete(int id)
+		public async Task<ClubContactsModel> DetailsForDelete(int id)
 		{
-			var club = _clubService.GetClubMembers("BAZ");
-			Pilot p = club.Result.Where(i => i.Id == id).FirstOrDefault();
-			ClubContactsModel pMode = new ClubContactsModel();
-			//pMode.CopyPilot(p);
-			return pMode;
+			//UserInfo userInfo = new UserInfo(pilot);
+			//string user = userInfo.GetJason();
+			ClubContactsModel clubContactsModel = new ClubContactsModel();
+			GetClubContactByIdQuery getClubContactByIdQuery = new GetClubContactByIdQuery(id);
+			clubContactsModel = await _mediator.Send(getClubContactByIdQuery);
+
+			return clubContactsModel;
 		}
 		
 		[HttpPut]
 		[Route("api/ClubContacts/Create")]
-		public async Task Create([FromBody] ClubContactsModel clubContactUpdateViewModel)
+		public async Task<OkResult> Create([FromBody] ClubContactsModel clubContactModel)
 		{
+			ClubContactsModel clubContactsModel = new ClubContactsModel();
 			if (ModelState.IsValid)
 			{
-				Pilot pilot = new Pilot();
-				_mapper.Map<ClubContactsModel, Pilot>(clubContactUpdateViewModel, pilot);
-				await _memberService.UpdatePilot(pilot);
-				System.Diagnostics.Debug.WriteLine(pilot.ToString());
-				System.Diagnostics.Debug.WriteLine(pilot.ToString());
-			}
 
+				CreateContactCommand createContactCommand = new CreateContactCommand(clubContactModel);
+				clubContactsModel = await _mediator.Send(createContactCommand);
+			}
+			return clubContactsModel.Id > 0 ? Ok() : Ok();
 		}
 
 		[HttpPut]
 		[Route("api/ClubContacts/Add")]
-		public async Task  Add([FromBody] int id)
+		public async Task<int>  Add([FromBody] int id)
 		{
 			if (ModelState.IsValid)
 			{
-				await _clubService.AddPilotToClub("BAZ", id);
-				System.Diagnostics.Debug.WriteLine(id.ToString());
+				AddContactToClubCommand addContactToClubCommand = new AddContactToClubCommand("BAZ", id);
+				var result = await _mediator.Send(addContactToClubCommand);
+				return result;
 			}
-
+			return 0;
 		}
 
 		[HttpPut]
 		[Route("api/ClubContacts/Edit")]
-		public async Task Edit([FromBody] ClubContactsModel clubContactUpdateViewModel)
+		public async Task<int> Edit([FromBody] ClubContactsModel clubContactModel)
 		{
 			if (ModelState.IsValid)
 			{
-				Pilot pilot = await _memberService.GetPilotById(clubContactUpdateViewModel.Id);
-				_mapper.Map<ClubContactsModel, Pilot>(clubContactUpdateViewModel, pilot);
-				await _memberService.UpdatePilot(pilot);
-				System.Diagnostics.Debug.WriteLine(pilot.ToString());
+				UpdateContactCommand updateContactCommand = new UpdateContactCommand(clubContactModel);
+				var result = await _mediator.Send(updateContactCommand);
+				return result;
 			}
+			return 0;
 
 		}
 
 		[HttpPut]
 		[Route("api/ClubContacts/Delete/{id}")]
-		public async Task Delete(int id,[FromBody] string clubName)
+		public async Task<int> Delete(int id,[FromBody] string clubName)
         {
-			if(ModelState.IsValid)
+
+			if (ModelState.IsValid)
 			{
-				await _clubService.RemoveContactFromClub(clubName, id);
-				System.Diagnostics.Debug.WriteLine(id.ToString());
+				DeleteContactCommand deleteContactCommand = new DeleteContactCommand(id);
+				var result = await _mediator.Send(deleteContactCommand);
+				return result;
 			}
+			return 0;
 		}
 		[HttpPut]
 		[Route("api/ClubContacts/DeleteMember")]
-		public async Task DeleteMember([FromBody] int id)
+		public async Task<int> DeleteMember([FromBody] int id)
 		{
 			if (ModelState.IsValid)
 			{
-				await _clubService.RemoveContactFromClub("BAZ", id);
-				await _memberService.DeletePilotById(id);
-				System.Diagnostics.Debug.WriteLine(id.ToString());
+				CancellationToken ct = new CancellationToken();
+				DeleteContactFromClubCommand deleteContactFromClubCommand = new DeleteContactFromClubCommand("BAZ", id);
+				var result = await _mediator.Send(deleteContactFromClubCommand,ct);
+				return await Task.FromResult(result);
 			}
+			return 0;
+
 		}
 		[HttpPut]
 		[Route("api/ClubContacts/Update")]
-		public async Task Update([FromBody] ClubContactsModel clubContactViewModel)
+		public async Task<int> Update([FromBody] ClubContactsModel clubContactModel)
 		{
-			//if (ModelState.IsValid)
+			////if (ModelState.IsValid)
+			//{
+
+
+			//	await _clubContactsViewModelService.UpdateOrCreateClubContactMember("BAZ", clubContactViewModel);
+			//	System.Diagnostics.Debug.WriteLine($"ClubContactsController::Update contact.GetFullName()");
+				
+				
+			//}
+			if (ModelState.IsValid)
 			{
-
-
-				await _clubContactsViewModelService.UpdateOrCreateClubContactMember("BAZ", clubContactViewModel);
-				System.Diagnostics.Debug.WriteLine($"ClubContactsController::Update contact.GetFullName()");
-				
-				
+				UpdateContactCommand updateContactCommand = new UpdateContactCommand(clubContactModel);
+				var result = await _mediator.Send(updateContactCommand);
+				return result;
 			}
-
+			return 0;
 		}
 	}
 }

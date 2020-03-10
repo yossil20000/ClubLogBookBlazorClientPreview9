@@ -9,4 +9,5 @@ namespace ClubLogBook.Application.Common.Models
 		ID,
 		Name
 	}
+
 }

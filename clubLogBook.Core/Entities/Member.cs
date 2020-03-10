@@ -19,7 +19,7 @@ namespace ClubLogBook.Core.Entities
 		public Member() { }
 		public Member(int id, string idNumber, string firstName, string lastname, Gender gender)
 		{
-			Id = id; IdNumber = IdNumber; FirstName = firstName; LastName = lastname; Gender = gender;
+			Id = id; IdNumber = idNumber; FirstName = firstName; LastName = lastname; Gender = gender;
 		}
 		public Member(Member member)
 		{
