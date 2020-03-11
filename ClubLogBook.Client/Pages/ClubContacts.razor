@@ -7,38 +7,46 @@
 
 <AuthorizeView Roles="Administrators,AccountManage,Members">
     <Authorized>
-        
-            @if (contacts == null)
-            {
-                <p><em>Loading...</em></p>
-            }
-            else
-            {
-                @*<h2>Current User : @CurrentUser.UserName</h2>*@
-                <div>
-                    @*<a href='/Create'>Create Contact</a>*@
-                    @if (IsCurrentAdmin)
-                    {
-                        //<a href='/Add'>Add Contact To Baz Club</a>
-                    }
-                </div>
-                @if(true)
+
+        @if (contacts == null)
+        {
+            <p><em>Loading...</em></p>
+        }
+        else
+        {
+            @*<h2>Current User : @CurrentUser.UserName</h2>*@
+            <div>
+                @*<a href='/Create'>Create Contact</a>*@
+                @if (IsCurrentAdmin)
                 {
-                    <div class="c_flights">
-                        <div class="c_flights__header">
-                            <div class="a-f-header--1">Flights 1</div>
-                            <div class="a-f-header--2">Flights 2</div>
-                            <div class="a-f-header--3">Flights 3</div>
-                            <div class="a-f-filter--1">filter 1</div>
-                            <div class="a-f-filter--2">filter 2</div>
-                            <div class="a-f-filter--3">filter 3</div>
-                            <div class="a-f-page--1">filter 1</div>
-                            <div class="a-f-page--2">filter 2</div>
-                            <div class="a-f-page--3">filter 3</div>
+                    //<a href='/Add'>Add Contact To Baz Club</a>
+                }
+            </div>
+            @if (true)
+            {
+                <div class="c_flights">
+                    <div class="c_flights__header">
+                        <div class="a-f-header--1">Flights 1</div>
+                        <div class="a-f-header--2">Flights 2</div>
+                        <div class="a-f-header--3">Flights 3</div>
+                        <div class="a-f-filter--1">filter 1</div>
+                        <div class="a-f-filter--2">filter 2</div>
+                        <div class="a-f-filter--3">filter 3</div>
+                        <div class="a-f-page--1">filter 1</div>
+                        <div class="a-f-page--2">filter 2</div>
+                        <div class="a-f-page--3">filter 3</div>
+                    </div>
+                    <div class="c_flights__command">
+                        <div>
+                            <button type="button" class="btn btn-grid-sort" @onclick="@(async () => await OnAddToClub())"><u>Add To Club</u></button>
+
                         </div>
-                        <div class="c_flights__content">
-                            @foreach (var pilot in contacts)
-                            {
+
+
+                    </div>
+                    <div class="c_flights__content">
+                        @foreach (var pilot in contacts)
+                        {
                             <div class="c_flights__list__row">
                                 <div class="a-f-l-header-c-1">Id Number</div>
                                 <div class="a-f-l-data-c-1">@pilot.IdNumber</div>
@@ -60,158 +68,208 @@
                                     <div class="a-f-l-data-c-8 btn-grid-sort">
                                         <button type="button" class="btn-grid-cmd" @onclick="@(() => EditContact(pilot.Id))" value="Edit">Edit</button>
                                     </div>
-                                    
+
                                 }
 
 
                             </div>
-                            }
+                        }
 
-                        </div>
-                      
                     </div>
-                }
-                @if (false)
-                {
-                    <table class="table">
 
-                        <thead>
+                </div>
+            }
+            @if (false)
+            {
+                <table class="table">
+
+                    <thead>
+                        <tr>
+                            <th>Id Number</th>
+                            <th>Full Name</th>
+                            <th>Date Of Birth</th>
+                            <th>Gender</th>
+                            <th>Address</th>
+                            <th>Phone</th>
+                            <th>eMail</th>
+                            <th colspan="2"><button class="btn btn-warning"><a href='/Add'>Add Contact To Baz Club</a></button></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var pilot in contacts)
+                        {
                             <tr>
-                                <th>Id Number</th>
-                                <th>Full Name</th>
-                                <th>Date Of Birth</th>
-                                <th>Gender</th>
-                                <th>Address</th>
-                                <th>Phone</th>
-                                <th>eMail</th>
-                                <th colspan="2"><button class="btn btn-warning"><a href='/Add'>Add Contact To Baz Club</a></button></th>
+                                <td>@pilot.IdNumber</td>
+                                <td>@pilot.GetFullName()</td>
+                                <td>@pilot.DateOfBirth </td>
+                                <td>@pilot.Gender</td>
+                                <td>@pilot.Addresses.FirstOrDefault().GetFormated()</td>
+                                <td>@pilot.Phones?.FirstOrDefault().GetFormated()</td>
+
+                                <td>@pilot.Emails?.FirstOrDefault().GetFormated()</td>
+                                <td>
+                                    @if (pilot.UserId.ToString() == CurrentUser.Id || IsCurrentAdmin)
+                                    {
+
+                                        <button type="button" class="btn btn-info" @onclick="@(() => EditContact(pilot.Id))" value="Edit" />
+                                    }
+                                </td>
+                                <td>
+                                    @if (IsCurrentAdmin)
+                                    {
+
+                                        <input type="button" class="btn btn-info" @onclick="@(() => DeleteContact(pilot.Id))" value="Edit" />
+                                    }
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var pilot in contacts)
-                            {
-                                <tr>
-                                    <td>@pilot.IdNumber</td>
-                                    <td>@pilot.GetFullName()</td>
-                                    <td>@pilot.DateOfBirth </td>
-                                    <td>@pilot.Gender</td>
-                                    <td>@pilot.Addresses.FirstOrDefault().GetFormated()</td>
-                                    <td>@pilot.Phones?.FirstOrDefault().GetFormated()</td>
+                        }
+                    </tbody>
+                </table>
+            }
+            @if (bShowEdit)
+            {
+                <div class="modal" tabindex="-1" style="display:block" role="dialog">
+                    <div class="modal-dialog  modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h2>Edit Contact @selectedContact.Id</h2>
+                                <button type="button" class="close" data-dismiss="modal" @onclick="@ClosePopup">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="edit-content">
+                                    <div class="edit-row">
+                                        <label class="title grid-title">Id Number</label>
+                                        <input type="text" class=" description grid-input" placeholder="Enter Yuour Id " @bind="@selectedContact.IdNumber">
 
-                                    <td>@pilot.Emails?.FirstOrDefault().GetFormated()</td>
-                                    <td>
-                                        @if (pilot.UserId.ToString() == CurrentUser.Id || IsCurrentAdmin)
-                                        {
+                                    </div>
+                                    <div class="edit-row">
+                                        <label class="title grid-title">First Name</label>
+                                        <input type="text" class=" description grid-input" placeholder="Enter Yu Name" @bind="@selectedContact.FirstName">
 
-                                            <button type="button" class="btn btn-info" @onclick="@(() => EditContact(pilot.Id))" value="Edit" />
-                                        }
-                                    </td>
-                                    <td>
-                                        @if (IsCurrentAdmin)
-                                        {
+                                    </div>
+                                    <div class="edit-row">
+                                        <label class="title grid-title">Middle Name</label>
+                                        <input type="text" class=" description grid-input" placeholder="Enter Yu Name" @bind="@selectedContact.MiddleName">
 
-                                            <input type="button" class="btn btn-info" @onclick="@(() => DeleteContact(pilot.Id))" value="Edit" />
-                                        }
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                }
-                if (bShowEdit)
-                {
-                    <div class="modal" tabindex="-1" style="display:block" role="dialog">
-                        <div class="modal-dialog  modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h2>Edit Contact @selectedContact.Id</h2>
-                                    <button type="button" class="close" data-dismiss="modal" @onclick="@ClosePopup">&times;</button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="edit-content">
-                                        <div class="edit-row">
-                                            <label class="title grid-title">Id Number</label>
-                                            <input type="text" class=" description grid-input" placeholder="Enter Yuour Id " @bind="@selectedContact.IdNumber">
+                                    </div>
+                                    <div class="edit-row">
+                                        <label class="title grid-title">Last Name</label>
+                                        <input type="text" class=" description grid-input" placeholder="Enter Yu Name" @bind="@selectedContact.LastName">
 
-                                        </div>
-                                        <div class="edit-row">
-                                            <label class="title grid-title">First Name</label>
-                                            <input type="text" class=" description grid-input" placeholder="Enter Yu Name" @bind="@selectedContact.FirstName">
-
-                                        </div>
-                                        <div class="edit-row">
-                                            <label class="title grid-title">Middle Name</label>
-                                            <input type="text" class=" description grid-input" placeholder="Enter Yu Name" @bind="@selectedContact.MiddleName">
-
-                                        </div>
-                                        <div class="edit-row">
-                                            <label class="title grid-title">Last Name</label>
-                                            <input type="text" class=" description grid-input" placeholder="Enter Yu Name" @bind="@selectedContact.LastName">
-
-                                        </div>
-                                        @*<div class="edit-row">
+                                    </div>
+                                    @*<div class="edit-row">
                                         <label class="title grid-title"></label>
                                         <input type="checkbox" class=" description grid-input"  @bind="@selectedContact.Gender">
 
                                     </div>*@
-                                        <div class="edit-row">
-                                            <label class="title grid-title">Famaily</label>
-                                            <input type="date" class=" description grid-input" @bind="@selectedContact.DateOfBirth">
+                                    <div class="edit-row">
+                                        <label class="title grid-title">Famaily</label>
+                                        <input type="date" class=" description grid-input" @bind="@selectedContact.DateOfBirth">
 
-                                        </div>
                                     </div>
                                 </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn" data-dismiss="modal">Cancle</button>
-                                    <button type="button" class="btn btn-danger" @onclick="UpdateContact"></button>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn" data-dismiss="modal">Cancle</button>
+                                <button type="button" class="btn btn-danger" @onclick="UpdateContact"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            @if (false)
+            {
+                <div class="grid-table">
+                    <div class="grid-table-row grid-type-customer">
+                        <div class="grid-table-cell"><button class="btn-grid">Id Number</button></div>
+                        <div class="grid-table-cell"><button class="btn-grid">Name</button></div>
+                        <div class="grid-table-cell"><button class="btn-grid">Birthday</button></div>
+                        <div class="grid-table-cell">Gender</div>
+                        <div class="grid-table-cell">Address</div>
+                        <div class="grid-table-cell">Phone</div>
+                        <div class="grid-table-cell">Action</div>
+                        <div class="grid-table-cell">Action</div>
+                    </div>
+                    @foreach (var pilot in contacts)
+                    {
+                        <div class="grid-table-row grid-type-customer">
+                            <div class="grid-table-cell" data-title="Id Number">@pilot.IdNumber</div>
+                            <div class="grid-table-cell" data-title="Full Name">@pilot.GetFullName()</div>
+                            <div class="grid-table-cell" data-title="Birthday">@pilot.DateOfBirth.ToShortDateString()</div>
+                            <div class="grid-table-cell" data-title="Gender">@pilot.Gender</div>
+                            <div class="grid-table-cell" data-title="Address">@pilot.Addresses.FirstOrDefault().GetFormated()</div>
+                            <div class="grid-table-cell" data-title="Phone">@pilot.Phones?.FirstOrDefault().GetFormated()</div>
+                            @if (IsCurrentAdmin || CurrentUser.Id == pilot.UserId.ToString())
+                            {
+                                <div class="grid-table-cell" data-title="Edit"> <a href='/Edit/@pilot.Id'>Edit</a></div>
+                            }
+                            else
+                            {
+                                <div class="grid-table-cell " data-title="Edit"> <a disabled="disabled">Edit</a></div>
+                            }
+
+                            <div class="grid-table-cell" data-title="Delete"><a href='/Delete/@pilot.Id'>Delete</a></div>
+                        </div>
+                    }
+
+
+                </div>
+            }
+            @if (bShowAddToClub)
+            {
+                <div class="modal" tabindex="-1" style="display:block" role="dialog">
+                    <div class="modal-dialog  modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h2>Edit Contact @selectedContact.Id</h2>
+                                <button type="button" class="close" data-dismiss="modal" @onclick="@ClosePopup">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="edit-content">
+                                    <div class="edit-row">
+                                        <label class="title grid-title">Select Club</label>
+                                        <select class="custom-select" value="@filterModel.ClubFilterApplied"  @onchange="ClubSelected">
+
+
+                                            @foreach (var i in @filterModel.ClubSelects)
+                                            {
+                                                <option value="@i.Id">@i.ClubName - (@(i.Id))</option>
+                                            }
+                                        </select>
+
+                                    </div>
+                                    <div class="edit-row">
+                                        <label class="title grid-title">Select Pilot</label>
+                                        <select class="custom-select" value="@filterModel.PilotFilterApplied" @onchange="PilotSelected" >
+
+
+                                            @foreach (var i in @filterModel.AirplaneSelects)
+                                            {
+                                                <option value="@i.Id">@i.TailNumber - (@(i.Id))</option>
+                                            }
+                                        </select>
+                                    </div>
+                                   
+                                    @*<div class="edit-row">
+            <label class="title grid-title"></label>
+            <input type="checkbox" class=" description grid-input"  @bind="@selectedContact.Gender">
+
+        </div>*@
+                                   
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                }
-                if (false)
-                {
-                    <div class="grid-table">
-                        <div class="grid-table-row grid-type-customer">
-                            <div class="grid-table-cell"><button class="btn-grid">Id Number</button></div>
-                            <div class="grid-table-cell"><button class="btn-grid">Name</button></div>
-                            <div class="grid-table-cell"><button class="btn-grid">Birthday</button></div>
-                            <div class="grid-table-cell">Gender</div>
-                            <div class="grid-table-cell">Address</div>
-                            <div class="grid-table-cell">Phone</div>
-                            <div class="grid-table-cell">Action</div>
-                            <div class="grid-table-cell">Action</div>
-                        </div>
-                        @foreach (var pilot in contacts)
-                        {
-                            <div class="grid-table-row grid-type-customer">
-                                <div class="grid-table-cell" data-title="Id Number">@pilot.IdNumber</div>
-                                <div class="grid-table-cell" data-title="Full Name">@pilot.GetFullName()</div>
-                                <div class="grid-table-cell" data-title="Birthday">@pilot.DateOfBirth.ToShortDateString()</div>
-                                <div class="grid-table-cell" data-title="Gender">@pilot.Gender</div>
-                                <div class="grid-table-cell" data-title="Address">@pilot.Addresses.FirstOrDefault().GetFormated()</div>
-                                <div class="grid-table-cell" data-title="Phone">@pilot.Phones?.FirstOrDefault().GetFormated()</div>
-                                @if (IsCurrentAdmin || CurrentUser.Id == pilot.UserId.ToString())
-                                {
-                                    <div class="grid-table-cell" data-title="Edit"> <a href='/Edit/@pilot.Id'>Edit</a></div>
-                                }
-                                else
-                                {
-                                    <div class="grid-table-cell " data-title="Edit"> <a disabled="disabled">Edit</a></div>
-                                }
-
-                                <div class="grid-table-cell" data-title="Delete"><a href='/Delete/@pilot.Id'>Delete</a></div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn" data-dismiss="modal" @onclick="OnCancel">Cancle</button>
+                                <button type="button" class="btn btn-danger" @onclick="AddToClub"></button>
                             </div>
-                        }
-
-
+                        </div>
                     </div>
-                }
-
+                </div>
             }
+        }
 
-      
-      
+
+
 
     </Authorized>
     <NotAuthorized>
@@ -228,7 +286,9 @@
     AdminUserInfo CurrentUser { get; set; }
     bool IsCurrentAdmin { get; set; } = false;
     bool bShowEdit { get; set; } = false;
+    bool bShowAddToClub { get; set; } = false;
     ClubContactsModel selectedContact { get; set; } = new ClubContactsModel();
+    FilterModel filterModel { get; set; } = new FilterModel();
     protected override async Task OnInitializedAsync()
     {
         contacts = await Http.GetJsonAsync<ClubContactsModel[]>("api/ClubContacts/Pilots");
@@ -236,6 +296,7 @@
         var user = authState.User;
         CurrentUser = await authStateProvider.CurrentUser();
         IsCurrentAdmin = user.IsInRole(IdentityInfo.Roles.Administrators.ToString());
+
         message = "OnInitializedAsync";
     }
 
@@ -251,6 +312,11 @@
             message = $"EditContact Id:{id} Not Found";
 
     }
+    private void OnAddToClub()
+    {
+        bShowEdit = false;
+        bShowAddToClub = true;
+    }
     private async Task DeleteContact(int id)
     {
 
@@ -262,5 +328,6 @@
     private void  ClosePopup()
     {
         bShowEdit = false;
+        bShowAddToClub = false;
     }
 }
