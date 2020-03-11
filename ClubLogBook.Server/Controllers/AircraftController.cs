@@ -25,11 +25,13 @@ namespace ClubLogBook.Server.Controllers
        
        
         IMediator mediator;
-        public AircraftController( IMediator mediator)
+        ILogger<AircraftController> _logger;
+        public AircraftController( IMediator mediator, ILogger<AircraftController> logger)
         {
             
             this.mediator = mediator;
-            // this.logger = logger;
+            _logger = logger;
+            
         }
         // GET: api/Aircraft
         [HttpGet]
@@ -37,11 +39,6 @@ namespace ClubLogBook.Server.Controllers
         public async  Task<AircraftListModel> GetAllAircraft()
         {
             CancellationToken ct = new CancellationToken();
-            //List<Aircraft> air = await aircraftManagerService.GetAllAircraftsInClub("BAZ");
-            //List<Aircraft> aircraftAll = await aircraftManagerService.GetAllAircraftsInClub("");
-            //List<AircraftPrice> aircraftPrices = await aircraftManagerService.GetAircraftPrices();
-            //List<AircraftViewModel> aircraftViewModel = new List<AircraftViewModel>();
-            //mapper.Map(aircraftAll, aircraftViewModel);
             try
             {
                 return  await mediator.Send(new GetAircraftListQuery(), ct);
@@ -50,19 +47,13 @@ namespace ClubLogBook.Server.Controllers
             {
                 return new AircraftListModel();
             }
-            //return aircraftViewModel;
-            //return new List<AircraftViewModel>();
+           
         }
         [HttpGet]
         //[Route("api/Aircraft/AircraftGet")]
         public async Task<AircraftListModel> GetClubAircraft(string clubName)
         {
             CancellationToken ct = new CancellationToken();
-            //List<Aircraft> air = await aircraftManagerService.GetAllAircraftsInClub("BAZ");
-            //List<Aircraft> aircraftAll = await aircraftManagerService.GetAllAircraftsInClub("");
-            //List<AircraftPrice> aircraftPrices = await aircraftManagerService.GetAircraftPrices();
-            //List<AircraftViewModel> aircraftViewModel = new List<AircraftViewModel>();
-            //mapper.Map(aircraftAll, aircraftViewModel);
             try
             {
                 return await mediator.Send(new GetClubAircraftListQuery(QueryBy.Name,clubName,0) { PageIndex=1,PageSize=30}, ct);
@@ -71,7 +62,6 @@ namespace ClubLogBook.Server.Controllers
             {
 
             }
-            //return aircraftViewModel;
             return new AircraftListModel();
         }
         [HttpPut]

@@ -104,7 +104,7 @@ namespace ClubLogBook.Server.Controllers
 		public async Task<OkResult> Create([FromBody] ClubContactsModel clubContactModel)
 		{
 			ClubContactsModel clubContactsModel = new ClubContactsModel();
-			if (ModelState.IsValid)
+			if (true/*ModelState.IsValid*/)
 			{
 
 				CreateContactCommand createContactCommand = new CreateContactCommand(clubContactModel);
@@ -117,7 +117,7 @@ namespace ClubLogBook.Server.Controllers
 		[Route("api/ClubContacts/Add")]
 		public async Task<int>  Add([FromBody] int id)
 		{
-			if (ModelState.IsValid)
+			if (true/*ModelState.IsValid*/)
 			{
 				AddContactToClubCommand addContactToClubCommand = new AddContactToClubCommand("BAZ", id);
 				var result = await _mediator.Send(addContactToClubCommand);
@@ -130,7 +130,7 @@ namespace ClubLogBook.Server.Controllers
 		[Route("api/ClubContacts/Edit")]
 		public async Task<int> Edit([FromBody] ClubContactsModel clubContactModel)
 		{
-			if (ModelState.IsValid)
+			if (true/*ModelState.IsValid*/)
 			{
 				UpdateContactCommand updateContactCommand = new UpdateContactCommand(clubContactModel);
 				var result = await _mediator.Send(updateContactCommand);

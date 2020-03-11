@@ -1,8 +1,11 @@
-﻿using System;
+﻿using AutoMapper;
+using ClubLogBook.Application.Interfaces.Mapping;
+using ClubLogBook.Core.Entities;
+using System;
 using System.ComponentModel.DataAnnotations;
 namespace ClubLogBook.Application.Models
 {
-	public class FlightReservationModel
+	public class FlightReservationModel : IHaveCustomMapping
 	{
 		public int Id { get; set; }
 		public FlightReservationModel() { DateTo = DateTime.Now.AddHours(1); DateFrom = DateTime.Now; ExtructTime(); }
@@ -44,6 +47,12 @@ namespace ClubLogBook.Application.Models
 
 			timeFrom = TimeFrom.Date.Add(dateFrom.TimeOfDay);
 			timeTo = TimeTo.Date.Add(dateTo.TimeOfDay);
+		}
+
+		public void CreateMappings(Profile configuration)
+		{
+			configuration.CreateMap<AircraftReservation, FlightReservationModel>();
+			configuration.CreateMap<FlightReservationModel, AircraftReservation>();
 		}
 	}
 }
