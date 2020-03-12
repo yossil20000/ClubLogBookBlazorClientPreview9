@@ -3222,8 +3222,8 @@ card-body-item--2-value input {
 .a-r-list-row {
   display: -ms-grid;
   display: grid;
-  -ms-grid-columns: 1.3fr 1fr 2fr 1fr 1fr 1fr;
-      grid-template-columns: 1.3fr 1fr 2fr 1fr 1fr 1fr;
+  -ms-grid-columns: 1.2fr 0.8fr 0.8fr 1fr 1fr 1fr;
+      grid-template-columns: 1.2fr 0.8fr 0.8fr 1fr 1fr 1fr;
       grid-template-areas: "a-r-list-c--1 a-r-list-c--2 a-r-list-c--3 a-r-list-c--4 a-r-list-c--5 a-r-list-c--6";
   -ms-grid-rows: 45px;
       grid-template-rows: 45px;
@@ -3243,8 +3243,8 @@ card-body-item--2-value input {
   display: -ms-grid;
   display: grid;
   height: 35px;
-  -ms-grid-columns: 1.3fr 1fr 2fr 1fr 1fr 1fr;
-      grid-template-columns: 1.3fr 1fr 2fr 1fr 1fr 1fr;
+  -ms-grid-columns: 1.2fr 0.8fr 0.8fr 1fr 1fr 1fr;
+      grid-template-columns: 1.2fr 0.8fr 0.8fr 1fr 1fr 1fr;
   -ms-grid-rows: minmax(0px, 40px);
       grid-template-rows: minmax(0px, 40px);
       grid-template-areas: "a-r-list-h--1 a-r-list-h--2 a-r-list-h--3 a-r-list-h--4 a-r-list-h--5 a-r-list-h--6";

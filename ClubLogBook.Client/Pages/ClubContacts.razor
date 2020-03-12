@@ -38,7 +38,7 @@
                     </div>
                     <div class="c_flights__command">
                         <div>
-                            <button type="button" class="btn btn-grid-sort" @onclick="@(async () => await OnAddToClub())"><u>Add To Club</u></button>
+                            <button type="button" class="btn btn-grid-sort" @onclick="@(async () => await OnShowAddToClub())"><u>Add To Club</u></button>
 
                         </div>
 
@@ -228,7 +228,7 @@
                                 <div class="edit-content">
                                     <div class="edit-row">
                                         <label class="title grid-title">Select Club</label>
-                                        <select class="custom-select" value="@filterModel.ClubFilterApplied"  @onchange="ClubSelected">
+                                        <select class="custom-select" value="@filterModel.ClubFilterApplied"  @onchange="OnClubSelected">
 
 
                                             @foreach (var i in @filterModel.ClubSelects)
@@ -240,7 +240,7 @@
                                     </div>
                                     <div class="edit-row">
                                         <label class="title grid-title">Select Pilot</label>
-                                        <select class="custom-select" value="@filterModel.PilotFilterApplied" @onchange="PilotSelected" >
+                                        <select class="custom-select" value="@filterModel.PilotFilterApplied"  >
 
 
                                             @foreach (var i in @filterModel.AirplaneSelects)
@@ -260,7 +260,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn" data-dismiss="modal" @onclick="OnCancel">Cancle</button>
-                                <button type="button" class="btn btn-danger" @onclick="AddToClub"></button>
+                                <button type="button" class="btn btn-danger" @onclick="OnAddToClub"></button>
                             </div>
                         </div>
                     </div>
@@ -299,11 +299,18 @@
 
         message = "OnInitializedAsync";
     }
+    private async Task OnClubSelected()
+    {
 
+    }
+    private async Task OnAddToClub()
+    {
+
+    }
     private async Task EditContact(int id)
     {
         selectedContact = contacts.Where(i => i.Id == id).FirstOrDefault();
-        if(selectedContact != null)
+        if (selectedContact != null)
         {
             bShowEdit = true;
             message = $"EditContact Id:{id} selected:{selectedContact.FirstName}";
@@ -312,7 +319,7 @@
             message = $"EditContact Id:{id} Not Found";
 
     }
-    private void OnAddToClub()
+    private async Task  OnShowAddToClub()
     {
         bShowEdit = false;
         bShowAddToClub = true;
@@ -324,6 +331,10 @@
     private async Task UpdateContact()
     {
         bShowEdit = false;
+    }
+    private async Task OnCancel()
+    {
+        ClosePopup();
     }
     private void  ClosePopup()
     {

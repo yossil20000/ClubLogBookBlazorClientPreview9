@@ -29,9 +29,9 @@
                 </div>
                 <div class="a-r-content">
                     <div class="a-r-list-header">
-                        <div class="a-r-list-h-1 btn-grid-sort"><button class="btn-grid-cmd" value="status">Date</button></div>
+                        <div class="a-r-list-h-1 btn-grid-sort"><button class="btn-grid-cmd" value="status">Name</button></div>
                         <div class="a-r-list-h-2 btn-grid-sort"><button class="btn-grid-cmd" value="status">Aircraft</button></div>
-                        <div class="a-r-list-h-3 btn-grid-sort"><button class="btn-grid-cmd" value="status">Pilot</button></div>
+                        <div class="a-r-list-h-3 btn-grid-sort"><button class="btn-grid-cmd" value="status">Id</button></div>
                         <div class="a-r-list-h-4 btn-grid-sort"><button class="btn-grid-cmd" value="status">From</button></div>
                         <div class="a-r-list-h-5 btn-grid-sort"><button class="btn-grid-cmd" value="status">To</button></div>
                         <div class="a-r-list-h-6 btn-grid-sort"><button class="btn-grid-cmd" @onclick="@CreateReservation">Create</button></div>
@@ -39,11 +39,11 @@
                     @foreach (var item in items)
                     {
                         <div class="a-r-list-row">
-                            <div class="a-r-list-c-1">@item.ClubId</div>
-                            <div class="a-r-list-c-2">@item.TailNumber</div>
-                            <div class="a-r-list-c-3">@item.IdNumber</div>
-                            <div class="a-r-list-c-4">@item.DateFrom</div>
-                            <div class="a-r-list-c-5">@item.DateTo</div>
+                            <div class="a-r-list-c-5">@item.GetFormatedName()</div>
+                            <div class="a-r-list-c-3">@item.TailNumber</div>
+                            <div class="a-r-list-c-4">@item.IdNumber</div>
+                            <div class="a-r-list-c-1">@item.DateFrom</div>
+                            <div class="a-r-list-c-2">@item.DateTo</div>
                             @if (IsCurrentAdmin || item.UserId.ToString() == CurrentUser.Id)
                             {
 
@@ -221,7 +221,7 @@
                                 <div class="form-row">
                                     <div class="form-group col-md-3">
                                         <label for="SelectClub">Select Club</label>
-                                        <select class="custom-select" @onchange="ClubSelected">
+                                        <select class="custom-select btn btn-transaction" @onchange="ClubSelected">
                                             <option value="null">(Select All)</option>
 
                                             @foreach (var i in RecordsViewModel.FilterViewModel.ClubSelects)
@@ -340,7 +340,7 @@
         RecordsViewModel.FilterViewModel.ClubFilterApplied = null;
         RecordsViewModel.FilterViewModel.PilotFilterApplied = null;
         RecordsViewModel.FilterViewModel.AirplaneFilterApplied = null;
-        RecordsViewModel.FilterViewModel = await Http.PostJsonAsync<FilterModel>("api/FlightReservation/FilterViewModelPut", RecordsViewModel.FilterViewModel);
+        RecordsViewModel.FilterViewModel = await Http.PostJsonAsync<FilterModel>("api/GuiUtils/FilterModelPost", RecordsViewModel.FilterViewModel);
         items = await Http.GetJsonAsync<List<FlightReservationModel>>("api/FlightReservation/Reservation");
         //items = items = RecordsViewModel.Records.ToList();
         var authState = await authenticationStateTask;
@@ -461,20 +461,20 @@
         await Http.SendJsonAsync(HttpMethod.Put, "api/FlightReservation/Delete", objReservation.Id);
         items = await Http.GetJsonAsync<List<FlightReservationModel>>("api/FlightReservation/Reservation");
     }
-    async Task EditReservation(FlightReservationModel weatherForecast)
+    async Task EditReservation(FlightReservationModel reservationModel)
     {
         // Set the selected forecast
         // as the current forecast
-        objReservation = weatherForecast;
+        objReservation = reservationModel;
 
         // Open the Popup
         ShowPopup = true;
     }
-    void Show(FlightReservationModel weatherForecast)
+    void Show(FlightReservationModel reservationModel)
     {
         // Set the selected forecast
         // as the current forecast
-        objReservation = weatherForecast;
+        objReservation = reservationModel;
 
         // Open the Popup
         ShowPopup = true;

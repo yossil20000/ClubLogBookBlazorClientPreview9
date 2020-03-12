@@ -211,7 +211,7 @@ namespace UnitsTest.ApplicationCore.Services
 					UserInfo userInfo = new UserInfo(p);
 					string str = userInfo.GetJason();
 					UserInfo userInfo1;
-					userInfo1 = str.GetFromJason<UserInfo>();
+					//userInfo1 = str.GetFromJason<UserInfo>();
 					System.Diagnostics.Debug.WriteLine(p.FirstName);
 				}
 				IAsyncRepository<Pilot> asyncRepositoryPilot = new EFRepository<Pilot>(_context);

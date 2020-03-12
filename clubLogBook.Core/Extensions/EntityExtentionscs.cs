@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using ClubLogBook.Core.Entities;
-using Newtonsoft.Json;
-namespace ClubLogBook.Infrastructure.Data
+﻿using Newtonsoft.Json;
+namespace ClubLogBook.Core.Extensions
 {
 	public static class EntityExtentionscs
 	{

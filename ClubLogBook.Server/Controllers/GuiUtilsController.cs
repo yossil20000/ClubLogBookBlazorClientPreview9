@@ -60,10 +60,10 @@ namespace ClubLogBook.Server.Controllers
 
 		}
 		[HttpPost]
-		[Route("FilterModelPut")]
-		public async Task<FilterModel> FilterModelPut([FromBody] FilterModel filterModel)
+		[Route("FilterModelPost")]
+		public async Task<FilterModel> FilterModelPost([FromBody] FilterModel filterModel)
 		{
-			_logger.LogInformation("FilterModelPut");
+			_logger.LogInformation("FilterModelPost");
 			int? clubId = filterModel.ClubFilterApplied;
 			IEnumerable<Aircraft> aircrafts;
 			IEnumerable<Pilot> pilots;
@@ -87,6 +87,50 @@ namespace ClubLogBook.Server.Controllers
 
 		}
 
+		[HttpGet]
+		[Route("PilotFilterGet")]
+		public async Task<List<PilotSelectModel>> PilotFilterGet(int? clubId)
+		{
+			_logger.LogInformation("PilotFilterGet");
+			List<PilotSelectModel> pilotSelectModels = new List<PilotSelectModel>();
+		
+			
+			
+			GetClubsListQuery getClubsListQuery = new GetClubsListQuery(QueryBy.ID, "", clubId ?? 0);
+			ClubListViewModel clubs = await _mediator.Send(getClubsListQuery); // ((clubId == null || clubId == 0) ? _clubService.GetClubs() : _clubService.GetClubById((int)clubId));
 
+			GetClubMembersListQuery getClubMembersListQuery = new GetClubMembersListQuery(QueryBy.Name, (clubs == null || clubs.ClubViewModels.Count() == 0) ? "" : clubs.ClubViewModels.FirstOrDefault().Name, clubId ?? 0);
+			
+			var pilotSelectListModel = await _mediator.Send(getClubMembersListQuery);
+			pilotSelectModels.Add(new PilotSelectModel() { Id = 0, FirstName = "All Pilots" });
+			pilotSelectModels.AddRange(pilotSelectListModel.PilotSelectList);
+			
+
+			return pilotSelectModels;
+
+		}
+
+		[HttpGet]
+		[Route("AircraftFilterGet")]
+		public async Task<List<AirplaneSelectModel>> AircraftFilterGet(int? clubId)
+		{
+			_logger.LogInformation("AircraftFilterGet");
+			List<AirplaneSelectModel> airplaneSelectModels = new List<AirplaneSelectModel>();
+
+
+
+			GetClubsListQuery getClubsListQuery = new GetClubsListQuery(QueryBy.ID, "", clubId ?? 0);
+			ClubListViewModel clubs = await _mediator.Send(getClubsListQuery); // ((clubId == null || clubId == 0) ? _clubService.GetClubs() : _clubService.GetClubById((int)clubId));
+
+			GetClubAircraftListQuery getClubAircraftListQuery = new GetClubAircraftListQuery(QueryBy.Name, (clubs == null || clubs.ClubViewModels.Count() == 0) ? "" : clubs.ClubViewModels.FirstOrDefault().Name, clubId ?? 0);
+
+			var airplaneSelectListModel = await _mediator.Send(getClubAircraftListQuery);
+			airplaneSelectModels.Add(new AirplaneSelectModel() { Id = 0, TailNumber = "All Airplanes" });
+			airplaneSelectModels.AddRange(airplaneSelectListModel.AircraftList.Select(ar => new AirplaneSelectModel() { Id = ar.Id, TailNumber = ar.TailNumber }).ToList());
+
+
+			return airplaneSelectModels;
+
+		}
 	}
 }

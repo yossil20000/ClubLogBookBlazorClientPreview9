@@ -21,12 +21,13 @@ namespace ClubLogBook.Application.Models
 		//[DateGreaterThan(otherPropertyName = "DateFrom", ErrorMessage = "")]
 		public DateTime DateTo { get { return dateTo; } set { dateTo = value; } }
 		[Required]
-		[StringLength(5, MinimumLength = 1, ErrorMessage = "Required")]
+		[StringLength(10, MinimumLength = 1, ErrorMessage = "Required")]
 		public string IdNumber { get; set; }
-
+		public string FirstName { get; set; } = "";
+		public string LastName { get; set; } = "";
 		public string UserInfo { get; set; } = "";
 		[Required]
-		[StringLength(6, MinimumLength = 1, ErrorMessage = "Required")]
+		[StringLength(10, MinimumLength = 1, ErrorMessage = "Required")]
 		public string TailNumber { get; set; } = "";
 		private DateTime timeFrom;
 		public DateTime TimeFrom { get { return timeFrom; } set { timeFrom = value; } }
@@ -48,7 +49,10 @@ namespace ClubLogBook.Application.Models
 			timeFrom = TimeFrom.Date.Add(dateFrom.TimeOfDay);
 			timeTo = TimeTo.Date.Add(dateTo.TimeOfDay);
 		}
-
+		public string GetFormatedName()
+		{
+			return $"{FirstName} {LastName}";
+		}
 		public void CreateMappings(Profile configuration)
 		{
 			configuration.CreateMap<AircraftReservation, FlightReservationModel>();

@@ -21,27 +21,27 @@ namespace UnitsTest.AccountManager
 		public void CreateAccount()
 		{
 
-			var dbOptions = new DbContextOptionsBuilder<ApplicationDbContext>()
-			   .UseInMemoryDatabase(databaseName: "TestCatalog")
-			   .Options;
-			context = new ApplicationDbContext(dbOptions);
-			List<Account> accounts = Accounts();
-			List<AircraftPrice> aircraftPrices = AircraftPrices();
-			List<Invoice> invoices = Invoices();
-			context.Invoices.AddRange(invoices);
-			context.AircraftPrices.AddRange(aircraftPrices);
-			context.Accounts.UpdateRange(accounts);
-			context.SaveChanges();
-			AddTranaction();
-			var ac = context.Accounts.Where(i => i.Id == 1).SingleOrDefault();
-			System.Diagnostics.Debug.WriteLine(ac.ToString());
-			System.Diagnostics.Debug.WriteLine(ac.Transactions.ToString());
-			var accountObj = ac.GetJason<Account>();
-			ac = context.Accounts.Where(i => i.Id == 2).SingleOrDefault();
-			accountObj = ac.GetJason<Account>();
+			//var dbOptions = new DbContextOptionsBuilder<ApplicationDbContext>()
+			//   .UseInMemoryDatabase(databaseName: "TestCatalog")
+			//   .Options;
+			//context = new ApplicationDbContext(dbOptions);
+			//List<Account> accounts = Accounts();
+			//List<AircraftPrice> aircraftPrices = AircraftPrices();
+			//List<Invoice> invoices = Invoices();
+			//context.Invoices.AddRange(invoices);
+			//context.AircraftPrices.AddRange(aircraftPrices);
+			//context.Accounts.UpdateRange(accounts);
+			//context.SaveChanges();
+			//AddTranaction();
+			//var ac = context.Accounts.Where(i => i.Id == 1).SingleOrDefault();
+			//System.Diagnostics.Debug.WriteLine(ac.ToString());
+			//System.Diagnostics.Debug.WriteLine(ac.Transactions.ToString());
+			//var accountObj = ac.GetJason<Account>();
+			//ac = context.Accounts.Where(i => i.Id == 2).SingleOrDefault();
+			//accountObj = ac.GetJason<Account>();
 
-			AccountModel accountViewModel = new AccountModel();
-			mapper.Map<Account, AccountModel>(ac, accountViewModel);
+			//AccountModel accountViewModel = new AccountModel();
+			//mapper.Map<Account, AccountModel>(ac, accountViewModel);
 
 		}
 		[Test]

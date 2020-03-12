@@ -1,9 +1,11 @@
-﻿using ClubLogBook.Core.Entities;
+﻿
 using ClubLogBook.Core.Interfaces;
-using Newtonsoft.Json;
+
 using System.Linq;
 using ClubLogBook.Core.Common;
-namespace ClubLogBook.Infrastructure.Data
+using ClubLogBook.Core.Extensions;
+
+namespace ClubLogBook.Core.Entities
 {
 	public class UserInfo : AuditableEntity
 	{

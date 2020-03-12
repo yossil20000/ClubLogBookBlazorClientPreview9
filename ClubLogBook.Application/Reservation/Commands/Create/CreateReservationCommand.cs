@@ -14,6 +14,8 @@ using FluentValidation;
 using ClubLogBook.Application.Models;
 using ClubLogBook.Core.Interfaces;
 using System;
+
+
 namespace ClubLogBook.Application.Reservation.Queries
 {
 	public class CreateReservationCommand : IRequest<int>
@@ -39,7 +41,10 @@ namespace ClubLogBook.Application.Reservation.Queries
 			int result = 0;
 			request.FlightReservationModel.CombineTime();
 			AircraftReservation aircraftReservation = _mapper.Map<FlightReservationModel, AircraftReservation>(request.FlightReservationModel);
-
+			var pilot = _context.Set<Pilot>().Find(aircraftReservation.PilotId);
+			if (pilot == null)
+				return 0;
+			
 			var reservation = _context.Set<AircraftReservation>().Update(aircraftReservation);
 			if (reservation != null)
 			{
