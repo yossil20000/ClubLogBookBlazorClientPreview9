@@ -104,7 +104,7 @@
 
                 <form class="modal" tabindex="-1" style="display:block" role="dialog">
                     <div class="modal-dialog  modal-dialog-centered">
-                        <EditForm Model="objReservation" OnValidSubmit="SaveNewReservation" OnInvalidSubmit="SaveNewReservation" Context="Edit">
+                        <EditForm Model="@flightReservationCreateModel" OnValidSubmit="SaveNewReservation" OnInvalidSubmit="SaveNewReservation" Context="Edit">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h3 class="modal-title">Edit Reservation</h3>
@@ -124,7 +124,7 @@
                                             <ValidationSummary />
                                             <div class="form-group">
                                                 <label for="airplane">Airplane</label>
-                                                <InputSelect id="airplane" @bind-Value="RecordsViewModel.FilterViewModel.AirplaneSelects" class="form-control">
+                                                <InputSelect id="airplane" @bind-Value="@RecordsViewModel.FilterViewModel.AirplaneFilterApplied" class="form-control">
                                                     @foreach (var i in RecordsViewModel.FilterViewModel.AirplaneSelects)
                                                     {
                                                         <option value="@i.Id">@i.TailNumber</option>
@@ -133,7 +133,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <label for="pilot">Airplane</label>
-                                                <InputSelect id="pilot" @bind-Value="RecordsViewModel.FilterViewModel.PilotSelects" class="form-control">
+                                                <InputSelect id="pilot" @bind-Value="@flightReservationCreateModel.PilotId" class="form-control">
 
 
                                                     @foreach (var i in RecordsViewModel.FilterViewModel.PilotSelects)
@@ -151,9 +151,9 @@
                                                 <div class="col pr-0">
                                                     <div class="form-control d-flex">
                                                         <div><i>🗓</i>&nbsp;&nbsp;Date:</div>
-                                                        <input type="date" @bind="objReservation.DateFrom" @bind:format="yyyy-MM-dd" />
+                                                        <input type="date" @bind="flightReservationCreateModel.DateFrom" @bind:format="yyyy-MM-dd" />
                                                         <div><i>🗓</i>&nbsp;&nbsp;Time:</div>
-                                                        <input type="time" @bind="objReservation.TimeFrom" format-value="HH:mm" />
+                                                        <input type="time" @bind="flightReservationCreateModel.TimeFrom" format-value="HH:mm" />
 
                                                     </div>
                                                 </div>
@@ -161,16 +161,16 @@
                                                 <div class="col pr-0">
                                                     <div class="form-control d-flex">
                                                         <div><i>🗓</i>&nbsp;&nbsp;Date:</div>
-                                                        <input type="date" @bind="objReservation.DateTo" @bind:format="yyyy-MM-dd" />
+                                                        <input type="date" @bind="flightReservationCreateModel.DateTo" @bind:format="yyyy-MM-dd" />
                                                         <div><i>🗓</i>&nbsp;&nbsp;Time:</div>
-                                                        <input type="time" @bind="objReservation.TimeTo" format-value="HH:mm" />
+                                                        <input type="time" @bind="flightReservationCreateModel.TimeTo" format-value="HH:mm" />
 
                                                     </div>
                                                 </div>
-                                                <input type="text" for="TailNumber" class="text-hide" @bind="@objReservation.TailNumber" />
+                                                <input type="text" for="TailNumber"  @bind="@flightReservationCreateModel.AircraftId" />
                                                
                                                 @*<label for="IdNumber" class="hide">Id Number</label>*@
-                                                <input type="text" for="IdNumber" class="text-hide" @bind="@objReservation.IdNumber" />
+                                                <input type="text" for="IdNumber"  @bind-value="@flightReservationCreateModel.PilotId" />
                                                
                                             </div>
 
@@ -181,31 +181,10 @@
 
                                 </div>
                                 <div class="modal-footer">
-                                    @if (objReservation.Id == 0)
-                                    {
-                                        <!-- Button to save the forecast -->
-                                        <button class="btn btn-primary" type="submit" >
-                                            Create
-                                        </button>
-                                    }
-                                    else
-                                    {
-                                        <!-- Button to save the forecast -->
-                                        <button type="submit" class="btn btn-primary"
-                                                @onclick="SaveReservation">
-                                            Save
-                                        </button>
-                                    }
-
-                                    <!-- Only show delete button if not a new record -->
-                                    @if (objReservation.Id > 0)
-                                    {
-                                        <!-- Button to delete the forecast -->
-                                        <button type="submit" class="btn btn-primary"
-                                                @onclick="DeleteReservation">
-                                            Delete
-                                        </button>
-                                    }
+                                    <button class="btn btn-primary" type="submit">
+                                        Create
+                                    </button>
+                                   
                                 </div>
                             </div>
                         </EditForm>
@@ -236,6 +215,7 @@
     private EditContext EditContext1;
     private string StatusMessage;
     private string StatusClass;
+    FlightReservationCreateModel flightReservationCreateModel { get; set; }
     private void HandleValidSubmit()
     {
         Console.WriteLine("OnValidSubmit");
@@ -269,7 +249,7 @@
         await base.OnInitializedAsync();
 
     }
- 
+
     protected void HandleInvalidSubmit()
     {
         StatusClass = "alert-danger";
@@ -346,11 +326,12 @@
     {
         // Close the Popup
         ShowPopup = false;
-        DateTime t = objReservation.TimeFrom;
+        DateTime t = flightReservationCreateModel.TimeFrom;
         // objReservation.TimeFrom.AddHours(-t.Hour);
-        objReservation.TimeFrom.AddHours(SelectedFromTime.Hour);
-        objReservation.TimeFrom.AddMinutes(SelectedFromTime.Minute);
-        await Http.SendJsonAsync(HttpMethod.Put, "api/FlightReservation/Create", objReservation);
+        flightReservationCreateModel.TimeFrom.AddHours(SelectedFromTime.Hour);
+        flightReservationCreateModel.TimeFrom.AddMinutes(SelectedFromTime.Minute);
+        flightReservationCreateModel.PilotId = (int)RecordsViewModel.FilterViewModel.AirplaneFilterApplied;
+        await Http.SendJsonAsync(HttpMethod.Put, "api/FlightReservation/Create", flightReservationCreateModel);
         items = await Http.GetJsonAsync<List<FlightReservationModel>>("api/FlightReservation/Reservation");
         // Get the current user
 
@@ -360,8 +341,8 @@
     {
         // Close the Popup
         ShowPopup = true;
-        objReservation = new FlightReservationModel();
-        EditContext1 = new EditContext(objReservation);
+        flightReservationCreateModel = new FlightReservationCreateModel();
+        EditContext1 = new EditContext(flightReservationCreateModel);
         EditContext1.OnFieldChanged += EditContext_OnFieldChanged;
 
         // Get the current user

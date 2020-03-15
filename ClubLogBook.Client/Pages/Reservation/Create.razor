@@ -32,7 +32,7 @@
     //}
     protected async Task UpdateFlight(int id)
     {
-        await Http.SendJsonAsync(HttpMethod.Put, "api/FlightReservation/Create", reservation);
+        await Http.SendJsonAsync(HttpMethod.Put, "api/FlightReservation/Edit", reservation);
         navigationManager.NavigateTo(navTo);
     }
     protected void cancle()

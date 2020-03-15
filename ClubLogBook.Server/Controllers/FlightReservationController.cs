@@ -175,7 +175,7 @@ namespace ClubLogBook.Server.Controllers
 		}
 		[HttpPut]
 		[Route("api/FlightReservation/Create")]
-		public async Task Create([FromBody] FlightReservationModel reservation)
+		public async Task Create([FromBody] FlightReservationCreateModel reservation)
 		{
 			if (ModelState.IsValid)
 			{

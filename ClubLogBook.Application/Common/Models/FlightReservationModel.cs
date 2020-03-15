@@ -5,6 +5,44 @@ using System;
 using System.ComponentModel.DataAnnotations;
 namespace ClubLogBook.Application.Models
 {
+	public class FlightReservationCreateModel 
+	{
+		public FlightReservationCreateModel()
+		{
+			ExtructTime();
+		}
+		[Required]
+		public int PilotId { get; set; } = 0;
+		[Required]
+		public int AircraftId { get; set; } = 0;
+		
+		[Required(ErrorMessage = "Required")]
+		[DataType(DataType.DateTime)]
+		private DateTime dateFrom = DateTime.Now; 
+		public DateTime DateFrom { get { return dateFrom; } set { dateFrom = value; } }
+		private DateTime dateTo = DateTime.Now.AddHours(1);
+		
+		[Required(ErrorMessage = "Required")]
+		[DataType(DataType.DateTime)]
+		public DateTime DateTo { get { return dateTo; } set { dateTo = value; } }
+
+		private DateTime timeFrom = DateTime.Now;
+		public DateTime TimeFrom { get { return timeFrom; } set { timeFrom = value; } }
+		private DateTime timeTo = DateTime.Now.AddHours(1);
+		public DateTime TimeTo { get { return timeTo; } set { timeTo = value; } }
+		public void CombineTime()
+		{
+
+			dateFrom = DateFrom.Date.Add(timeFrom.TimeOfDay);
+			dateTo = DateTo.Date.Add(timeTo.TimeOfDay);
+		}
+		public void ExtructTime()
+		{
+
+			timeFrom = TimeFrom.Date.Add(dateFrom.TimeOfDay);
+			timeTo = TimeTo.Date.Add(dateTo.TimeOfDay);
+		}
+	}
 	public class FlightReservationModel : IHaveCustomMapping
 	{
 		public int Id { get; set; }

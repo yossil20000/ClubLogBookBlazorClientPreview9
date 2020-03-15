@@ -14,16 +14,16 @@ using FluentValidation;
 using ClubLogBook.Application.Models;
 using ClubLogBook.Core.Interfaces;
 using System;
-
+using ClubLogBook.Application.Extenttions;
 
 namespace ClubLogBook.Application.Reservation.Queries
 {
 	public class CreateReservationCommand : IRequest<int>
 	{
-		public FlightReservationModel FlightReservationModel { get; set; }
-		public CreateReservationCommand(FlightReservationModel flightReservationModel)
+		public FlightReservationCreateModel FlightReservationCreateModel { get; set; }
+		public CreateReservationCommand(FlightReservationCreateModel flightReservationCreateModel)
 		{
-			FlightReservationModel = flightReservationModel;
+			FlightReservationCreateModel = flightReservationCreateModel;
 		}
 	}
 	public class CreateReservationCommandHandler : IRequestHandler<CreateReservationCommand, int>
@@ -39,17 +39,32 @@ namespace ClubLogBook.Application.Reservation.Queries
 		public async Task<int> Handle(CreateReservationCommand request, CancellationToken cancellationToken)
 		{
 			int result = 0;
-			request.FlightReservationModel.CombineTime();
-			AircraftReservation aircraftReservation = _mapper.Map<FlightReservationModel, AircraftReservation>(request.FlightReservationModel);
-			var pilot = _context.Set<Pilot>().Find(aircraftReservation.PilotId);
+			AircraftReservation aircraftReservation = new AircraftReservation();
+			var aircraft = _context.Set<Aircraft>().Find(request.FlightReservationCreateModel.AircraftId);
+			if (aircraft != null)
+				aircraftReservation.AircraftId = aircraft.Id;
+			
+			
+			aircraftReservation.AircraftId = request.FlightReservationCreateModel.AircraftId;
+			var pilot = _context.Set<Pilot>().Find(request.FlightReservationCreateModel.PilotId);
 			if (pilot == null)
 				return 0;
-			
-			var reservation = _context.Set<AircraftReservation>().Update(aircraftReservation);
-			if (reservation != null)
+			aircraftReservation.PilotId = pilot.Id;
+			request.FlightReservationCreateModel.CombineTime();
+			aircraftReservation.IdNumber = pilot.IdNumber;
+			aircraftReservation.TailNumber = aircraft.TailNumber;
+			aircraftReservation.DateFrom = request.FlightReservationCreateModel.DateFrom;
+			aircraftReservation.DateTo = request.FlightReservationCreateModel.DateTo;
+			var reservations = await _context.Set<AircraftReservation>().ToListAsync();
+			if(reservations.IsFlightReservationValid(aircraftReservation))
 			{
-				result = await _context.SaveChangesAsync(cancellationToken);
+				var reservation = _context.Set<AircraftReservation>().Update(aircraftReservation);
+				if (reservation != null)
+				{
+					result = await _context.SaveChangesAsync(cancellationToken);
+				}
 			}
+			
 			return result;
 		}
 	}
@@ -58,7 +73,8 @@ namespace ClubLogBook.Application.Reservation.Queries
 	{
 		public CreateReservationCommandValidator()
 		{
-			RuleFor(x => x.FlightReservationModel.Id).Equal(0).WithMessage("ReservationId Must  0");
+			RuleFor(x => x.FlightReservationCreateModel.AircraftId).GreaterThan(0).WithMessage("AircraftId Must Be Grater Then 0");
+			RuleFor(x => x.FlightReservationCreateModel.PilotId).GreaterThan(0).WithMessage("PilotId Must Be Grater Then 0");
 		}
 	}
 }
