@@ -24,7 +24,7 @@ namespace ClubLogBook.Client
             .AddBrowserConsole() // Add Blazor.Extensions.Logging.BrowserConsoleLogger
             .SetMinimumLevel(LogLevel.Trace));
             services.AddTransient<IFetchDataViewModel, FetchDataViewModel>();
-            services.AddTransient<IFetchDataModel, FetchDataModel>();
+            services.AddTransient<IFetchDataModel, FetchData_Model>();
             services.AddTransient<IBasicForecastViewModel, BasicForecastViewModel>();
         }
 

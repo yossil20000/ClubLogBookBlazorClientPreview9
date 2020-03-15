@@ -1,8 +1,46 @@
-﻿@page "/Reservation/ReservationForm"
+﻿
 @using ClubLogBook.Application.Models
 @using ClubLogBook.Shared
 @using Microsoft.AspNetCore.Components
-<h3>ReservationForm</h3>
+<div class="row">
+    <div class="col-md-6">
+        <EditForm Model="Item" OnInvalidSubmit="HandleValidSubmit">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <div class="form-group">
+                <label for="airplane">Airplane</label>
+                <InputSelect id="airplane" @bind-Value="filter.FilterViewModel.AirplaneSelects" class="form-control">
+
+
+                    @foreach (var i in filter.FilterViewModel.AirplaneSelects)
+                    {
+                        <option value="@i.Id">@i.TailNumber</option>
+                    }
+                </InputSelect>
+            </div>
+            <div class="form-group">
+                <label for="pilot">Airplane</label>
+                <InputSelect id="pilot" @bind-Value="filter.FilterViewModel.PilotSelects" class="form-control">
+
+
+                    @foreach (var i in filter.FilterViewModel.PilotSelects)
+                    {
+                        <option value="@i.Id">@i.FirstName (@i.IdNumber)</option>
+                    }
+                </InputSelect>
+            </div>
+           
+            <div class="form-group">
+                <div><i>🗓</i>&nbsp;&nbsp;Date:</div>
+                <InputDate id="dateFrom" type="date" @bind-Value="Item.DateFrom" @bind:format="yyyy-MM-dd" />
+                <div><i>🗓</i>&nbsp;&nbsp;Time:</div>
+                <InputDate id="timeFrom" type="time" @bind-Value="Item.TimeFrom" format-value="HH:mm" />
+            </div>
+           
+           
+        </EditForm>
+    </div>
+</div>
 <EditForm EditContext="@EditContext">
     <DataAnnotationsValidator />
     <div class="form-group">
@@ -46,15 +84,19 @@
         EditContext.OnFieldChanged += EditContext_OnFieldChanged;
         await base.OnInitializedAsync();
     }
+    private void HandleValidSubmit()
+    {
+        Console.WriteLine("OnValidSubmit");
+    }
     private void EditContext_OnFieldChanged(object sender , FieldChangedEventArgs e)
     {
         EditContext.Validate();
     }
     void OnChangeValue(string memberName)
     {
-         var property = Item.GetType().GetProperty(memberName);
+        var property = Item.GetType().GetProperty(memberName);
         var value = property.GetValue(Item);
-       
+
 
         var id = EditContext.Field(memberName);
         EditContext.Validate();

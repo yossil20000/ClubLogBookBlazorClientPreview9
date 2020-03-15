@@ -1,9 +1,9 @@
 ﻿
 @using ClubLogBook.Client.ViewModel
 
-<table class="table">
+<table class="table table-hover">
     <thead>
-        <tr>
+        <tr >
             <th>Date</th>
             <th>Temp. (@ViewModel.DisplayTemperatureScaleShort)</th>
 
@@ -13,8 +13,8 @@
     <tbody>
         @foreach (var forecast in ViewModel.WeatherForecasts)
         {
-            <tr>
-                <td>@forecast.Date.ToShortDateString()</td>
+            <tr @onclick="@(async () => await ViewModel.ToggleForecast(forecast.Date))">
+                <td>@forecast.Date.ToString("MM/dd/yyyy h:mm tt")</td>
                 <td>@ViewModel.DisplayTemperature(forecast.TemperatureC)</td>
 
                 <td>@forecast.Summary</td>

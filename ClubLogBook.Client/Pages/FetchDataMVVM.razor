@@ -8,7 +8,7 @@
 
 <h1>Weather forecast</h1>
 
-<button class="btn btn-primary" @onclick="@fetchDataViewModel.ToggleTemperatureScale">@fetchDataViewModel.DisplayTemperatureScaleLong</button>
+<button class="btn btn-primary" @onclick="@fetchDataViewModel.ToggleTemperatureScale">@fetchDataViewModel.DisplayOtherTemperatureScaleLong</button>
 
 <button class="btn btn-primary" @onclick="@(async () => await fetchDataViewModel.TogglePremiumMembership())">@fetchDataViewModel.DisplayPremiumToggleMessage</button>
 <p>This component demonstrates fetching data from the server.</p>
@@ -29,6 +29,6 @@ else
     string PageFooter { get; set; } = "I am from Fetch Data";
     protected override async Task OnInitializedAsync()
     {
-        await fetchDataViewModel.RetrieveForcastAsync();
+        await fetchDataViewModel.RetrieveForecastsAsync();
     }
 }

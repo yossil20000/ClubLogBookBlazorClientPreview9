@@ -6,43 +6,42 @@ using System.Threading.Tasks;
 
 namespace ClubLogBook.Client.ViewModel
 {
-	public interface IBasicForecastViewModel
-	{
-		IWeatherForcast[] WeatherForecasts { get; set; }
-		
-		string DisplayTemperatureScaleShort { get; }
-		string DisplayTemperatureScaleLong { get; }
-		int DisplayTemperature(int temperature);
-		void ToggleTemperatureScale();
-	}
-	public class BasicForecastViewModel : IBasicForecastViewModel
-	{
-		private IWeatherForcast[] _weatherForecasts { get; set; }
-		private bool _displayFarenheit = true;
-		public IWeatherForcast[] WeatherForecasts { get => _weatherForecasts; set => _weatherForecasts = value; }
-		
+    public delegate Task ToggleDelegate(DateTime selectedDay);
+    public interface IBasicForecastViewModel
+    {
+        string DisplayTemperatureScaleShort { get; }
+        IWeatherForecast[] WeatherForecasts { get; set; }
+        ToggleDelegate ToggleForecastDelegate { get; set; }
 
-		public string DisplayTemperatureScaleShort
-		{
-			get { return !_displayFarenheit ? "C" : "F"; }
-		}
+        int DisplayTemperature(int temperature);
+        Task ToggleForecast(DateTime selectedDate);
+        void ToggleTemperatureScale();
+    }
 
-		public string DisplayTemperatureScaleLong
-		{
-			get
-			{
-				return !_displayFarenheit ? "Faharenheit" : "Celsius";
-			}
-		}
+    public class BasicForecastViewModel : IBasicForecastViewModel
+    {
+        private IWeatherForecast[] _weatherForecasts;
+        private bool _displayFahrenheit;
 
-		public int DisplayTemperature(int temperature)
-		{
-			return !_displayFarenheit ? temperature : 32 + (int)(temperature / 0.5556);
-		}
+        public IWeatherForecast[] WeatherForecasts { get => _weatherForecasts; set => _weatherForecasts = value; }
 
-		public void ToggleTemperatureScale()
-		{
-			_displayFarenheit = !_displayFarenheit;
-		}
-	}
+        public string DisplayTemperatureScaleShort
+        {
+            get { return _displayFahrenheit ? "C" : "F"; }
+        }
+        public ToggleDelegate ToggleForecastDelegate { get; set; }
+        public int DisplayTemperature(int temperature)
+        {
+            return _displayFahrenheit ? temperature : 32 + (int)(temperature / 0.5556);
+        }
+
+        public void ToggleTemperatureScale()
+        {
+            _displayFahrenheit = !_displayFahrenheit;
+        }
+        public async Task ToggleForecast(DateTime selectedDate)
+        {
+            await ToggleForecastDelegate(selectedDate);
+        }
+    }
 }

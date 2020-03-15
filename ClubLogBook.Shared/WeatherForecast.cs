@@ -4,15 +4,14 @@ using System.Text;
 
 namespace ClubLogBook.Shared
 {
-    public interface IWeatherForcast
+    public interface IWeatherForecast
     {
         DateTime Date { get; set; }
-
-        int TemperatureC { get; set; }
-
         string Summary { get; set; }
+        int TemperatureC { get; set; }
     }
-    public class WeatherForecast :IWeatherForcast
+
+    public class WeatherForecast : IWeatherForecast
     {
         public DateTime Date { get; set; }
 

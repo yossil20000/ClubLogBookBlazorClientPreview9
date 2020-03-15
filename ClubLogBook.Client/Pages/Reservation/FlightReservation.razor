@@ -59,52 +59,11 @@
             </div>
 
        
-
-
-            /*
-                        <div>
-                            <div class="container-fluid">
-                                <div class=" text-center row">
-                                    <div class="col-8">
-                                        <div class="row">
-                                            <div class="col-2">
-                                                <button type="button" class="btn btn-primary  @RecordsViewModel.PaginationInfo.Previous" @onclick="@(async () => await PrevClick(RecordsViewModel.PaginationInfo.ActualPage -1))"
-                                                        id="Previous"
-                                                        asp-route-pageid="@(RecordsViewModel.PaginationInfo.ActualPage - 1)"
-                                                        aria-label="Previous">
-                                                    Previous
-                                                </button>
-                                            </div>
-
-                                            <div class="text-center col-8">
-                                                Showing @RecordsViewModel.PaginationInfo.ItemsPerPage of @RecordsViewModel.PaginationInfo.TotalItems products - Page @(RecordsViewModel.PaginationInfo.ActualPage + 1) - @RecordsViewModel.PaginationInfo.TotalPages
-
-                                            </div>
-
-                                            <div class="col-2">
-                                                <button type="button" class="btn btn-primary @RecordsViewModel.PaginationInfo.Next " @onclick="@(async () => await NextClick())"
-                                                        id="Next"
-                                                        asp-route-pageid="@(RecordsViewModel.PaginationInfo.ActualPage + 1)"
-                                                        aria-label="Next">
-                                                    Next
-                                                </button>
-                                                @*aria-disabled="@FlightRecordIndexViewModel.PaginationInfo.Next"*@
-                                            </div>
-                                        </div>
-
-
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-             */
-
             @if (ShowReservation)
             {
                 <div class="container-fluid">
                     <div class="alert @StatusClass">@StatusMessage</div>
-                    <EditForm EditContext="@EditContext1" Context="Yossi" OnInvalidSubmit="HandleInvalidSubmit" OnValidSubmit="SaveNewReservation">
+                    <EditForm EditContext="@EditContext1" Context="Yossi" OnInvalidSubmit="SaveNewReservation" OnValidSubmit="SaveNewReservation">
                         <DataAnnotationsValidator />
                         <ValidationSummary></ValidationSummary>
                         <h3>From</h3>
@@ -137,168 +96,121 @@
                     </EditForm>
                 </div>
             }
-            /*<div class="container-fluid row">
-                <table class="table table-bordered table-hover table-striped col-sm-12 col-md-12 col-xs-12">
-                    <thead>
-                        <tr>
-                            @*<th>
-                                <button class="btn btn-info"
-                                        @onclick="@CreateReservation">
-                                    Create Reservation
-                                </button>
-                            </th>*@
-                            <th>
-                                <button class="btn btn-light"
-                                        @onclick="@SortDate">
-                                    From
-                                </button>
-                            </th>
-                            <th>
-                                To
-                            </th>
-                            <th>Aircraft</th>
-                            <th>
-                                <button class="btn btn-light"
-                                        @onclick="@SortId">
-                                    Pilot
-                                </button>
-                            </th>
-                            <th>
-                                <button class="btn btn-info"
-                                        @onclick="@CreateReservation">
-                                    Create Reservation
-                                </button>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in items)
-                        {
-                            <tr>
-                                @*<td></td>*@
-                                <td>@item.DateFrom</td>
-                                <td>@item.DateTo</td>
-                                <td>@item.TailNumber</td>
-                                <td>@item.IdNumber</td>
 
-                                <td>
-                                    @if (IsCurrentAdmin || item.UserId.ToString() == CurrentUser.Id)
-                                    {
-                                        <button class="btn btn-info"
-                                                @onclick="@(async () => await SaveNewReservation())">
-                                            Edit/Delete
-                                        </button>
-                                    }
-
-                                </td>
-                            </tr>
-
-                        }
-
-                    </tbody>
-                </table>
-            </div>
-            */
 
             @if (ShowPopup)
             {
 
 
-                <div class="modal" tabindex="-1" style="display:block" role="dialog">
+                <form class="modal" tabindex="-1" style="display:block" role="dialog">
                     <div class="modal-dialog  modal-dialog-centered">
-
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h3 class="modal-title">Edit Reservation</h3>
-                                <!-- Button to close the popup -->
-                                <button type="button" class="close"
-                                        @onclick="@ClosePopup">
-                                    <span aria-hidden="true">X</span>
-                                </button>
-                            </div>
-                            <!-- Edit form for the current forecast -->
-                            <div class="modal-body">
-                                <div class="form-row">
-                                    <div class="form-group col-md-3">
-                                        <label for="SelectClub">Select Club</label>
-                                        <select class="custom-select btn btn-transaction" @onchange="ClubSelected">
-                                            <option value="null">(Select All)</option>
-
-                                            @foreach (var i in RecordsViewModel.FilterViewModel.ClubSelects)
-                                            {
-                                                <option value="@i.Id">@i.ClubName - (@(i.Id))</option>
-                                            }
-                                        </select>
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <label for="ValidationFault1">Select Airplane</label>
-                                        <select class="custom-select" @onchange="AirplaneSelected">
-                                            <option value="null">(Select All)</option>
-
-                                            @foreach (var i in RecordsViewModel.FilterViewModel.AirplaneSelects)
-                                            {
-                                                <option value="@i.Id">@i.TailNumber - (@(i.Id))</option>
-                                            }
-                                        </select>
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <label for="ValidationFault1">Select Pilot</label>
-                                        <select class="custom-select" @onchange="PilotSelected">
-                                            <option value="null">(Select All)</option>
-
-                                            @foreach (var i in RecordsViewModel.FilterViewModel.PilotSelects)
-                                            {
-                                                if (IsCurrentAdmin || i.UserId.ToString() == CurrentUser.Id)
-                                                {
-                                                    <option value="@i.Id">@i.FullName - (@(i.IdNumber))</option>
-                                                }
-                                            }
-                                        </select>
-                                    </div>
+                        <EditForm Model="objReservation" OnValidSubmit="SaveNewReservation" OnInvalidSubmit="SaveNewReservation" Context="Edit">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h3 class="modal-title">Edit Reservation</h3>
+                                    <!-- Button to close the popup -->
+                                    <button type="button" class="close"
+                                            @onclick="@ClosePopup">
+                                        <span aria-hidden="true">X</span>
+                                    </button>
                                 </div>
-                                <EditForm Model="@objReservation" OnValidSubmit="@SaveNewReservation" OnInvalidSubmit="@Refresh" Context="EdirReservationContext">
-                                    <DataAnnotationsValidator />
-                                    <ValidationSummary />
+                                <!-- Edit form for the current forecast -->
 
-                                    <Reservation Item=objReservation SelectedFromTime="SelectedFromTime" StatusMessage="StatusMessage" StatusClass="StatusClass" />
-                                    @*<ReservationForm Item=objReservation></ReservationForm>*@
-                                    @*<ValidationMessage For="@(() => objReservation.IdNumber)" />
-                                    <DataAnnotationsValidator />
-                                    <ValidationSummary />*@
-                                </EditForm>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+
+                                            <DataAnnotationsValidator />
+                                            <ValidationSummary />
+                                            <div class="form-group">
+                                                <label for="airplane">Airplane</label>
+                                                <InputSelect id="airplane" @bind-Value="RecordsViewModel.FilterViewModel.AirplaneSelects" class="form-control">
+                                                    @foreach (var i in RecordsViewModel.FilterViewModel.AirplaneSelects)
+                                                    {
+                                                        <option value="@i.Id">@i.TailNumber</option>
+                                                     } 
+                                                </InputSelect>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="pilot">Airplane</label>
+                                                <InputSelect id="pilot" @bind-Value="RecordsViewModel.FilterViewModel.PilotSelects" class="form-control">
 
 
+                                                    @foreach (var i in RecordsViewModel.FilterViewModel.PilotSelects)
+                                                            {
+                                                        <option value="@i.Id">@i.FirstName (@i.IdNumber)</option>
+                                                            }
+                                                </InputSelect>
+                                            </div>
+
+                                            <div class="form-group">
+                                               
+
+                                                <label for="DateFrom" class="control-label">From</label><br />
+
+                                                <div class="col pr-0">
+                                                    <div class="form-control d-flex">
+                                                        <div><i>🗓</i>&nbsp;&nbsp;Date:</div>
+                                                        <input type="date" @bind="objReservation.DateFrom" @bind:format="yyyy-MM-dd" />
+                                                        <div><i>🗓</i>&nbsp;&nbsp;Time:</div>
+                                                        <input type="time" @bind="objReservation.TimeFrom" format-value="HH:mm" />
+
+                                                    </div>
+                                                </div>
+                                                <label for="DateFrom" class="control-label">To</label><br />
+                                                <div class="col pr-0">
+                                                    <div class="form-control d-flex">
+                                                        <div><i>🗓</i>&nbsp;&nbsp;Date:</div>
+                                                        <input type="date" @bind="objReservation.DateTo" @bind:format="yyyy-MM-dd" />
+                                                        <div><i>🗓</i>&nbsp;&nbsp;Time:</div>
+                                                        <input type="time" @bind="objReservation.TimeTo" format-value="HH:mm" />
+
+                                                    </div>
+                                                </div>
+                                                <input type="text" for="TailNumber" class="text-hide" @bind="@objReservation.TailNumber" />
+                                               
+                                                @*<label for="IdNumber" class="hide">Id Number</label>*@
+                                                <input type="text" for="IdNumber" class="text-hide" @bind="@objReservation.IdNumber" />
+                                               
+                                            </div>
+
+                                            
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="modal-footer">
+                                    @if (objReservation.Id == 0)
+                                    {
+                                        <!-- Button to save the forecast -->
+                                        <button class="btn btn-primary" type="submit" >
+                                            Create
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <!-- Button to save the forecast -->
+                                        <button type="submit" class="btn btn-primary"
+                                                @onclick="SaveReservation">
+                                            Save
+                                        </button>
+                                    }
+
+                                    <!-- Only show delete button if not a new record -->
+                                    @if (objReservation.Id > 0)
+                                    {
+                                        <!-- Button to delete the forecast -->
+                                        <button type="submit" class="btn btn-primary"
+                                                @onclick="DeleteReservation">
+                                            Delete
+                                        </button>
+                                    }
+                                </div>
                             </div>
-                            <div class="modal-footer">
-                                @if (objReservation.Id == 0)
-                                {
-                                    <!-- Button to save the forecast -->
-                                    <button class="btn btn-primary" type="submit" @onclick="SaveNewReservation">
-                                        Create
-                                    </button>
-                                }
-                                else
-                                {
-                                    <!-- Button to save the forecast -->
-                                    <button type="submit" class="btn btn-primary"
-                                            @onclick="SaveReservation">
-                                        Save
-                                    </button>
-                                }
-
-                                <!-- Only show delete button if not a new record -->
-                                @if (objReservation.Id > 0)
-                                {
-                                    <!-- Button to delete the forecast -->
-                                    <button type="submit" class="btn btn-primary"
-                                            @onclick="DeleteReservation">
-                                        Delete
-                                    </button>
-                                }
-                            </div>
-                        </div>
+                        </EditForm>
                     </div>
-                </div>
+                </form>
             }
         }
 
@@ -324,6 +236,11 @@
     private EditContext EditContext1;
     private string StatusMessage;
     private string StatusClass;
+    private void HandleValidSubmit()
+    {
+        Console.WriteLine("OnValidSubmit");
+        SaveNewReservation();
+    }
     async Task SortDate()
     {
         items = items.OrderByDescending(x => x.DateFrom).ThenByDescending(x => x.DateFrom).ToList();
@@ -352,11 +269,7 @@
         await base.OnInitializedAsync();
 
     }
-    protected void HandleValidSubmit()
-    {
-        StatusClass = "alert-info";
-        StatusMessage = DateTime.Now + " Handle valid submit";
-    }
+ 
     protected void HandleInvalidSubmit()
     {
         StatusClass = "alert-danger";

@@ -25,6 +25,10 @@
 
   <ItemGroup>
     <Content Remove="compilerconfig.json" />
+    <Content Remove="Pages\CheckBoxPage.razor" />
+    <Content Remove="Pages\DatePickerPage.razor" />
+    <Content Remove="Pages\DateRangePickerDemo.razor" />
+    <Content Remove="Pages\DateTimePickerDemo.razor" />
     <Content Remove="wwwroot\Image\CGC_LLHA.jpg" />
     <Content Remove="wwwroot\Image\CGC_LLMG.jpg" />
     <Content Remove="wwwroot\Image\club-image.png" />
@@ -43,13 +47,12 @@
   <ItemGroup>
     <PackageReference Include="Blazor.Extensions.Logging" Version="1.1.0-preview2" />
     <PackageReference Include="BlazorInputFile" Version="0.1.0-preview-00002" />
-    <PackageReference Include="MediatR" Version="8.0.0" />
+    <PackageReference Include="MediatR" Version="8.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Blazor" Version="3.1.0-preview4.19579.2" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="3.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Blazor.Build" Version="3.1.0-preview4.19579.2" PrivateAssets="all" />
     <PackageReference Include="Microsoft.AspNetCore.Blazor.HttpClient" Version="3.1.0-preview4.19579.2" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="3.1.2" />
-    <PackageReference Include="Radzen.Blazor" Version="2.2.3" />
     <PackageReference Include="W8lessLabs.Blazor.LocalFiles" Version="1.0.0-preview2" />
   </ItemGroup>
 
