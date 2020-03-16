@@ -104,7 +104,7 @@
 
                 <form class="modal" tabindex="-1" style="display:block" role="dialog">
                     <div class="modal-dialog  modal-dialog-centered">
-                        <EditForm Model="@flightReservationCreateModel" OnValidSubmit="SaveNewReservation" OnInvalidSubmit="SaveNewReservation" Context="Edit">
+                        <EditForm Model="@flightReservationCreateModel" OnValidSubmit="SaveNewReservation"  Context="Edit">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h3 class="modal-title">Edit Reservation</h3>
@@ -124,7 +124,7 @@
                                             <ValidationSummary />
                                             <div class="form-group">
                                                 <label for="airplane">Airplane</label>
-                                                <InputSelect id="airplane" @bind-Value="@RecordsViewModel.FilterViewModel.AirplaneFilterApplied" class="form-control">
+                                                <InputSelect id="airplane" @bind-Value="@flightReservationCreateModel.AircraftSelect" class="form-control">
                                                     @foreach (var i in RecordsViewModel.FilterViewModel.AirplaneSelects)
                                                     {
                                                         <option value="@i.Id">@i.TailNumber</option>
@@ -133,7 +133,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <label for="pilot">Airplane</label>
-                                                <InputSelect id="pilot" @bind-Value="@flightReservationCreateModel.PilotId" class="form-control">
+                                                <InputSelect id="pilot" @bind-Value="@flightReservationCreateModel.PilotSelect" class="form-control">
 
 
                                                     @foreach (var i in RecordsViewModel.FilterViewModel.PilotSelects)
@@ -167,10 +167,7 @@
 
                                                     </div>
                                                 </div>
-                                                <input type="text" for="TailNumber"  @bind="@flightReservationCreateModel.AircraftId" />
                                                
-                                                @*<label for="IdNumber" class="hide">Id Number</label>*@
-                                                <input type="text" for="IdNumber"  @bind-value="@flightReservationCreateModel.PilotId" />
                                                
                                             </div>
 
@@ -330,7 +327,7 @@
         // objReservation.TimeFrom.AddHours(-t.Hour);
         flightReservationCreateModel.TimeFrom.AddHours(SelectedFromTime.Hour);
         flightReservationCreateModel.TimeFrom.AddMinutes(SelectedFromTime.Minute);
-        flightReservationCreateModel.PilotId = (int)RecordsViewModel.FilterViewModel.AirplaneFilterApplied;
+        //flightReservationCreateModel.PilotId = (int)RecordsViewModel.FilterViewModel.AirplaneFilterApplied;
         await Http.SendJsonAsync(HttpMethod.Put, "api/FlightReservation/Create", flightReservationCreateModel);
         items = await Http.GetJsonAsync<List<FlightReservationModel>>("api/FlightReservation/Reservation");
         // Get the current user

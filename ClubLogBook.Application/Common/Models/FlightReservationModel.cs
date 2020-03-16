@@ -12,9 +12,10 @@ namespace ClubLogBook.Application.Models
 			ExtructTime();
 		}
 		[Required]
-		public int PilotId { get; set; } = 0;
-		[Required]
-		public int AircraftId { get; set; } = 0;
+		
+		public int PilotId { get; private set; } = 0;
+		
+		public  int AircraftId { get; private set; } = 0;
 		
 		[Required(ErrorMessage = "Required")]
 		[DataType(DataType.DateTime)]
@@ -30,6 +31,14 @@ namespace ClubLogBook.Application.Models
 		public DateTime TimeFrom { get { return timeFrom; } set { timeFrom = value; } }
 		private DateTime timeTo = DateTime.Now.AddHours(1);
 		public DateTime TimeTo { get { return timeTo; } set { timeTo = value; } }
+		private string _pilotSelect = "";
+		[Required]
+		[MinLength(1)]
+		public string PilotSelect { get { return _pilotSelect; } set { _pilotSelect = value; PilotId = Int32.Parse(_pilotSelect); } }
+		private string _aircraftSelect = "";
+		[Required]
+		[MinLength(1)]
+		public string AircraftSelect { get { return _aircraftSelect; } set { _aircraftSelect = value; AircraftId = Int32.Parse(_aircraftSelect); } }
 		public void CombineTime()
 		{
 
