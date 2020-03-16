@@ -71,7 +71,7 @@ namespace ClubLogBook.Core.Entities
 		{
 			if (other == null)
 				return false;
-			if (this.GetType() != other.GetType()) return false;
+			
 			if (other == this)
 				return true;
 			if (other >= this || other <= this)
