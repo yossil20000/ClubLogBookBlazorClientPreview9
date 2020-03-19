@@ -332,8 +332,9 @@
         flightReservationCreateModel.TimeFrom.AddMinutes(SelectedFromTime.Minute);
         //flightReservationCreateModel.PilotId = (int)RecordsViewModel.FilterViewModel.AirplaneFilterApplied;
         // await Http.SendJsonAsync(HttpMethod.Put, "api/FlightReservation/Create", flightReservationCreateModel);
-        await Http.PostJsonAsync<ActionResult<string>>("api/FlightReservation/Create", flightReservationCreateModel);
         var result = "POK";
+        result = await Http.PostJsonAsync<string>("api/FlightReservation/Create", flightReservationCreateModel);
+
         if (result != "")
         {
             _returnMessage = "yossi";
