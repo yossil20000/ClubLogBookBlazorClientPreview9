@@ -431,7 +431,7 @@
     }
     protected async Task OnSearch()
     {
-        FlightRecordIndexViewModel = await Http.PutJsonAsync<FlightRecordIndexModel>("api/ClubFlight/Put", FlightRecordIndexViewModel);
+        FlightRecordIndexViewModel = await Http.PutJsonAsync<FlightRecordIndexModel>("api/ClubFlight/SearchFilterPut", FlightRecordIndexViewModel);
         OnActualPageChanged();
     }
     void OnDateChanged()

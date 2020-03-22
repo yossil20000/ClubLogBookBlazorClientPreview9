@@ -10,7 +10,7 @@ namespace ClubLogBook.Infrastructure.Identity
         {
             return result.Succeeded
                 ? Result.Success()
-                : Result.Failure(result.Errors.Select(e => e.Description));
+                : Result.Failure(result.Errors.Select(e => e.Description).ToList());
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿@page "/Reservation/FlightReservation"
 @using ClubLogBook.Application.Models
+@using ClubLogBook.Application.Common.Models
 @using System.Net.Http
 @inject HttpClient Http
 @inject IdentityAuthenticationStateProvider authStateProvider
@@ -107,7 +108,7 @@
                         <EditForm Model="@flightReservationCreateModel" OnValidSubmit="SaveNewReservation" Context="Edit">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h3 class="modal-title">Edit Reservation : Return Message=@_returnMessage</h3>
+                                    <h3 class="modal-title">@_editHeaderTitle</h3>
                                     <!-- Button to close the popup -->
                                     <button type="button" class="close"
                                             @onclick="@ClosePopup">
@@ -127,8 +128,15 @@
                                                 <InputSelect id="airplane" @bind-Value="@flightReservationCreateModel.AircraftSelect" class="form-control">
                                                     @foreach (var i in RecordsViewModel.FilterViewModel.AirplaneSelects)
                                                             {
-                                                        <option value="@i.Id">@i.TailNumber</option>
+                                                        @if (i.Id > 0)
+                                                                {
+                                                            <option value="@i.Id">@i.TailNumber</option>
+                                                                }
+                                                        /**/
+                                                        /**/
+
                                                             }
+                                                    /**/
                                                     /**/
                                                 </InputSelect>
                                             </div>
@@ -139,8 +147,15 @@
 
                                                     @foreach (var i in RecordsViewModel.FilterViewModel.PilotSelects)
                                                             {
-                                                        <option value="@i.Id">@i.FirstName (@i.IdNumber)</option>
+                                                        @if (i.Id > 0)
+                                                                {
+                                                            <option value="@i.Id">@i.FirstName (@i.IdNumber)</option>
+                                                                }
+                                                        /**/
+                                                        /**/
+
                                                             }
+                                                    /**/
                                                     /**/
                                                 </InputSelect>
                                             </div>
@@ -152,9 +167,9 @@
 
                                                 <div class="col pr-0">
                                                     <div class="form-control d-flex">
-                                                        <div><i>🗓</i>&nbsp;&nbsp;Date:</div>
+                                                        <div>&nbsp;&nbsp;Date:</div>
                                                         <input type="date" @bind="flightReservationCreateModel.DateFrom" @bind:format="yyyy-MM-dd" />
-                                                        <div><i>🗓</i>&nbsp;&nbsp;Time:</div>
+                                                        <div>&nbsp;&nbsp;Time:</div>
                                                         <input type="time" @bind="flightReservationCreateModel.TimeFrom" format-value="HH:mm" />
 
                                                     </div>
@@ -162,9 +177,9 @@
                                                 <label for="DateFrom" class="control-label">To</label><br />
                                                 <div class="col pr-0">
                                                     <div class="form-control d-flex">
-                                                        <div><i>🗓</i>&nbsp;&nbsp;Date:</div>
+                                                        <div>&nbsp;&nbsp;Date:</div>
                                                         <input type="date" @bind="flightReservationCreateModel.DateTo" @bind:format="yyyy-MM-dd" />
-                                                        <div><i>🗓</i>&nbsp;&nbsp;Time:</div>
+                                                        <div>&nbsp;&nbsp;Time:</div>
                                                         <input type="time" @bind="flightReservationCreateModel.TimeTo" format-value="HH:mm" />
 
                                                     </div>
@@ -177,6 +192,20 @@
 
                                         </div>
                                     </div>
+
+                                </div>
+                                <div class="modal-error">
+                                    @if (commandResult != null)
+                                    {
+                                        @foreach (var i in commandResult.Errors)
+                                        {
+                                            <ul>
+                                                <li>
+                                                    <p>@i</p>
+                                                </li>
+                                            </ul>
+                                        }
+                                    }
 
                                 </div>
                                 <div class="modal-footer">
@@ -215,7 +244,8 @@
     private string StatusMessage;
     private string StatusClass;
     FlightReservationCreateModel flightReservationCreateModel { get; set; }
-    string _returnMessage { get; set; } = "";
+    Result commandResult { get; set; }
+    string _editHeaderTitle { get; set; } = "Edit Reservation";
     private void HandleValidSubmit()
     {
         Console.WriteLine("OnValidSubmit");
@@ -332,17 +362,17 @@
         flightReservationCreateModel.TimeFrom.AddMinutes(SelectedFromTime.Minute);
         //flightReservationCreateModel.PilotId = (int)RecordsViewModel.FilterViewModel.AirplaneFilterApplied;
         // await Http.SendJsonAsync(HttpMethod.Put, "api/FlightReservation/Create", flightReservationCreateModel);
-        var result = "POK";
-        result = await Http.PostJsonAsync<string>("api/FlightReservation/Create", flightReservationCreateModel);
 
-        if (result != "")
+        commandResult = await Http.PutJsonAsync<Result>("api/FlightReservation/Create", flightReservationCreateModel);
+        if(commandResult.Succeeded)
         {
-            _returnMessage = "yossi";
+            _editHeaderTitle = commandResult.Errors.FirstOrDefault();
         }
+
         else
         {
-            ShowPopup = false;
-            items = await Http.GetJsonAsync<List<FlightReservationModel>>("api/FlightReservation/Reservation");
+
+            ShowPopup = true;
         }
 
         // Get the current user

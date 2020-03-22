@@ -75,8 +75,8 @@ namespace ClubLogBook.Server.Controllers
 		}
 
 		[HttpPut]
-		[Route("Put")]
-		public async Task<FlightRecordIndexModel> Put([FromBody] FlightRecordIndexModel flightRecordIndexModel)
+		[Route("SearchFilterPut")]
+		public async Task<FlightRecordIndexModel> SearchFilterPut([FromBody] FlightRecordIndexModel flightRecordIndexModel)
 		{
 			
 			GetFilteredFlightsQuery getFilteredFlightsQuery = new GetFilteredFlightsQuery();

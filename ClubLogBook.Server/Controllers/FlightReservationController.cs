@@ -173,10 +173,11 @@ namespace ClubLogBook.Server.Controllers
 			}
 
 		}
-		[HttpPost]
+		[HttpPut]
 		[Route("api/FlightReservation/Create")]
-		public async  Task<ActionResult<string>> Create([FromBody] FlightReservationCreateModel reservation)
+		public async  Task<Result> Create([FromBody] FlightReservationCreateModel reservation)
 		{
+			Result result = new Result();
 			if (ModelState.IsValid)
 			{
 				//AircraftReservation aircraftReservation;
@@ -184,19 +185,21 @@ namespace ClubLogBook.Server.Controllers
 				//aircraftReservation = _mapper.Map<FlightReservationModel, AircraftReservation>(reservationViewModel);
 				//await _reservationService.AddReservation(aircraftReservation);
 				CreateReservationCommand createReservationCommand = new CreateReservationCommand(reservation);
-				var result = await  _mediator.Send(createReservationCommand);
+				result = await  _mediator.Send(createReservationCommand);
 				System.Diagnostics.Debug.WriteLine(reservation?.ToString());
-				if(result > 0)
-				{
-					return await Task.FromResult("ok"); ;
-				}
-				else
-				{
-					return await Task.FromResult("Erron May Be Duplicate Reservation");
-				}
+				//if(result > 0)
+				//{
+				//	return "OK";
+				//}
+				//else
+				//{
+				//	return await Task.FromResult("Erron May Be Duplicate Reservation");
+				//} 
+				return result;
 				
 			}
-			return await Task.FromResult("Invalid request"); ;
+			result.AddError($"ModelState InValsid:");
+			return result;
 		}
 	}
 }

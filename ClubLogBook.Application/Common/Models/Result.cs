@@ -5,24 +5,35 @@ namespace ClubLogBook.Application.Common.Models
 {
     public class Result
     {
-        internal Result(bool succeeded, IEnumerable<string> errors)
+        public Result()
         {
-            Succeeded = succeeded;
-            Errors = errors.ToArray();
+            Succeeded = true;
+            Errors = new List<string>();
         }
 
-        public bool Succeeded { get; set; }
+        public Result(bool succeeded, List<string> errors )
+        {
+            Succeeded = succeeded;
+            Errors = errors;
+        }
 
-        public string[] Errors { get; set; }
+        public bool Succeeded { get; private set; }
+
+        public List<string> Errors { get; private set; }
 
         public static Result Success()
         {
-            return new Result(true, new string[] { });
+            return new Result(true,new List<string>());
         }
 
-        public static Result Failure(IEnumerable<string> errors)
+        public static Result Failure(List<string> errors)
         {
             return new Result(false, errors);
+        }
+        public void AddError(string error)
+        {
+            Succeeded = false;
+            Errors.Add(error);
         }
     }
 }

@@ -15,10 +15,11 @@ using ClubLogBook.Application.Models;
 using ClubLogBook.Core.Interfaces;
 using System;
 using ClubLogBook.Application.Extenttions;
+using ClubLogBook.Application.Common.Models;
 
 namespace ClubLogBook.Application.Reservation.Queries
 {
-	public class CreateReservationCommand : IRequest<int>
+	public class CreateReservationCommand : IRequest<Result>
 	{
 		public FlightReservationCreateModel FlightReservationCreateModel { get; set; }
 		public CreateReservationCommand(FlightReservationCreateModel flightReservationCreateModel)
@@ -26,7 +27,7 @@ namespace ClubLogBook.Application.Reservation.Queries
 			FlightReservationCreateModel = flightReservationCreateModel;
 		}
 	}
-	public class CreateReservationCommandHandler : IRequestHandler<CreateReservationCommand, int>
+	public class CreateReservationCommandHandler : IRequestHandler<CreateReservationCommand, Result>
 	{
 		IApplicationDbContext _context;
 		IMapper _mapper;
@@ -36,9 +37,9 @@ namespace ClubLogBook.Application.Reservation.Queries
 			_mapper = mapper;
 		}
 
-		public async Task<int> Handle(CreateReservationCommand request, CancellationToken cancellationToken)
+		public async Task<Result> Handle(CreateReservationCommand request, CancellationToken cancellationToken)
 		{
-			int result = 0;
+			Result result = new Result() ;
 			AircraftReservation aircraftReservation = new AircraftReservation();
 			var aircraft = _context.Set<Aircraft>().Find(request.FlightReservationCreateModel.AircraftId);
 			if (aircraft != null)
@@ -48,7 +49,9 @@ namespace ClubLogBook.Application.Reservation.Queries
 			aircraftReservation.AircraftId = request.FlightReservationCreateModel.AircraftId;
 			var pilot = _context.Set<Pilot>().Find(request.FlightReservationCreateModel.PilotId);
 			if (pilot == null)
-				return 0;
+			{
+				result.AddError($"Pilot With Id:{request.FlightReservationCreateModel.PilotId} Not Found");
+			}
 			aircraftReservation.PilotId = pilot.Id;
 			request.FlightReservationCreateModel.CombineTime();
 			aircraftReservation.IdNumber = pilot.IdNumber;
@@ -61,8 +64,16 @@ namespace ClubLogBook.Application.Reservation.Queries
 				var reservation = _context.Set<AircraftReservation>().Update(aircraftReservation);
 				if (reservation != null)
 				{
-					result = await _context.SaveChangesAsync(cancellationToken);
+					int rVal = await _context.SaveChangesAsync(cancellationToken);
+					if( rVal ==0 )
+					{
+						result.AddError($"CreateReservationCommand Save Failed");
+					}
 				}
+			}
+			else
+			{
+				result.AddError($"Reservation Already Exist Date Conflict");
 			}
 			
 			return result;
