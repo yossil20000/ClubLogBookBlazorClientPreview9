@@ -244,7 +244,7 @@
     private string StatusMessage;
     private string StatusClass;
     FlightReservationCreateModel flightReservationCreateModel { get; set; }
-    Result commandResult { get; set; }
+   
     string _editHeaderTitle { get; set; } = "Edit Reservation";
     private void HandleValidSubmit()
     {
@@ -362,11 +362,11 @@
         flightReservationCreateModel.TimeFrom.AddMinutes(SelectedFromTime.Minute);
         //flightReservationCreateModel.PilotId = (int)RecordsViewModel.FilterViewModel.AirplaneFilterApplied;
         // await Http.SendJsonAsync(HttpMethod.Put, "api/FlightReservation/Create", flightReservationCreateModel);
-
-        commandResult = await Http.PutJsonAsync<Result>("api/FlightReservation/Create", flightReservationCreateModel);
-        if(commandResult.Succeeded)
+        flightReservationCreateModel.Result = Result.Success();
+        Result result = await Http.PutJsonAsync<Result>("api/FlightReservation/Create", flightReservationCreateModel);
+        if(result.Succeeded)
         {
-            _editHeaderTitle = commandResult.Errors.FirstOrDefault();
+            _editHeaderTitle = result.Errors.FirstOrDefault();
         }
 
         else

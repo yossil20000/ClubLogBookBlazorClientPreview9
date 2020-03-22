@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ClubLogBook.Application.Common.Models;
 using ClubLogBook.Application.Interfaces.Mapping;
 using ClubLogBook.Core.Entities;
 using System;
@@ -51,6 +52,7 @@ namespace ClubLogBook.Application.Models
 			timeFrom = TimeFrom.Date.Add(dateFrom.TimeOfDay);
 			timeTo = TimeTo.Date.Add(dateTo.TimeOfDay);
 		}
+		public Result Result { get; set; }
 	}
 	public class FlightReservationModel : IHaveCustomMapping
 	{

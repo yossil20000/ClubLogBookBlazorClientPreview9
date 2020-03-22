@@ -39,7 +39,7 @@ namespace ClubLogBook.Application.Reservation.Queries
 
 		public async Task<Result> Handle(CreateReservationCommand request, CancellationToken cancellationToken)
 		{
-			Result result = new Result() ;
+			List<string> errorList = new List<string>();
 			AircraftReservation aircraftReservation = new AircraftReservation();
 			var aircraft = _context.Set<Aircraft>().Find(request.FlightReservationCreateModel.AircraftId);
 			if (aircraft != null)
@@ -50,7 +50,7 @@ namespace ClubLogBook.Application.Reservation.Queries
 			var pilot = _context.Set<Pilot>().Find(request.FlightReservationCreateModel.PilotId);
 			if (pilot == null)
 			{
-				result.AddError($"Pilot With Id:{request.FlightReservationCreateModel.PilotId} Not Found");
+				errorList.Add($"Pilot With Id:{request.FlightReservationCreateModel.PilotId} Not Found");
 			}
 			aircraftReservation.PilotId = pilot.Id;
 			request.FlightReservationCreateModel.CombineTime();
@@ -67,16 +67,16 @@ namespace ClubLogBook.Application.Reservation.Queries
 					int rVal = await _context.SaveChangesAsync(cancellationToken);
 					if( rVal ==0 )
 					{
-						result.AddError($"CreateReservationCommand Save Failed");
+						errorList.Add($"CreateReservationCommand Save Failed");
 					}
 				}
 			}
 			else
 			{
-				result.AddError($"Reservation Already Exist Date Conflict");
+				errorList.Add($"Reservation Already Exist Date Conflict");
 			}
 			
-			return result;
+			return (errorList.Count > 0) ? Result.Failure(errorList) : Result.Success();
 		}
 	}
 
