@@ -175,7 +175,7 @@ namespace ClubLogBook.Server.Controllers
 		}
 		[HttpPut]
 		[Route("api/FlightReservation/Create")]
-		public async  Task<Result> Create([FromBody] FlightReservationCreateModel reservation)
+		public async  Task<FlightReservationCreateModel> Create([FromBody] FlightReservationCreateModel reservation)
 		{
 			
 			if (ModelState.IsValid)
@@ -197,13 +197,16 @@ namespace ClubLogBook.Server.Controllers
 				//} 
 				//reservation.Result = result;
 				//return reservation;
-				return result;
+				
+				reservation.ReturnResult = String.Join("/n", result.Errors); 
+				return reservation;
 				
 			}
 			//result.AddError($"ModelState InValsid:");
 			//reservation.Result = result;
 			//return reservation;
-			return Result.Success();
+			reservation.ReturnResult = "InValid Model";
+			return reservation;
 		}
 	}
 }

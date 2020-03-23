@@ -108,7 +108,7 @@
                         <EditForm Model="@flightReservationCreateModel" OnValidSubmit="SaveNewReservation" Context="Edit">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h3 class="modal-title">@_editHeaderTitle</h3>
+                                    <h3 class="modal-title">@_editHeaderTitle : @StatusMessage</h3>
                                     <!-- Button to close the popup -->
                                     <button type="button" class="close"
                                             @onclick="@ClosePopup">
@@ -244,7 +244,7 @@
     private string StatusMessage;
     private string StatusClass;
     FlightReservationCreateModel flightReservationCreateModel { get; set; }
-   
+
     string _editHeaderTitle { get; set; } = "Edit Reservation";
     private void HandleValidSubmit()
     {
@@ -362,16 +362,18 @@
         flightReservationCreateModel.TimeFrom.AddMinutes(SelectedFromTime.Minute);
         //flightReservationCreateModel.PilotId = (int)RecordsViewModel.FilterViewModel.AirplaneFilterApplied;
         // await Http.SendJsonAsync(HttpMethod.Put, "api/FlightReservation/Create", flightReservationCreateModel);
-        flightReservationCreateModel.Result = Result.Success();
-        Result result = await Http.PutJsonAsync<Result>("api/FlightReservation/Create", flightReservationCreateModel);
-        if(result.Succeeded)
+       // flightReservationCreateModel.Result = Result.Success();
+        Result result = Result.Success();
+        flightReservationCreateModel =  await Http.PutJsonAsync<FlightReservationCreateModel>("api/FlightReservation/Create", flightReservationCreateModel);
+        if(flightReservationCreateModel.ReturnResult == "")
         {
             _editHeaderTitle = result.Errors.FirstOrDefault();
+            ShowPopup = false;
         }
 
         else
         {
-
+            StatusMessage = flightReservationCreateModel.ReturnResult;
             ShowPopup = true;
         }
 

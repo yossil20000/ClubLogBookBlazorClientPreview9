@@ -52,7 +52,8 @@ namespace ClubLogBook.Application.Models
 			timeFrom = TimeFrom.Date.Add(dateFrom.TimeOfDay);
 			timeTo = TimeTo.Date.Add(dateTo.TimeOfDay);
 		}
-		public Result Result { get; set; }
+		public string ReturnResult { get; set; } = "";
+		
 	}
 	public class FlightReservationModel : IHaveCustomMapping
 	{
