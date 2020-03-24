@@ -79,3 +79,12 @@ cd "D:\Users\yossil\Documents\Visual Studio 2019\ProjectsOnYossil\ClubLogBookBla
 
 //for work
 cd "C:\Users\Administrator\Documents\Visual Studio 2019\Projects\ClubLogBookBlazorClientPreview9\ClubLogBook.Infrastructure"
+
+Update VisualStudio 16.6 preview 1
+install .NET Core 3.1 SDK (v3.1.200)
+dotnet new -i Microsoft.AspNetCore.Components.WebAssembly.Templates::3.2.0-preview2.20160.5
+dotnet tool uninstall --global dotnet-ef
+dotnet tool install --global dotnet-ef --version 5.0.0-preview.2.20120.8
+update to latest pacakages
+dotnet tool uninstall --global dotnet-ef
+dotnet tool install --global dotnet-ef --version 3.1.2
