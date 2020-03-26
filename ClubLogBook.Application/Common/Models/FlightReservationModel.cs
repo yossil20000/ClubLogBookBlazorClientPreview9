@@ -8,14 +8,6 @@ namespace ClubLogBook.Application.Models
 {
 	public class FlightReservationCreateModel 
 	{
-		public FlightReservationCreateModel(FlightReservationModel reservationModel)
-		{
-			DateFrom = reservationModel.DateFrom;
-			DateTo = reservationModel.DateTo;
-			ExtructTime();
-			
-
-		}
 		public FlightReservationCreateModel()
 		{
 			ExtructTime();
