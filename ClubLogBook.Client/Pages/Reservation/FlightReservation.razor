@@ -47,8 +47,15 @@
                     <div class="a-r-list-c-2">@item.DateTo</div>
                     @if (IsCurrentAdmin || item.UserId.ToString() == CurrentUser.Id)
                     {
-                       
-                        <div class="a-r-list-c-6 btn-grid-cmd"><button class="btn-grid-cmd" @onclick="@(() => EditReservation(item.Id))">Edit</button></div>
+
+                        <div class="a-r-list-c-6 btn-grid-cmd">
+                            <button class="btn-grid-cmd" @onclick="@(() => OnEditReservation(item.Id))">Edit</button>
+                            
+                        </div>
+                        <div class="a-r-list-c-7 btn-grid-cmd">
+                            
+                            <button class="btn-grid-cmd" @onclick="@(() => OnDeleteReservation(item.Id))">Delete</button>
+                        </div>
                     }
 
                 </div>
@@ -207,11 +214,11 @@
                                             <ValidationSummary />
                                             <div class="form-group">
                                                 <label for="airplane">Airplane : @objReservation.TailNumber</label>
-                                               
+
                                             </div>
                                             <div class="form-group">
                                                 <label for="pilot">Pilot : @objReservation.FirstName @objReservation.LastName @objReservation.IdNumber</label>
-                                               
+
                                             </div>
 
                                             <div class="form-group">
@@ -263,8 +270,57 @@
 
                                 </div>*@
                                 <div class="modal-footer">
+                                    <button class="btn btn-primary" @onclick="@DeleteReservation">
+                                        Delete
+                                    </button>
                                     <button class="btn btn-primary" type="submit">
-                                        Create
+                                        Edit
+                                    </button>
+
+                                </div>
+                            </div>
+                        </EditForm>
+                    </div>
+                </form>
+            }
+            @if (ShowDelete)
+            {
+
+
+                <form class="modal" tabindex="-1" style="display:block" role="dialog">
+                    <div class="modal-dialog  modal-dialog-centered">
+                        <EditForm Model="@objReservation" OnValidSubmit="DeleteReservation" Context="Edit">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h3 class="modal-title">@_editHeaderTitle : @StatusMessage</h3>
+                                    <!-- Button to close the popup -->
+                                    <button type="button" class="close"
+                                            @onclick="@ClosePopup">
+                                        <span aria-hidden="true">X</span>
+                                    </button>
+                                </div>
+                                <!-- Edit form for the current forecast -->
+
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+
+                                            <DataAnnotationsValidator />
+                                            <ValidationSummary />
+                                            <div class="form-group">
+                                                <label for="airplane">Airplane : @objReservation.TailNumber</label>
+
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="pilot">Pilot : @objReservation.FirstName @objReservation.LastName @objReservation.IdNumber</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-primary" type="submit">
+                                        Delete
                                     </button>
 
                                 </div>
@@ -284,9 +340,10 @@
 @code
 {
     [CascadingParameter] private Task<AuthenticationState> authenticationStateTask { get; set; }
-    
+
     bool ShowPopup = false;
     bool ShowReservation = false;
+    bool ShowDelete = false;
     List<FlightReservationModel> items { get; set; }
     static RecordsViewModel<FlightReservationModel> RecordsViewModel { get; set; } = new RecordsViewModel<FlightReservationModel>();
     FlightReservationModel objReservation = new FlightReservationModel();
@@ -390,6 +447,7 @@
         // Close the Popup
         ShowPopup = false;
         ShowReservation = false;
+        ShowDelete = false;
     }
     async Task SaveReservation()
     {
@@ -450,20 +508,35 @@
     async Task DeleteReservation()
     {
         // Close the Popup
-        ShowPopup = false;
+        
         await Http.SendJsonAsync(HttpMethod.Put, "api/FlightReservation/Delete", objReservation.Id);
         items = await Http.GetJsonAsync<List<FlightReservationModel>>("api/FlightReservation/Reservation");
+        ClosePopup();
     }
-    async Task EditReservation(int id)
+    async Task OnEditReservation(int id)
     {
         // Set the selected forecast
         // as the current forecast
         ClosePopup();
         _editHeaderTitle = "Edit Reservation";
-        StatusMessage = "Show";
+        StatusMessage = "";
         objReservation = items.Where(x => x.Id == id).FirstOrDefault();
         if(objReservation != null)
             ShowReservation = true;
+
+        // Open the Popup
+
+    }
+    async Task OnDeleteReservation(int id)
+    {
+        // Set the selected forecast
+        // as the current forecast
+        ClosePopup();
+        _editHeaderTitle = "Delete Reservation";
+        StatusMessage = "";
+        objReservation = items.Where(x => x.Id == id).FirstOrDefault();
+        if (objReservation != null)
+            ShowDelete = true;
 
         // Open the Popup
 

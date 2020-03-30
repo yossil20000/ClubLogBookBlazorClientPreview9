@@ -457,7 +457,7 @@ div.scroll {
       grid-template-columns: minmax(auto, 1.5fr) 2fr 60px;
   -ms-grid-rows: 35px  35px 1fr 0.5fr 25px 25px;
       grid-template-rows: 35px  35px 1fr 0.5fr 25px 25px;
-      grid-template-areas: "page-header page-header page-logo"  "page-nav-button page-nav-header page-nav-header" "page-content page-content page-content" "page-side page-side page-side" "page-side page-side page-side" "page-footer page-footer page-footer";
+      grid-template-areas: "page-header page-header page-logo"  "page-nav-button page-nav-header page-nav-header" "page-content page-content page-content" "page-side page-side page-side" "page-side page-side page-side" "page-footer page-footer page-footer";
   -ms-flex-line-pack: center;
       align-content: center;
   -webkit-box-pack: center;
@@ -664,7 +664,7 @@ div.scroll {
         grid-template-columns: minmax(auto, 0.75fr) 3fr 150px;
     -ms-grid-rows: 35px 35px 45px 3fr 1fr 35px;
         grid-template-rows: 35px 35px 45px 3fr 1fr 35px;
-        grid-template-areas: "page-header page-header page-logo" "page-nav-button page-nav-header page-logo" "page-nav page-content page-content" "page-nav page-content page-content" "page-side page-content page-content" "page-side page-footer page-footer";
+        grid-template-areas: "page-header page-header page-logo" "page-nav-button page-nav-header page-logo" "page-nav page-content page-content" "page-nav page-content page-content" "page-side page-content page-content" "page-side page-footer page-footer";
   }
   .l__page__nav {
     -ms-grid-row: 3;
@@ -832,7 +832,7 @@ div.scroll {
       grid-template-columns: 1fr 1fr 1fr;
   -ms-grid-rows: auto auto auto 1fr;
       grid-template-rows: auto auto auto 1fr;
-      grid-template-areas: "cell--1-1 cell--1-2 cell--1-3" "cell--2-1 cell--2-2 cell--2-3" "cell--3-1 cell--3-2 cell--3-3" "content content content";
+      grid-template-areas: "cell--1-1 cell--1-2 cell--1-3" "cell--2-1 cell--2-2 cell--2-3" "cell--3-1 cell--3-2 cell--3-3" "content content content";
   -ms-flex-line-pack: center;
       align-content: center;
   -webkit-box-pack: center;
@@ -924,7 +924,7 @@ div.scroll {
       grid-template-columns: 1fr;
   -ms-grid-rows: minmax(auto, 35px) 1fr;
       grid-template-rows: minmax(auto, 35px) 1fr;
-      grid-template-areas: "edit-header" "edit-content";
+      grid-template-areas: "edit-header" "edit-content";
   grid-template-rows: minmax(auto, 35px) 1fr;
   margin: 2px;
 }
@@ -998,7 +998,7 @@ div.scroll {
       grid-template-columns: 1fr;
   -ms-grid-rows: minmax(auto, 35px) 1fr;
       grid-template-rows: minmax(auto, 35px) 1fr;
-      grid-template-areas: "c-g-header" "c-g-content";
+      grid-template-areas: "c-g-header" "c-g-content";
   margin: 2px;
 }
 
@@ -1150,7 +1150,7 @@ div.scroll {
       grid-template-columns: 1fr;
   -ms-grid-rows: minmax(auto, 35px) auto;
       grid-template-rows: minmax(auto, 35px) auto;
-      grid-template-areas: "c-g-header" "c-g-content";
+      grid-template-areas: "c-g-header" "c-g-content";
   margin: 2px;
 }
 
@@ -1213,7 +1213,7 @@ div.scroll {
       grid-template-columns: 1fr;
   -ms-grid-rows: minmax(auto, 35px) auto;
       grid-template-rows: minmax(auto, 35px) auto;
-      grid-template-areas: "c-g-header" "c-g-content";
+      grid-template-areas: "c-g-header" "c-g-content";
   margin: 2px;
 }
 
@@ -1289,7 +1289,7 @@ div.scroll {
       grid-template-columns: 1fr;
   -ms-grid-rows: minmax(auto, 35px) auto;
       grid-template-rows: minmax(auto, 35px) auto;
-      grid-template-areas: "c-g-header" "c-g-content";
+      grid-template-areas: "c-g-header" "c-g-content";
   margin: 2px;
 }
 
@@ -1378,7 +1378,7 @@ div.scroll {
       grid-template-columns: 1fr;
   -ms-grid-rows: minmax(auto, 35px) auto;
       grid-template-rows: minmax(auto, 35px) auto;
-      grid-template-areas: "c-g-header" "c-g-content";
+      grid-template-areas: "c-g-header" "c-g-content";
   margin: 2px;
 }
 
@@ -1480,7 +1480,7 @@ div.scroll {
       grid-template-columns: 1fr;
   -ms-grid-rows: minmax(auto, 35px) auto;
       grid-template-rows: minmax(auto, 35px) auto;
-      grid-template-areas: "c-g-header" "c-g-content";
+      grid-template-areas: "c-g-header" "c-g-content";
   margin: 2px;
 }
 
@@ -1595,7 +1595,7 @@ div.scroll {
       grid-template-columns: 1fr;
   -ms-grid-rows: minmax(auto, 35px) auto;
       grid-template-rows: minmax(auto, 35px) auto;
-      grid-template-areas: "c-g-header" "c-g-content";
+      grid-template-areas: "c-g-header" "c-g-content";
   margin: 2px;
 }
 
@@ -1723,7 +1723,7 @@ div.scroll {
       grid-template-columns: 1fr;
   -ms-grid-rows: minmax(auto, 35px) auto;
       grid-template-rows: minmax(auto, 35px) auto;
-      grid-template-areas: "c-g-header" "c-g-content";
+      grid-template-areas: "c-g-header" "c-g-content";
   margin: 2px;
 }
 
@@ -1864,7 +1864,7 @@ div.scroll {
       grid-template-columns: 1fr;
   -ms-grid-rows: minmax(auto, 35px) auto;
       grid-template-rows: minmax(auto, 35px) auto;
-      grid-template-areas: "c-g-header" "c-g-content";
+      grid-template-areas: "c-g-header" "c-g-content";
   margin: 2px;
 }
 
@@ -2064,7 +2064,7 @@ div.scroll {
         grid-template-columns: 1fr;
     -ms-grid-rows: 1fr 1fr;
         grid-template-rows: 1fr 1fr;
-        grid-template-areas: "account-manager-task"  "account-manager-task-process";
+        grid-template-areas: "account-manager-task"  "account-manager-task-process";
     height: 100%;
     grid-gap: 2px;
     font-size: 1.5rem;
@@ -2084,7 +2084,7 @@ div.scroll {
       grid-template-columns: 1fr 1fr 1fr;
   -ms-grid-rows: 35px 35px 1fr;
       grid-template-rows: 35px 35px 1fr;
-      grid-template-areas: "a-m-task-header a-m-task-header a-m-task-header" "a-m-task-filter a-m-task-filter a-m-task-filter" "a-m-task-list a-m-task-list a-m-task-list";
+      grid-template-areas: "a-m-task-header a-m-task-header a-m-task-header" "a-m-task-filter a-m-task-filter a-m-task-filter" "a-m-task-list a-m-task-list a-m-task-list";
   -ms-grid-row: 1;
   -ms-grid-column: 1;
   grid-area: account-manager-task;
@@ -2099,7 +2099,7 @@ div.scroll {
       grid-template-columns: 1fr 1fr 1fr;
   -ms-grid-rows: 35px 35px 1fr;
       grid-template-rows: 35px 35px 1fr;
-      grid-template-areas: "a-m-t-p-header a-m-t-p-header a-m-t-p-header" "a-m-t-p-filter a-m-t-p-filter a-m-t-p-filter" "a-m-t-p-list a-m-t-p-list a-m-t-p-list";
+      grid-template-areas: "a-m-t-p-header a-m-t-p-header a-m-t-p-header" "a-m-t-p-filter a-m-t-p-filter a-m-t-p-filter" "a-m-t-p-list a-m-t-p-list a-m-t-p-list";
   -ms-grid-row: 1;
   -ms-grid-column: 2;
   grid-area: account-manager-task-process;
@@ -2479,7 +2479,7 @@ div.scroll {
       grid-template-columns: 1fr 1fr 1fr 35px;
   -ms-grid-rows: 30px auto auto;
       grid-template-rows: 30px auto auto;
-      grid-template-areas: "a-m-t-p-list-header--1 a-m-t-p-list-header--2 a-m-t-p-list-header--3 a-m-t-p-list-header--4" "a-m-t-p-list-item--1 a-m-t-p-list-item--2 a-m-t-p-list-item--3 a-m-t-p-list-item--4" "a-m-t-p-list-footer a-m-t-p-list-footer a-m-t-p-list-footer a-m-t-p-list-footer";
+      grid-template-areas: "a-m-t-p-list-header--1 a-m-t-p-list-header--2 a-m-t-p-list-header--3 a-m-t-p-list-header--4" "a-m-t-p-list-item--1 a-m-t-p-list-item--2 a-m-t-p-list-item--3 a-m-t-p-list-item--4" "a-m-t-p-list-footer a-m-t-p-list-footer a-m-t-p-list-footer a-m-t-p-list-footer";
   border-radius: 10px;
   background-color: #2d3d43;
   background-color: var(--bg-color-primary-content);
@@ -2629,7 +2629,7 @@ div.scroll {
     max-width: initial;
     margin: 10px auto;
     grid-gap: 15px;
-        grid-template-areas: "head head head head" "select-club select-airplane select-pilot select-date" "main-left main-right main-right main-right" "main-left main-right main-right main-right" "foot foot foot foot";
+        grid-template-areas: "head head head head" "select-club select-airplane select-pilot select-date" "main-left main-right main-right main-right" "main-left main-right main-right main-right" "foot foot foot foot";
   }
   .containerAccount,
   .main-left {
@@ -2826,7 +2826,7 @@ card-body-item--2-value input {
       grid-template-rows: 35px 30px 30px 30px 30px;
   -ms-grid-rows: auto;
       grid-template-rows: auto;
-      grid-template-areas: "content-header  content-header content-header" "content-row--1  content-value--1 content-side--1"  "content-row--2  content-value--2 content-side--2"  "content-row--3  content-value--3 content-side--3"  "content-row--4  content-value--4 content-side--4";
+      grid-template-areas: "content-header  content-header content-header" "content-row--1  content-value--1 content-side--1"  "content-row--2  content-value--2 content-side--2"  "content-row--3  content-value--3 content-side--3"  "content-row--4  content-value--4 content-side--4";
 }
 
 .content-header {
@@ -3028,7 +3028,7 @@ card-body-item--2-value input {
   /* grid-template-rows: 35px 20px 20px; */
   -ms-grid-rows: auto;
       grid-template-rows: auto;
-      grid-template-areas: "content-header-left content-header-left-1 content-header-right-1 content-header-right" "content-item content-unit content-per-unit content-total"  "content-footer content-footer content-footer content-footer";
+      grid-template-areas: "content-header-left content-header-left-1 content-header-right-1 content-header-right" "content-item content-unit content-per-unit content-total"  "content-footer content-footer content-footer content-footer";
 }
 
 .content-footer {
@@ -3215,9 +3215,9 @@ card-body-item--2-value input {
 .a-r-list-row {
   display: -ms-grid;
   display: grid;
-  -ms-grid-columns: 1.2fr 0.8fr 0.8fr 1fr 1fr 1fr;
-      grid-template-columns: 1.2fr 0.8fr 0.8fr 1fr 1fr 1fr;
-      grid-template-areas: "a-r-list-c--1 a-r-list-c--2 a-r-list-c--3 a-r-list-c--4 a-r-list-c--5 a-r-list-c--6";
+  -ms-grid-columns: 1.2fr 0.8fr 0.8fr 1fr 1fr 0.5fr 0.5fr;
+      grid-template-columns: 1.2fr 0.8fr 0.8fr 1fr 1fr 0.5fr 0.5fr;
+      grid-template-areas: "a-r-list-c--1 a-r-list-c--2 a-r-list-c--3 a-r-list-c--4 a-r-list-c--5 a-r-list-c--6 a-r-list-c--7";
   -ms-grid-rows: 45px;
       grid-template-rows: 45px;
   height: auto;
@@ -3515,6 +3515,19 @@ card-body-item--2-value input {
   -ms-grid-row: 1;
   -ms-grid-column: 6;
   grid-area: a-r-list-c--6;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  justify-items: center;
+}
+
+.a-r-list-c--7 {
+  display: -ms-grid;
+  display: grid;
+  width: 100%;
+  -ms-grid-row: 1;
+  -ms-grid-column: 7;
+  grid-area: a-r-list-c--7;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
