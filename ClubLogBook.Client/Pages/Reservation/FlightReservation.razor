@@ -458,7 +458,7 @@
         objReservation.TimeFrom.AddHours(SelectedFromTime.Hour);
         objReservation.TimeFrom.AddMinutes(SelectedFromTime.Minute);
         await Http.SendJsonAsync(HttpMethod.Put, "api/FlightReservation/Edit", objReservation);
-        items = await Http.GetJsonAsync<List<FlightReservationModel>>("api/FlightReservation/Reservation");
+        //items = await Http.GetJsonAsync<List<FlightReservationModel>>("api/FlightReservation/Reservation");
         // Get the current user
         ShowReservation = false;
 

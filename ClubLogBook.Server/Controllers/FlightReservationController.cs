@@ -137,12 +137,12 @@ namespace ClubLogBook.Server.Controllers
         {
 			if (ModelState.IsValid)
 			{
-				IsReservationValidQuery isReservationValidQuery = new IsReservationValidQuery(reservation);
-				var isValid = await _mediator.Send(isReservationValidQuery);
-				if(isValid)
+				//IsReservationValidQuery isReservationValidQuery = new IsReservationValidQuery(reservation);
+				//var isValid =   await _mediator.Send(isReservationValidQuery);
+				if(true)
 				{
 					UpdateReservationCommand updateReservationCommand = new UpdateReservationCommand(reservation);
-					var result = _mediator.Send(updateReservationCommand);
+					var result =await _mediator.Send(updateReservationCommand);
 					
 				}
 				//AircraftReservation aircraftReservation;
@@ -167,7 +167,7 @@ namespace ClubLogBook.Server.Controllers
 			if (ModelState.IsValid)
 			{
 				DeleteReservationByIdCommand deleteReservationByIdCommand = new DeleteReservationByIdCommand(id);
-				var ressult = _mediator.Send(deleteReservationByIdCommand);
+				var ressult = await _mediator.Send(deleteReservationByIdCommand);
 				//await _reservationService.DeleteReservation(id);
 				System.Diagnostics.Debug.WriteLine(id.ToString());
 			}

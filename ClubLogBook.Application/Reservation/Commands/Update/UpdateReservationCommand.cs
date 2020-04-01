@@ -39,13 +39,20 @@ namespace ClubLogBook.Application.Reservation.Queries
 			int result = 0;	
 			request.FlightReservationModel.CombineTime();
 			AircraftReservation aircraftReservation = _mapper.Map<FlightReservationModel, AircraftReservation>(request.FlightReservationModel);
-			//var pilot = await _context.Set<Pilot>().FindAsync(aircraftReservation.PilotId);
-			//if (pilot == null)
-			//	return 0;
+			var pilot = await _context.Set<Pilot>().FindAsync(aircraftReservation.PilotId);
+			if (pilot == null)
+				return 0;
+			var reservations =  _context.Set<AircraftReservation>().AsNoTracking<AircraftReservation>();
+			var exist = reservations.Where(f => f.Intersect(aircraftReservation)).FirstOrDefault();
+			if (exist != null && exist.Id != aircraftReservation.Id)
+				return 0;
+			
+			//aircraftReservation.Id = 0;
 			try
 			{
 				aircraftReservation.ReservationInfo = "Yossi"; //new UserInfo(pilot).GetJason();
 				_context.Set<AircraftReservation>().Update(aircraftReservation);
+				
 				if (true)
 				{
 					result = await _context.SaveChangesAsync(cancellationToken);

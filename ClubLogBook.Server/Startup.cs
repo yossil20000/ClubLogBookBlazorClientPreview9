@@ -66,7 +66,7 @@ namespace ClubLogBook.Server
             services.AddScoped<IAircraftRepository, AircraftRepository>();
             services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
             //services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer("Filename=data.db"));
-            services.AddDbContext<ApplicationIdentityDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<ApplicationIdentityDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")).UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
 			services.AddIdentity<ApplicationUser, IdentityUser<Guid>>()
 				.AddRoles<IdentityRole<Guid>>()
                 .AddEntityFrameworkStores<ApplicationIdentityDbContext>()
