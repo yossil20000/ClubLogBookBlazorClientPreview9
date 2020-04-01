@@ -116,5 +116,6 @@ namespace ClubLogBook.Application.Models
 			configuration.CreateMap<AircraftReservation, FlightReservationModel>();
 			configuration.CreateMap<FlightReservationModel, AircraftReservation>();
 		}
+		public string ReturnResult { get; set; } = "";
 	}
 }

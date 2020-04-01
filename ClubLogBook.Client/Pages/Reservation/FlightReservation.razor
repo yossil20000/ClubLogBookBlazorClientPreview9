@@ -70,14 +70,12 @@
 
             @if (ShowPopup)
             {
-
-
                 <form class="modal" tabindex="-1" style="display:block" role="dialog">
                     <div class="modal-dialog  modal-dialog-centered">
                         <EditForm Model="@flightReservationCreateModel" OnValidSubmit="SaveNewReservation" Context="Create">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h3 class="modal-title">@_editHeaderTitle : @StatusMessage</h3>
+                                    <h3 class="modal-title">@_editHeaderTitle</h3>
                                     <!-- Button to close the popup -->
                                     <button type="button" class="close"
                                             @onclick="@ClosePopup">
@@ -156,7 +154,9 @@
 
 
                                             </div>
-
+                                            <div class="alert">
+                                                Status: @StatusMessage
+                                            </div>
 
 
                                         </div>
@@ -197,7 +197,7 @@
                         <EditForm Model="@objReservation" OnValidSubmit="SaveReservation" Context="Edit">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h3 class="modal-title">@_editHeaderTitle : @StatusMessage</h3>
+                                    <h3 class="modal-title">@_editHeaderTitle</h3>
                                     <!-- Button to close the popup -->
                                     <button type="button" class="close"
                                             @onclick="@ClosePopup">
@@ -248,7 +248,9 @@
 
 
                                             </div>
-
+                                            <div class="alert">
+                                                Status: @StatusMessage
+                                            </div>
 
 
                                         </div>
@@ -270,9 +272,7 @@
 
                                 </div>*@
                                 <div class="modal-footer">
-                                    <button class="btn btn-primary" @onclick="@DeleteReservation">
-                                        Delete
-                                    </button>
+                                   
                                     <button class="btn btn-primary" type="submit">
                                         Edit
                                     </button>
@@ -452,26 +452,33 @@
     async Task SaveReservation()
     {
         // Close the Popup
-
+        StatusMessage = "";
         DateTime t = objReservation.TimeFrom;
         //objReservation.TimeFrom.AddHours(-t.Hour);
         objReservation.TimeFrom.AddHours(SelectedFromTime.Hour);
         objReservation.TimeFrom.AddMinutes(SelectedFromTime.Minute);
-        await Http.SendJsonAsync(HttpMethod.Put, "api/FlightReservation/Edit", objReservation);
-        //items = await Http.GetJsonAsync<List<FlightReservationModel>>("api/FlightReservation/Reservation");
-        // Get the current user
-        ShowReservation = false;
+        objReservation =  await Http.PutJsonAsync<FlightReservationModel>("api/FlightReservation/Edit", objReservation);
+        if (objReservation.ReturnResult == "")
+        {
+            items = await Http.GetJsonAsync<List<FlightReservationModel>>("api/FlightReservation/Reservation");
 
+            // Get the current user
+            ClosePopup();
+        }
+        else
+        {
+            StatusMessage = objReservation.ReturnResult;
+        }
     }
 
     async Task SaveNewReservation()
     {
         // Close the Popup
         _editHeaderTitle = "Create Reservation";
-        DateTime t = flightReservationCreateModel.TimeFrom;
+        //DateTime t = flightReservationCreateModel.TimeFrom;
         // objReservation.TimeFrom.AddHours(-t.Hour);
-        flightReservationCreateModel.TimeFrom.AddHours(SelectedFromTime.Hour);
-        flightReservationCreateModel.TimeFrom.AddMinutes(SelectedFromTime.Minute);
+        //flightReservationCreateModel.TimeFrom.AddHours(SelectedFromTime.Hour);
+        //flightReservationCreateModel.TimeFrom.AddMinutes(SelectedFromTime.Minute);
         //flightReservationCreateModel.PilotId = (int)RecordsViewModel.FilterViewModel.AirplaneFilterApplied;
         // await Http.SendJsonAsync(HttpMethod.Put, "api/FlightReservation/Create", flightReservationCreateModel);
         // flightReservationCreateModel.Result = Result.Success();
@@ -480,7 +487,8 @@
         if(flightReservationCreateModel.ReturnResult == "")
         {
             _editHeaderTitle = result.Errors.FirstOrDefault();
-            ShowPopup = false;
+            items = await Http.GetJsonAsync<List<FlightReservationModel>>("api/FlightReservation/Reservation");
+            ClosePopup();
         }
 
         else
@@ -498,6 +506,7 @@
         // Close the Popup
         ShowPopup = true;
         _editHeaderTitle = "Create Reservation";
+        StatusMessage = "";
         flightReservationCreateModel = new FlightReservationCreateModel();
         //EditContext1 = new EditContext(flightReservationCreateModel);
         //EditContext1.OnFieldChanged += EditContext_OnFieldChanged;
@@ -508,7 +517,7 @@
     async Task DeleteReservation()
     {
         // Close the Popup
-        
+
         await Http.SendJsonAsync(HttpMethod.Put, "api/FlightReservation/Delete", objReservation.Id);
         items = await Http.GetJsonAsync<List<FlightReservationModel>>("api/FlightReservation/Reservation");
         ClosePopup();

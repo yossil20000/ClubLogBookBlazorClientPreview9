@@ -86,6 +86,11 @@ namespace ClubLogBook.Application.Reservation.Queries
 		{
 			RuleFor(x => x.FlightReservationCreateModel.AircraftId).GreaterThan(0).WithMessage("AircraftId Must Be Grater Then 0");
 			RuleFor(x => x.FlightReservationCreateModel.PilotId).GreaterThan(0).WithMessage("PilotId Must Be Grater Then 0");
+			RuleFor(x => x.FlightReservationCreateModel).MustAsync(DateCheck).WithMessage("Date To  Must Be Greater Then Date From");
+		}
+		public async Task<bool> DateCheck(FlightReservationCreateModel flightReservationCreateModel, CancellationToken ct)
+		{
+			return flightReservationCreateModel.DateTo > flightReservationCreateModel.DateFrom;
 		}
 	}
 }

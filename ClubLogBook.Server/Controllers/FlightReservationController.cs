@@ -133,7 +133,7 @@ namespace ClubLogBook.Server.Controllers
 		// PUT: api/FlightReservation/5
 		[HttpPut]
 		[Route("api/FlightReservation/Edit")]
-        public async Task Edit([FromBody] FlightReservationModel reservation)
+        public async Task<FlightReservationModel> Edit([FromBody] FlightReservationModel reservation)
         {
 			if (ModelState.IsValid)
 			{
@@ -143,7 +143,9 @@ namespace ClubLogBook.Server.Controllers
 				{
 					UpdateReservationCommand updateReservationCommand = new UpdateReservationCommand(reservation);
 					var result =await _mediator.Send(updateReservationCommand);
-					
+					reservation.ReturnResult = String.Join("/n", result.Errors);
+					return reservation;
+
 				}
 				//AircraftReservation aircraftReservation;
 				//reservationViewModel.CombineTime();
@@ -157,6 +159,8 @@ namespace ClubLogBook.Server.Controllers
 				//}
 				//System.Diagnostics.Debug.WriteLine(reservationViewModel.ToString());
 			}
+			reservation.ReturnResult = "Model State Not Valid";
+			return reservation;
 		}
 
 		// DELETE: api/ApiWithActions/5
@@ -180,6 +184,7 @@ namespace ClubLogBook.Server.Controllers
 			
 			if (ModelState.IsValid)
 			{
+				reservation.CombineTime();
 				//AircraftReservation aircraftReservation;
 				//reservationViewModel.CombineTime();
 				//aircraftReservation = _mapper.Map<FlightReservationModel, AircraftReservation>(reservationViewModel);
