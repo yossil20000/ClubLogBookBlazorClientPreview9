@@ -88,3 +88,5 @@ dotnet tool install --global dotnet-ef --version 5.0.0-preview.2.20120.8
 update to latest pacakages
 dotnet tool uninstall --global dotnet-ef
 dotnet tool install --global dotnet-ef --version 3.1.2
+
+https://github.com/SamProf/MatBlazor

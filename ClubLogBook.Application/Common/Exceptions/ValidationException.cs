@@ -5,15 +5,15 @@ using FluentValidation.Results;
 
 namespace ClubLogBook.Application.Common.Exceptions
 {
-    public class ValidationException : Exception
+    public class MyValidationException : Exception
     {
-        public ValidationException()
+        public MyValidationException()
             : base("One or more validation failures have occurred.")
         {
             Failures = new Dictionary<string, string[]>();
         }
 
-        public ValidationException(List<ValidationFailure> failures)
+        public MyValidationException(List<ValidationFailure> failures)
             : this()
         {
             var propertyNames = failures

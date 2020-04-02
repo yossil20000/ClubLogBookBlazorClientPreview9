@@ -17,6 +17,8 @@ using ClubLogBook.Application.ClubContact.Queries;
 using ClubLogBook.Application.AircraftManager.Queries;
 using ClubLogBook.Application.Common.Models;
 using Microsoft.Extensions.Logging;
+using System.ComponentModel.DataAnnotations;
+using ClubLogBook.Application.Common.Exceptions;
 
 namespace ClubLogBook.Server.Controllers
 {
@@ -181,17 +183,29 @@ namespace ClubLogBook.Server.Controllers
 		[Route("api/FlightReservation/Create")]
 		public async  Task<FlightReservationCreateModel> Create([FromBody] FlightReservationCreateModel reservation)
 		{
-			
+			Result result = Result.Success();
 			if (ModelState.IsValid)
 			{
 				reservation.CombineTime();
+				try
+				{
+					CreateReservationCommand createReservationCommand = new CreateReservationCommand(reservation);
+					result = await _mediator.Send(createReservationCommand);
+					System.Diagnostics.Debug.WriteLine(reservation?.ToString());
+				}
+				catch(MyValidationException ve)
+				{
+					System.Diagnostics.Debug.WriteLine(ve.Failures);
+				}
+				catch(Exception ex)
+				{
+					System.Diagnostics.Debug.WriteLine(ex.Message);
+				}
 				//AircraftReservation aircraftReservation;
 				//reservationViewModel.CombineTime();
 				//aircraftReservation = _mapper.Map<FlightReservationModel, AircraftReservation>(reservationViewModel);
 				//await _reservationService.AddReservation(aircraftReservation);
-				CreateReservationCommand createReservationCommand = new CreateReservationCommand(reservation);
-				var result = await  _mediator.Send(createReservationCommand);
-				System.Diagnostics.Debug.WriteLine(reservation?.ToString());
+				
 				//if(result > 0)
 				//{
 				//	return "OK";

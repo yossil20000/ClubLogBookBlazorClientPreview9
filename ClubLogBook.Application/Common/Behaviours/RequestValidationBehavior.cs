@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using FluentValidation;
 using MediatR;
-using ValidationException = ClubLogBook.Application.Common.Exceptions.ValidationException;
+using MyValidationException = ClubLogBook.Application.Common.Exceptions.MyValidationException;
 
 namespace ClubLogBook.Application.Common.Behaviours
 {
@@ -30,7 +30,7 @@ namespace ClubLogBook.Application.Common.Behaviours
 
             if (failures.Count != 0)
             {
-                throw new ValidationException(failures);
+                throw new MyValidationException(failures);
             }
 
             return next();

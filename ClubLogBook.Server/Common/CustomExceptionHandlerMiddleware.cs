@@ -37,7 +37,7 @@ namespace ClubLogBook.Server.Common
 
             switch (exception)
             {
-                case ValidationException validationException:
+                case MyValidationException validationException:
                     code = HttpStatusCode.BadRequest;
                     result = JsonConvert.SerializeObject(validationException.Failures);
                     break;

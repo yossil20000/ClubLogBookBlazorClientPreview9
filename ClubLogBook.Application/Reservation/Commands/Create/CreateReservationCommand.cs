@@ -90,7 +90,7 @@ namespace ClubLogBook.Application.Reservation.Queries
 		}
 		public async Task<bool> DateCheck(FlightReservationCreateModel flightReservationCreateModel, CancellationToken ct)
 		{
-			return flightReservationCreateModel.DateTo > flightReservationCreateModel.DateFrom;
+			return await Task.FromResult( flightReservationCreateModel.DateTo > flightReservationCreateModel.DateFrom);
 		}
 	}
 }

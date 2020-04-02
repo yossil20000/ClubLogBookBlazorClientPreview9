@@ -137,7 +137,7 @@
                                                         <div>&nbsp;&nbsp;Date:</div>
                                                         <input type="date" @bind="flightReservationCreateModel.DateFrom" @bind:format="yyyy-MM-dd" />
                                                         <div>&nbsp;&nbsp;Time:</div>
-                                                        <input type="time" @bind="flightReservationCreateModel.TimeFrom" format-value="HH:mm" />
+                                                        <input type="time" @bind="flightReservationCreateModel.DateFrom" format-value="HH:mm" />
 
                                                     </div>
                                                 </div>
@@ -147,7 +147,7 @@
                                                         <div>&nbsp;&nbsp;Date:</div>
                                                         <input type="date" @bind="flightReservationCreateModel.DateTo" @bind:format="yyyy-MM-dd" />
                                                         <div>&nbsp;&nbsp;Time:</div>
-                                                        <input type="time" @bind="flightReservationCreateModel.TimeTo" format-value="HH:mm" />
+                                                        <input step="5" type="time" @bind="flightReservationCreateModel.DateTo" format-value="HH:mm" />
 
                                                     </div>
                                                 </div>
