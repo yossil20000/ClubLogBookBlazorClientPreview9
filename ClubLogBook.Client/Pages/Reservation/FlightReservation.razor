@@ -68,7 +68,7 @@
 
 
 
-            @if (ShowPopup)
+            @if (ShowCreate)
             {
                 <form class="modal" tabindex="-1" style="display:block" role="dialog">
                     <div class="modal-dialog  modal-dialog-centered">
@@ -128,17 +128,13 @@
                                             </div>
 
                                             <div class="form-group">
-
-
                                                 <label for="DateFrom" class="control-label">From</label><br />
-
                                                 <div class="col pr-0">
                                                     <div class="form-control d-flex">
                                                         <div>&nbsp;&nbsp;Date:</div>
                                                         <input type="date" @bind="flightReservationCreateModel.DateFrom" @bind:format="yyyy-MM-dd" />
                                                         <div>&nbsp;&nbsp;Time:</div>
-                                                        <input type="time" @bind="flightReservationCreateModel.DateFrom" format-value="HH:mm" />
-
+                                                        <input step="@TimeStep" type="time" @bind="@flightReservationCreateModel.DateFrom" format-value="HH:mm" />
                                                     </div>
                                                 </div>
                                                 <label for="DateFrom" class="control-label">To</label><br />
@@ -147,18 +143,13 @@
                                                         <div>&nbsp;&nbsp;Date:</div>
                                                         <input type="date" @bind="flightReservationCreateModel.DateTo" @bind:format="yyyy-MM-dd" />
                                                         <div>&nbsp;&nbsp;Time:</div>
-                                                        <input step="5" type="time" @bind="flightReservationCreateModel.DateTo" format-value="HH:mm" />
-
+                                                        <input step="@TimeStep" type="time" @bind="@flightReservationCreateModel.DateTo" format-value="HH:mmZ"  />
                                                     </div>
                                                 </div>
-
-
                                             </div>
                                             <div class="alert">
                                                 Status: @StatusMessage
                                             </div>
-
-
                                         </div>
                                     </div>
 
@@ -188,7 +179,7 @@
                     </div>
                 </form>
             }
-            @if (ShowReservation)
+            @if (ShowEdit)
             {
 
 
@@ -214,25 +205,18 @@
                                             <ValidationSummary />
                                             <div class="form-group">
                                                 <label for="airplane">Airplane : @objReservation.TailNumber</label>
-
                                             </div>
                                             <div class="form-group">
                                                 <label for="pilot">Pilot : @objReservation.FirstName @objReservation.LastName @objReservation.IdNumber</label>
-
                                             </div>
-
                                             <div class="form-group">
-
-
                                                 <label for="DateFrom" class="control-label">From</label><br />
-
                                                 <div class="col pr-0">
                                                     <div class="form-control d-flex">
                                                         <div>&nbsp;&nbsp;Date:</div>
                                                         <input type="date" @bind="objReservation.DateFrom" @bind:format="yyyy-MM-dd" />
                                                         <div>&nbsp;&nbsp;Time:</div>
-                                                        <input type="time" @bind="objReservation.TimeFrom" format-value="HH:mm" />
-
+                                                        <input step="@TimeStep" type="time" @bind="objReservation.DateFrom" format-value="HH:mm" />
                                                     </div>
                                                 </div>
                                                 <label for="DateFrom" class="control-label">To</label><br />
@@ -241,18 +225,14 @@
                                                         <div>&nbsp;&nbsp;Date:</div>
                                                         <input type="date" @bind="objReservation.DateTo" @bind:format="yyyy-MM-dd" />
                                                         <div>&nbsp;&nbsp;Time:</div>
-                                                        <input type="time" @bind="objReservation.TimeTo" format-value="HH:mm" />
-
+                                                        <input step="@TimeStep" type="time" @bind="@objReservation.DateTo" format-value="HH:mm" />
                                                     </div>
                                                 </div>
-
-
                                             </div>
-                                            <div class="alert">
-                                                Status: @StatusMessage
+                                            
+                                            <div class="alert alert-primary" role="alert">
+                                                @StatusMessage
                                             </div>
-
-
                                         </div>
                                     </div>
 
@@ -272,7 +252,6 @@
 
                                 </div>*@
                                 <div class="modal-footer">
-                                   
                                     <button class="btn btn-primary" type="submit">
                                         Edit
                                     </button>
@@ -339,10 +318,10 @@
 
 @code
 {
-    [CascadingParameter] private Task<AuthenticationState> authenticationStateTask { get; set; }
-
-    bool ShowPopup = false;
-    bool ShowReservation = false;
+        [CascadingParameter] private Task<AuthenticationState> authenticationStateTask { get; set; }
+    int TimeStep  { get; set; } = 300;
+    bool ShowCreate = false;
+    bool ShowEdit = false;
     bool ShowDelete = false;
     List<FlightReservationModel> items { get; set; }
     static RecordsViewModel<FlightReservationModel> RecordsViewModel { get; set; } = new RecordsViewModel<FlightReservationModel>();
@@ -445,18 +424,15 @@
     void ClosePopup()
     {
         // Close the Popup
-        ShowPopup = false;
-        ShowReservation = false;
+        ShowCreate = false;
+        ShowEdit = false;
         ShowDelete = false;
     }
     async Task SaveReservation()
     {
         // Close the Popup
         StatusMessage = "";
-        DateTime t = objReservation.TimeFrom;
-        //objReservation.TimeFrom.AddHours(-t.Hour);
-        objReservation.TimeFrom.AddHours(SelectedFromTime.Hour);
-        objReservation.TimeFrom.AddMinutes(SelectedFromTime.Minute);
+     
         objReservation =  await Http.PutJsonAsync<FlightReservationModel>("api/FlightReservation/Edit", objReservation);
         if (objReservation.ReturnResult == "")
         {
@@ -494,7 +470,7 @@
         else
         {
             StatusMessage = flightReservationCreateModel.ReturnResult;
-            ShowPopup = true;
+            ShowCreate = true;
         }
 
         // Get the current user
@@ -504,10 +480,12 @@
     async Task CreateReservation()
     {
         // Close the Popup
-        ShowPopup = true;
+        ShowCreate = true;
         _editHeaderTitle = "Create Reservation";
         StatusMessage = "";
+        
         flightReservationCreateModel = new FlightReservationCreateModel();
+        
         //EditContext1 = new EditContext(flightReservationCreateModel);
         //EditContext1.OnFieldChanged += EditContext_OnFieldChanged;
 
@@ -531,7 +509,7 @@
         StatusMessage = "";
         objReservation = items.Where(x => x.Id == id).FirstOrDefault();
         if(objReservation != null)
-            ShowReservation = true;
+            ShowEdit = true;
 
         // Open the Popup
 
@@ -557,7 +535,7 @@
         objReservation = reservationModel;
 
         // Open the Popup
-        ShowPopup = true;
+        ShowCreate = true;
     }
 
     void PilotSelected(ChangeEventArgs e)

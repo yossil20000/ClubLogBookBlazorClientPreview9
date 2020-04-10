@@ -1,19 +1,14 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
-using System.Text;
 using MediatR;
-using ClubLogBook.Application.Accounts.Queries.GetAccountsList;
 using System.Threading.Tasks;
 using System.Threading;
 using ClubLogBook.Application.Common.Interfaces;
 using ClubLogBook.Core.Entities;
 using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using FluentValidation;
 using ClubLogBook.Application.Models;
-using ClubLogBook.Core.Interfaces;
-using System;
 using ClubLogBook.Application.Extenttions;
 using ClubLogBook.Application.Common.Models;
 
@@ -52,7 +47,7 @@ namespace ClubLogBook.Application.Reservation.Queries
 				errorList.Add($"Pilot With Id:{request.FlightReservationModel.PilotId} Not Found");
 			}
 			aircraftReservation.PilotId = pilot.Id;
-			request.FlightReservationModel.CombineTime();
+			//request.FlightReservationModel.CombineTime();
 			aircraftReservation.IdNumber = pilot.IdNumber;
 			aircraftReservation.TailNumber = aircraft.TailNumber;
 			aircraftReservation.DateFrom = request.FlightReservationModel.DateFrom;
@@ -115,11 +110,12 @@ namespace ClubLogBook.Application.Reservation.Queries
 		public UpdateReservationCommandValidator()
 		{
 			RuleFor(x => x.FlightReservationModel.Id).GreaterThan(0).WithMessage("ReservationId Must Be Greter Then 0");
-			RuleFor(x => x.FlightReservationModel).MustAsync(DateCheck).WithMessage("Date To  Must Be Greater Then Date From");
+			RuleFor(x => x.FlightReservationModel).Must(DateCheck).WithMessage("Date To  Must Be Greater Then Date From");
 		}
-		public async Task<bool> DateCheck(FlightReservationModel flightReservationModel, CancellationToken ct)
+		public  bool DateCheck(FlightReservationModel flightReservationModel)
 		{
-			return flightReservationModel.DateTo > flightReservationModel.DateFrom;
+			var result = flightReservationModel.DateTo > flightReservationModel.DateFrom;
+			return result;
 		}
 	}
 }

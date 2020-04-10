@@ -2,45 +2,32 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using ClubLogBook.Application.Services;
 using ClubLogBook.Core.Entities;
-using ClubLogBook.Infrastructure.Data;
 using ClubLogBook.Application.Interfaces;
 using ClubLogBook.Application.Models;
-using ClubLogBook.Server.Services;
-using AutoMapper;
 using ClubLogBook.Application.Reservation.Queries;
 using MediatR;
 using ClubLogBook.Application.ClubContact.Queries;
 using ClubLogBook.Application.AircraftManager.Queries;
 using ClubLogBook.Application.Common.Models;
 using Microsoft.Extensions.Logging;
-using System.ComponentModel.DataAnnotations;
 using ClubLogBook.Application.Common.Exceptions;
+using System.Text;
 
 namespace ClubLogBook.Server.Controllers
 {
-    //[Route("api/[controller]")]
-    //[ApiController]
-    public class FlightReservationController : ControllerBase
+	//[Route("api/[controller]")]
+	//[ApiController]
+	public class FlightReservationController : ControllerBase
     {
 		private IMediator _mediator;
 		private ILogger<FlightReservationController> _logger;
-		//private IMemberRepository _memberRepository;
-		//private IMapper _mapper;
-		//private IReservationService _reservationService;
-		//private IClubService _clubService;
 		private IRecordViewModelService<RecordsViewModel<FlightReservationModel>> _recordViewModelService;
-		public FlightReservationController(IMediator mediator, ILogger<FlightReservationController> logger /*,IMemberRepository memberRepository, IMapper mapper,IReservationService reservationService, IClubService clubService*/, IRecordViewModelService<RecordsViewModel<FlightReservationModel>> recordViewModelService)
+		public FlightReservationController(IMediator mediator, ILogger<FlightReservationController> logger , IRecordViewModelService<RecordsViewModel<FlightReservationModel>> recordViewModelService)
 		{
 			_mediator = mediator;
 			_logger = logger;
-			//_memberRepository = memberRepository;
-			//_clubService = clubService;
-			//_reservationService = reservationService;
-			//_mapper = mapper;
 			_recordViewModelService = recordViewModelService;
 		}
 		// GET: api/FlightReservation
@@ -49,15 +36,6 @@ namespace ClubLogBook.Server.Controllers
 		public async Task<List<FlightReservationModel>> Reservation()
         {
 			List<FlightReservationModel> reservations;
-			//var reservations = await _reservationService.GetReservation();
-
-			//ienumerableDest = _mapper.Map<IEnumerable<AircraftReservation>, IList<FlightReservationModel>>(reservations);
-			//foreach(var r  in ienumerableDest)
-			//{
-			//	var pilot = await _memberRepository.GetByIdAsync(r.PilotId);
-			//	r.UserId = pilot == null ? string.Empty : pilot.UserId;
-			//	r.ExtructTime();
-			//}
 			GetReservationsQuery getReservationsQuery = new GetReservationsQuery();
 			reservations = await _mediator.Send(getReservationsQuery);
 			return reservations;
@@ -69,11 +47,6 @@ namespace ClubLogBook.Server.Controllers
 		public async Task<FlightReservationModel> Details(int id)
 		{
 			FlightReservationModel reservation;
-			//AircraftReservation reservation;
-			//reservation = await _reservationService.GetReservation(id);
-
-			//flightReservation = _mapper.Map<AircraftReservation, FlightReservationModel>(reservation);
-			//flightReservation.ExtructTime();
 			GetReservationByIdQuery getReservationByIdQuery = new GetReservationByIdQuery(id);
 			reservation = await _mediator.Send(getReservationByIdQuery);
 			return reservation;
@@ -122,8 +95,6 @@ namespace ClubLogBook.Server.Controllers
 					break;
 			}
 			var reservations = await _recordViewModelService.GetRecord(ActualPage, 10, filterViewModel.FilterViewModel.AirplaneFilterApplied, filterViewModel.FilterViewModel.PilotFilterApplied);
-
-			//ienumerableDest = _mapper.Map<IEnumerable<AircraftReservation>, IList<FlightReservationViewModel>>(reservations);
 			return reservations;
 
 		}
@@ -143,23 +114,27 @@ namespace ClubLogBook.Server.Controllers
 				//var isValid =   await _mediator.Send(isReservationValidQuery);
 				if(true)
 				{
-					UpdateReservationCommand updateReservationCommand = new UpdateReservationCommand(reservation);
-					var result =await _mediator.Send(updateReservationCommand);
-					reservation.ReturnResult = String.Join("/n", result.Errors);
-					return reservation;
+					try
+					{
+						UpdateReservationCommand updateReservationCommand = new UpdateReservationCommand(reservation);
+						var result = await _mediator.Send(updateReservationCommand);
+						reservation.ReturnResult = String.Join("/n", result.Errors);
+						return reservation;
+					}
+					catch (MyValidationException ve)
+					{
+						System.Diagnostics.Debug.WriteLine(ve.Failures);
+
+						reservation.ReturnResult = ve.FailuresMessage.ToString();
+						return reservation;
+
+					}
+					catch (Exception ex)
+					{
+						System.Diagnostics.Debug.WriteLine(ex.Message);
+					}
 
 				}
-				//AircraftReservation aircraftReservation;
-				//reservationViewModel.CombineTime();
-				//aircraftReservation = _mapper.Map<FlightReservationModel, AircraftReservation>(reservationViewModel);
-				//await _reservationService.EditReservation(aircraftReservation);
-				//bool isValid = await _reservationService.IsValid(aircraftReservation);
-				//if (!isValid)
-				//{
-				//	await _reservationService.DeleteReservation(aircraftReservation.Id);
-					
-				//}
-				//System.Diagnostics.Debug.WriteLine(reservationViewModel.ToString());
 			}
 			reservation.ReturnResult = "Model State Not Valid";
 			return reservation;
@@ -174,7 +149,6 @@ namespace ClubLogBook.Server.Controllers
 			{
 				DeleteReservationByIdCommand deleteReservationByIdCommand = new DeleteReservationByIdCommand(id);
 				var ressult = await _mediator.Send(deleteReservationByIdCommand);
-				//await _reservationService.DeleteReservation(id);
 				System.Diagnostics.Debug.WriteLine(id.ToString());
 			}
 
@@ -186,7 +160,7 @@ namespace ClubLogBook.Server.Controllers
 			Result result = Result.Success();
 			if (ModelState.IsValid)
 			{
-				reservation.CombineTime();
+				//reservation.CombineTime();
 				try
 				{
 					CreateReservationCommand createReservationCommand = new CreateReservationCommand(reservation);
@@ -196,34 +170,18 @@ namespace ClubLogBook.Server.Controllers
 				catch(MyValidationException ve)
 				{
 					System.Diagnostics.Debug.WriteLine(ve.Failures);
+					reservation.ReturnResult = ve.FailuresMessage.ToString();
+					return reservation;
 				}
 				catch(Exception ex)
 				{
 					System.Diagnostics.Debug.WriteLine(ex.Message);
-				}
-				//AircraftReservation aircraftReservation;
-				//reservationViewModel.CombineTime();
-				//aircraftReservation = _mapper.Map<FlightReservationModel, AircraftReservation>(reservationViewModel);
-				//await _reservationService.AddReservation(aircraftReservation);
-				
-				//if(result > 0)
-				//{
-				//	return "OK";
-				//}
-				//else
-				//{
-				//	return await Task.FromResult("Erron May Be Duplicate Reservation");
-				//} 
-				//reservation.Result = result;
-				//return reservation;
-				
+				}			
 				reservation.ReturnResult = String.Join("/n", result.Errors); 
 				return reservation;
 				
 			}
-			//result.AddError($"ModelState InValsid:");
-			//reservation.Result = result;
-			//return reservation;
+			
 			reservation.ReturnResult = "InValid Model";
 			return reservation;
 		}

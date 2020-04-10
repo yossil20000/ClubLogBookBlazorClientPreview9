@@ -53,7 +53,7 @@ namespace ClubLogBook.Application.Reservation.Queries
 				errorList.Add($"Pilot With Id:{request.FlightReservationCreateModel.PilotId} Not Found");
 			}
 			aircraftReservation.PilotId = pilot.Id;
-			request.FlightReservationCreateModel.CombineTime();
+			//request.FlightReservationCreateModel.CombineTime();
 			aircraftReservation.IdNumber = pilot.IdNumber;
 			aircraftReservation.TailNumber = aircraft.TailNumber;
 			aircraftReservation.DateFrom = request.FlightReservationCreateModel.DateFrom;
@@ -86,11 +86,15 @@ namespace ClubLogBook.Application.Reservation.Queries
 		{
 			RuleFor(x => x.FlightReservationCreateModel.AircraftId).GreaterThan(0).WithMessage("AircraftId Must Be Grater Then 0");
 			RuleFor(x => x.FlightReservationCreateModel.PilotId).GreaterThan(0).WithMessage("PilotId Must Be Grater Then 0");
-			RuleFor(x => x.FlightReservationCreateModel).MustAsync(DateCheck).WithMessage("Date To  Must Be Greater Then Date From");
+			RuleFor(x => x.FlightReservationCreateModel).Must(x => x.DateTo > x.DateFrom ).WithMessage("Date To  Must Be Greater Then Date From");
 		}
-		public async Task<bool> DateCheck(FlightReservationCreateModel flightReservationCreateModel, CancellationToken ct)
-		{
-			return await Task.FromResult( flightReservationCreateModel.DateTo > flightReservationCreateModel.DateFrom);
-		}
+		//public async Task<bool> DateCheck(FlightReservationCreateModel flightReservationCreateModel, CancellationToken ct)
+		//{
+		//	return await Task.FromResult( flightReservationCreateModel.DateTo > flightReservationCreateModel.DateFrom);
+		//}
+
+		//Must be use 
+		//var validator = new CustomerValidator();
+		//var result = await validator.ValidateAsync(customer);
 	}
 }

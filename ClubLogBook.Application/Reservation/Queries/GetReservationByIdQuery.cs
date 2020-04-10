@@ -41,7 +41,7 @@ namespace ClubLogBook.Application.Reservation.Queries
 			if (reservation != null)
 			{
 				flightReservationModel = _mapper.Map<AircraftReservation, FlightReservationModel>(reservation);
-				flightReservationModel.ExtructTime();
+				
 				
 			}
 			return flightReservationModel;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using FluentValidation.Results;
 
 namespace ClubLogBook.Application.Common.Exceptions
@@ -32,5 +33,19 @@ namespace ClubLogBook.Application.Common.Exceptions
         }
 
         public IDictionary<string, string[]> Failures { get; }
+        public StringBuilder FailuresMessage { 
+            get {
+                StringBuilder message = new StringBuilder();
+                foreach (var failure in Failures)
+                {
+                    foreach (var s in failure.Value)
+                    {
+                        message.AppendJoin("/n", $"{failure.Key}: {s}");
+                    }
+                }
+                return message;
+
+            }
+        }
     }
 }

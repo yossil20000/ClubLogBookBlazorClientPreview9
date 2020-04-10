@@ -37,7 +37,7 @@ namespace ClubLogBook.Application.Reservation.Queries
 		public async Task<bool> Handle(IsReservationValidQuery request, CancellationToken cancellationToken)
 		{
 			
-			request.FlightReservationModel.CombineTime();
+			//request.FlightReservationModel.CombineTime();
 			AircraftReservation aircraftReservation = _mapper.Map<FlightReservationModel, AircraftReservation>(request.FlightReservationModel);
 
 			//var reservation = _context.Set<AircraftReservation>().Update(aircraftReservation);

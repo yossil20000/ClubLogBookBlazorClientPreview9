@@ -34,7 +34,7 @@
                 <div><i>🗓</i>&nbsp;&nbsp;Date:</div>
                 <InputDate id="dateFrom" type="date" @bind-Value="Item.DateFrom" @bind:format="yyyy-MM-dd" />
                 <div><i>🗓</i>&nbsp;&nbsp;Time:</div>
-                <InputDate id="timeFrom" type="time" @bind-Value="Item.TimeFrom" format-value="HH:mm" />
+                <InputDate id="timeFrom" type="time" @bind-Value="Item.DateFrom" format-value="HH:mm" />
             </div>
            
            
@@ -52,7 +52,7 @@
                 <div><i>🗓</i>&nbsp;&nbsp;Date:</div>
                 <input id="dateFrom" type="date" @bind="Item.DateFrom" @bind:format="yyyy-MM-dd" />
                 <div><i>🗓</i>&nbsp;&nbsp;Time:</div>
-                <input id="timeFrom" type="time" @bind="Item.TimeFrom" format-value="HH:mm" />
+                <input id="timeFrom" type="time" @bind="Item.DateFrom" format-value="HH:mm" />
             </div>
         </div>
         <h3>To</h3>
@@ -61,7 +61,7 @@
                 <div><i>🗓</i>&nbsp;&nbsp;Date:</div>
                 <input type="date" @bind="Item.DateTo" @bind:format="yyyy-MM-dd" />
                 <div><i>🗓</i>&nbsp;&nbsp;Time:</div>
-                <input type="time" @bind="Item.TimeTo" format-value="HH:mm" />
+                <input type="time" @bind="Item.DateTo" format-value="HH:mm" />
             </div>
         </div>
         <label for="TailNumber"  @onchange="@(() => OnChangeValue("TailNumber"))">Tail Numbr:@Item.TailNumber</label>

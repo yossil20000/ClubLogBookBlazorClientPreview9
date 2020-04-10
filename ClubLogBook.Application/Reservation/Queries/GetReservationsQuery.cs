@@ -37,7 +37,7 @@ namespace ClubLogBook.Application.Reservation.Queries
 				var pilot =  _context.Set<Pilot>().Find(r.PilotId);
 				r.UserId = pilot == null ? string.Empty : pilot.UserId;
 				r.FirstName = pilot.FirstName; r.LastName = pilot.LastName;
-				r.ExtructTime();
+				
 			}
 			return reservations;
 		}
