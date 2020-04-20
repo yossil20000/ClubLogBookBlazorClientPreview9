@@ -22,11 +22,12 @@ using ClubLogBook.Application.AdministratorManager.Commands;
 using ClubLogBook.Application.ClubContact.Queries;
 using ClubLogBook.Application.Common.Models;
 using ClubLogBook.Application.AdministratorManager.Queries;
-
+using ClubLogBook.Shared.ApiModel;
 namespace ClubLogBook.Server.Controllers
 {
 	[Route("api/[controller]/[action]")]
 	[ApiController]
+	
 	public class AdministratorController : ControllerBase
     {
 
@@ -177,12 +178,14 @@ namespace ClubLogBook.Server.Controllers
 			return pilotSelectModel;
 		}
 		[HttpGet]
-		public async Task<AdminUserInfo> CurrentUser()
+		[ProducesResponseType(200, Type = typeof(OperationResponse<AdminUserInfo>))]
+		public async Task<IActionResult> CurrentUser()
 		{
 			var user = await _userManager.GetUserAsync(HttpContext.User);
 			 
 			AdminUserInfo adminUserInfo = _mapper.Map<ApplicationUser, AdminUserInfo>((user));
-			return adminUserInfo;
+			return Ok(new OperationResponse<AdminUserInfo> { IsSuccess = true,Message = $"{user.Id} has been found", Record=adminUserInfo}
+				);
 		}
 		[HttpGet]
 		public async Task<List<AdminUserInfo>> GetUsers()

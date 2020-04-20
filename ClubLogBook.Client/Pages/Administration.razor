@@ -13,6 +13,8 @@
                 Administrator Main
             </div>
             <div class="c_g__grid-6__content">
+                @if (IsCurrentAdmin)
+                {<button class="btn btn-success" @onclick="AddNewUser">Add User</button>}
                 <div class="c_g__grid-6__content__row">
                     <div class="c_g__grid-6__content__row__col-1-1  btn-grid-sort">
                         <span>Id</span>
@@ -55,9 +57,9 @@
                         <div class="c_g__grid-6__content__row__col-4-1 grid-style ">
                             @foreach (var i in user.Roles)
                             {
-                            <p>@i</p>
-                               
-                               
+                                <p>@i</p>
+
+
                             }
 
                         </div>
@@ -66,9 +68,8 @@
 
                         </div>
                         <div class="c_g__grid-6__content__row__col-6-1  grid-style ">
-                            <p>Action</p>
-                            <p>Action 1</p>
-                            <p>Action 1</p>
+                            <p><button class="btn btn-success" @onclick="@(async () => await EditUser(user))">Edit User</button></p>
+
                         </div>
                     </div>
                 }
@@ -184,8 +185,7 @@
                     </div>
                 </div>
             }
-            @if (IsCurrentAdmin)
-            {<button class="btn btn-success" @onclick="AddNewUser">Add User</button>}
+           
         }
         else
         {

@@ -98,6 +98,7 @@ namespace ClubLogBook.Client.Services.Implementations
 		public async Task<AdminUserInfo> CurrentUser()
 		{
 			var result = await _httpClient.GetJsonAsync<AdminUserInfo>("api/Administrator/CurrentUser");
+			
 			return result;
 		}
 		public async Task<List<PilotSelectModel>> GetPilots()

@@ -31,6 +31,7 @@ namespace ClubLogBook.Server.Controllers
         [HttpGet]
         public async Task<AccountListModel> GetAccountsList()
         {
+            
             CancellationToken ct = new CancellationToken();
             AccountListModel list = new AccountListModel();
             list.Accounts = new List<AccountLookupModel>();
